@@ -33,7 +33,9 @@ def setup_all_tables():
                 verification_token VARCHAR(10),
                 verification_token_expires TIMESTAMP,
                 reset_token VARCHAR(6),
-                reset_token_expires TIMESTAMP
+                reset_token_expires TIMESTAMP,
+                is_admin BOOLEAN DEFAULT FALSE,
+                role TEXT DEFAULT 'user'
             );
         """)
         print("   ✅ users table created")
@@ -76,9 +78,11 @@ def setup_all_tables():
                 user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
                 package_id INTEGER REFERENCES packages(id),
                 event_type TEXT NOT NULL,
-                event_name TEXT NOT NULL,
+                event_title TEXT NOT NULL,
+                event_name TEXT,
                 event_date DATE,
                 event_time TIME,
+                event_location TEXT,
                 location TEXT,
                 groom_name TEXT,
                 bride_name TEXT,
