@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
+        xmlns:xhtml="http://www.w3.org/1999/xhtml"
+        xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+
+  <!-- Homepage -->
+  <url>
+    <loc>https://www.savetheday.co.il/</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://www.savetheday.co.il/" />
+  </url>
+
+  <!-- Pricing Page -->
+  <url>
+    <loc>https://www.savetheday.co.il/pricing</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://www.savetheday.co.il/pricing" />
+  </url>
+
+  <!-- Contact Page -->
+  <url>
+    <loc>https://www.savetheday.co.il/contact</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://www.savetheday.co.il/contact" />
+  </url>
+
+  <!-- Register Page -->
+  <url>
+    <loc>https://www.savetheday.co.il/register</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.7</priority>
+  </url>
+
+  <!-- Login Page -->
+  <url>
+    <loc>https://www.savetheday.co.il/login</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.6</priority>
+  </url>
+
+  <!-- Event Type Pages - Wedding -->
+  <url>
+    <loc>https://www.savetheday.co.il/create-invitation/wedding</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.9</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://www.savetheday.co.il/create-invitation/wedding" />
+  </url>
+
+  <!-- Event Type Pages - Hina -->
+  <url>
+    <loc>https://www.savetheday.co.il/create-invitation/hina</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://www.savetheday.co.il/create-invitation/hina" />
+  </url>
+
+  <!-- Event Type Pages - Bar Mitzvah -->
+  <url>
+    <loc>https://www.savetheday.co.il/create-invitation/bar-mitzvah</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://www.savetheday.co.il/create-invitation/bar-mitzvah" />
+  </url>
+
+  <!-- Event Type Pages - Bat Mitzvah -->
+  <url>
+    <loc>https://www.savetheday.co.il/create-invitation/bat-mitzvah</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.85</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://www.savetheday.co.il/create-invitation/bat-mitzvah" />
+  </url>
+
+  <!-- Event Type Pages - Brit -->
+  <url>
+    <loc>https://www.savetheday.co.il/create-invitation/brit</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://www.savetheday.co.il/create-invitation/brit" />
+  </url>
+
+  <!-- Event Type Pages - Brita (Zeved Habat) -->
+  <url>
+    <loc>https://www.savetheday.co.il/create-invitation/brita</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.80</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://www.savetheday.co.il/create-invitation/brita" />
+  </url>
+
+  <!-- Event Type Pages - Corporate Events -->
+  <url>
+    <loc>https://www.savetheday.co.il/create-invitation/knasim</loc>
+    <lastmod>2025-01-18</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.75</priority>
+    <xhtml:link rel="alternate" hreflang="he" href="https://www.savetheday.co.il/create-invitation/knasim" />
+  </url>
+
+</urlset>

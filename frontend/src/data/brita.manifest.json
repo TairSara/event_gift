@@ -1,0 +1,453 @@
+{
+  "category": "brita",
+  "templates": [
+    {
+      "id": "brita-001",
+      "name": "הזמנה לבריתה 001",
+      "description": "הזמנה מסורתית ומרגשת לברית הבת",
+      "cover": "/images/Brita/001.cover.webp",
+      "frontBg": "/images/Brita/001.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "names",
+          "label": "שם התינוקת",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#EC4899",
+          "prefix": "הננו מתכבדים להזמינכם לחגוג את ברית הבת של בתנו "
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 670,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "prefix": "שתתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 740,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true,
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 810,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "staticText": "נשמח לראותכם בשמחתנו"
+        },
+        {
+          "key": "familyName",
+          "label": "שם המשפחה",
+          "x": 540,
+          "y": 1000,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#EC4899",
+          "prefix": "משפחת\n"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "brita-002",
+      "name": "הזמנה לבריתה 002",
+      "description": "הזמנה מעוצבת לברית הבת עם עיצוב נשי ומרגש",
+      "cover": "/images/Brita/002.cover.webp",
+      "frontBg": "/images/Brita/002.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "names",
+          "label": "שם התינוקת",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#EC4899",
+          "prefix": "הננו מתכבדים להזמינכם לחגוג את ברית הבת של בתנו "
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 670,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "prefix": "שתתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 740,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true,
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 810,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "staticText": "נשמח לראותכם בשמחתנו"
+        },
+        {
+          "key": "familyName",
+          "label": "שם המשפחה",
+          "x": 540,
+          "y": 1000,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#EC4899",
+          "prefix": "משפחת\n"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "brita-003",
+      "name": "הזמנה לבריתה 003",
+      "description": "הזמנה אלגנטית לברית הבת",
+      "cover": "/images/Brita/003.cover.webp",
+      "frontBg": "/images/Brita/003.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "names",
+          "label": "שם התינוקת",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#EC4899",
+          "prefix": "הננו מתכבדים להזמינכם לחגוג את ברית הבת של בתנו "
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 670,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "prefix": "שתתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 740,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true,
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 810,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "staticText": "נשמח לראותכם בשמחתנו"
+        },
+        {
+          "key": "familyName",
+          "label": "שם המשפחה",
+          "x": 540,
+          "y": 1000,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#EC4899",
+          "prefix": "משפחת\n"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "brita-004",
+      "name": "הזמנה לבריתה 004",
+      "description": "הזמנה מיוחדת לברית הבת עם פרטים מרגשים",
+      "cover": "/images/Brita/004.cover.webp",
+      "frontBg": "/images/Brita/004.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "names",
+          "label": "שם התינוקת",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#EC4899",
+          "prefix": "הננו מתכבדים להזמינכם לחגוג את ברית הבת של בתנו "
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 670,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "prefix": "שתתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 740,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true,
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 810,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "staticText": "נשמח לראותכם בשמחתנו"
+        },
+        {
+          "key": "familyName",
+          "label": "שם המשפחה",
+          "x": 540,
+          "y": 1000,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#EC4899",
+          "prefix": "משפחת\n"
+        }
+      ],
+      "frontSlots": []
+    }
+  ]
+}

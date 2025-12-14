@@ -1,0 +1,356 @@
+{
+  "category": "bat-mitzvah",
+  "templates": [
+    {
+      "id": "bat-mitzvah-001",
+      "name": "אלגנטיות ורוד-לבן",
+      "description": "הזמנה מעוצבת ומרשימה לבת מצווה בגווני ורוד ולבן עם אלמנטים פשוטים ונקיים. עיצוב נשי ואלגנטי המשלב בין מודרניות למסורת, מושלמת לחגיגה מיוחדת זו",
+      "cover": "/images/Bat-mitzvah/001.cover.webp",
+      "frontBg": "/images/Bat-mitzvah/001.webp",
+      "size": {
+        "w": 1080,
+        "h": 1350
+      },
+      "frontFields": [
+        {
+          "key": "names",
+          "label": "שם כלת הבת מצווה",
+          "x": 540,
+          "y": 540,
+          "align": "center",
+          "fontFamily": "'Great Vibes', 'Dancing Script', cursive",
+          "fontWeight": 700,
+          "fontSize": 160,
+          "color": "#5D3A3A"
+        },
+        {
+          "key": "dateHebrewLine1",
+          "x": 540,
+          "y": 630,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#5D3A3A",
+          "prefix": "שתתקיים ביום ",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "dateHebrewLine2Combined",
+          "x": 540,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#5D3A3A",
+          "isCombined": true,
+          "combineFields": [
+            "hebrewYear"
+          ],
+          "combineSeparator": "",
+          "isInput": false
+        },
+        {
+          "key": "timeLine",
+          "x": 540,
+          "y": 700,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#5D3A3A",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": [
+            "eventTime"
+          ],
+          "combineSeparator": "",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time",
+          "defaultValue": "20:00"
+        },
+        {
+          "key": "dateEnglish",
+          "x": 540,
+          "y": 840,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 60,
+          "color": "#8B6914",
+          "isCombined": true,
+          "combineFields": [
+            "dateEnglish"
+          ],
+          "combineSeparator": "",
+          "isInput": false
+        },
+        {
+          "key": "familyName",
+          "label": "שם המשפחה",
+          "x": 540,
+          "y": 1000,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#5D3A3A",
+          "prefix": "משפחת "
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "bat-mitzvah-002",
+      "name": "נשיות ויופי",
+      "description": "הזמנה מרשימה לבת מצווה בגווני ורוד עם עיצוב נשי ורומנטי. עיצוב המשדר יופי וחן נשי, ומחבר בין הבת למעלה חדשה בחייה במסגרת מסורת יהודית עשירה",
+      "cover": "/images/Bat-mitzvah/002.cover.webp",
+      "frontBg": "/images/Bat-mitzvah/002.webp",
+      "size": {
+        "w": 1080,
+        "h": 1350
+      },
+      "frontFields": [
+        {
+          "key": "names",
+          "label": "שם כלת הבת מצווה",
+          "x": 540,
+          "y": 520,
+          "align": "center",
+          "fontFamily": "'Great Vibes', 'Dancing Script', cursive",
+          "fontWeight": 700,
+          "fontSize": 150,
+          "color": "#800020"
+        },
+        {
+          "key": "dateHebrewLine1",
+          "x": 540,
+          "y": 650,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#A0522D",
+          "prefix": "שתתקיים ביום ",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "dateHebrewLine2Combined",
+          "x": 540,
+          "y": 710,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#A0522D",
+          "isCombined": true,
+          "combineFields": [
+            "hebrewYear"
+          ],
+          "combineSeparator": "",
+          "isInput": false
+        },
+        {
+          "key": "timeLine",
+          "x": 540,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#A0522D",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": [
+            "eventTime"
+          ],
+          "combineSeparator": "",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time",
+          "defaultValue": "20:00"
+        },
+        {
+          "key": "dateEnglish",
+          "x": 540,
+          "y": 840,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 80,
+          "color": "#A0522D",
+          "isCombined": true,
+          "combineFields": [
+            "dateEnglish"
+          ],
+          "combineSeparator": "",
+          "isInput": false
+        },
+        {
+          "key": "familyName",
+          "label": "שם המשפחה",
+          "x": 540,
+          "y": 1000,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#A0522D",
+          "prefix": "משפחת "
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "bat-mitzvah-003",
+      "name": "זוהר נשי",
+      "description": "הזמנה מרשימה ומיוחדת לבת מצווה בגווני ורוד ולבן עדינים. עיצוב המסמל את היופי הנשי והחן, ומחבר את הבת לשורשים היהודיים ולמסורת בצורה רגשית ומרגשת",
+      "cover": "/images/Bat-mitzvah/003.cover.webp",
+      "frontBg": "/images/Bat-mitzvah/003.webp",
+      "size": {
+        "w": 1080,
+        "h": 1350
+      },
+      "frontFields": [
+        {
+          "key": "names",
+          "label": "שם כלת הבת מצווה",
+          "x": 540,
+          "y": 560,
+          "align": "center",
+          "fontFamily": "'Great Vibes', 'Dancing Script', cursive",
+          "fontWeight": 700,
+          "fontSize": 180,
+          "color": "#4A2511"
+        },
+        {
+          "key": "dateHebrewLine1",
+          "x": 540,
+          "y": 700,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#8B6F47",
+          "prefix": "שתתקיים ביום ",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "dateHebrewLine2Combined",
+          "x": 540,
+          "y": 760,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#8B6F47",
+          "isCombined": true,
+          "combineFields": [
+            "hebrewYear"
+          ],
+          "combineSeparator": "",
+          "isInput": false
+        },
+        {
+          "key": "timeLine",
+          "x": 540,
+          "y": 780,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#8B6F47",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": [
+            "eventTime"
+          ],
+          "combineSeparator": "",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time",
+          "defaultValue": "20:00"
+        },
+        {
+          "key": "dateEnglish",
+          "x": 540,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 55,
+          "color": "#E8A87C",
+          "isCombined": true,
+          "combineFields": [
+            "dateEnglish"
+          ],
+          "combineSeparator": "",
+          "isInput": false
+        },
+        {
+          "key": "familyName",
+          "label": "שם המשפחה",
+          "x": 540,
+          "y": 1100,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#8B6F47",
+          "prefix": "משפחת "
+        }
+      ],
+      "frontSlots": []
+    }
+  ]
+}

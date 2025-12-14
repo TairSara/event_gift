@@ -1,0 +1,622 @@
+{
+  "category": "other",
+  "templates": [
+    {
+      "id": "other-001",
+      "name": "SAVE THE DATE",
+      "description": "הזמנה ראשונית לשמירת התאריך",
+      "cover": "/images/other/001.cover.webp",
+      "frontBg": "/images/other/001.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "eventTitle",
+          "label": "שם האירוע",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 55,
+          "color": "#FF6B9D"
+        },
+        {
+          "key": "saveTheDateText",
+          "x": 540,
+          "y": 680,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "staticText": "SAVE THE DATE"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 760,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#FF6B9D",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "moreDetailsText",
+          "x": 540,
+          "y": 880,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#FF6B9D",
+          "staticText": "פרטים נוספים יגיעו בהמשך"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "other-002",
+      "name": "Dinner Party",
+      "description": "הזמנה לארוחת ערב",
+      "cover": "/images/other/002.cover.webp",
+      "frontBg": "/images/other/002.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "eventTitle",
+          "label": "כותרת ההזמנה",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 50,
+          "color": "#A855F7"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 670,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 38,
+          "color": "#A855F7",
+          "staticText": "מוזמנים לארוחת ערב"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 750,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#A855F7",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 820,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#A855F7",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": ", "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 890,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#A855F7",
+          "prefix": "שעה: ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "hostName",
+          "label": "שם המארח/ת",
+          "x": 540,
+          "y": 1000,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#A855F7"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "other-003",
+      "name": "מסיבת רווקות",
+      "description": "הזמנה למסיבת רווקות",
+      "cover": "/images/other/003.cover.webp",
+      "frontBg": "/images/other/003.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "brideName",
+          "label": "שם הכלה",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 55,
+          "color": "#EC4899",
+          "suffix": " הולכת להתחתן!"
+        },
+        {
+          "key": "partyText",
+          "x": 540,
+          "y": 680,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 42,
+          "color": "#EC4899",
+          "staticText": "מוזמנות למסיבת רווקות"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 760,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 830,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": ", "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#EC4899",
+          "prefix": "שעה: ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "closingText",
+          "x": 540,
+          "y": 1000,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#EC4899",
+          "staticText": "בואו לחגוג איתנו!"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "other-004",
+      "name": "מסיבת קיץ",
+      "description": "הזמנה למסיבת קיץ",
+      "cover": "/images/other/004.cover.webp",
+      "frontBg": "/images/other/004.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "partyTitle",
+          "label": "כותרת המסיבה",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 55,
+          "color": "#FBBF24"
+        },
+        {
+          "key": "summerText",
+          "x": 540,
+          "y": 680,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FBBF24",
+          "staticText": "מסיבת קיץ"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 760,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FBBF24",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 830,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FBBF24",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": ", "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FBBF24",
+          "prefix": "שעה: ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 1000,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#FBBF24",
+          "staticText": "בואו ליהנות מהקיץ איתנו!"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "other-005",
+      "name": "מסיבת בריכה",
+      "description": "הזמנה למסיבת בריכה",
+      "cover": "/images/other/005.cover.webp",
+      "frontBg": "/images/other/005.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "partyTitle",
+          "label": "כותרת המסיבה",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 55,
+          "color": "#06B6D4"
+        },
+        {
+          "key": "poolPartyText",
+          "x": 540,
+          "y": 680,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 42,
+          "color": "#06B6D4",
+          "staticText": "מסיבת בריכה"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 760,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#06B6D4",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 830,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#06B6D4",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": ", "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#06B6D4",
+          "prefix": "שעה: ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 1000,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#06B6D4",
+          "staticText": "הביאו בגדי ים ובואו להתרענן!"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "other-006",
+      "name": "מסיבה מושקעת",
+      "description": "הזמנה למסיבה מושקעת",
+      "cover": "/images/other/006.cover.webp",
+      "frontBg": "/images/other/006.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "eventTitle",
+          "label": "שם האירוע",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 55,
+          "color": "#7C3AED"
+        },
+        {
+          "key": "fancyPartyText",
+          "x": 540,
+          "y": 680,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 38,
+          "color": "#7C3AED",
+          "staticText": "מוזמנים למסיבה מושקעת"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 760,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#7C3AED",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 830,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#7C3AED",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": ", "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#7C3AED",
+          "prefix": "שעה: ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "dressCode",
+          "label": "קוד לבוש (אופציונלי)",
+          "x": 540,
+          "y": 980,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 32,
+          "color": "#7C3AED",
+          "prefix": "קוד לבוש: "
+        },
+        {
+          "key": "hostName",
+          "label": "שם המארח/ת",
+          "x": 540,
+          "y": 1050,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#7C3AED"
+        }
+      ],
+      "frontSlots": []
+    }
+  ]
+}

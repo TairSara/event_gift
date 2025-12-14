@@ -1,0 +1,38 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(\"..\\.venv\\Scripts\\python.exe\" -c \"import admin_auth; print(''Import successful'')\")",
+      "Bash(\"..\\.venv\\Scripts\\python.exe\" -c \"import main; print(''Routes registered:'', [r.path for r in main.app.routes if hasattr(r, ''path'')][:20])\")",
+      "Bash(\"..\\.venv\\Scripts\\python.exe\" -c \"from main import app; admin_routes = [r for r in app.routes if hasattr(r, ''path'') and ''admin'' in r.path]; print(''Admin routes:'', [r.path for r in admin_routes])\")",
+      "Bash(\"..\\.venv\\Scripts\\python.exe\" -m uvicorn:*)",
+      "Bash(\"..\\.venv\\Scripts\\python.exe\" -c \"import admin_auth; print(''Admin auth imported successfully''); print(''Routes:'', [r.path for r in admin_auth.router.routes if hasattr(r, ''path'')])\")",
+      "Bash(\"..\\.venv\\Scripts\\python.exe\":*)",
+      "Bash(\"..\\.venv\\Scripts\\python.exe\" -c \"import sys; import admin_auth; print(''SUCCESS: admin_auth imported''); print(''Router:'', admin_auth.router); print(''Routes:'', [r.path for r in admin_auth.router.routes if hasattr(r, ''path'')])\")",
+      "Bash(\"..\\.venv\\Scripts\\python.exe\" -c \"import sys; sys.stdout.reconfigure(encoding=''utf-8''); import main; print(''App imported successfully''); routes = [r for r in main.app.routes if hasattr(r, ''path'') and ''admin'' in r.path]; print(f''Found {len(routes)} admin routes''); [print(f''  - {r.path} {list(r.methods) if hasattr(r, \"\"methods\"\") else \"\"no methods\"\"}'') for r in routes]\")",
+      "Bash(\"..\\.venv\\Scripts\\python.exe\" create_contact_messages_table.py)",
+      "Bash(\"..\\.venv\\Scripts\\python.exe\" run_server.py)",
+      "Bash(...venvScriptspython.exe -c \"from admin_auth import create_admin_token, verify_admin_token; print(''Admin auth module loaded successfully'')\")",
+      "Bash(\"..\\..\\.venv\\Scripts\\python.exe\" run_server.py)",
+      "Bash(npm run dev:*)",
+      "Bash(python run_server.py:*)",
+      "Bash(pip install:*)",
+      "Bash(\".venv\\Scripts\\pip.exe\" install python-jose[cryptography])",
+      "Bash(../.venv/Scripts/python.exe:*)",
+      "Bash(ls:*)",
+      "Bash(curl:*)",
+      "Bash(find:*)",
+      "Bash(set DATABASE_URL=postgresql://event_invites_user:NoZBw63S6Yr1grv4YyJcabNJINCU3GvJ@dpg-d4v7rc0gjchc73cmrql0-a.oregon-postgres.render.com/event_invites:*)",
+      "Bash(taskkill:*)",
+      "Bash(grep:*)",
+      "Bash(cat:*)",
+      "Bash(ping:*)",
+      "Bash(git init:*)",
+      "Bash(git config:*)",
+      "Bash(git remote add:*)",
+      "Bash(git add:*)",
+      "Bash(if exist \"backend\\nul\" del /F \"backend\\nul\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

@@ -1,0 +1,885 @@
+{
+  "category": "birthday",
+  "templates": [
+    {
+      "id": "birthday-001",
+      "name": "הזמנה ליום הולדת 001",
+      "description": "הזמנה צבעונית ושמחה ליום הולדת",
+      "cover": "/images/birthday/001.cover.webp",
+      "frontBg": "/images/birthday/001.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "celebrantName",
+          "label": "שם החוגג/ת",
+          "x": 540,
+          "y": 550,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 55,
+          "color": "#FF6B9D",
+          "suffix": " חוגג/ת יום הולדת!"
+        },
+        {
+          "key": "age",
+          "label": "גיל (אופציונלי)",
+          "x": 540,
+          "y": 620,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 50,
+          "color": "#FF6B9D"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "יתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 790,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": ", "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 860,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 950,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 38,
+          "color": "#FF6B9D",
+          "staticText": "נשמח לחגוג איתכם!"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "birthday-002",
+      "name": "הזמנה ליום הולדת 002",
+      "description": "הזמנה מסיבתית ליום הולדת",
+      "cover": "/images/birthday/002.cover.webp",
+      "frontBg": "/images/birthday/002.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "celebrantName",
+          "label": "שם החוגג/ת",
+          "x": 540,
+          "y": 550,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 55,
+          "color": "#FF6B9D",
+          "suffix": " חוגג/ת יום הולדת!"
+        },
+        {
+          "key": "age",
+          "label": "גיל (אופציונלי)",
+          "x": 540,
+          "y": 620,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 50,
+          "color": "#FF6B9D"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "יתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 790,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": ", "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 860,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 950,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 38,
+          "color": "#FF6B9D",
+          "staticText": "נשמח לחגוג איתכם!"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "birthday-003",
+      "name": "הזמנה ליום הולדת 003",
+      "description": "הזמנה אלגנטית ליום הולדת",
+      "cover": "/images/birthday/003.cover.webp",
+      "frontBg": "/images/birthday/003.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "celebrantName",
+          "label": "שם החוגג/ת",
+          "x": 540,
+          "y": 550,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 55,
+          "color": "#FF6B9D",
+          "suffix": " חוגג/ת יום הולדת!"
+        },
+        {
+          "key": "age",
+          "label": "גיל (אופציונלי)",
+          "x": 540,
+          "y": 620,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 50,
+          "color": "#FF6B9D"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "יתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 790,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": ", "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 860,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 950,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 38,
+          "color": "#FF6B9D",
+          "staticText": "נשמח לחגוג איתכם!"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "birthday-004",
+      "name": "הזמנה ליום הולדת 004",
+      "description": "הזמנה מיוחדת ליום הולדת",
+      "cover": "/images/birthday/004.cover.webp",
+      "frontBg": "/images/birthday/004.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "celebrantName",
+          "label": "שם החוגג/ת",
+          "x": 540,
+          "y": 550,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 55,
+          "color": "#FF6B9D",
+          "suffix": " חוגג/ת יום הולדת!"
+        },
+        {
+          "key": "age",
+          "label": "גיל (אופציונלי)",
+          "x": 540,
+          "y": 620,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 50,
+          "color": "#FF6B9D"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "יתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 790,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": ", "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 860,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 950,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 38,
+          "color": "#FF6B9D",
+          "staticText": "נשמח לחגוג איתכם!"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "birthday-005",
+      "name": "הזמנה ליום הולדת 005",
+      "description": "הזמנה נוצצת ליום הולדת",
+      "cover": "/images/birthday/005.cover.webp",
+      "frontBg": "/images/birthday/005.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "celebrantName",
+          "label": "שם החוגג/ת",
+          "x": 540,
+          "y": 550,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 55,
+          "color": "#FF6B9D",
+          "suffix": " חוגג/ת יום הולדת!"
+        },
+        {
+          "key": "age",
+          "label": "גיל (אופציונלי)",
+          "x": 540,
+          "y": 620,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 50,
+          "color": "#FF6B9D"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "יתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 790,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": ", "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 860,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 950,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 38,
+          "color": "#FF6B9D",
+          "staticText": "נשמח לחגוג איתכם!"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "birthday-006",
+      "name": "הזמנה ליום הולדת 006",
+      "description": "הזמנה מודרנית ליום הולדת",
+      "cover": "/images/birthday/006.cover.webp",
+      "frontBg": "/images/birthday/006.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "celebrantName",
+          "label": "שם החוגג/ת",
+          "x": 540,
+          "y": 550,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 55,
+          "color": "#FF6B9D",
+          "suffix": " חוגג/ת יום הולדת!"
+        },
+        {
+          "key": "age",
+          "label": "גיל (אופציונלי)",
+          "x": 540,
+          "y": 620,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 50,
+          "color": "#FF6B9D"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "יתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 790,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": ", "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 860,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 950,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 38,
+          "color": "#FF6B9D",
+          "staticText": "נשמח לחגוג איתכם!"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "birthday-007",
+      "name": "הזמנה ליום הולדת 007",
+      "description": "הזמנה חגיגית ליום הולדת",
+      "cover": "/images/birthday/007.cover.webp",
+      "frontBg": "/images/birthday/007.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "celebrantName",
+          "label": "שם החוגג/ת",
+          "x": 540,
+          "y": 550,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 55,
+          "color": "#FF6B9D",
+          "suffix": " חוגג/ת יום הולדת!"
+        },
+        {
+          "key": "age",
+          "label": "גיל (אופציונלי)",
+          "x": 540,
+          "y": 620,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 50,
+          "color": "#FF6B9D"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "יתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 790,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": ", "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 860,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 950,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 38,
+          "color": "#FF6B9D",
+          "staticText": "נשמח לחגוג איתכם!"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "birthday-008",
+      "name": "הזמנה ליום הולדת 008",
+      "description": "הזמנה מרשימה ליום הולדת",
+      "cover": "/images/birthday/008.cover.webp",
+      "frontBg": "/images/birthday/008.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "celebrantName",
+          "label": "שם החוגג/ת",
+          "x": 540,
+          "y": 550,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 55,
+          "color": "#FF6B9D",
+          "suffix": " חוגג/ת יום הולדת!"
+        },
+        {
+          "key": "age",
+          "label": "גיל (אופציונלי)",
+          "x": 540,
+          "y": 620,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 50,
+          "color": "#FF6B9D"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "יתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 790,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": ", "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 860,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#FF6B9D",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 950,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 38,
+          "color": "#FF6B9D",
+          "staticText": "נשמח לחגוג איתכם!"
+        }
+      ],
+      "frontSlots": []
+    }
+  ]
+}

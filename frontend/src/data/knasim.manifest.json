@@ -1,0 +1,481 @@
+{
+  "category": "knasim",
+  "templates": [
+    {
+      "id": "knasim-001",
+      "name": "הזמנה לכנס 001",
+      "description": "הזמנה מקצועית לכנסים ואירועי חברה",
+      "cover": "/images/Knasim/001.cover.webp",
+      "frontBg": "/images/Knasim/001.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "eventTitle",
+          "label": "שם האירוע/כנס",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 50,
+          "color": "#1E40AF"
+        },
+        {
+          "key": "eventSubtitle",
+          "label": "תת כותרת (אופציונלי)",
+          "x": 540,
+          "y": 660,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#1E40AF"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 740,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#1E40AF",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 810,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#1E40AF",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": ", "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 880,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#1E40AF",
+          "prefix": "שעה: ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 970,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#1E40AF",
+          "staticText": "נשמח לראותכם באירוע"
+        },
+        {
+          "key": "organizerName",
+          "label": "שם המארגן/חברה",
+          "x": 540,
+          "y": 1050,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#1E40AF"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "knasim-002",
+      "name": "הזמנה לכנס 002",
+      "description": "הזמנה עסקית מעוצבת לכנסים ואירועים מקצועיים",
+      "cover": "/images/Knasim/002.cover.webp",
+      "frontBg": "/images/Knasim/002.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "eventTitle",
+          "label": "שם האירוע/כנס",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 50,
+          "color": "#1E40AF"
+        },
+        {
+          "key": "eventSubtitle",
+          "label": "תת כותרת (אופציונלי)",
+          "x": 540,
+          "y": 660,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#1E40AF"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 740,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#1E40AF",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 810,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#1E40AF",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": ", "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 880,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#1E40AF",
+          "prefix": "שעה: ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 970,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#1E40AF",
+          "staticText": "נשמח לראותכם באירוע"
+        },
+        {
+          "key": "organizerName",
+          "label": "שם המארגן/חברה",
+          "x": 540,
+          "y": 1050,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#1E40AF"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "knasim-003",
+      "name": "הזמנה לכנס 003",
+      "description": "הזמנה מודרנית לכנסים ואירועי חברה",
+      "cover": "/images/Knasim/003.cover.webp",
+      "frontBg": "/images/Knasim/003.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "eventTitle",
+          "label": "שם האירוע/כנס",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 50,
+          "color": "#1E40AF"
+        },
+        {
+          "key": "eventSubtitle",
+          "label": "תת כותרת (אופציונלי)",
+          "x": 540,
+          "y": 660,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#1E40AF"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 740,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#1E40AF",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 810,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#1E40AF",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": ", "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 880,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#1E40AF",
+          "prefix": "שעה: ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 970,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#1E40AF",
+          "staticText": "נשמח לראותכם באירוע"
+        },
+        {
+          "key": "organizerName",
+          "label": "שם המארגן/חברה",
+          "x": 540,
+          "y": 1050,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#1E40AF"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "knasim-004",
+      "name": "הזמנה לכנס 004",
+      "description": "הזמנה יוקרתית לכנסים ואירועים עסקיים",
+      "cover": "/images/Knasim/004.cover.webp",
+      "frontBg": "/images/Knasim/004.webp",
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "eventTitle",
+          "label": "שם האירוע/כנס",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 50,
+          "color": "#1E40AF"
+        },
+        {
+          "key": "eventSubtitle",
+          "label": "תת כותרת (אופציונלי)",
+          "x": 540,
+          "y": 660,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#1E40AF"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 740,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#1E40AF",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 810,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#1E40AF",
+          "prefix": "ב",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": ", "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 880,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#1E40AF",
+          "prefix": "שעה: ",
+          "isCombined": true,
+          "combineFields": ["eventTime"],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 970,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#1E40AF",
+          "staticText": "נשמח לראותכם באירוע"
+        },
+        {
+          "key": "organizerName",
+          "label": "שם המארגן/חברה",
+          "x": 540,
+          "y": 1050,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#1E40AF"
+        }
+      ],
+      "frontSlots": []
+    }
+  ]
+}

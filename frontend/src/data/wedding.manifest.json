@@ -1,0 +1,1357 @@
+{
+  "category": "wedding",
+  "templates": [
+    {
+      "id": "wedding-flowers-001",
+      "name": "פרחים חום וצהוב ",
+      "description": "הזמנה מקסימה עם ריקוד של פרחי בר בגווני חום וצהוב חמים.\nמושלמת לחתונות באווירה כפרית-אלגנטית, משדרת חום ושמחה.\nמתאימה לזוגות המחפשים עיצוב טבעי, רומנטי ומזמין.",
+      "cover": "/images/wedding/flowers-001-cover.webp",
+      "frontBg": "/images/wedding/flowers-001-front.webp",
+      "backBg": "/images/wedding/flowers-001-back.webp",
+      "mockupBg": "/images/wedding/flowers-001-final.webp",
+      "mockupLayout": {
+        "frontPosition": { "x": 270, "y": 80, "scale": 0.52, "rotation": 0 },
+        "backPosition": { "x": 1000, "y": 230, "scale": 0.48, "rotation": 40 }
+      },
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "names",
+          "label": "שמות החתן והכלה",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#4A5236",
+          "prefix": "הננו מתכבדים להזמינכם לשמחת "
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 650,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#4A5236",
+          "prefix": "שתתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 700,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#4A5236",
+          "prefix": "באולמי ",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "אולם",
+          "isInput": true,
+          "wrapper": "quotes",
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 1100,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#4A5236",
+          "staticText": "נשמח לראותכם בין אורחינו"
+        },
+        {
+          "key": "groomFamilyName",
+          "label": "שם משפחת החתן",
+          "x": 800,
+          "y": 1200,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#4A5236",
+          "prefix": "משפחת\n"
+        },
+        {
+          "key": "brideFamilyName",
+          "label": "שם משפחת הכלה",
+          "x": 280,
+          "y": 1200,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#4A5236",
+          "prefix": "משפחת\n"
+        },
+        {
+          "key": "kabbalatPanimDisplay",
+          "x": 800,
+          "y": 950,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 30,
+          "color": "#4A5236",
+          "isCombined": true,
+          "combineFields": ["kabbalatPanimTime"],
+          "combineSeparator": "",
+          "suffix": "\nקבלת פנים"
+        },
+        {
+          "key": "kabbalatPanimTime",
+          "label": "שעת קבלת פנים",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "chuppahDisplay",
+          "x": 540,
+          "y": 950,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 30,
+          "color": "#4A5236",
+          "isCombined": true,
+          "combineFields": ["chuppahTime"],
+          "combineSeparator": "",
+          "suffix": "\nחופה וקידושין"
+        },
+        {
+          "key": "chuppahTime",
+          "label": "שעת חופה וקידושין",
+          "isInput": true,
+          "type": "time"
+        },
+        {
+          "key": "rikudimDisplay",
+          "x": 270,
+          "y": 950,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 30,
+          "color": "#4A5236",
+          "isCombined": true,
+          "combineFields": ["rikudimTime"],
+          "combineSeparator": "",
+          "suffix": "\nריקודים ונהנים"
+        },
+        {
+          "key": "rikudimTime",
+          "label": "שעת ריקודים ונהנים",
+          "isInput": true,
+          "type": "time"
+        }
+      ],
+      "frontSlots": [
+        {
+          "key": "initialLeft",
+          "label": "אות ראשונה שמאל (כלה)",
+          "box": { "x": 420, "y": 280, "w": 150, "h": 150 },
+          "family": "'Dream Avenue', serif",
+          "weight": 300,
+          "maxSize": 140,
+          "color": "#4A5236",
+          "isInput": false
+        },
+        {
+          "key": "initialRight",
+          "label": "אות ראשונה ימין (חתן)",
+          "box": { "x": 540, "y": 360, "w": 150, "h": 150 },
+          "family": "'Dream Avenue', serif",
+          "weight": 300,
+          "maxSize": 350,
+          "color": "#4A5236",
+          "isInput": false
+        }
+      ],
+      "backFields": [],
+      "backSlots": [
+        {
+          "key": "initialLeft",
+          "label": "אות ראשונה שמאל (כלה)",
+          "box": { "x": 350, "y": 500, "w": 200, "h": 200 },
+          "family": "'Dream Avenue', serif",
+          "weight": 300,
+          "maxSize": 220,
+          "color": "#4A5236",
+          "isInput": false
+        },
+        {
+          "key": "initialRight",
+          "label": "אות ראשונה ימין (חתן)",
+          "box": { "x": 550, "y": 600, "w": 200, "h": 200 },
+          "family": "'Dream Avenue', serif",
+          "weight": 300,
+          "maxSize": 450,
+          "color": "#4A5236",
+          "isInput": false
+        }
+      ]
+    },
+    {
+      "id": "wedding-flowers-002",
+      "name": "פרחים זהב וחום",
+      "description": "יוקרה עדינה עם נגיעות זהב מנצנצות ופרחים בגווני חום עשירים.\nהזמנה משדרת אלגנטיות קלאסית ומלכותית, מושלמת לחתונות ערב.\nמתאימה לזוגות המחפשים אווירה חגיגית ויוקרתית במינה.",
+      "cover": "/images/wedding/flowers-002-cover.webp",
+      "frontBg": "/images/wedding/flowers-002-front.webp",
+      "backBg": "/images/wedding/flowers-002-back.webp",
+      "mockupBg": "/images/wedding/flowers-001-final.webp",
+      "mockupLayout": {
+        "frontPosition": { "x": 270, "y": 80, "scale": 0.52, "rotation": 0 },
+        "backPosition": { "x": 1000, "y": 230, "scale": 0.48, "rotation": 40 }
+      },
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "names",
+          "label": "שמות החתן והכלה",
+          "x": 540,
+          "y": 650,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#8B6F47",
+          "prefix": "הננו מתכבדים להזמינכם לשמחת "
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 740,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#8B6F47",
+          "prefix": "שתתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 820,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#8B6F47",
+          "prefix": "באולמי ",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "אולם",
+          "isInput": true,
+          "wrapper": "quotes",
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "invitationText",
+          "x": 440,
+          "y": 1000,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#8B6F47",
+          "staticText": "נשמח לראותכם בין אורחינו"
+        },
+        {
+          "key": "groomFamilyName",
+          "label": "שם משפחת החתן",
+          "x": 510,
+          "y": 1070,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#8B6F47",
+          "prefix": "משפחת\n"
+        },
+        {
+          "key": "brideFamilyName",
+          "label": "שם משפחת הכלה",
+          "x": 360,
+          "y": 1070,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#8B6F47",
+          "prefix": "משפחת\n"
+        },
+        {
+          "key": "ampersandFront",
+          "x": 520,
+          "y": 550,
+          "align": "center",
+          "fontFamily": "'Dream Avenue', serif",
+          "fontWeight": 300,
+          "fontSize": 60,
+          "color": "#8B6F47",
+          "staticText": "&",
+          "isInput": false
+        }
+      ],
+      "frontSlots": [
+        {
+          "key": "initialLeft",
+          "label": "אות ראשונה שמאל (כלה)",
+          "box": { "x": 360, "y": 480, "w": 150, "h": 150 },
+          "family": "'Dream Avenue', serif",
+          "weight": 300,
+          "maxSize": 140,
+          "color": "#8B6F47",
+          "isInput": false
+        },
+        {
+          "key": "initialRight",
+          "label": "אות ראשונה ימין (חתן)",
+          "box": { "x": 540, "y": 480, "w": 150, "h": 150 },
+          "family": "'Dream Avenue', serif",
+          "weight": 300,
+          "maxSize": 140,
+          "color": "#8B6F47",
+          "isInput": false
+        }
+      ],
+      "backFields": [
+        {
+          "key": "ampersandBack",
+          "x": 530,
+          "y": 680,
+          "align": "center",
+          "fontFamily": "'Dream Avenue', serif",
+          "fontWeight": 300,
+          "fontSize": 60,
+          "color": "#8B6F47",
+          "staticText": "&",
+          "isInput": false
+        }
+      ],
+      "backSlots": [
+        {
+          "key": "initialLeft",
+          "label": "אות ראשונה שמאל (כלה)",
+          "box": { "x": 360, "y": 610, "w": 150, "h": 150 },
+          "family": "'Dream Avenue', serif",
+          "weight": 300,
+          "maxSize": 140,
+          "color": "#8B6F47",
+          "isInput": false
+        },
+        {
+          "key": "initialRight",
+          "label": "אות ראשונה ימין (חתן)",
+          "box": { "x": 540, "y": 610, "w": 150, "h": 150 },
+          "family": "'Dream Avenue', serif",
+          "weight": 300,
+          "maxSize": 140,
+          "color": "#8B6F47",
+          "isInput": false
+        }
+      ]
+    },
+    {
+      "id": "wedding-flowers-003",
+      "name": "פרחים לבן וכסף",
+      "description": "טוהר ונקיון במיטבם - עיצוב מינימליסטי בגווני לבן וכסף מרהיבים.\nהזמנה משדרת אווירה עכשווית ומתוחכמת, אלגנטיות נצחית ללא פשרות.\nמושלמת לזוגות מודרניים המחפשים עיצוב נקי וקלאסי.",
+      "cover": "/images/wedding/flowers-003-cover.webp",
+      "frontBg": "/images/wedding/flowers-003-front.webp",
+      "backBg": "/images/wedding/flowers-003-back.webp",
+      "mockupBg": "/images/wedding/flowers-001-final.webp",
+      "mockupLayout": {
+        "frontPosition": { "x": 270, "y": 80, "scale": 0.52, "rotation": 0 },
+        "backPosition": { "x": 1000, "y": 230, "scale": 0.48, "rotation": 40 }
+      },
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "names",
+          "label": "שמות החתן והכלה",
+          "x": 540,
+          "y": 700,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#8B8B8B",
+          "prefix": "הננו מתכבדים להזמינכם לשמחת "
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 780,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#8B8B8B",
+          "prefix": "שתתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 860,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#8B8B8B",
+          "prefix": "באולמי ",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "אולם",
+          "isInput": true,
+          "wrapper": "quotes",
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 1110,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#8B8B8B",
+          "staticText": "נשמח לראותכם בין אורחינו"
+        },
+        {
+          "key": "groomFamilyName",
+          "label": "שם משפחת החתן",
+          "x": 680,
+          "y": 1200,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#8B8B8B",
+          "prefix": "משפחת\n"
+        },
+        {
+          "key": "brideFamilyName",
+          "label": "שם משפחת הכלה",
+          "x": 400,
+          "y": 1200,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#8B8B8B",
+          "prefix": "משפחת\n"
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [
+        {
+          "key": "dateEnglishOnly",
+          "x": 480,
+          "y": 800,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 70,
+          "color": "#8B8B8B",
+          "isCombined": true,
+          "combineFields": ["dateEnglish"],
+          "combineSeparator": "",
+          "isInput": false
+        }
+      ],
+      "backSlots": []
+    },
+    {
+      "id": "wedding-flowers-004",
+      "name": "אלמנטי זהב ופרחים",
+      "description": "סימביוזה מושלמת של זהב נוצץ ופרחוניות עדינה עם טבעות נישואין.\nהזמנה ייחודית המשלבת מודרניות וסמליות, עיצוב בולט ומשמעותי.\nמתאימה לזוגות המעוניינים להדגיש את סמליות הקשר והאהבה.",
+      "cover": "/images/wedding/flowers-004-cover.webp",
+      "frontBg": "/images/wedding/flowers-004-front.webp",
+      "backBg": "/images/wedding/flowers-004-back.webp",
+      "mockupBg": "/images/wedding/flowers-001-final.webp",
+      "mockupLayout": {
+        "frontPosition": { "x": 270, "y": 80, "scale": 0.52, "rotation": 0 },
+        "backPosition": { "x": 1000, "y": 230, "scale": 0.48, "rotation": 40 }
+      },
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "names",
+          "label": "שמות החתן והכלה",
+          "x": 540,
+          "y": 800,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#5C4A2F",
+          "prefix": "הננו מתכבדים להזמינכם לשמחת "
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 860,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#5C4A2F",
+          "prefix": "שתתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 920,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#5C4A2F",
+          "prefix": "באולמי ",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "אולם",
+          "isInput": true,
+          "wrapper": "quotes",
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "invitationText",
+          "x": 520,
+          "y": 1100,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#5C4A2F",
+          "staticText": "נשמח לראותכם בין אורחינו"
+        },
+        {
+          "key": "groomFamilyName",
+          "label": "שם משפחת החתן",
+          "x": 700,
+          "y": 1200,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#5C4A2F",
+          "prefix": "משפחת\n"
+        },
+        {
+          "key": "brideFamilyName",
+          "label": "שם משפחת הכלה",
+          "x": 350,
+          "y": 1200,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#5C4A2F",
+          "prefix": "משפחת\n"
+        },
+        {
+          "key": "brideNameEnglish",
+          "label": "שם הכלה באנגלית",
+          "x": 540,
+          "y": 420,
+          "align": "center",
+          "fontFamily": "'Dream Avenue', serif",
+          "fontWeight": 700,
+          "fontSize": 65,
+          "color": "#5C4A2F"
+        },
+        {
+          "key": "ampersandFront",
+          "x": 540,
+          "y": 510,
+          "align": "center",
+          "fontFamily": "'Dream Avenue', serif",
+          "fontWeight": 300,
+          "fontSize": 55,
+          "color": "#5C4A2F",
+          "staticText": "&",
+          "isInput": false
+        },
+        {
+          "key": "groomNameEnglish",
+          "label": "שם החתן באנגלית",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Dream Avenue', serif",
+          "fontWeight": 700,
+          "fontSize": 65,
+          "color": "#5C4A2F"
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [
+        {
+          "key": "brideNameEnglishBack",
+          "x": 540,
+          "y": 700,
+          "align": "center",
+          "fontFamily": "'Dream Avenue', serif",
+          "fontWeight": 700,
+          "fontSize": 65,
+          "color": "#5C4A2F",
+          "isCombined": true,
+          "combineFields": ["brideNameEnglish"],
+          "combineSeparator": "",
+          "isInput": false
+        },
+        {
+          "key": "ampersandBack",
+          "x": 540,
+          "y": 790,
+          "align": "center",
+          "fontFamily": "'Dream Avenue', serif",
+          "fontWeight": 300,
+          "fontSize": 55,
+          "color": "#5C4A2F",
+          "staticText": "&",
+          "isInput": false
+        },
+        {
+          "key": "groomNameEnglishBack",
+          "x": 540,
+          "y": 880,
+          "align": "center",
+          "fontFamily": "'Dream Avenue', serif",
+          "fontWeight": 700,
+          "fontSize": 65,
+          "color": "#5C4A2F",
+          "isCombined": true,
+          "combineFields": ["groomNameEnglish"],
+          "combineSeparator": "",
+          "isInput": false
+        }
+      ],
+      "backSlots": []
+    },
+    {
+      "id": "wedding-flowers-005",
+      "name": "הזמנה עם תמונה אישית",
+      "description": "אישיות מלאה! הזמנה המאפשרת להעלות תמונות משלכם לשני הצדדים.\nהפכו את ההזמנה לייחודית עם תמונת הצעה, תמונת זוג או רגע מיוחד.\nמושלם למי שרוצה לספר את הסיפור שלכם בתמונות אישיות.",
+      "cover": "/images/wedding/flowers-005-cover.webp",
+      "frontBg": "/images/wedding/‏‏flowers-005-front.webp",
+      "backBg": "/images/wedding/flowers-005-back.webp",
+      "mockupBg": "/images/wedding/flowers-001-final.webp",
+      "mockupLayout": {
+        "frontPosition": { "x": 270, "y": 80, "scale": 0.52, "rotation": 0 },
+        "backPosition": { "x": 1000, "y": 230, "scale": 0.48, "rotation": 40 }
+      },
+      "size": { "w": 1080, "h": 1350 },
+      "allowCustomBackground": true,
+      "frontFields": [
+        {
+          "key": "names",
+          "label": "שמות החתן והכלה",
+          "x": 540,
+          "y": 1180,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 40,
+          "color": "#FFFFFF",
+          "prefix": "הננו מתכבדים להזמינכם לשמחת "
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 1220,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 40,
+          "color": "#FFFFFF",
+          "prefix": "שתתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 1260,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 40,
+          "color": "#FFFFFF",
+          "prefix": "באולמי ",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "אולם",
+          "isInput": true,
+          "wrapper": "quotes",
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 1320,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 40,
+          "color": "#FFFFFF",
+          "staticText": "נשמח לראותכם בין אורחינו"
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [],
+      "backSlots": []
+    },
+    {
+      "id": "wedding-flowers-006",
+      "name": "פרחים ורודים רומנטיים",
+      "description": "רומנטיקה טהורה בגווני ורוד עדינים עם פרחים חלומיים.\nעיצוב נשי ומרגש המשדר אהבה, עדינות ותחושה של אגדה.\nמושלם לזוגות המחפשים הזמנה רומנטית קלאסית ומרגשת.",
+      "cover": "/images/wedding/flowers-006-cover.webp",
+      "frontBg": "/images/wedding/flowers-006-front.webp",
+      "backBg": "/images/wedding/flowers-006-back.webp",
+      "mockupBg": "/images/wedding/flowers-001-final.webp",
+      "mockupLayout": {
+        "frontPosition": { "x": 270, "y": 80, "scale": 0.52, "rotation": 0 },
+        "backPosition": { "x": 1000, "y": 230, "scale": 0.48, "rotation": 40 }
+      },
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "names",
+          "label": "שמות החתן והכלה",
+          "x": 540,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#000000",
+          "prefix": "הננו מתכבדים להזמינכם לשמחת "
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 940,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#000000",
+          "prefix": "שתתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 980,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#000000",
+          "prefix": "באולמי ",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "אולם",
+          "isInput": true,
+          "wrapper": "quotes",
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 1035,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 40,
+          "color": "#000000",
+          "staticText": "נשמח לראותכם בין אורחינו"
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [],
+      "backSlots": []
+    },
+    {
+      "id": "wedding-flowers-007",
+      "name": "הזמנה עם תמונה אישית ומסגרת שקופה",
+      "description": "עיצוב ייחודי עם מסגרת שקופה אלגנטית ואפשרות להעלות תמונות.\nמשלב בין מודרניות לקלאסיקה, מאפשר לתמונות שלכם לזרוח.\nמושלם למי שרוצה שהתמונות יהיו הכוכבות עם מסגרת מעוצבת.",
+      "cover": "/images/wedding/flowers-007-cover.webp",
+      "frontBg": "/images/wedding/flowers-007-fronted.webp",
+      "backBg": "/images/wedding/flowers-007-fronted.webp",
+      "mockupBg": "/images/wedding/flowers-001-final.webp",
+      "mockupLayout": {
+        "frontPosition": { "x": 270, "y": 80, "scale": 0.52, "rotation": 0 },
+        "backPosition": { "x": 1000, "y": 230, "scale": 0.48, "rotation": 40 }
+      },
+      "size": { "w": 1080, "h": 1350 },
+      "allowCustomBackground": true,
+      "frontFields": [
+        {
+          "key": "names",
+          "label": "שמות החתן והכלה",
+          "x": 540,
+          "y": 1180,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 40,
+          "color": "#FFFFFF",
+          "prefix": "הננו מתכבדים להזמינכם לשמחת "
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 1220,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 40,
+          "color": "#FFFFFF",
+          "prefix": "שתתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 1260,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 40,
+          "color": "#FFFFFF",
+          "prefix": "באולמי ",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "אולם",
+          "isInput": true,
+          "wrapper": "quotes",
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 1320,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 40,
+          "color": "#FFFFFF",
+          "staticText": "נשמח לראותכם בין אורחינו"
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [],
+      "backSlots": []
+    },
+    {
+      "id": "wedding-flowers-008",
+      "name": "גן ירוק עם שפע",
+      "description": "עיצוב טבעי עם אווירת גן עדן ירוק ושפע של צמחייה עשירה.\nהזמנה המשדרת חיים, צמיחה ורעננות, מושלמת לחתונות בטבע.\nמתאימה לזוגות אוהבי הטבע המחפשים אווירה ירוקה ומרעננת.",
+      "cover": "/images/wedding/flowers-008-cover.webp",
+      "frontBg": "/images/wedding/flowers-008-fronted.webp",
+      "backBg": "/images/wedding/flowers-008-back.webp",
+      "mockupBg": "/images/wedding/flowers-001-final.webp",
+      "mockupLayout": {
+        "frontPosition": { "x": 270, "y": 80, "scale": 0.52, "rotation": 0 },
+        "backPosition": { "x": 1000, "y": 230, "scale": 0.48, "rotation": 40 }
+      },
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "names",
+          "label": "שמות החתן והכלה",
+          "x": 540,
+          "y": 270,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#2D5016",
+          "prefix": "הננו מתכבדים להזמינכם לשמחת "
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 310,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#2D5016",
+          "prefix": "שתתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 350,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#2D5016",
+          "prefix": "באולמי ",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "אולם",
+          "isInput": true,
+          "wrapper": "quotes",
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 400,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 40,
+          "color": "#2D5016",
+          "staticText": "נשמח לראותכם בין אורחינו"
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [
+        {
+          "key": "brideNameEnglish",
+          "label": "שם הכלה באנגלית",
+          "x": 540,
+          "y": 500,
+          "align": "center",
+          "fontFamily": "'Dream Avenue', serif",
+          "fontWeight": 700,
+          "fontSize": 65,
+          "color": "#2D5016"
+        },
+        {
+          "key": "ampersandBack",
+          "x": 540,
+          "y": 590,
+          "align": "center",
+          "fontFamily": "'Dream Avenue', serif",
+          "fontWeight": 300,
+          "fontSize": 55,
+          "color": "#2D5016",
+          "staticText": "&",
+          "isInput": false
+        },
+        {
+          "key": "groomNameEnglish",
+          "label": "שם החתן באנגלית",
+          "x": 540,
+          "y": 680,
+          "align": "center",
+          "fontFamily": "'Dream Avenue', serif",
+          "fontWeight": 700,
+          "fontSize": 65,
+          "color": "#2D5016"
+        }
+      ],
+      "backSlots": []
+    },
+    {
+      "id": "wedding-flowers-009",
+      "name": "אפור פרחוני עם ירוק",
+      "description": "עיצוב מתוחכם בגווני אפור אצילי עם נגיעות ירוק רעננות ופרחים.\nשילוב ייחודי המשדר אלגנטיות עכשווית עם חיות ורעננות.\nמושלם לזוגות המחפשים איזון בין קלאסיקה מודרנית לטבעיות.",
+      "cover": "/images/wedding/flowers-009-cover.webp",
+      "frontBg": "/images/wedding/flowers-009-fronted.webp",
+      "backBg": "/images/wedding/flowers-009-back.webp",
+      "mockupBg": "/images/wedding/flowers-001-final.webp",
+      "mockupLayout": {
+        "frontPosition": { "x": 270, "y": 80, "scale": 0.52, "rotation": 0 },
+        "backPosition": { "x": 1000, "y": 230, "scale": 0.48, "rotation": 40 }
+      },
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "names",
+          "label": "שמות החתן והכלה",
+          "x": 540,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#5A5A5A",
+          "prefix": "הננו מתכבדים להזמינכם לשמחת "
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 980,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#5A5A5A",
+          "prefix": "שתתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 1060,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#5A5A5A",
+          "prefix": "באולמי ",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "אולם",
+          "isInput": true,
+          "wrapper": "quotes",
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 1150,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 40,
+          "color": "#5A5A5A",
+          "staticText": "נשמח לראותכם בין אורחינו"
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [
+        {
+          "key": "brideNameEnglish",
+          "label": "שם הכלה באנגלית",
+          "x": 540,
+          "y": 300,
+          "align": "center",
+          "fontFamily": "'Dream Avenue', serif",
+          "fontWeight": 700,
+          "fontSize": 65,
+          "color": "#5A5A5A"
+        },
+        {
+          "key": "ampersandBack",
+          "x": 540,
+          "y": 390,
+          "align": "center",
+          "fontFamily": "'Dream Avenue', serif",
+          "fontWeight": 300,
+          "fontSize": 55,
+          "color": "#5A5A5A",
+          "staticText": "&",
+          "isInput": false
+        },
+        {
+          "key": "groomNameEnglish",
+          "label": "שם החתן באנגלית",
+          "x": 540,
+          "y": 480,
+          "align": "center",
+          "fontFamily": "'Dream Avenue', serif",
+          "fontWeight": 700,
+          "fontSize": 65,
+          "color": "#5A5A5A"
+        }
+      ],
+      "backSlots": []
+    },
+    {
+      "id": "wedding-flowers-010",
+      "name": "כחול עם אלמנט חתן וכלה",
+      "description": "עיצוב אלגנטי בגווני כחול מרהיבים עם איור מרגש של חתן וכלה.\nהזמנה משדרת קסם, רומנטיקה והתרגשות לקראת היום הגדול.\nמתאימה לזוגות המחפשים עיצוב ייחודי עם נגיעה אישית ומיוחדת.",
+      "cover": "/images/wedding/flowers-010-cover.webp",
+      "frontBg": "/images/wedding/flowers-010-fronted.webp",
+      "backBg": "/images/wedding/flowers-010-back.webp",
+      "mockupBg": "/images/wedding/flowers-001-final.webp",
+      "mockupLayout": {
+        "frontPosition": { "x": 270, "y": 80, "scale": 0.52, "rotation": 0 },
+        "backPosition": { "x": 1000, "y": 230, "scale": 0.48, "rotation": 40 }
+      },
+      "size": { "w": 1080, "h": 1350 },
+      "frontFields": [
+        {
+          "key": "names",
+          "label": "שמות החתן והכלה",
+          "x": 540,
+          "y": 300,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#2C5F8D",
+          "prefix": "הננו מתכבדים להזמינכם לשמחת "
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 400,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#2C5F8D",
+          "prefix": "שתתקיים ביום ",
+          "isCombined": true,
+          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 500,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#2C5F8D",
+          "prefix": "באולמי ",
+          "isCombined": true,
+          "combineFields": ["venue", "city"],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "אולם",
+          "isInput": true,
+          "wrapper": "quotes",
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 40,
+          "color": "#2C5F8D",
+          "staticText": "נשמח לראותכם בין אורחינו"
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [
+        {
+          "key": "brideNameEnglish",
+          "label": "שם הכלה באנגלית",
+          "x": 540,
+          "y": 400,
+          "align": "center",
+          "fontFamily": "'Dream Avenue', serif",
+          "fontWeight": 700,
+          "fontSize": 65,
+          "color": "#2C5F8D"
+        },
+        {
+          "key": "ampersandBack",
+          "x": 540,
+          "y": 490,
+          "align": "center",
+          "fontFamily": "'Dream Avenue', serif",
+          "fontWeight": 300,
+          "fontSize": 55,
+          "color": "#2C5F8D",
+          "staticText": "&",
+          "isInput": false
+        },
+        {
+          "key": "groomNameEnglish",
+          "label": "שם החתן באנגלית",
+          "x": 540,
+          "y": 580,
+          "align": "center",
+          "fontFamily": "'Dream Avenue', serif",
+          "fontWeight": 700,
+          "fontSize": 65,
+          "color": "#2C5F8D"
+        }
+      ],
+      "backSlots": []
+    }
+  ]
+}

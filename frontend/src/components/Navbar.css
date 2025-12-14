@@ -1,0 +1,252 @@
+/* Navbar Styles */
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, var(--brown-dark) 0%, var(--brown) 100%);
+  padding: 1rem 2rem;
+  z-index: 1000;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+}
+
+.notification-bell-left {
+  display: flex;
+  align-items: center;
+  z-index: 1001;
+}
+
+.logo {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  z-index: 1001;
+}
+
+.logo-image {
+  height: 60px;
+  width: auto;
+  transition: transform 0.3s ease;
+}
+
+.logo:hover .logo-image {
+  transform: scale(1.05);
+}
+
+.nav-links {
+  display: flex;
+  list-style: none;
+  gap: 2.5rem;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-links li {
+  margin: 0;
+}
+
+.nav-links a {
+  color: var(--cream-light);
+  text-decoration: none;
+  font-weight: 500;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.nav-links a::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background: var(--turquoise);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--turquoise);
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+/* User Menu Styles */
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-greeting {
+  color: var(--cream-light);
+  font-weight: 500;
+  font-size: 1rem;
+}
+
+.logout-btn {
+  background: rgba(78, 205, 196, 0.2);
+  border: 2px solid var(--turquoise);
+  color: var(--cream-light);
+  padding: 0.5rem 1.2rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+}
+
+.logout-btn:hover {
+  background: var(--turquoise);
+  color: var(--brown-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 1001;
+}
+
+.hamburger {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  width: 30px;
+}
+
+.hamburger span {
+  display: block;
+  height: 3px;
+  background: var(--cream-light);
+  border-radius: 3px;
+  transition: all 0.3s ease;
+}
+
+.hamburger.open span:nth-child(1) {
+  transform: rotate(45deg) translate(8px, 8px);
+}
+
+.hamburger.open span:nth-child(2) {
+  opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+  transform: rotate(-45deg) translate(8px, -8px);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .navbar {
+    padding: 1rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.15);
+  }
+
+  .mobile-menu-btn {
+    display: block;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 80px;
+    left: -100%;
+    width: 280px;
+    height: calc(100vh - 80px);
+    background: linear-gradient(135deg, var(--brown-dark) 0%, var(--brown) 100%);
+    flex-direction: column;
+    gap: 1.3rem;
+    padding: 2rem 1.8rem;
+    transition: left 0.3s ease;
+    box-shadow: 4px 0 20px rgba(0, 0, 0, 0.3);
+    overflow-y: auto;
+    z-index: 999;
+  }
+
+  .nav-links.mobile-open {
+    left: 0;
+  }
+
+  .nav-links a {
+    font-size: 1.05rem;
+    padding: 0.5rem 0;
+  }
+
+  .user-menu {
+    flex-direction: column;
+    gap: 0.9rem;
+    align-items: flex-start;
+    width: 100%;
+    padding-top: 1rem;
+    border-top: 2px solid rgba(255, 255, 255, 0.2);
+  }
+
+  .user-greeting {
+    font-size: 0.95rem;
+  }
+
+  .logout-btn {
+    padding: 0.5rem 1.2rem;
+    font-size: 0.92rem;
+    width: 100%;
+  }
+
+  .logo-image {
+    height: 48px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar {
+    padding: 0.9rem;
+  }
+
+  .navbar-container {
+    gap: 0.9rem;
+  }
+
+  .nav-links {
+    width: 260px;
+    padding: 1.8rem 1.5rem;
+    gap: 1.1rem;
+  }
+
+  .nav-links a {
+    font-size: 1rem;
+    padding: 0.4rem 0;
+  }
+
+  .user-menu {
+    gap: 0.8rem;
+    padding-top: 0.9rem;
+  }
+
+  .user-greeting {
+    font-size: 0.9rem;
+  }
+
+  .logout-btn {
+    padding: 0.45rem 1rem;
+    font-size: 0.88rem;
+  }
+
+  .logo-image {
+    height: 42px;
+  }
+}

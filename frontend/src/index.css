@@ -1,0 +1,107 @@
+:root {
+  /* Brown and Cream Color Palette */
+  --cream-light: #FAF7F2;
+  --cream: #F5EFE7;
+  --cream-dark: #E8DCC4;
+  --brown-light: #C9A887;
+  --brown: #8B6F47;
+  --brown-dark: #6B5638;
+  --brown-darker: #4A3F2E;
+  --accent-gold: #D4AF37;
+
+  /* Vibrant Color Palette - חום בהיר ולבן */
+  --dusty-rose: #D4AF87;
+  --dusty-rose-light: #E8D5C4;
+  --turquoise: #4ECDC4;
+  --turquoise-light: #81E6DF;
+  --sage-green: #FFFFFF;
+  --sage-green-light: #F5F5F5;
+
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  line-height: 1.6;
+  font-weight: 400;
+
+  color: var(--brown-darker);
+  background-color: var(--cream-light);
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+a {
+  font-weight: 500;
+  color: var(--brown);
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+a:hover {
+  color: var(--brown-dark);
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  direction: rtl;
+}
+
+h1 {
+  font-size: 2.5em;
+  line-height: 1.2;
+  color: var(--brown-dark);
+  font-weight: 700;
+}
+
+h2 {
+  font-size: 2em;
+  line-height: 1.3;
+  color: var(--brown-dark);
+  font-weight: 600;
+}
+
+h3 {
+  font-size: 1.5em;
+  line-height: 1.4;
+  color: var(--brown);
+  font-weight: 600;
+}
+
+p {
+  line-height: 1.8;
+  color: var(--brown-darker);
+}
+
+button {
+  border-radius: 8px;
+  border: none;
+  padding: 12px 32px;
+  font-size: 1em;
+  font-weight: 600;
+  font-family: inherit;
+  background: linear-gradient(135deg, var(--brown) 0%, var(--brown-dark) 100%);
+  color: var(--cream-light);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(139, 111, 71, 0.2);
+}
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(139, 111, 71, 0.3);
+  background: linear-gradient(135deg, var(--brown-dark) 0%, var(--brown-darker) 100%);
+}
+button:active {
+  transform: translateY(0);
+}
+button:focus,
+button:focus-visible {
+  outline: 3px solid var(--accent-gold);
+  outline-offset: 2px;
+}

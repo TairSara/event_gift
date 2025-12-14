@@ -1,0 +1,51 @@
+# robots.txt for Save the Day - Digital Invitations Platform
+# https://www.savetheday.co.il
+
+# Allow all search engines to crawl the site
+User-agent: *
+Allow: /
+
+# Disallow admin and private areas
+Disallow: /admin/
+Disallow: /api/
+Disallow: /dashboard/
+Disallow: /private/
+Disallow: /*.json$
+
+# Allow crawling of public pages
+Allow: /
+Allow: /pricing
+Allow: /contact
+Allow: /create-invitation/
+
+# Crawl-delay for polite crawling (optional)
+Crawl-delay: 1
+
+# Sitemap location
+Sitemap: https://www.savetheday.co.il/sitemap.xml
+
+# Specific rules for major search engines
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 1
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /

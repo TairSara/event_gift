@@ -1,0 +1,489 @@
+{
+  "category": "brit",
+  "templates": [
+    {
+      "id": "brit-001",
+      "name": "הזמנה לברית 001",
+      "description": "הזמנה מסורתית ומרגשת לברית מילה",
+      "cover": "/images/Brit/001.cover.webp",
+      "frontBg": "/images/Brit/001.webp",
+      "size": {
+        "w": 1080,
+        "h": 1350
+      },
+      "frontFields": [
+        {
+          "key": "dateHebrewLine",
+          "x": 540,
+          "y": 680,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#1E3A8A",
+          "prefix": "שיתקיים ביום ",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "dateEnglishAndTime",
+          "x": 540,
+          "y": 745,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 45,
+          "color": "#87CEEB",
+          "isCombined": true,
+          "combineFields": [
+            "dateEnglish",
+            "separator",
+            "eventTime"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "separator",
+          "staticText": "|",
+          "isInput": false
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time",
+          "defaultValue": "09:00"
+        },
+        {
+          "key": "timePrefix",
+          "x": 540,
+          "y": 660,
+          "staticText": "בשעה",
+          "isInput": false
+        },
+        {
+          "key": "venueLine",
+          "x": 540,
+          "y": 800,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#1E3A8A",
+          "prefix": "באולם ",
+          "isCombined": true,
+          "combineFields": [
+            "venue",
+            "cityPrefix",
+            "city"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "venue",
+          "label": "שם האולם",
+          "isInput": true
+        },
+        {
+          "key": "cityPrefix",
+          "staticText": ",ב",
+          "isInput": false
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "familyName",
+          "label": "שם המשפחה",
+          "x": 540,
+          "y": 1000,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#1E3A8A",
+          "prefix": "משפחת "
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "brit-002",
+      "name": "הזמנה לברית 002",
+      "description": "הזמנה מעוצבת לברית מילה עם עיצוב מודרני",
+      "cover": "/images/Brit/002.cover.webp",
+      "frontBg": "/images/Brit/002.webp",
+      "size": {
+        "w": 1080,
+        "h": 1350
+      },
+      "frontFields": [
+        {
+          "key": "dateHebrewLine",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#1E3A8A",
+          "prefix": "שיתקיים ביום ",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "dateEnglishAndTime",
+          "x": 540,
+          "y": 660,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 45,
+          "color": "#87CEEB",
+          "isCombined": true,
+          "combineFields": [
+            "dateEnglish",
+            "separator",
+            "eventTime"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "separator",
+          "staticText": "|",
+          "isInput": false
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time",
+          "defaultValue": "09:00"
+        },
+        {
+          "key": "timePrefix",
+          "x": 540,
+          "y": 660,
+          "staticText": "בשעה",
+          "isInput": false
+        },
+        {
+          "key": "venueLine",
+          "x": 540,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#1E3A8A",
+          "prefix": "באולם ",
+          "isCombined": true,
+          "combineFields": [
+            "venue",
+            "cityPrefix",
+            "city"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "venue",
+          "label": "שם האולם",
+          "isInput": true
+        },
+        {
+          "key": "cityPrefix",
+          "staticText": ",ב",
+          "isInput": false
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "familyName",
+          "label": "שם המשפחה",
+          "x": 540,
+          "y": 800,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#1E3A8A",
+          "prefix": "משפחת "
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "brit-003",
+      "name": "הזמנה לברית 003",
+      "description": "הזמנה אלגנטית לברית מילה",
+      "cover": "/images/Brit/003.cover.webp",
+      "frontBg": "/images/Brit/003.webp",
+      "size": {
+        "w": 1080,
+        "h": 1350
+      },
+      "frontFields": [
+        {
+          "key": "dateHebrewLine",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#1E3A8A",
+          "prefix": "שיתקיים ביום ",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "dateEnglishAndTime",
+          "x": 540,
+          "y": 660,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 45,
+          "color": "#87CEEB",
+          "isCombined": true,
+          "combineFields": [
+            "dateEnglish",
+            "separator",
+            "eventTime"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "separator",
+          "staticText": "|",
+          "isInput": false
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time",
+          "defaultValue": "09:00"
+        },
+        {
+          "key": "timePrefix",
+          "x": 540,
+          "y": 660,
+          "staticText": "בשעה",
+          "isInput": false
+        },
+        {
+          "key": "venueLine",
+          "x": 540,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#1E3A8A",
+          "prefix": "באולם ",
+          "isCombined": true,
+          "combineFields": [
+            "venue",
+            "cityPrefix",
+            "city"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "venue",
+          "label": "שם האולם",
+          "isInput": true
+        },
+        {
+          "key": "cityPrefix",
+          "staticText": ",ב",
+          "isInput": false
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "familyName",
+          "label": "שם המשפחה",
+          "x": 540,
+          "y": 800,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#1E3A8A",
+          "prefix": "משפחת "
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "brit-004",
+      "name": "הזמנה לברית 004",
+      "description": "הזמנה מיוחדת לברית מילה עם פרטים מרגשים",
+      "cover": "/images/Brit/004.cover.webp",
+      "frontBg": "/images/Brit/004.webp",
+      "size": {
+        "w": 1080,
+        "h": 1350
+      },
+      "frontFields": [
+        {
+          "key": "dateHebrewLine",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#1E3A8A",
+          "prefix": "שיתקיים ביום ",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "dateEnglishAndTime",
+          "x": 540,
+          "y": 660,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 45,
+          "color": "#87CEEB",
+          "isCombined": true,
+          "combineFields": [
+            "dateEnglish",
+            "separator",
+            "eventTime"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "separator",
+          "staticText": "|",
+          "isInput": false
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time",
+          "defaultValue": "09:00"
+        },
+        {
+          "key": "timePrefix",
+          "x": 540,
+          "y": 660,
+          "staticText": "בשעה",
+          "isInput": false
+        },
+        {
+          "key": "venueLine",
+          "x": 540,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#1E3A8A",
+          "prefix": "באולם ",
+          "isCombined": true,
+          "combineFields": [
+            "venue",
+            "cityPrefix",
+            "city"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "venue",
+          "label": "שם האולם",
+          "isInput": true
+        },
+        {
+          "key": "cityPrefix",
+          "staticText": ",ב",
+          "isInput": false
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "familyName",
+          "label": "שם המשפחה",
+          "x": 540,
+          "y": 800,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 45,
+          "color": "#1E3A8A",
+          "prefix": "משפחת "
+        }
+      ],
+      "frontSlots": []
+    }
+  ]
+}
