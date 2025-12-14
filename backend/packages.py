@@ -215,6 +215,39 @@ def create_event(event: EventCreate):
         conn = get_db_connection()
         cur = conn.cursor()
 
+        # בדיקה שהמשתמש רכש חבילה
+        if not event.package_purchase_id:
+            # אם לא צוין package_purchase_id, ננסה למצוא חבילה פעילה
+            cur.execute("""
+                SELECT id FROM package_purchases
+                WHERE user_id = %s AND status = 'active'
+                ORDER BY purchased_at DESC
+                LIMIT 1
+            """, (event.user_id,))
+
+            purchase = cur.fetchone()
+            if not purchase:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail="יש לרכוש חבילה לפני יצירת אירוע"
+                )
+            event.package_purchase_id = purchase[0]
+
+        # וולידציה שהחבילה שייכת למשתמש ופעילה
+        cur.execute("""
+            SELECT pp.id, pp.package_id, p.max_guests
+            FROM package_purchases pp
+            JOIN packages p ON pp.package_id = p.id
+            WHERE pp.id = %s AND pp.user_id = %s AND pp.status = 'active'
+        """, (event.package_purchase_id, event.user_id))
+
+        purchase_data = cur.fetchone()
+        if not purchase_data:
+            raise HTTPException(
+                status_code=status.HTTP_403_FORBIDDEN,
+                detail="החבילה לא נמצאה או אינה פעילה"
+            )
+
         # המרת invitation_data ל-JSON
         invitation_json = json.dumps(event.invitation_data) if event.invitation_data else None
 
@@ -223,7 +256,7 @@ def create_event(event: EventCreate):
                 user_id, package_purchase_id, event_type, event_title,
                 event_date, event_location, invitation_data, status
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, 'pending')
+            VALUES (%s, %s, %s, %s, %s, %s, %s, 'active')
             RETURNING id, created_at;
         """, (
             event.user_id,
@@ -236,6 +269,14 @@ def create_event(event: EventCreate):
         ))
 
         event_id, created_at = cur.fetchone()
+
+        # עדכון החבילה לקשר אותה לאירוע
+        cur.execute("""
+            UPDATE package_purchases
+            SET event_id = %s
+            WHERE id = %s
+        """, (event_id, event.package_purchase_id))
+
         conn.commit()
 
         return {
@@ -244,7 +285,8 @@ def create_event(event: EventCreate):
             "event_type": event.event_type,
             "event_title": event.event_title,
             "created_at": created_at.isoformat(),
-            "status": "pending",
+            "status": "active",
+            "package_purchase_id": event.package_purchase_id,
             "message": "האירוע נוצר בהצלחה!"
         }
 
@@ -599,6 +641,26 @@ def create_guest(event_id: int, guest: GuestCreate):
     try:
         conn = get_db_connection()
         cur = conn.cursor()
+
+        # בדיקת מגבלת אורחים לפי החבילה
+        cur.execute("""
+            SELECT p.max_guests, COUNT(g.id) as current_guests
+            FROM events e
+            JOIN package_purchases pp ON e.package_purchase_id = pp.id
+            JOIN packages p ON pp.package_id = p.id
+            LEFT JOIN guests g ON e.id = g.event_id
+            WHERE e.id = %s
+            GROUP BY p.max_guests
+        """, (event_id,))
+
+        limit_data = cur.fetchone()
+        if limit_data:
+            max_guests, current_guests = limit_data
+            if current_guests >= max_guests:
+                raise HTTPException(
+                    status_code=status.HTTP_403_FORBIDDEN,
+                    detail=f"הגעת למגבלת האורחים של החבילה ({max_guests} אורחים)"
+                )
 
         cur.execute("""
             INSERT INTO guests (
