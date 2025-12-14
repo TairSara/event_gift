@@ -158,19 +158,53 @@ def setup_all_tables():
         cur.execute("""
             CREATE TABLE IF NOT EXISTS contact_messages (
                 id SERIAL PRIMARY KEY,
-                name TEXT NOT NULL,
+                full_name TEXT NOT NULL,
                 email TEXT NOT NULL,
                 phone TEXT,
                 subject TEXT,
                 message TEXT NOT NULL,
                 status TEXT DEFAULT 'new',
                 created_at TIMESTAMP DEFAULT NOW(),
-                updated_at TIMESTAMP DEFAULT NOW()
+                responded_at TIMESTAMP
             );
         """)
         print("   ✅ contact_messages table created")
 
-        # 10. יצירת אינדקסים לשיפור ביצועים
+        # 10. טבלת רכישות חבילות
+        print("📋 Creating package_purchases table...")
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS package_purchases (
+                id SERIAL PRIMARY KEY,
+                user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+                package_id INTEGER REFERENCES packages(id) ON DELETE SET NULL,
+                package_name TEXT NOT NULL,
+                purchase_date TIMESTAMP DEFAULT NOW(),
+                expiry_date TIMESTAMP,
+                status TEXT DEFAULT 'active',
+                event_id INTEGER REFERENCES events(id) ON DELETE SET NULL,
+                purchased_at TIMESTAMP DEFAULT NOW()
+            );
+        """)
+        print("   ✅ package_purchases table created")
+
+        # 11. טבלת מתנות כספיות
+        print("📋 Creating gifts table...")
+        cur.execute("""
+            CREATE TABLE IF NOT EXISTS gifts (
+                id SERIAL PRIMARY KEY,
+                event_id INTEGER REFERENCES events(id) ON DELETE CASCADE,
+                guest_id INTEGER REFERENCES guests(id) ON DELETE SET NULL,
+                amount DECIMAL(10, 2) NOT NULL,
+                currency TEXT DEFAULT 'ILS',
+                gift_date TIMESTAMP DEFAULT NOW(),
+                payment_method TEXT,
+                notes TEXT,
+                created_at TIMESTAMP DEFAULT NOW()
+            );
+        """)
+        print("   ✅ gifts table created")
+
+        # 12. יצירת אינדקסים לשיפור ביצועים
         print("📋 Creating indexes...")
         cur.execute("""
             CREATE INDEX IF NOT EXISTS idx_events_user_id ON events(user_id);
@@ -189,8 +223,10 @@ def setup_all_tables():
         print("   - users")
         print("   - admins")
         print("   - packages")
+        print("   - package_purchases")
         print("   - events")
         print("   - guests")
+        print("   - gifts")
         print("   - notifications")
         print("   - failed_login_attempts")
         print("   - account_locks")
