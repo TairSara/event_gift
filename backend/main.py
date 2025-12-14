@@ -8,8 +8,13 @@ from packages import router as packages_router
 from notifications import router as notifications_router
 from admin_auth import router as admin_auth_router
 from admin_api import router as admin_api_router
+from invitations_api import router as invitations_router
+from message_scheduler import start_scheduler
 
 app = FastAPI(title="giftWeb-api")
+
+# התחלת שירות תזמון הודעות
+start_scheduler()
 
 # CORS Configuration - נאפשר לפרונט המקומי לגשת ל-API
 origins = ["http://localhost:5173", "http://localhost:5174"]
@@ -60,3 +65,6 @@ app.include_router(admin_auth_router)
 
 # חיבור ראוט Admin API
 app.include_router(admin_api_router)
+
+# חיבור ראוט שליחת הזמנות
+app.include_router(invitations_router)
