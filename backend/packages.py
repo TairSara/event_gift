@@ -253,16 +253,17 @@ def create_event(event: EventCreate):
 
         cur.execute("""
             INSERT INTO events (
-                user_id, package_purchase_id, event_type, event_title,
+                user_id, package_purchase_id, event_type, event_title, event_name,
                 event_date, event_location, invitation_data, status
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, 'active')
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'active')
             RETURNING id, created_at;
         """, (
             event.user_id,
             event.package_purchase_id,
             event.event_type,
             event.event_title,
+            event.event_title,  # נשתמש ב-event_title גם עבור event_name
             event.event_date,
             event.event_location,
             invitation_json
