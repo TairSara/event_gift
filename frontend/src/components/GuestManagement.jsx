@@ -224,6 +224,8 @@ export default function GuestManagement({ eventId, onUpdate }) {
   };
 
   const handleSendInvitations = async () => {
+    console.log('🚀 handleSendInvitations called');
+
     if (guests.length === 0) {
       showNotification('אין מוזמנים לשלוח להם הזמנות', 'error');
       return;
@@ -233,12 +235,17 @@ export default function GuestManagement({ eventId, onUpdate }) {
       `האם אתה בטוח שברצונך לשלוח הזמנות WhatsApp ל-${guests.length} מוזמנים?`
     );
 
+    console.log('✅ User confirmed:', confirmed);
+
     if (!confirmed) return;
 
     try {
       setLoading(true);
       const guestIds = guests.map(g => g.id);
+      console.log('📋 Sending to guest IDs:', guestIds);
+      console.log('📡 Calling invitationsAPI.sendInvitations...');
       const result = await invitationsAPI.sendInvitations(eventId, guestIds);
+      console.log('✅ Result received:', JSON.stringify(result, null, 2));
 
       showNotification(
         `ההזמנות נשלחו בהצלחה! נשלחו: ${result.results.sent}, נכשלו: ${result.results.failed}`

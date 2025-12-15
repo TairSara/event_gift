@@ -7,7 +7,7 @@ from typing import Optional, List
 from datetime import datetime
 import psycopg2
 from db import get_db_connection
-from whatsapp_service import send_invitation_whatsapp, send_bulk_invitations, handle_rsvp_response
+from whatsapp_service import send_invitation_whatsapp, send_bulk_invitations, handle_rsvp_response, handle_text_message
 
 router = APIRouter()
 
@@ -36,6 +36,12 @@ async def send_invitations(request: SendInvitationRequest):
     """
     שליחת הזמנות לאורחים נבחרים
     """
+    print(f"\n🚀 === SEND INVITATIONS REQUEST ===")
+    print(f"📋 Event ID: {request.event_id}")
+    print(f"👥 Guest IDs: {request.guest_ids}")
+    print(f"📱 Send Method: {request.send_method}")
+    print(f"===================================\n")
+
     conn = None
     try:
         conn = get_db_connection()
@@ -250,63 +256,109 @@ async def schedule_all_invitations(request: ScheduleInvitationsRequest):
 async def gupshup_webhook(data: dict):
     """
     Webhook לקבלת תשובות מ-Gupshup WhatsApp API
+    תומך ב-Quick Reply buttons ובהודעות טקסט
     """
     try:
-        print(f"Received webhook from Gupshup: {data}")
+        print(f"🔔 Received webhook from Gupshup: {data}")
 
-        # Gupshup שולח את התשובה בפורמט:
+        # Gupshup webhook structure:
         # {
         #   "type": "message",
         #   "payload": {
-        #     "type": "quick_reply",
-        #     "payload": {
-        #       "postbackText": "confirmed_123"
-        #     }
+        #     "type": "quick_reply" | "text",
+        #     "payload": { "postbackText": "..." } | { "text": "..." },
+        #     "sender": { "phone": "972..." }
         #   }
         # }
 
         if data.get("type") == "message":
             payload = data.get("payload", {})
+            message_type = payload.get("type")
 
-            if payload.get("type") == "quick_reply":
+            # קבלת מספר טלפון השולח
+            sender = payload.get("sender", {})
+            phone = sender.get("phone", "")
+
+            # טיפול בלחיצה על כפתור Quick Reply
+            if message_type == "quick_reply":
                 button_payload = payload.get("payload", {})
                 postback_text = button_payload.get("postbackText", "")
 
-                # ניתוח התשובה - הכפתור מכיל: "confirmed_123" או "declined_123" או "maybe_123"
-                parts = postback_text.split("_")
-                if len(parts) >= 2:
-                    response_type = parts[0]  # confirmed, declined, maybe
-                    guest_id = int(parts[1])
+                print(f"📱 Quick Reply button clicked: {postback_text}")
 
-                    # מיפוי לסטטוסים שלנו
-                    status_mapping = {
-                        "confirmed": "confirmed",
-                        "declined": "declined",
-                        "maybe": "maybe"
-                    }
+                # מיפוי הכפתורים לסטטוסים
+                # הכפתורים: "מאשר הגעה", "לא אגיע", "לא יודע כרגע"
+                status_mapping = {
+                    "מאשר הגעה": "confirmed",
+                    "לא אגיע": "declined",
+                    "לא יודע כרגע": "maybe"
+                }
 
-                    status = status_mapping.get(response_type, "pending")
+                response = status_mapping.get(postback_text)
 
-                    # עדכון הסטטוס במסד הנתונים
-                    result = handle_rsvp_response(guest_id, status)
+                if response and phone:
+                    # מציאת האורח לפי מספר טלפון
+                    conn = get_db_connection()
+                    cur = conn.cursor()
+
+                    try:
+                        cur.execute("""
+                            SELECT id FROM guests
+                            WHERE phone = %s OR whatsapp_number = %s
+                            ORDER BY updated_at DESC
+                            LIMIT 1
+                        """, (phone, phone))
+
+                        guest = cur.fetchone()
+
+                        if guest:
+                            guest_id = guest[0]
+
+                            # קריאה לפונקציה שמטפלת ב-RSVP ושולחת הודעת המשך
+                            result = handle_rsvp_response(guest_id, response, phone)
+
+                            cur.close()
+                            conn.close()
+
+                            if result.get("success"):
+                                return {
+                                    "success": True,
+                                    "message": "RSVP processed successfully",
+                                    "guest_id": guest_id,
+                                    "status": response
+                                }
+                        else:
+                            cur.close()
+                            conn.close()
+                            print(f"❌ Guest not found for phone: {phone}")
+
+                    except Exception as e:
+                        print(f"❌ Error finding guest: {e}")
+                        if conn:
+                            conn.close()
+
+            # טיפול בהודעת טקסט (למשל מספר אורחים)
+            elif message_type == "text":
+                text_payload = payload.get("payload", {})
+                text_content = text_payload.get("text", "").strip()
+
+                print(f"📝 Text message received: {text_content} from {phone}")
+
+                if phone and text_content:
+                    # קריאה לפונקציה שמטפלת בהודעת טקסט
+                    result = handle_text_message(phone, text_content)
 
                     if result.get("success"):
-                        # שליחת הודעת אישור בחזרה למוזמן
-                        response_messages = {
-                            "confirmed": "תודה רבה! אישור ההגעה נקלט במערכת 🎉",
-                            "declined": "תודה על העדכון. נצטער על אי הנוכחות 💙",
-                            "maybe": "תודה על העדכון! נשמח לדעת כשתחליטו 😊"
-                        }
-
                         return {
                             "success": True,
-                            "message": response_messages.get(response_type, "תודה על התשובה!")
+                            "message": "Text message processed",
+                            "guests_count": result.get("guests_count")
                         }
 
         return {"success": True, "message": "Webhook received"}
 
     except Exception as e:
-        print(f"Error in webhook: {e}")
+        print(f"❌ Error in webhook: {e}")
         import traceback
         print(traceback.format_exc())
         return {"success": False, "error": str(e)}
