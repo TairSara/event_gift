@@ -246,6 +246,72 @@ async def schedule_all_invitations(request: ScheduleInvitationsRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.post("/api/invitations/webhook/gupshup")
+async def gupshup_webhook(data: dict):
+    """
+    Webhook לקבלת תשובות מ-Gupshup WhatsApp API
+    """
+    try:
+        print(f"Received webhook from Gupshup: {data}")
+
+        # Gupshup שולח את התשובה בפורמט:
+        # {
+        #   "type": "message",
+        #   "payload": {
+        #     "type": "quick_reply",
+        #     "payload": {
+        #       "postbackText": "confirmed_123"
+        #     }
+        #   }
+        # }
+
+        if data.get("type") == "message":
+            payload = data.get("payload", {})
+
+            if payload.get("type") == "quick_reply":
+                button_payload = payload.get("payload", {})
+                postback_text = button_payload.get("postbackText", "")
+
+                # ניתוח התשובה - הכפתור מכיל: "confirmed_123" או "declined_123" או "maybe_123"
+                parts = postback_text.split("_")
+                if len(parts) >= 2:
+                    response_type = parts[0]  # confirmed, declined, maybe
+                    guest_id = int(parts[1])
+
+                    # מיפוי לסטטוסים שלנו
+                    status_mapping = {
+                        "confirmed": "confirmed",
+                        "declined": "declined",
+                        "maybe": "maybe"
+                    }
+
+                    status = status_mapping.get(response_type, "pending")
+
+                    # עדכון הסטטוס במסד הנתונים
+                    result = handle_rsvp_response(guest_id, status)
+
+                    if result.get("success"):
+                        # שליחת הודעת אישור בחזרה למוזמן
+                        response_messages = {
+                            "confirmed": "תודה רבה! אישור ההגעה נקלט במערכת 🎉",
+                            "declined": "תודה על העדכון. נצטער על אי הנוכחות 💙",
+                            "maybe": "תודה על העדכון! נשמח לדעת כשתחליטו 😊"
+                        }
+
+                        return {
+                            "success": True,
+                            "message": response_messages.get(response_type, "תודה על התשובה!")
+                        }
+
+        return {"success": True, "message": "Webhook received"}
+
+    except Exception as e:
+        print(f"Error in webhook: {e}")
+        import traceback
+        print(traceback.format_exc())
+        return {"success": False, "error": str(e)}
+
+
 @router.post("/api/invitations/rsvp")
 async def handle_rsvp(request: RSVPWebhookRequest):
     """

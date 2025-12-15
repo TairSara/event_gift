@@ -310,6 +310,11 @@
   color: #721c24;
 }
 
+.status-maybe {
+  background: #d1ecf1;
+  color: #0c5460;
+}
+
 /* Action Buttons */
 .actions {
   display: flex;

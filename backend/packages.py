@@ -5,6 +5,7 @@ from datetime import datetime
 import json
 import openpyxl
 from io import BytesIO
+import traceback
 
 import psycopg2
 from db import get_db_connection
@@ -665,7 +666,7 @@ def create_guest(event_id: int, guest: GuestCreate):
 
         cur.execute("""
             INSERT INTO guests (
-                event_id, name, phone, email, quantity,
+                event_id, full_name, phone, email, guests_count,
                 contact_method, attendance_status, table_number
             )
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
@@ -675,9 +676,9 @@ def create_guest(event_id: int, guest: GuestCreate):
             guest.name,
             guest.phone,
             guest.email,
-            guest.quantity,
+            guest.quantity or 1,
             guest.contact_method,
-            guest.attendance_status,
+            guest.attendance_status or 'pending',
             guest.table_number
         ))
 
@@ -702,6 +703,7 @@ def create_guest(event_id: int, guest: GuestCreate):
         if conn:
             conn.rollback()
         print(f"Create guest error: {e}")
+        print(traceback.format_exc())
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="שגיאה בהוספת המוזמן"

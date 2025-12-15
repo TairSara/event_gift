@@ -32,7 +32,15 @@
       "Bash(git add:*)",
       "Bash(if exist \"backend\\nul\" del /F \"backend\\nul\")",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(... venv/Scripts/pip.exe install requests)",
+      "Bash(../.venv/Scripts/pip.exe install:*)",
+      "Bash(tasklist:*)",
+      "Bash(findstr:*)",
+      "Bash(timeout 3 curl:*)",
+      "Bash(timeout 5 curl:*)",
+      "Bash(timeout:*)",
+      "Bash(nslookup:*)"
     ],
     "deny": [],
     "ask": []

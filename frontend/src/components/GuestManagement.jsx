@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { guestAPI } from '../services/api';
+import { guestAPI, invitationsAPI } from '../services/api';
 import './GuestManagement.css';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
@@ -223,11 +223,42 @@ export default function GuestManagement({ eventId, onUpdate }) {
     showNotification('הקובץ הורד בהצלחה!');
   };
 
+  const handleSendInvitations = async () => {
+    if (guests.length === 0) {
+      showNotification('אין מוזמנים לשלוח להם הזמנות', 'error');
+      return;
+    }
+
+    const confirmed = window.confirm(
+      `האם אתה בטוח שברצונך לשלוח הזמנות WhatsApp ל-${guests.length} מוזמנים?`
+    );
+
+    if (!confirmed) return;
+
+    try {
+      setLoading(true);
+      const guestIds = guests.map(g => g.id);
+      const result = await invitationsAPI.sendInvitations(eventId, guestIds);
+
+      showNotification(
+        `ההזמנות נשלחו בהצלחה! נשלחו: ${result.results.sent}, נכשלו: ${result.results.failed}`
+      );
+
+      // טען מחדש את המוזמנים לעדכון סטטוס
+      await loadGuests(true);
+    } catch (error) {
+      showNotification(error.message || 'שגיאה בשליחת ההזמנות', 'error');
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const getStatusBadge = (status) => {
     const statusMap = {
       'pending': { label: 'ממתין', class: 'status-pending' },
       'confirmed': { label: 'אישר', class: 'status-confirmed' },
-      'declined': { label: 'סירב', class: 'status-declined' }
+      'declined': { label: 'סירב', class: 'status-declined' },
+      'maybe': { label: 'לא יודע', class: 'status-maybe' }
     };
     const statusInfo = statusMap[status] || statusMap['pending'];
     return <span className={`status-badge ${statusInfo.class}`}>{statusInfo.label}</span>;
@@ -244,6 +275,7 @@ export default function GuestManagement({ eventId, onUpdate }) {
     confirmed: guests.filter(g => g.attendance_status === 'confirmed').length,
     pending: guests.filter(g => g.attendance_status === 'pending').length,
     declined: guests.filter(g => g.attendance_status === 'declined').length,
+    maybe: guests.filter(g => g.attendance_status === 'maybe').length,
     totalQuantity: guests.reduce((sum, g) => sum + (g.quantity || 1), 0)
   };
 
@@ -311,6 +343,27 @@ export default function GuestManagement({ eventId, onUpdate }) {
           >
             <i className="fas fa-file-upload"></i>
             העלה מ-Excel
+          </button>
+          <button
+            className="btn-send-invitations"
+            onClick={handleSendInvitations}
+            disabled={guests.length === 0 || loading}
+            style={{
+              backgroundColor: '#25D366',
+              color: 'white',
+              border: 'none',
+              padding: '0.8rem 1.5rem',
+              borderRadius: '8px',
+              cursor: guests.length === 0 ? 'not-allowed' : 'pointer',
+              display: 'flex',
+              alignItems: 'center',
+              gap: '0.5rem',
+              fontWeight: '600',
+              opacity: guests.length === 0 ? 0.6 : 1
+            }}
+          >
+            <i className="fab fa-whatsapp"></i>
+            שלח הזמנות WhatsApp
           </button>
         </div>
         <div className="actions-right">
@@ -463,6 +516,7 @@ export default function GuestManagement({ eventId, onUpdate }) {
                     <option value="pending">ממתין</option>
                     <option value="confirmed">אישר</option>
                     <option value="declined">סירב</option>
+                    <option value="maybe">לא יודע</option>
                   </select>
                 </div>
               </div>

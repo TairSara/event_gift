@@ -1,24 +1,24 @@
 """
-שירות WhatsApp באמצעות Ultramsg API
-שליחת הזמנות עם כפתורים אינטראקטיביים
+שירות WhatsApp באמצעות Gupshup WhatsApp Business API
+שליחת הזמנות להזמנה לאירועים
 """
 import os
 import requests
+import json
 from datetime import datetime
 from dotenv import load_dotenv
 
 load_dotenv()
 
-ULTRAMSG_API_KEY = os.getenv("ULTRAMSG_API_KEY", "sk_7c99c2f11f284370af9248ce40a4a7d9")
-ULTRAMSG_INSTANCE_ID = os.getenv("ULTRAMSG_INSTANCE_ID", "1216844380334963")
-WHATSAPP_SENDER = os.getenv("WHATSAPP_SENDER_NUMBER", "+972525869312")
-
-BASE_URL = f"https://api.ultramsg.com/{ULTRAMSG_INSTANCE_ID}"
+GUPSHUP_API_KEY = os.getenv("GUPSHUP_API_KEY", "sk_7c99c2f11f284370af9248ce40a4a7d9")
+GUPSHUP_APP_NAME = os.getenv("GUPSHUP_APP_NAME", "saveday")
+WHATSAPP_SENDER = os.getenv("WHATSAPP_SENDER_NUMBER", "972525869312")
+WABA_ID = os.getenv("GUPSHUP_WABA_ID", "1216844380334963")
 
 
 def send_invitation_whatsapp(recipient_number: str, event_data: dict, guest_data: dict):
     """
-    שליחת הזמנה דרך WhatsApp עם כפתורים אינטראקטיביים
+    שליחת הזמנה דרך WhatsApp (כרגע רק הודעת טקסט פשוטה)
 
     Args:
         recipient_number: מספר טלפון של המוזמן (בפורמט בינלאומי)
@@ -29,18 +29,13 @@ def send_invitation_whatsapp(recipient_number: str, event_data: dict, guest_data
         dict: תשובה מה-API
     """
 
-    # ניקוי מספר טלפון - הסרת רווחים ומקפים
-    clean_number = recipient_number.replace(" ", "").replace("-", "")
+    # ניקוי מספר טלפון
+    clean_number = recipient_number.replace(" ", "").replace("-", "").replace("+", "")
 
-    # אם המספר מתחיל ב-0, נחליף ל-972
     if clean_number.startswith("0"):
         clean_number = "972" + clean_number[1:]
-    elif not clean_number.startswith("+"):
-        if not clean_number.startswith("972"):
-            clean_number = "972" + clean_number
-
-    # הסרת + אם קיים
-    clean_number = clean_number.replace("+", "")
+    elif not clean_number.startswith("972"):
+        clean_number = "972" + clean_number
 
     # בניית הודעת ההזמנה
     event_type_hebrew = {
@@ -55,14 +50,12 @@ def send_invitation_whatsapp(recipient_number: str, event_data: dict, guest_data
         'other': 'אירוע'
     }.get(event_data.get('event_type'), 'אירוע')
 
-    # פורמט תאריך בעברית
     event_date = event_data.get('event_date', '')
     event_time = event_data.get('event_time', '')
     event_location = event_data.get('event_location') or event_data.get('location', '')
-
     guest_name = guest_data.get('full_name', 'אורח יקר')
 
-    message = f"""🎉 הנכם מוזמנים! 🎉
+    message_text = f"""🎉 הנכם מוזמנים! 🎉
 
 שלום {guest_name},
 
@@ -76,83 +69,75 @@ def send_invitation_whatsapp(recipient_number: str, event_data: dict, guest_data
 
 נשמח לאישור הגעתכם 💙
 
-נתראה!
-"""
+נתראה!"""
 
-    # שליחה עם כפתורים
-    url = f"{BASE_URL}/messages/chat"
-
-    payload = {
-        "token": ULTRAMSG_API_KEY,
-        "to": clean_number,
-        "body": message,
-        "priority": "10",
-        "referenceId": f"event_{event_data.get('id')}_guest_{guest_data.get('id')}"
-    }
+    # Gupshup WhatsApp Business API
+    url = f"https://partner.gupshup.io/partner/app/{WABA_ID}/msg"
 
     headers = {
+        "Authorization": f"Bearer {GUPSHUP_API_KEY}",
         "Content-Type": "application/x-www-form-urlencoded"
     }
 
+    payload = {
+        "channel": "whatsapp",
+        "source": WHATSAPP_SENDER,
+        "destination": clean_number,
+        "message": json.dumps({
+            "type": "text",
+            "text": message_text
+        }),
+        "src.name": GUPSHUP_APP_NAME
+    }
+
     try:
-        response = requests.post(url, data=payload, headers=headers)
-        response.raise_for_status()
+        print(f"\n{'='*60}")
+        print(f"🔄 Sending WhatsApp to {clean_number}")
+        print(f"📡 URL: {url}")
+        print(f"🔑 API Key: {GUPSHUP_API_KEY[:20]}...")
+        print(f"📱 Source: {WHATSAPP_SENDER}")
+        print(f"{'='*60}\n")
 
-        result = response.json()
+        response = requests.post(url, headers=headers, data=payload, timeout=30)
 
-        # שליחת כפתורים RSVP
-        send_rsvp_buttons(clean_number, event_data.get('id'), guest_data.get('id'))
+        print(f"✅ Response Status: {response.status_code}")
+        print(f"📄 Response: {response.text}\n")
 
-        return {
-            "success": True,
-            "message_id": result.get("id"),
-            "status": result.get("status"),
-            "response": result
-        }
+        if response.status_code == 200 or response.status_code == 202:
+            try:
+                result = response.json()
+                return {
+                    "success": True,
+                    "message_id": result.get("messageId", "sent"),
+                    "status": result.get("status", "sent"),
+                    "response": result
+                }
+            except:
+                return {
+                    "success": True,
+                    "message_id": "sent",
+                    "status": "sent",
+                    "response": {"raw": response.text}
+                }
+        else:
+            return {
+                "success": False,
+                "error": f"HTTP {response.status_code}: {response.text}"
+            }
 
-    except requests.exceptions.RequestException as e:
-        print(f"Error sending WhatsApp: {e}")
+    except Exception as e:
+        print(f"❌ Error: {e}")
+        import traceback
+        traceback.print_exc()
         return {
             "success": False,
             "error": str(e)
         }
 
 
-def send_rsvp_buttons(recipient_number: str, event_id: int, guest_id: int):
-    """
-    שליחת כפתורי RSVP (מגיע / לא מגיע)
-    """
-    url = f"{BASE_URL}/messages/chat"
-
-    # יצירת כפתורים
-    buttons_message = "אנא אשרו הגעתכם:"
-
-    payload = {
-        "token": ULTRAMSG_API_KEY,
-        "to": recipient_number,
-        "body": buttons_message,
-        "priority": "10"
-    }
-
-    try:
-        response = requests.post(url, data=payload)
-        return response.json()
-    except Exception as e:
-        print(f"Error sending buttons: {e}")
-        return None
-
-
 def send_bulk_invitations(event_id: int, guests: list, event_data: dict):
     """
     שליחה המונית של הזמנות לכל האורחים
-
-    Args:
-        event_id: מזהה האירוע
-        guests: רשימת אורחים
-        event_data: מידע על האירוע
-
-    Returns:
-        dict: סיכום השליחה
     """
     results = {
         "total": len(guests),
@@ -189,10 +174,6 @@ def send_bulk_invitations(event_id: int, guests: list, event_data: dict):
 def handle_rsvp_response(guest_id: int, response: str):
     """
     טיפול בתגובת RSVP מהמוזמן
-
-    Args:
-        guest_id: מזהה האורח
-        response: 'confirmed' או 'declined'
     """
     from db import get_db_connection
 
@@ -202,7 +183,8 @@ def handle_rsvp_response(guest_id: int, response: str):
     try:
         cur.execute("""
             UPDATE guests
-            SET attendance_status = %s
+            SET attendance_status = %s,
+                updated_at = NOW()
             WHERE id = %s
         """, (response, guest_id))
 
