@@ -226,3 +226,144 @@ def send_follow_up_message(recipient_number: str, message: str) -> bool:
     except Exception as e:
         print(f"Error sending follow-up: {e}")
         return False
+
+
+def send_bulk_invitations(event_id: int, guests_list: list, event_data: dict):
+    """
+    שליחת הזמנות לרשימת אורחים
+    """
+    results = []
+    for guest in guests_list:
+        try:
+            result = send_invitation_whatsapp(
+                recipient_number=guest.get("whatsapp_number") or guest.get("phone"),
+                event_data=event_data,
+                guest_data=guest
+            )
+            results.append({
+                "guest_id": guest["id"],
+                "guest_name": guest["full_name"],
+                "success": result.get("success"),
+                "message_id": result.get("message_id"),
+                "error": result.get("error")
+            })
+        except Exception as e:
+            results.append({
+                "guest_id": guest["id"],
+                "guest_name": guest["full_name"],
+                "success": False,
+                "error": str(e)
+            })
+    return results
+
+
+def handle_rsvp_response(guest_id: int, response: str, phone: str):
+    """טיפול בתגובת RSVP מהמוזמן"""
+    try:
+        from db import get_db_connection
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        cur.execute("""
+            UPDATE guests
+            SET attendance_status = %s,
+                conversation_state = %s,
+                updated_at = NOW()
+            WHERE id = %s
+        """, (response,
+              'waiting_for_guests_count' if response == 'confirmed' else 'done',
+              guest_id))
+
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        # שליחת הודעת המשך
+        if response == 'confirmed':
+            send_follow_up_message(
+                phone,
+                "תודה על האישור! 🎉\n\nכמה אורחים יגיעו? (הזינו מספר בלבד)"
+            )
+        elif response == 'declined':
+            send_follow_up_message(
+                phone,
+                "תודה על העדכון 💙\n\nנשמח לראותכם בהזדמנות הבאה!"
+            )
+        else:  # maybe
+            send_follow_up_message(
+                phone,
+                "תודה! נשמח אם תוכלו לעדכן אותנו כשתדעו 💙"
+            )
+
+        return {"success": True}
+
+    except Exception as e:
+        print(f"Error handling RSVP: {e}")
+        return {"success": False, "error": str(e)}
+
+
+def handle_text_message(phone: str, text: str):
+    """טיפול בהודעת טקסט מהמוזמן (מספר אורחים)"""
+    try:
+        from db import get_db_connection
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # מציאת האורח
+        cur.execute("""
+            SELECT id, conversation_state FROM guests
+            WHERE phone = %s OR whatsapp_number = %s
+            ORDER BY updated_at DESC
+            LIMIT 1
+        """, (phone, phone))
+
+        guest = cur.fetchone()
+        if not guest:
+            cur.close()
+            conn.close()
+            return {"success": False, "error": "Guest not found"}
+
+        guest_id, state = guest
+
+        # אם מחכים למספר אורחים
+        if state == 'waiting_for_guests_count':
+            try:
+                guests_count = int(text.strip())
+                if guests_count <= 0:
+                    raise ValueError("Must be positive")
+
+                cur.execute("""
+                    UPDATE guests
+                    SET guests_count = %s,
+                        conversation_state = 'done',
+                        updated_at = NOW()
+                    WHERE id = %s
+                """, (guests_count, guest_id))
+
+                conn.commit()
+                cur.close()
+                conn.close()
+
+                send_follow_up_message(
+                    phone,
+                    f"תודה רבה! רשמנו {guests_count} אורחים 🎊\n\nמחכים לראותכם באירוע! 💙"
+                )
+
+                return {"success": True, "guests_count": guests_count}
+
+            except ValueError:
+                cur.close()
+                conn.close()
+                send_follow_up_message(
+                    phone,
+                    "אנא הזינו מספר תקין של אורחים (למשל: 2)"
+                )
+                return {"success": False, "error": "Invalid number"}
+
+        cur.close()
+        conn.close()
+        return {"success": True, "message": "Text received but no action needed"}
+
+    except Exception as e:
+        print(f"Error handling text message: {e}")
+        return {"success": False, "error": str(e)}
