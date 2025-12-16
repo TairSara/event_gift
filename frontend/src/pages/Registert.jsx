@@ -117,7 +117,10 @@ export default function Registert() {
       }
     } catch (err) {
       console.error("Error:", err);
-      showError(err.message || "אירעה שגיאה, נסה שוב מאוחר יותר");
+      const errorMessage = typeof err === 'string'
+        ? err
+        : err?.message || err?.detail || "אירעה שגיאה, נסה שוב מאוחר יותר";
+      showError(errorMessage);
     } finally {
       setIsLoading(false);
     }

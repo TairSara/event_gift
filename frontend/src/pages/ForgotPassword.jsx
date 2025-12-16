@@ -16,7 +16,8 @@ export default function ForgotPassword() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8001/api/auth/forgot-password', {
+      const API_URL = process.env.REACT_APP_API_URL || 'https://event-gift.onrender.com/api';
+      const response = await fetch(`${API_URL}/auth/forgot-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -44,7 +45,10 @@ export default function ForgotPassword() {
       }, 2000);
     } catch (err) {
       console.error('Error:', err);
-      showError(err.message || 'אירעה שגיאה, נסה שוב מאוחר יותר');
+      const errorMessage = typeof err === 'string'
+        ? err
+        : err?.message || err?.detail || 'אירעה שגיאה, נסה שוב מאוחר יותר';
+      showError(errorMessage);
     } finally {
       setIsLoading(false);
     }
