@@ -9,7 +9,6 @@ export default function ForgotPassword() {
   const { showSuccess, showError } = useNotification();
   const [email, setEmail] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [debugCode, setDebugCode] = useState("");
 
   const handleRequestCode = async (e) => {
     e.preventDefault();
@@ -31,17 +30,11 @@ export default function ForgotPassword() {
         throw new Error(data.detail || 'שגיאה בשליחת קוד האימות');
       }
 
-      // שמירה של הקוד לדיבאג (רק בפיתוח!)
-      if (data.code) {
-        setDebugCode(data.code);
-        showSuccess(`קוד אימות נשלח למייל שלך! (קוד לדיבאג: ${data.code})`, 8000);
-      } else {
-        showSuccess('קוד אימות נשלח למייל שלך!', 3000);
-      }
+      showSuccess('קוד אימות נשלח למייל שלך!', 3000);
 
       // המתן שנייה ועבור לדף אימות קוד
       setTimeout(() => {
-        navigate('/verify-code', { state: { email, debugCode: data.code } });
+        navigate('/verify-code', { state: { email } });
       }, 2000);
     } catch (err) {
       console.error('Error:', err);

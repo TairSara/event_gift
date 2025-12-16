@@ -459,9 +459,13 @@ def forgot_password(request: ForgotPasswordRequest):
             send_reset_code_email(request.email, reset_code)
         except Exception as email_error:
             print(f"Failed to send reset code email: {email_error}")
+            # אם שליחת המייל נכשלה, נחזיר שגיאה
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="שגיאה בשליחת המייל, נסי שוב מאוחר יותר"
+            )
 
-        # תמיד נחזיר את הקוד בסביבת פיתוח (להסיר בפרודקשן!)
-        return {"message": "קוד איפוס נשלח למייל שלך", "code": reset_code}
+        return {"message": "קוד איפוס נשלח למייל שלך"}
 
     except Exception as e:
         if conn:
