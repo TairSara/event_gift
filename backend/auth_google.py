@@ -69,8 +69,18 @@ def google_login():
     return {"url": auth_url}
 
 
+@router.get("/callback")
+def google_callback_get(code: str):
+    """
+    Callback endpoint GET שמקבל את הקוד מ-Google ב-query parameter
+    """
+    from fastapi import Query
+    # קורא ל-POST callback עם הקוד
+    return google_callback_post(GoogleTokenRequest(code=code))
+
+
 @router.post("/callback")
-def google_callback(token_request: GoogleTokenRequest):
+def google_callback_post(token_request: GoogleTokenRequest):
     """
     Callback endpoint שמקבל את הקוד מ-Google ומחליף אותו ב-access token
     לאחר מכן מושך את פרטי המשתמש ויוצר/מתחבר למשתמש במערכת
