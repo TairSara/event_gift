@@ -252,13 +252,26 @@ async def schedule_all_invitations(request: ScheduleInvitationsRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.get("/api/invitations/webhook/gupshup")
+async def gupshup_webhook_test():
+    """
+    Endpoint לבדיקת חיבור של Gupshup
+    """
+    return {"success": True, "message": "Webhook is active"}
+
+
 @router.post("/api/invitations/webhook/gupshup")
-async def gupshup_webhook(data: dict):
+async def gupshup_webhook(data: dict = None):
     """
     Webhook לקבלת תשובות מ-Gupshup WhatsApp API
     תומך ב-Quick Reply buttons ובהודעות טקסט
     """
     try:
+        # אם data ריק, מדובר בבדיקת חיבור מגאפשאפ
+        if not data:
+            print("🔔 Gupshup connection test received")
+            return {"success": True, "message": "Webhook is active"}
+
         print(f"🔔 Received webhook from Gupshup: {data}")
 
         # Gupshup webhook structure:
