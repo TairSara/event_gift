@@ -16,8 +16,12 @@ app = FastAPI(title="giftWeb-api")
 # התחלת שירות תזמון הודעות
 start_scheduler()
 
-# CORS Configuration - נאפשר לפרונט המקומי לגשת ל-API
-origins = ["http://localhost:5173", "http://localhost:5174"]
+# CORS Configuration - נאפשר לפרונט לגשת ל-API
+origins = [
+    "http://localhost:5173",
+    "http://localhost:5174",
+    "https://event-gift-frontend.onrender.com",  # כתובת הפרונט ב-Render
+]
 app.add_middleware(
     CORSMiddleware,
     allow_origins=origins,
