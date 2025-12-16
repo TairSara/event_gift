@@ -1,5 +1,5 @@
 // API Base URL
-const API_BASE_URL = 'http://localhost:8001/api';
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://event-gift.onrender.com/api';
 
 // Auth API
 export const authAPI = {

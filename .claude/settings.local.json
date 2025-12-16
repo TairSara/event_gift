@@ -40,7 +40,15 @@
       "Bash(timeout 3 curl:*)",
       "Bash(timeout 5 curl:*)",
       "Bash(timeout:*)",
-      "Bash(nslookup:*)"
+      "Bash(nslookup:*)",
+      "Bash(where:*)",
+      "Bash(netstat:*)",
+      "Bash(choco --version:*)",
+      "Bash(powershell -Command \"Invoke-WebRequest -Uri ''https://bin.equinox.io/c/bNyj1mQVY4c/ngrok-v3-stable-windows-amd64.zip'' -OutFile ''ngrok.zip''\")",
+      "Bash(powershell -Command \"Expand-Archive -Path ''ngrok.zip'' -DestinationPath ''.'' -Force\")",
+      "Bash(del ngrok.zip)",
+      "Bash(./ngrok.exe http:*)",
+      "Bash(../.venv/Scripts/pip.exe freeze:*)"
     ],
     "deny": [],
     "ask": []
