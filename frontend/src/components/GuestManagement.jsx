@@ -247,8 +247,13 @@ export default function GuestManagement({ eventId, onUpdate }) {
       const result = await invitationsAPI.sendInvitations(eventId, guestIds);
       console.log('✅ Result received:', JSON.stringify(result, null, 2));
 
+      // ספירת הצלחות וכשלונות
+      const sent = result.results.filter(r => r.success).length;
+      const failed = result.results.filter(r => !r.success).length;
+
       showNotification(
-        `ההזמנות נשלחו בהצלחה! נשלחו: ${result.results.sent}, נכשלו: ${result.results.failed}`
+        `ההזמנות נשלחו! הצליחו: ${sent}, נכשלו: ${failed}`,
+        failed > 0 ? 'warning' : 'success'
       );
 
       // טען מחדש את המוזמנים לעדכון סטטוס
