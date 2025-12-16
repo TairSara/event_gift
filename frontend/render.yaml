@@ -2,7 +2,7 @@ services:
   - type: web
     name: event-gift-frontend
     runtime: static
-    buildCommand: npm install --legacy-peer-deps && npm run build
+    buildCommand: rm -rf node_modules && npm install --legacy-peer-deps --force && npm run build
     staticPublishPath: ./dist
     envVars:
       - key: NODE_VERSION
