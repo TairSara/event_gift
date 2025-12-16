@@ -11,9 +11,9 @@ import britaManifest from '../data/brita.manifest.json';
 import knasimManifest from '../data/knasim.manifest.json';
 import birthdayManifest from '../data/birthday.manifest.json';
 import otherManifest from '../data/other.manifest.json';
-import { renderSide, combineCanvasesWithMockup } from '../lib/canvasRender.js';
-import { downloadPNG, downloadPDF } from '../lib/download.js';
-import TimePicker from '../components/TimePicker.jsx';
+import { renderSide, combineCanvasesWithMockup } from '../lib/canvasRender';
+import { downloadPNG, downloadPDF } from '../lib/download';
+import TimePicker from '../components/TimePicker';
 import './InvitationEditor.css';
 
 export default function InvitationEditor() {
