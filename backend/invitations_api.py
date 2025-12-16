@@ -133,13 +133,23 @@ async def send_invitations(request: SendInvitationRequest):
                 results = send_bulk_invitations(request.event_id, guests_list, event_data)
 
                 # עדכון סטטוס האורחים
-                for guest in guests_list:
+                for i, guest in enumerate(guests_list):
+                    result = results[i] if i < len(results) else {}
                     cur.execute("""
                         UPDATE guests
                         SET invitation_sent_at = NOW(),
-                            invitation_status = 'sent'
+                            invitation_status = %s,
+                            message_id = %s,
+                            message_status = %s,
+                            message_error = %s
                         WHERE id = %s
-                    """, (guest["id"],))
+                    """, (
+                        'sent' if result.get('success') else 'failed',
+                        result.get('message_id'),
+                        'submitted' if result.get('success') else 'failed',
+                        result.get('error'),
+                        guest["id"]
+                    ))
 
                 conn.commit()
                 cur.close()
@@ -415,7 +425,8 @@ async def get_invitation_status(event_id: int):
                 COUNT(CASE WHEN invitation_sent_at IS NOT NULL THEN 1 END) as sent,
                 COUNT(CASE WHEN attendance_status = 'confirmed' THEN 1 END) as confirmed,
                 COUNT(CASE WHEN attendance_status = 'declined' THEN 1 END) as declined,
-                COUNT(CASE WHEN attendance_status = 'pending' THEN 1 END) as pending
+                COUNT(CASE WHEN attendance_status = 'pending' THEN 1 END) as pending,
+                COUNT(CASE WHEN message_status = 'failed' THEN 1 END) as failed
             FROM guests
             WHERE event_id = %s
         """, (event_id,))
@@ -439,11 +450,105 @@ async def get_invitation_status(event_id: int):
             "confirmed": stats[2],
             "declined": stats[3],
             "pending": stats[4],
+            "failed": stats[5],
             "scheduled_messages": scheduled_count
         }
 
     except Exception as e:
         print(f"Error getting invitation status: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if conn:
+            conn.close()
+
+
+@router.post("/api/invitations/check-delivery/{event_id}")
+async def check_delivery_status(event_id: int):
+    """
+    בדיקת סטטוס משלוח אמיתי מ-Gupshup
+    """
+    import os
+    import requests
+
+    GUPSHUP_API_KEY = os.getenv("GUPSHUP_API_KEY")
+
+    conn = None
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # קבלת כל האורחים עם message_id
+        cur.execute("""
+            SELECT id, full_name, message_id, message_status
+            FROM guests
+            WHERE event_id = %s AND message_id IS NOT NULL
+        """, (event_id,))
+
+        guests = cur.fetchall()
+
+        if not guests:
+            raise HTTPException(status_code=404, detail="No messages found to check")
+
+        results = []
+        headers = {"apikey": GUPSHUP_API_KEY}
+
+        for guest in guests:
+            guest_id, name, message_id, current_status = guest
+
+            # בדיקת סטטוס ב-Gupshup
+            try:
+                url = f"https://api.gupshup.io/wa/api/v1/msg/{message_id}"
+                response = requests.get(url, headers=headers, timeout=10)
+
+                if response.status_code == 200:
+                    data = response.json()
+                    new_status = data.get('status', 'unknown')
+                    error_msg = data.get('error')
+
+                    # עדכון ב-DB
+                    cur.execute("""
+                        UPDATE guests
+                        SET message_status = %s,
+                            message_error = %s
+                        WHERE id = %s
+                    """, (new_status, error_msg, guest_id))
+
+                    results.append({
+                        "guest_id": guest_id,
+                        "guest_name": name,
+                        "status": new_status,
+                        "error": error_msg
+                    })
+                else:
+                    results.append({
+                        "guest_id": guest_id,
+                        "guest_name": name,
+                        "status": "check_failed",
+                        "error": f"HTTP {response.status_code}"
+                    })
+
+            except Exception as e:
+                results.append({
+                    "guest_id": guest_id,
+                    "guest_name": name,
+                    "status": "check_error",
+                    "error": str(e)
+                })
+
+        conn.commit()
+        cur.close()
+        conn.close()
+
+        return {
+            "success": True,
+            "checked": len(results),
+            "results": results
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error checking delivery status: {e}")
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         if conn:
