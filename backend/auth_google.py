@@ -82,7 +82,7 @@ def google_callback_get(code: str):
     result = google_callback_post(GoogleTokenRequest(code=code))
 
     # בונה URL להפניה ל-Frontend עם פרטי המשתמש
-    frontend_url = os.getenv("FRONTEND_URL", "https://event-gift-fronten.onrender.com")
+    frontend_url = os.getenv("FRONTEND_URL", "https://event-gift-frontend.onrender.com")
     params = {
         "userId": result["id"],
         "email": result["email"],
