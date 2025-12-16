@@ -73,10 +73,25 @@ def google_login():
 def google_callback_get(code: str):
     """
     Callback endpoint GET שמקבל את הקוד מ-Google ב-query parameter
+    ומפנה את המשתמש ל-Frontend עם הפרטים
     """
     from fastapi import Query
-    # קורא ל-POST callback עם הקוד
-    return google_callback_post(GoogleTokenRequest(code=code))
+    from urllib.parse import urlencode
+
+    # קורא לפונקציה שמטפלת בהתחברות
+    result = google_callback_post(GoogleTokenRequest(code=code))
+
+    # בונה URL להפניה ל-Frontend עם פרטי המשתמש
+    frontend_url = os.getenv("FRONTEND_URL", "https://event-gift-fronten.onrender.com")
+    params = {
+        "userId": result["id"],
+        "email": result["email"],
+        "fullName": result["full_name"],
+        "isNewUser": str(result["is_new_user"]).lower()
+    }
+
+    redirect_url = f"{frontend_url}/login-success?{urlencode(params)}"
+    return RedirectResponse(url=redirect_url)
 
 
 @router.post("/callback")

@@ -21,30 +21,38 @@ export default function LoginSuccess() {
       hasRun.current = true;
 
       try {
-        // Get the authorization code from URL
-        const code = searchParams.get("code");
+        // Get user data from URL parameters (sent from backend)
+        const userId = searchParams.get("userId");
+        const email = searchParams.get("email");
+        const fullName = searchParams.get("fullName");
+        const isNew = searchParams.get("isNewUser") === "true";
 
-        if (!code) {
+        if (!userId || !email) {
           setStatus("error");
-          setMessage("לא נמצא קוד אימות מ-Google");
+          setMessage("לא התקבלו פרטי משתמש מהשרת");
           setTimeout(() => navigate("/login"), 3000);
           return;
         }
 
-        // Exchange the code for user data
-        const userData = await authAPI.googleCallback(code);
+        // Build user data object
+        const userData = {
+          id: parseInt(userId),
+          email: email,
+          full_name: fullName || email,
+          is_new_user: isNew
+        };
 
         // Check if this is a new user
-        setIsNewUser(userData.is_new_user || false);
+        setIsNewUser(isNew);
 
         // Log the user in (save to context/localStorage)
         authLogin(userData, true); // Remember the user
 
         setStatus("success");
         setMessage(
-          userData.is_new_user
-            ? `ברוך הבא ${userData.full_name || userData.email}! החשבון שלך נוצר בהצלחה`
-            : `שלום ${userData.full_name || userData.email}! התחברת בהצלחה`
+          isNew
+            ? `ברוך הבא ${fullName || email}! החשבון שלך נוצר בהצלחה`
+            : `שלום ${fullName || email}! התחברת בהצלחה`
         );
 
         // Redirect to home page after 2 seconds
