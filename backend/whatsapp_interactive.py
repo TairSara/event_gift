@@ -462,6 +462,11 @@ class WhatsAppInteractiveService:
             "SaveDay Events"     # {{6}} - משפחת אירועי היום
         ]
 
+        print(f"🔍 Template Params Verification:")
+        print(f"   Count: {len(template_params)} (must be 6)")
+        for i, param in enumerate(template_params, 1):
+            print(f"   {{{{{{i}}}}}}: {param}")
+
         return self.send_template_message(
             destination=destination,
             template_name=WHATSAPP_TEMPLATE_NAME,

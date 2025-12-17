@@ -215,38 +215,22 @@ async def send_template_invitation(guest_id: int):
         else:
             formatted_time = str(event_time) if event_time else '18:00'
 
-        # Extract image URL from invitation_data or use default
-        image_url = DEFAULT_INVITATION_IMAGE
-        if invitation_data and isinstance(invitation_data, dict):
-            # Check if invitation_data contains image_url
-            if 'image_url' in invitation_data:
-                image_url = invitation_data['image_url']
-            elif 'invitation_url' in invitation_data:
-                image_url = invitation_data['invitation_url']
-            elif 'file_path' in invitation_data:
-                # Convert relative path to full URL
-                file_path = invitation_data['file_path']
-                if file_path.startswith('/'):
-                    # Get the base URL from environment or construct it
-                    base_url = os.getenv('BASE_URL', 'https://event-gift.onrender.com')
-                    image_url = f"{base_url}{file_path}"
-                else:
-                    image_url = file_path
+        # TEMPORARY DEBUG: Force hardcoded safe image URL to test template
+        # This bypasses any image URL issues from database/default
+        image_url = "https://www.gstatic.com/webp/gallery/1.jpg"
+        print(f"🔧 DEBUG MODE: Using hardcoded safe image URL for testing")
 
-        # Clean image URL - WhatsApp Media Templates reject URLs with query parameters
-        # Remove everything after '?' to get clean image URL
-        if image_url and '?' in image_url:
-            clean_image_url = image_url.split('?')[0]
-            print(f"🧹 Cleaned image URL: {image_url} -> {clean_image_url}")
-            image_url = clean_image_url
+        # Prepare final location (fallback to default if empty)
+        final_location = event_location or "יודיע בהמשך"
 
         # Send template message
         print(f"📱 Sending WhatsApp to: {formatted_phone}")
         print(f"👤 Guest: {guest_name}")
         print(f"🎉 Event: {event_name}")
         print(f"📅 Date: {formatted_date}, Time: {formatted_time}")
-        print(f"📍 Location: {event_location or 'יודיע בהמשך'}")
+        print(f"📍 Location: {final_location}")
         print(f"🖼️ Image URL: {image_url}")
+        print(f"📊 Template will receive {6} parameters")
 
         result = whatsapp_service.send_event_invitation_template(
             destination=formatted_phone,
@@ -254,7 +238,7 @@ async def send_template_invitation(guest_id: int):
             event_name=event_name,
             event_date=formatted_date,
             event_time=formatted_time,
-            event_location=event_location or "יודיע בהמשך",
+            event_location=final_location,
             image_url=image_url
         )
 
