@@ -8,13 +8,8 @@ from packages import router as packages_router
 from notifications import router as notifications_router
 from admin_auth import router as admin_auth_router
 from admin_api import router as admin_api_router
-from invitations_api import router as invitations_router
-from message_scheduler import start_scheduler
 
 app = FastAPI(title="giftWeb-api")
-
-# התחלת שירות תזמון הודעות
-start_scheduler()
 
 # CORS Configuration - נאפשר לפרונט לגשת ל-API
 origins = [
@@ -30,6 +25,15 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.get("/")
+def root():
+    return {
+        "message": "giftWeb API is running",
+        "version": "1.0",
+        "docs": "/docs",
+        "health": "/api/health"
+    }
 
 @app.get("/api/health")
 def health():
@@ -70,6 +74,3 @@ app.include_router(admin_auth_router)
 
 # חיבור ראוט Admin API
 app.include_router(admin_api_router)
-
-# חיבור ראוט שליחת הזמנות
-app.include_router(invitations_router)
