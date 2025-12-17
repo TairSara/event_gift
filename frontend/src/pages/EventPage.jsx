@@ -72,11 +72,13 @@ export default function EventPage() {
   }, [event]);
 
   const fetchEventData = async () => {
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
     try {
       setLoading(true);
 
       const response = await fetch(
-        `http://localhost:8001/api/packages/events/${eventId}`
+        `${API_URL}/packages/events/${eventId}`
       );
 
       if (response.ok) {
@@ -114,6 +116,8 @@ export default function EventPage() {
   };
 
   const handleSaveTitle = async () => {
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
     if (!editedTitle.trim()) {
       showInfo('שם האירוע לא יכול להיות רק');
       return;
@@ -121,7 +125,7 @@ export default function EventPage() {
 
     try {
       const response = await fetch(
-        `http://localhost:8001/api/packages/events/${eventId}`,
+        `${API_URL}/packages/events/${eventId}`,
         {
           method: 'PUT',
           headers: {
@@ -139,7 +143,7 @@ export default function EventPage() {
         showSuccess('שם האירוע עודכן בהצלחה');
 
         // Create notification
-        await fetch('http://localhost:8001/api/notifications/create', {
+        await fetch(`${API_URL}/notifications/create`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -187,6 +191,8 @@ export default function EventPage() {
   };
 
   const handleSaveDate = async () => {
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
     if (!editedDate.trim()) {
       showInfo('נא להזין תאריך');
       return;
@@ -194,7 +200,7 @@ export default function EventPage() {
 
     try {
       const response = await fetch(
-        `http://localhost:8001/api/packages/events/${eventId}`,
+        `${API_URL}/packages/events/${eventId}`,
         {
           method: 'PUT',
           headers: {
@@ -220,7 +226,7 @@ export default function EventPage() {
           minute: '2-digit'
         });
 
-        await fetch('http://localhost:8001/api/notifications/create', {
+        await fetch(`${API_URL}/notifications/create`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -254,6 +260,8 @@ export default function EventPage() {
   };
 
   const handleSaveLocation = async () => {
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
     if (!editedLocation.trim()) {
       showInfo('נא להזין מיקום');
       return;
@@ -261,7 +269,7 @@ export default function EventPage() {
 
     try {
       const response = await fetch(
-        `http://localhost:8001/api/packages/events/${eventId}`,
+        `${API_URL}/packages/events/${eventId}`,
         {
           method: 'PUT',
           headers: {
@@ -279,7 +287,7 @@ export default function EventPage() {
         showSuccess('מיקום האירוע עודכן בהצלחה');
 
         // Create notification
-        await fetch('http://localhost:8001/api/notifications/create', {
+        await fetch(`${API_URL}/notifications/create`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -309,12 +317,13 @@ export default function EventPage() {
   // Check if event date has passed and update status
   useEffect(() => {
     if (event && event.event_date) {
+      const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
       const eventDate = new Date(event.event_date);
       const now = new Date();
 
       if (eventDate < now && event.status !== 'completed') {
         // Auto-update status to completed
-        fetch(`http://localhost:8001/api/packages/events/${eventId}`, {
+        fetch(`${API_URL}/packages/events/${eventId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',

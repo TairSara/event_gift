@@ -16,9 +16,11 @@ export default function NotificationBell() {
   const fetchUnreadCount = async () => {
     if (!user) return;
 
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
     try {
       const response = await fetch(
-        `http://localhost:8001/api/notifications/user/${user.id}/unread-count`
+        `${API_URL}/notifications/user/${user.id}/unread-count`
       );
       if (response.ok) {
         const data = await response.json();
@@ -33,10 +35,12 @@ export default function NotificationBell() {
   const fetchNotifications = async () => {
     if (!user) return;
 
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
     setLoading(true);
     try {
       const response = await fetch(
-        `http://localhost:8001/api/notifications/user/${user.id}`
+        `${API_URL}/notifications/user/${user.id}`
       );
       if (response.ok) {
         const data = await response.json();
@@ -51,9 +55,11 @@ export default function NotificationBell() {
 
   // Mark notification as read
   const markAsRead = async (notificationId) => {
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
     try {
       const response = await fetch(
-        `http://localhost:8001/api/notifications/${notificationId}/mark-read`,
+        `${API_URL}/notifications/${notificationId}/mark-read`,
         {
           method: 'PUT',
         }
@@ -78,9 +84,11 @@ export default function NotificationBell() {
   const markAllAsRead = async () => {
     if (!user) return;
 
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
     try {
       const response = await fetch(
-        `http://localhost:8001/api/notifications/user/${user.id}/mark-all-read`,
+        `${API_URL}/notifications/user/${user.id}/mark-all-read`,
         {
           method: 'PUT',
         }

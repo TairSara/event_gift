@@ -52,17 +52,18 @@ export default function Dashboard() {
   const fetchUserData = async () => {
     try {
       setLoading(true);
+      const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
 
       // טעינת רכישות
       const purchasesResponse = await fetch(
-        `http://localhost:8001/api/packages/user/${user.id}/purchases`
+        `${API_URL}/packages/user/${user.id}/purchases`
       );
       const purchasesData = await purchasesResponse.json();
       setPurchases(purchasesData.purchases || []);
 
       // טעינת אירועים
       const eventsResponse = await fetch(
-        `http://localhost:8001/api/packages/events/user/${user.id}`
+        `${API_URL}/packages/events/user/${user.id}`
       );
       const eventsData = await eventsResponse.json();
       setEvents(eventsData.events || []);
@@ -92,8 +93,9 @@ export default function Dashboard() {
 
   const handleAssignPackageToEvent = async (eventId, packagePurchaseId) => {
     try {
+      const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
       const response = await fetch(
-        `http://localhost:8001/api/packages/events/${eventId}/assign-package/${packagePurchaseId}`,
+        `${API_URL}/packages/events/${eventId}/assign-package/${packagePurchaseId}`,
         {
           method: 'PUT',
           headers: {

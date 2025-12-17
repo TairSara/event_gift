@@ -10,9 +10,11 @@ export default function AdminNotificationBell() {
 
   // Fetch unread count
   const fetchUnreadCount = async () => {
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
     try {
       const response = await fetch(
-        "http://localhost:8001/api/admin/contacts/unread-count"
+        `${API_URL}/admin/contacts/unread-count`
       );
       if (response.ok) {
         const data = await response.json();

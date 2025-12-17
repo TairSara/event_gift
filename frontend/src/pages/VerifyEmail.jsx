@@ -31,8 +31,10 @@ export default function VerifyEmail() {
 
     setIsLoading(true);
 
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
     try {
-      const response = await fetch('http://localhost:8001/api/auth/verify-email', {
+      const response = await fetch(`${API_URL}/auth/verify-email`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -69,8 +71,10 @@ export default function VerifyEmail() {
   const handleResendCode = async () => {
     setIsLoading(true);
 
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
     try {
-      const response = await fetch('http://localhost:8001/api/auth/resend-verification-code', {
+      const response = await fetch(`${API_URL}/auth/resend-verification-code`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

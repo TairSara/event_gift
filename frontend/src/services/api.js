@@ -14,7 +14,8 @@ export const authAPI = {
         body: JSON.stringify({
           email: userData.email,
           password: userData.password,
-          full_name: userData.fullName
+          full_name: userData.fullName,
+          phone: userData.phone
         }),
       });
 
@@ -27,6 +28,10 @@ export const authAPI = {
       return data;
     } catch (error) {
       console.error('Registration error:', error);
+      // אם זו שגיאת רשת (network error) ולא שגיאה מהשרת
+      if (error.message === 'Failed to fetch' || !error.message) {
+        throw new Error('לא ניתן להתחבר לשרת. בדוק את חיבור האינטרנט');
+      }
       throw error;
     }
   },
@@ -51,6 +56,10 @@ export const authAPI = {
       return data;
     } catch (error) {
       console.error('Login error:', error);
+      // אם זו שגיאת רשת (network error) ולא שגיאה מהשרת
+      if (error.message === 'Failed to fetch' || !error.message) {
+        throw new Error('לא ניתן להתחבר לשרת. בדוק את חיבור האינטרנט');
+      }
       throw error;
     }
   },

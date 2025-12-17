@@ -47,8 +47,10 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
     setLoading(true);
 
     try {
+      const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
       // יצירת אירוע
-      const response = await fetch('http://localhost:8001/api/packages/events', {
+      const response = await fetch(`${API_URL}/packages/events`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -67,7 +69,7 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
       if (response.ok) {
         // עדכון סטטוס החבילה ל-used
         if (selectedPackage) {
-          await fetch(`http://localhost:8001/api/packages/purchases/${selectedPackage}/use`, {
+          await fetch(`${API_URL}/packages/purchases/${selectedPackage}/use`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',

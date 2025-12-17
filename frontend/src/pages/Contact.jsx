@@ -27,9 +27,11 @@ export default function Contact() {
     setIsSubmitting(true);
     setSubmitStatus(null);
 
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
     try {
       // שליחת הפנייה לשרת
-      const response = await fetch("http://localhost:8001/api/contact/submit", {
+      const response = await fetch(`${API_URL}/contact/submit`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

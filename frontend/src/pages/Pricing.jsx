@@ -23,8 +23,10 @@ export default function Pricing() {
       setTimeout(() => navigate('/register'), 1500);
     } else {
       // אם המשתמש מחובר - ביצוע הרכישה
+      const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
       try {
-        const response = await fetch('http://localhost:8001/api/packages/purchase', {
+        const response = await fetch(`${API_URL}/packages/purchase`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

@@ -294,6 +294,8 @@ export default function InvitationEditor() {
   const saveInvitationToEvent = async () => {
     if (!eventId) return;
 
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
     try {
       const invitationData = {
         template_id: templateId,
@@ -303,7 +305,7 @@ export default function InvitationEditor() {
         back_approved: backApproved
       };
 
-      const response = await fetch(`http://localhost:8001/api/packages/events/${eventId}`, {
+      const response = await fetch(`${API_URL}/packages/events/${eventId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
