@@ -252,7 +252,11 @@ def send_welcome_email(to_email: str, full_name: Optional[str] = None):
     # נתיב ללוגו
     logo_path = Path(__file__).parent.parent / "frontend" / "public" / "images" / "logo.png"
 
-    return send_email_with_logo(to_email, subject, html, str(logo_path))
+    # שלח את המייל (גם אם אין לוגו)
+    if not logo_path.exists():
+        logo_path = None
+
+    return send_email_with_logo(to_email, subject, html, str(logo_path) if logo_path else None)
 
 
 def send_reset_code_email(to_email: str, reset_code: str):
@@ -289,7 +293,11 @@ def send_reset_code_email(to_email: str, reset_code: str):
 
     logo_path = Path(__file__).parent.parent / "frontend" / "public" / "images" / "logo.png"
 
-    return send_email_with_logo(to_email, subject, html, str(logo_path))
+    # שלח את המייל (גם אם אין לוגו)
+    if not logo_path.exists():
+        logo_path = None
+
+    return send_email_with_logo(to_email, subject, html, str(logo_path) if logo_path else None)
 
 
 def send_password_reset_success_email(to_email: str, full_name: Optional[str] = None):
@@ -339,7 +347,11 @@ def send_password_reset_success_email(to_email: str, full_name: Optional[str] = 
 
     logo_path = Path(__file__).parent.parent / "frontend" / "public" / "images" / "logo.png"
 
-    return send_email_with_logo(to_email, subject, html, str(logo_path))
+    # שלח את המייל (גם אם אין לוגו)
+    if not logo_path.exists():
+        logo_path = None
+
+    return send_email_with_logo(to_email, subject, html, str(logo_path) if logo_path else None)
 
 
 def send_verification_code_email(to_email: str, verification_code: str) -> bool:
@@ -393,7 +405,11 @@ def send_verification_code_email(to_email: str, verification_code: str) -> bool:
 
     logo_path = Path(__file__).parent.parent / "frontend" / "public" / "images" / "logo.png"
 
-    return send_email_with_logo(to_email, subject, html, str(logo_path))
+    # שלח את המייל (גם אם אין לוגו)
+    if not logo_path.exists():
+        logo_path = None
+
+    return send_email_with_logo(to_email, subject, html, str(logo_path) if logo_path else None)
 
 
 def send_admin_verification_code_email(to_email: str, admin_name: str, verification_code: str) -> bool:
@@ -458,4 +474,8 @@ def send_admin_verification_code_email(to_email: str, admin_name: str, verificat
 
     logo_path = Path(__file__).parent.parent / "frontend" / "public" / "images" / "logo.png"
 
-    return send_email_with_logo(to_email, subject, html, str(logo_path))
+    # שלח את המייל (גם אם אין לוגו)
+    if not logo_path.exists():
+        logo_path = None
+
+    return send_email_with_logo(to_email, subject, html, str(logo_path) if logo_path else None)
