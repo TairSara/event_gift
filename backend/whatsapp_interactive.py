@@ -13,6 +13,7 @@ GUPSHUP_API_KEY = os.getenv('GUPSHUP_API_KEY', 'sk_7c99c2f11f284370af9248ce40a4a
 GUPSHUP_APP_NAME = os.getenv('GUPSHUP_APP_NAME', 'saveday')
 WHATSAPP_SENDER_NUMBER = os.getenv('WHATSAPP_SENDER_NUMBER', '972525869312')
 WHATSAPP_TEMPLATE_NAME = os.getenv('WHATSAPP_TEMPLATE_NAME', 'event_invitation_new')
+DEFAULT_INVITATION_IMAGE = os.getenv('DEFAULT_INVITATION_IMAGE', 'https://i.ibb.co/pKDqkh5/default-invitation.jpg')
 GUPSHUP_API_URL = 'https://api.gupshup.io/wa/api/v1/msg'
 GUPSHUP_TEMPLATE_URL = 'https://api.gupshup.io/wa/api/v1/template/msg'
 
@@ -295,21 +296,24 @@ class WhatsAppInteractiveService:
         self,
         destination: str,
         template_name: str,
-        template_params: List[str]
+        template_params: List[str],
+        image_url: Optional[str] = None
     ) -> Dict:
         """
-        Send a WhatsApp template message
+        Send a WhatsApp template message with optional image attachment
 
         Args:
             destination: Recipient phone number (with country code)
             template_name: Name of the approved template
             template_params: List of parameters to fill in the template
+            image_url: Optional URL to an image for Media templates (required for Image type templates)
 
         Example:
             send_template_message(
                 destination="+972501234567",
                 template_name="event_invitation_new",
-                template_params=["שם האורח", "שם האירוע", "01/01/2025", "18:00", "מקום האירוע"]
+                template_params=["שם האורח", "שם האירוע", "01/01/2025", "18:00", "מקום האירוע"],
+                image_url="https://example.com/invitation.jpg"
             )
         """
         headers = {
@@ -317,22 +321,36 @@ class WhatsAppInteractiveService:
             'Content-Type': 'application/x-www-form-urlencoded'
         }
 
+        # Build template payload
+        template_payload = {
+            "id": template_name,
+            "params": template_params
+        }
+
         data = {
             'channel': 'whatsapp',
             'source': self.sender_number,
             'destination': destination,
             'src.name': self.app_name,
-            'template': json.dumps({
-                "id": template_name,
-                "params": template_params
-            })
+            'template': json.dumps(template_payload)
         }
+
+        # Add image attachment for Media templates
+        if image_url:
+            data['message'] = json.dumps({
+                "type": "image",
+                "originalUrl": image_url,
+                "previewUrl": image_url,
+                "caption": ""
+            })
 
         print(f"\n📤 Sending template message to Gupshup:")
         print(f"   URL: {GUPSHUP_TEMPLATE_URL}")
         print(f"   Destination: {destination}")
         print(f"   Template: {template_name}")
         print(f"   Params: {template_params}")
+        if image_url:
+            print(f"   Image URL: {image_url}")
         print(f"   Data payload: {data}")
 
         try:
@@ -406,10 +424,11 @@ class WhatsAppInteractiveService:
         event_name: str,
         event_date: str,
         event_time: str,
-        event_location: str
+        event_location: str,
+        image_url: Optional[str] = None
     ) -> Dict:
         """
-        Send event invitation using the event_invitation_new template
+        Send event invitation using the event_invitation_new template with optional image
 
         Template format from Gupshup:
         שלום {{1}} 💙 אנא לחצו על אחד מהקישורים להזמינים {{2}}! אירוח: {{3}} תאריך: {{4}} שעה: {{5}}! 💙 משפחת אירועי היום, {{6}} ⭐
@@ -421,6 +440,7 @@ class WhatsAppInteractiveService:
             event_date: Date of the event ({{3}}) (e.g., "01/01/2025")
             event_time: Time of the event ({{4}}) (e.g., "18:00")
             event_location: Location of the event ({{5}})
+            image_url: Optional URL to invitation image for Media templates
             {{6}} - Family/Host name (we'll use event_location again or empty)
         """
         # Template actual order (confusing labels in template):
@@ -445,7 +465,8 @@ class WhatsAppInteractiveService:
         return self.send_template_message(
             destination=destination,
             template_name=WHATSAPP_TEMPLATE_NAME,
-            template_params=template_params
+            template_params=template_params,
+            image_url=image_url
         )
 
 

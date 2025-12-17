@@ -6,8 +6,9 @@ from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
 from datetime import datetime
 import psycopg2
+import os
 from db import get_db_connection
-from whatsapp_interactive import whatsapp_service
+from whatsapp_interactive import whatsapp_service, DEFAULT_INVITATION_IMAGE
 
 router = APIRouter(prefix="/api/whatsapp", tags=["WhatsApp"])
 
@@ -178,14 +179,14 @@ def format_israeli_phone(phone: str) -> str:
 
 @router.post("/send-template-invitation/{guest_id}")
 async def send_template_invitation(guest_id: int):
-    """Send template invitation message to a guest"""
+    """Send template invitation message to a guest with image"""
     try:
         conn = get_db_connection()
         cur = conn.cursor()
 
-        # Get guest and event details
+        # Get guest and event details, including invitation_data which may contain image URL
         cur.execute("""
-            SELECT g.name, g.phone, e.event_name, e.event_date, e.event_time, e.event_location
+            SELECT g.name, g.phone, e.event_name, e.event_date, e.event_time, e.event_location, e.invitation_data
             FROM guests g
             JOIN events e ON g.event_id = e.id
             WHERE g.id = %s
@@ -195,7 +196,7 @@ async def send_template_invitation(guest_id: int):
         if not guest_data:
             raise HTTPException(status_code=404, detail="Guest not found")
 
-        guest_name, phone, event_name, event_date, event_time, event_location = guest_data
+        guest_name, phone, event_name, event_date, event_time, event_location, invitation_data = guest_data
 
         if not phone:
             raise HTTPException(status_code=400, detail="Guest has no phone number")
@@ -214,12 +215,31 @@ async def send_template_invitation(guest_id: int):
         else:
             formatted_time = str(event_time) if event_time else '18:00'
 
+        # Extract image URL from invitation_data or use default
+        image_url = DEFAULT_INVITATION_IMAGE
+        if invitation_data and isinstance(invitation_data, dict):
+            # Check if invitation_data contains image_url
+            if 'image_url' in invitation_data:
+                image_url = invitation_data['image_url']
+            elif 'invitation_url' in invitation_data:
+                image_url = invitation_data['invitation_url']
+            elif 'file_path' in invitation_data:
+                # Convert relative path to full URL
+                file_path = invitation_data['file_path']
+                if file_path.startswith('/'):
+                    # Get the base URL from environment or construct it
+                    base_url = os.getenv('BASE_URL', 'https://event-gift.onrender.com')
+                    image_url = f"{base_url}{file_path}"
+                else:
+                    image_url = file_path
+
         # Send template message
         print(f"📱 Sending WhatsApp to: {formatted_phone}")
         print(f"👤 Guest: {guest_name}")
         print(f"🎉 Event: {event_name}")
         print(f"📅 Date: {formatted_date}, Time: {formatted_time}")
         print(f"📍 Location: {event_location or 'יודיע בהמשך'}")
+        print(f"🖼️ Image URL: {image_url}")
 
         result = whatsapp_service.send_event_invitation_template(
             destination=formatted_phone,
@@ -227,7 +247,8 @@ async def send_template_invitation(guest_id: int):
             event_name=event_name,
             event_date=formatted_date,
             event_time=formatted_time,
-            event_location=event_location or "יודיע בהמשך"
+            event_location=event_location or "יודיע בהמשך",
+            image_url=image_url
         )
 
         print(f"✉️ Gupshup Response: {result}")
