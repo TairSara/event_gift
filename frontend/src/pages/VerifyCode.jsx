@@ -32,7 +32,8 @@ export default function VerifyCode() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8001/api/auth/verify-reset-code', {
+      const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+      const response = await fetch(`${API_URL}/auth/verify-reset-code`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,15 +44,27 @@ export default function VerifyCode() {
       const data = await response.json();
 
       if (!response.ok || !data.valid) {
+        console.error('Verification failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          data
+        });
         throw new Error(data.detail || 'קוד אימות שגוי');
       }
 
+      console.log('Code verified successfully, navigating to reset-password with:', { email, code: '***' });
       showSuccess('קוד אומת בהצלחה!', 2000);
 
-      // ✅ עבור לדף איפוס סיסמה
-      navigate('/reset-password', { state: { email, code } });
+      // ✅ עבור לדף איפוס סיסמה עם המייל והקוד
+      setTimeout(() => {
+        navigate('/reset-password', { state: { email, code } });
+      }, 1500);
     } catch (err) {
-      console.error('Error:', err);
+      console.error('Verify code error:', {
+        message: err.message,
+        error: err,
+        email
+      });
       showError(err.message || 'קוד שגוי, נסה שוב');
       setCode('');
     } finally {

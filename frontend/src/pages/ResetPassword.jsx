@@ -17,7 +17,15 @@ export default function ResetPassword() {
 
   // 🔒 הגנה: אם אין מייל או קוד - חזור לדף ראשון
   useEffect(() => {
+    console.log('ResetPassword mounted with:', {
+      hasEmail: !!email,
+      hasCode: !!code,
+      email,
+      locationState: location.state
+    });
+
     if (!email || !code) {
+      console.warn('Missing email or code, redirecting to forgot-password');
       navigate('/forgot-password');
     }
   }, [email, code, navigate]);
@@ -38,7 +46,8 @@ export default function ResetPassword() {
     setIsLoading(true);
 
     try {
-      const response = await fetch('http://localhost:8001/api/auth/reset-password', {
+      const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+      const response = await fetch(`${API_URL}/auth/reset-password`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -53,7 +62,12 @@ export default function ResetPassword() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.detail || 'שגיאה באיפוס הסיסמה');
+        console.error('Server response error:', {
+          status: response.status,
+          statusText: response.statusText,
+          data
+        });
+        throw new Error(data.detail || `שגיאה באיפוס הסיסמה (${response.status})`);
       }
 
       showSuccess('הסיסמה אופסה בהצלחה! מעביר אותך להתחברות...', 3000);
@@ -63,7 +77,12 @@ export default function ResetPassword() {
         navigate('/login', { state: { message: 'הסיסמה אופסה בהצלחה, התחבר כעת.' } });
       }, 2000);
     } catch (err) {
-      console.error('Error:', err);
+      console.error('Reset password error:', {
+        message: err.message,
+        error: err,
+        email,
+        hasCode: !!code
+      });
       showError(err.message || 'אירעה שגיאה, נסה שוב מאוחר יותר');
     } finally {
       setIsLoading(false);
