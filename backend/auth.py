@@ -187,6 +187,7 @@ class UserCreate(BaseModel):
     email: EmailStr
     password: constr(min_length=8)
     full_name: Optional[str] = None
+    phone: Optional[str] = None
 
 # מודל נתוני התחברות
 class UserLogin(BaseModel):
@@ -240,11 +241,11 @@ def register(user: UserCreate):
 
         cur.execute(
             """
-            INSERT INTO users (email, password, full_name)
-            VALUES (%s, %s, %s)
+            INSERT INTO users (email, password, full_name, phone)
+            VALUES (%s, %s, %s, %s)
             RETURNING id;
             """,
-            (user.email, hashed_pw, user.full_name)
+            (user.email, hashed_pw, user.full_name, user.phone)
         )
 
         new_id = cur.fetchone()[0]
