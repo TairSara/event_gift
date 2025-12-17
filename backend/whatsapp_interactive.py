@@ -321,35 +321,39 @@ class WhatsAppInteractiveService:
             'Content-Type': 'application/x-www-form-urlencoded'
         }
 
-        # Build template payload with image attachments inside the template object
-        template_data = {
-            "id": template_name,
-            "params": template_params
-        }
-
-        # Add image attachment for Media templates - MUST be inside template object
+        # Build template payload
+        # For Media templates with Image header, the image URL should be the FIRST parameter
         if image_url:
-            template_data["attachments"] = [{
-                "type": "image",
-                "url": image_url,
-                "filename": "invite.jpg"
-            }]
+            # Image header goes as first parameter, followed by text parameters
+            all_params = [image_url] + template_params
+            template_data = {
+                "id": template_name,
+                "params": all_params
+            }
+        else:
+            template_data = {
+                "id": template_name,
+                "params": template_params
+            }
 
         data = {
             'channel': 'whatsapp',
             'source': self.sender_number,
             'destination': destination,
             'src.name': self.app_name,
-            'template': json.dumps(template_data)  # Image is inside the template object
+            'template': json.dumps(template_data)
         }
 
         print(f"\n📤 Sending template message to Gupshup:")
         print(f"   URL: {GUPSHUP_TEMPLATE_URL}")
         print(f"   Destination: {destination}")
         print(f"   Template: {template_name}")
-        print(f"   Params: {template_params}")
         if image_url:
-            print(f"   Image URL: {image_url}")
+            print(f"   Image URL (param 0): {image_url}")
+            print(f"   Total params: {len(template_data['params'])} (1 image + {len(template_params)} text)")
+        else:
+            print(f"   Total params: {len(template_params)}")
+        print(f"   All Params: {template_data['params']}")
         print(f"   Template JSON: {json.dumps(template_data, ensure_ascii=False)}")
         print(f"   Data payload: {data}")
 
