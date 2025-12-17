@@ -120,7 +120,8 @@ export default function GuestManagement({ eventId, onUpdate }) {
     try {
       setLoading(true);
       const result = await guestAPI.sendWhatsAppInvitation(guest.id);
-      showNotification(`ההזמנה נשלחה בהצלחה ל-${guest.name}! ✅`);
+      const guestName = result.guest_name || guest.name || 'האורח';
+      showNotification(`ההזמנה נשלחה בהצלחה ל-${guestName}! ✅`);
       console.log('WhatsApp sent:', result);
     } catch (error) {
       showNotification(error.message || 'שגיאה בשליחת ההזמנה', 'error');
