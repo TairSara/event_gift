@@ -8,6 +8,7 @@ from packages import router as packages_router
 from notifications import router as notifications_router
 from admin_auth import router as admin_auth_router
 from admin_api import router as admin_api_router
+from whatsapp_api import router as whatsapp_router
 
 app = FastAPI(title="giftWeb-api")
 
@@ -69,3 +70,6 @@ app.include_router(admin_auth_router)
 
 # חיבור ראוט Admin API
 app.include_router(admin_api_router)
+
+# חיבור ראוט WhatsApp Interactive Messages
+app.include_router(whatsapp_router)
