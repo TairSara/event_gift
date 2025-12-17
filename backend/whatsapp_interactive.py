@@ -321,28 +321,27 @@ class WhatsAppInteractiveService:
             'Content-Type': 'application/x-www-form-urlencoded'
         }
 
-        # Build template payload
-        template_payload = {
+        # Build template payload with image attachments inside the template object
+        template_data = {
             "id": template_name,
             "params": template_params
         }
+
+        # Add image attachment for Media templates - MUST be inside template object
+        if image_url:
+            template_data["attachments"] = [{
+                "type": "image",
+                "url": image_url,
+                "filename": "invite.jpg"
+            }]
 
         data = {
             'channel': 'whatsapp',
             'source': self.sender_number,
             'destination': destination,
             'src.name': self.app_name,
-            'template': json.dumps(template_payload)
+            'template': json.dumps(template_data)  # Image is inside the template object
         }
-
-        # Add image attachment for Media templates
-        if image_url:
-            data['message'] = json.dumps({
-                "type": "image",
-                "originalUrl": image_url,
-                "previewUrl": image_url,
-                "caption": ""
-            })
 
         print(f"\n📤 Sending template message to Gupshup:")
         print(f"   URL: {GUPSHUP_TEMPLATE_URL}")
@@ -351,6 +350,7 @@ class WhatsAppInteractiveService:
         print(f"   Params: {template_params}")
         if image_url:
             print(f"   Image URL: {image_url}")
+        print(f"   Template JSON: {json.dumps(template_data, ensure_ascii=False)}")
         print(f"   Data payload: {data}")
 
         try:
