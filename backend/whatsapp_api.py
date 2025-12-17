@@ -233,6 +233,13 @@ async def send_template_invitation(guest_id: int):
                 else:
                     image_url = file_path
 
+        # Clean image URL - WhatsApp Media Templates reject URLs with query parameters
+        # Remove everything after '?' to get clean image URL
+        if image_url and '?' in image_url:
+            clean_image_url = image_url.split('?')[0]
+            print(f"🧹 Cleaned image URL: {image_url} -> {clean_image_url}")
+            image_url = clean_image_url
+
         # Send template message
         print(f"📱 Sending WhatsApp to: {formatted_phone}")
         print(f"👤 Guest: {guest_name}")
