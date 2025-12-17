@@ -12,7 +12,7 @@ load_dotenv()
 
 # פרטי חשבון Gmail
 SMTP_SERVER = "smtp.gmail.com"
-SMTP_PORT = 587
+SMTP_PORT = 465  # Changed from 587 (TLS) to 465 (SSL) - might work better on Render
 SENDER_EMAIL = os.getenv("SENDER_EMAIL", "savedayevents@gmail.com")
 SENDER_PASSWORD = os.getenv("SENDER_PASSWORD", "zvlk gtrc uzhd pkvj")
 
@@ -200,8 +200,8 @@ def send_email_with_logo(to_email: str, subject: str, html_content: str, logo_pa
                 msg.attach(logo)
 
         # התחברות לשרת SMTP ושליחת המייל
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=10) as server:
-            server.starttls()
+        # Using SMTP_SSL (port 465) instead of SMTP with STARTTLS (port 587)
+        with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT, timeout=10) as server:
             server.login(SENDER_EMAIL, SENDER_PASSWORD)
             server.send_message(msg)
 
