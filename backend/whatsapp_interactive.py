@@ -352,12 +352,22 @@ class WhatsAppInteractiveService:
             event_location: Location of the event ({{5}})
             {{6}} - Family/Host name (we'll use event_location again or empty)
         """
+        # Template actual order (confusing labels in template):
+        # שלום {{1}} 💙 אנא לחצו על אחד מהקישורים להזמינים {{2}}!
+        # אירוח: {{3}} תאריך: {{4}} שעה: {{5}}!
+        # 💙 משפחת אירועי היום, {{6}} ⭐
+        #
+        # The labels are misleading! Actual mapping:
+        # {{3}} labeled "אירוח" = actually event_date (25/12/2025)
+        # {{4}} labeled "תאריך" = actually event_time (20:00)
+        # {{5}} labeled "שעה" = actually event_location (ירושלים)
+
         template_params = [
-            guest_name,          # {{1}}
-            event_name,          # {{2}}
-            event_date,          # {{3}}
-            event_time,          # {{4}}
-            event_location,      # {{5}}
+            guest_name,          # {{1}} - שלום
+            event_name,          # {{2}} - להזמינים
+            event_date,          # {{3}} - אירוח (but actually date!)
+            event_time,          # {{4}} - תאריך (but actually time!)
+            event_location,      # {{5}} - שעה (but actually location!)
             "SaveDay Events"     # {{6}} - משפחת אירועי היום
         ]
 
