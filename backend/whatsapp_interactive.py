@@ -340,28 +340,25 @@ class WhatsAppInteractiveService:
         """
         Send event invitation using the event_invitation_new template
 
-        Template format:
-        שלום {{1}}
-        אנו שמחים להזמינכם {{2}}!
-        תאריך: {{3}}
-        שעה: {{4}}
-        מקום: {{5}}
-        💙 נשמח לאישור הגעתכם 💙
+        Template format from Gupshup:
+        שלום {{1}} 💙 אנא לחצו על אחד מהקישורים להזמינים {{2}}! אירוח: {{3}} תאריך: {{4}} שעה: {{5}}! 💙 משפחת אירועי היום, {{6}} ⭐
 
         Args:
             destination: Guest phone number
-            guest_name: Name of the guest
-            event_name: Name of the event
-            event_date: Date of the event (e.g., "01/01/2025")
-            event_time: Time of the event (e.g., "18:00")
-            event_location: Location of the event
+            guest_name: Name of the guest ({{1}})
+            event_name: Name of the event ({{2}})
+            event_date: Date of the event ({{3}}) (e.g., "01/01/2025")
+            event_time: Time of the event ({{4}}) (e.g., "18:00")
+            event_location: Location of the event ({{5}})
+            {{6}} - Family/Host name (we'll use event_location again or empty)
         """
         template_params = [
-            guest_name,
-            event_name,
-            event_date,
-            event_time,
-            event_location
+            guest_name,          # {{1}}
+            event_name,          # {{2}}
+            event_date,          # {{3}}
+            event_time,          # {{4}}
+            event_location,      # {{5}}
+            "SaveDay Events"     # {{6}} - משפחת אירועי היום
         ]
 
         return self.send_template_message(
