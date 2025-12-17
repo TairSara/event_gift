@@ -25,12 +25,25 @@ export const authAPI = {
         console.error('Registration failed:', {
           status: response.status,
           statusText: response.statusText,
-          data
+          data: data,
+          dataDetail: data.detail,
+          dataDetailType: typeof data.detail,
+          fullDataJSON: JSON.stringify(data)
         });
         // בדיקה אם data.detail הוא מחרוזת או אובייקט
-        const errorMessage = typeof data.detail === 'string'
-          ? data.detail
-          : (data.message || 'שגיאה בהרשמה');
+        let errorMessage = 'שגיאה בהרשמה';
+
+        if (typeof data.detail === 'string') {
+          errorMessage = data.detail;
+        } else if (Array.isArray(data.detail) && data.detail.length > 0) {
+          // אם זה מערך של שגיאות (FastAPI validation errors)
+          errorMessage = data.detail.map(err => err.msg || JSON.stringify(err)).join(', ');
+        } else if (data.detail && typeof data.detail === 'object') {
+          errorMessage = JSON.stringify(data.detail);
+        } else if (data.message) {
+          errorMessage = data.message;
+        }
+
         throw new Error(errorMessage);
       }
 
