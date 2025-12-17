@@ -144,6 +144,38 @@ async def send_address_request(request: SendAddressRequestRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+def format_israeli_phone(phone: str) -> str:
+    """
+    Format Israeli phone number to international format for Gupshup.
+
+    Converts Israeli numbers like:
+    - 0501234567 -> 972501234567
+    - 050-123-4567 -> 972501234567
+    - +972501234567 -> 972501234567
+
+    Args:
+        phone: Raw phone number from database
+
+    Returns:
+        Formatted phone number without + prefix (e.g., 972501234567)
+    """
+    # Remove all non-digit characters
+    digits_only = ''.join(filter(str.isdigit, phone))
+
+    # If it starts with 972, it's already in international format
+    if digits_only.startswith('972'):
+        return digits_only
+
+    # If it starts with 0, it's an Israeli local number
+    if digits_only.startswith('0'):
+        # Remove leading 0 and add 972 country code
+        return '972' + digits_only[1:]
+
+    # If no leading 0 or 972, assume it's missing the country code
+    # and treat it as a local number (add 972)
+    return '972' + digits_only
+
+
 @router.post("/send-template-invitation/{guest_id}")
 async def send_template_invitation(guest_id: int):
     """Send template invitation message to a guest"""
@@ -168,9 +200,8 @@ async def send_template_invitation(guest_id: int):
         if not phone:
             raise HTTPException(status_code=400, detail="Guest has no phone number")
 
-        # Format phone number (ensure it has country code)
-        if not phone.startswith('+'):
-            phone = f'+{phone}'
+        # Format phone number for Israeli numbers (050... -> 97250...)
+        formatted_phone = format_israeli_phone(phone)
 
         # Format date and time
         if isinstance(event_date, datetime):
@@ -184,14 +215,14 @@ async def send_template_invitation(guest_id: int):
             formatted_time = str(event_time) if event_time else '18:00'
 
         # Send template message
-        print(f"📱 Sending WhatsApp to: {phone}")
+        print(f"📱 Sending WhatsApp to: {formatted_phone}")
         print(f"👤 Guest: {guest_name}")
         print(f"🎉 Event: {event_name}")
         print(f"📅 Date: {formatted_date}, Time: {formatted_time}")
         print(f"📍 Location: {event_location or 'יודיע בהמשך'}")
 
         result = whatsapp_service.send_event_invitation_template(
-            destination=phone,
+            destination=formatted_phone,
             guest_name=guest_name,
             event_name=event_name,
             event_date=formatted_date,
@@ -214,7 +245,7 @@ async def send_template_invitation(guest_id: int):
         return {
             'success': True,
             'guest_name': guest_name,
-            'phone': phone,
+            'phone': formatted_phone,
             'message': 'Template invitation sent successfully',
             'message_data': result.get('data')
         }
@@ -249,13 +280,12 @@ async def send_event_rsvp(request: SendEventRSVPRequest):
         if not phone:
             raise HTTPException(status_code=400, detail="Guest has no phone number")
 
-        # Format phone number (ensure it has country code)
-        if not phone.startswith('+'):
-            phone = f'+{phone}'
+        # Format phone number for Israeli numbers (050... -> 97250...)
+        formatted_phone = format_israeli_phone(phone)
 
         # Send RSVP message
         result = whatsapp_service.send_event_rsvp_buttons(
-            destination=phone,
+            destination=formatted_phone,
             guest_name=guest_name,
             event_name=event_name,
             event_date=event_date.strftime('%d/%m/%Y') if isinstance(event_date, datetime) else str(event_date),
@@ -271,7 +301,7 @@ async def send_event_rsvp(request: SendEventRSVPRequest):
         return {
             'success': True,
             'guest_name': guest_name,
-            'phone': phone,
+            'phone': formatted_phone,
             'message_data': result['data']
         }
 
@@ -305,13 +335,12 @@ async def send_bulk_rsvp(event_id: int):
 
         results = []
         for guest_id, guest_name, phone, event_name, event_date, event_location in guests:
-            # Format phone number
-            if not phone.startswith('+'):
-                phone = f'+{phone}'
+            # Format phone number for Israeli numbers (050... -> 97250...)
+            formatted_phone = format_israeli_phone(phone)
 
             # Send RSVP message
             result = whatsapp_service.send_event_rsvp_buttons(
-                destination=phone,
+                destination=formatted_phone,
                 guest_name=guest_name,
                 event_name=event_name,
                 event_date=event_date.strftime('%d/%m/%Y') if isinstance(event_date, datetime) else str(event_date),
@@ -321,7 +350,7 @@ async def send_bulk_rsvp(event_id: int):
             results.append({
                 'guest_id': guest_id,
                 'guest_name': guest_name,
-                'phone': phone,
+                'phone': formatted_phone,
                 'success': result['success'],
                 'data': result.get('data') if result['success'] else result.get('error')
             })
