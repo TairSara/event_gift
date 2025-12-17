@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { guestAPI, invitationsAPI } from '../services/api';
+import { guestAPI } from '../services/api';
 import './GuestManagement.css';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
@@ -159,7 +159,6 @@ export default function GuestManagement({ eventId, onUpdate }) {
       'כמות': guest.quantity || 1,
       'מספר טלפון': guest.phone || '',
       'אימייל': guest.email || '',
-      'דרך יצירת קשר': guest.contact_method,
       'סטטוס אישור הגעה': guest.attendance_status === 'pending' ? 'ממתין' :
                             guest.attendance_status === 'confirmed' ? 'אישר' : 'סירב',
       'מספר שולחן': guest.table_number || ''
@@ -192,7 +191,6 @@ export default function GuestManagement({ eventId, onUpdate }) {
       guest.name,
       guest.quantity || 1,
       guest.phone || '-',
-      guest.contact_method,
       guest.attendance_status === 'pending' ? 'ממתין' :
       guest.attendance_status === 'confirmed' ? 'אישר' : 'סירב',
       guest.table_number || '-'
@@ -200,7 +198,7 @@ export default function GuestManagement({ eventId, onUpdate }) {
 
     // יצירת הטבלה
     doc.autoTable({
-      head: [['שם האורח', 'כמות', 'מספר טלפון', 'דרך יצירת קשר', 'סטטוס', 'מספר שולחן']],
+      head: [['שם האורח', 'כמות', 'מספר טלפון', 'סטטוס', 'מספר שולחן']],
       body: tableData,
       startY: 25,
       styles: {
@@ -223,47 +221,6 @@ export default function GuestManagement({ eventId, onUpdate }) {
     showNotification('הקובץ הורד בהצלחה!');
   };
 
-  const handleSendInvitations = async () => {
-    console.log('🚀 handleSendInvitations called');
-
-    if (guests.length === 0) {
-      showNotification('אין מוזמנים לשלוח להם הזמנות', 'error');
-      return;
-    }
-
-    const confirmed = window.confirm(
-      `האם אתה בטוח שברצונך לשלוח הזמנות WhatsApp ל-${guests.length} מוזמנים?`
-    );
-
-    console.log('✅ User confirmed:', confirmed);
-
-    if (!confirmed) return;
-
-    try {
-      setLoading(true);
-      const guestIds = guests.map(g => g.id);
-      console.log('📋 Sending to guest IDs:', guestIds);
-      console.log('📡 Calling invitationsAPI.sendInvitations...');
-      const result = await invitationsAPI.sendInvitations(eventId, guestIds);
-      console.log('✅ Result received:', JSON.stringify(result, null, 2));
-
-      // ספירת הצלחות וכשלונות
-      const sent = result.results.filter(r => r.success).length;
-      const failed = result.results.filter(r => !r.success).length;
-
-      showNotification(
-        `ההזמנות נשלחו! הצליחו: ${sent}, נכשלו: ${failed}`,
-        failed > 0 ? 'warning' : 'success'
-      );
-
-      // טען מחדש את המוזמנים לעדכון סטטוס
-      await loadGuests(true);
-    } catch (error) {
-      showNotification(error.message || 'שגיאה בשליחת ההזמנות', 'error');
-    } finally {
-      setLoading(false);
-    }
-  };
 
   const getStatusBadge = (status) => {
     const statusMap = {
@@ -356,27 +313,6 @@ export default function GuestManagement({ eventId, onUpdate }) {
             <i className="fas fa-file-upload"></i>
             העלה מ-Excel
           </button>
-          <button
-            className="btn-send-invitations"
-            onClick={handleSendInvitations}
-            disabled={guests.length === 0 || loading}
-            style={{
-              backgroundColor: '#25D366',
-              color: 'white',
-              border: 'none',
-              padding: '0.8rem 1.5rem',
-              borderRadius: '8px',
-              cursor: guests.length === 0 ? 'not-allowed' : 'pointer',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              fontWeight: '600',
-              opacity: guests.length === 0 ? 0.6 : 1
-            }}
-          >
-            <i className="fab fa-whatsapp"></i>
-            שלח הזמנות WhatsApp
-          </button>
         </div>
         <div className="actions-right">
           <button className="btn-download btn-excel" onClick={downloadExcel} disabled={guests.length === 0}>
@@ -397,7 +333,6 @@ export default function GuestManagement({ eventId, onUpdate }) {
               <th>שם האורח</th>
               <th>כמות</th>
               <th>מספר טלפון</th>
-              <th>דרך יצירת קשר</th>
               <th>סטטוס אישור הגעה</th>
               <th>מספר שולחן</th>
               <th>פעולות</th>
@@ -406,7 +341,7 @@ export default function GuestManagement({ eventId, onUpdate }) {
           <tbody>
             {guests.length === 0 ? (
               <tr>
-                <td colSpan="7" className="empty-table-message">
+                <td colSpan="6" className="empty-table-message">
                   <div className="empty-state-inline">
                     <i className="fas fa-address-book"></i>
                     <p>אין מוזמנים עדיין</p>
@@ -420,10 +355,6 @@ export default function GuestManagement({ eventId, onUpdate }) {
                   <td className="guest-name">{guest.name}</td>
                   <td>{guest.quantity || 1}</td>
                   <td>{guest.phone || '-'}</td>
-                  <td className="contact-method">
-                    {getContactMethodIcon(guest.contact_method)}
-                    <span>{guest.contact_method}</span>
-                  </td>
                   <td>{getStatusBadge(guest.attendance_status)}</td>
                   <td>{guest.table_number || '-'}</td>
                   <td className="actions">
@@ -508,29 +439,17 @@ export default function GuestManagement({ eventId, onUpdate }) {
                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
                 />
               </div>
-              <div className="form-row">
-                <div className="form-group">
-                  <label>דרך יצירת קשר</label>
-                  <select
-                    value={formData.contact_method}
-                    onChange={(e) => setFormData({ ...formData, contact_method: e.target.value })}
-                  >
-                    <option value="WhatsApp">WhatsApp</option>
-                    <option value="SMS">SMS</option>
-                  </select>
-                </div>
-                <div className="form-group">
-                  <label>סטטוס אישור הגעה</label>
-                  <select
-                    value={formData.attendance_status}
-                    onChange={(e) => setFormData({ ...formData, attendance_status: e.target.value })}
-                  >
-                    <option value="pending">ממתין</option>
-                    <option value="confirmed">אישר</option>
-                    <option value="declined">סירב</option>
-                    <option value="maybe">לא יודע</option>
-                  </select>
-                </div>
+              <div className="form-group">
+                <label>סטטוס אישור הגעה</label>
+                <select
+                  value={formData.attendance_status}
+                  onChange={(e) => setFormData({ ...formData, attendance_status: e.target.value })}
+                >
+                  <option value="pending">ממתין</option>
+                  <option value="confirmed">אישר</option>
+                  <option value="declined">סירב</option>
+                  <option value="maybe">לא יודע</option>
+                </select>
               </div>
               <div className="form-group">
                 <label>מספר שולחן</label>
@@ -580,12 +499,11 @@ export default function GuestManagement({ eventId, onUpdate }) {
                       <li>טלפון / phone</li>
                       <li>אימייל / email</li>
                       <li>כמות / quantity</li>
-                      <li>דרך יצירת קשר / contact_method (WhatsApp/SMS)</li>
                       <li>סטטוס / status (pending/confirmed/declined)</li>
                       <li>שולחן / table_number</li>
                     </ul>
                   </li>
-                  <li>ערכי ברירת מחדל: כמות=1, דרך יצירת קשר=WhatsApp, סטטוס=ממתין</li>
+                  <li>ערכי ברירת מחדל: כמות=1, סטטוס=ממתין</li>
                 </ul>
               </div>
               <div className="upload-area">
