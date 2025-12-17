@@ -1,20 +1,16 @@
-import smtplib
 import os
-from email.mime.text import MIMEText
-from email.mime.multipart import MIMEMultipart
-from email.mime.image import MIMEImage
 from pathlib import Path
 from typing import Optional
 from dotenv import load_dotenv
 from datetime import datetime
 
+# Import Gmail API service
+from gmail_api_service import send_email_gmail_api
+
 load_dotenv()
 
 # פרטי חשבון Gmail
-SMTP_SERVER = "smtp.gmail.com"
-SMTP_PORT = 465  # Changed from 587 (TLS) to 465 (SSL) - might work better on Render
 SENDER_EMAIL = os.getenv("SENDER_EMAIL", "savedayevents@gmail.com")
-SENDER_PASSWORD = os.getenv("SENDER_PASSWORD", "zvlk gtrc uzhd pkvj")
 
 # צבעי העיצוב של האתר - גוון חום וכחול יוקרתי
 PRIMARY_COLOR = "#8B6F47"  # חום זהב יוקרתי
@@ -174,39 +170,17 @@ def get_email_template(title: str, content: str, logo_cid: str = "logo") -> str:
 
 def send_email_with_logo(to_email: str, subject: str, html_content: str, logo_path: Optional[str] = None):
     """
-    שולח אימייל עם לוגו מוטמע
+    שולח אימייל עם לוגו מוטמע באמצעות Gmail API
     """
     try:
-        # יצירת המסר
-        msg = MIMEMultipart('related')
-        msg['From'] = SENDER_EMAIL
-        msg['To'] = to_email
-        msg['Subject'] = subject
-
-        # הוספת תוכן HTML
-        msg_alternative = MIMEMultipart('alternative')
-        msg.attach(msg_alternative)
-
-        html_part = MIMEText(html_content, 'html', 'utf-8')
-        msg_alternative.attach(html_part)
-
-        # הוספת הלוגו כתמונה מוטמעת
-        if logo_path and os.path.exists(logo_path):
-            with open(logo_path, 'rb') as f:
-                logo_data = f.read()
-                logo = MIMEImage(logo_data)
-                logo.add_header('Content-ID', '<logo>')
-                logo.add_header('Content-Disposition', 'inline', filename='logo.png')
-                msg.attach(logo)
-
-        # התחברות לשרת SMTP ושליחת המייל
-        # Using SMTP_SSL (port 465) instead of SMTP with STARTTLS (port 587)
-        with smtplib.SMTP_SSL(SMTP_SERVER, SMTP_PORT, timeout=10) as server:
-            server.login(SENDER_EMAIL, SENDER_PASSWORD)
-            server.send_message(msg)
-
-        print(f"Email sent successfully to {to_email}")
-        return True
+        # Use Gmail API to send email
+        return send_email_gmail_api(
+            to_email=to_email,
+            subject=subject,
+            html_content=html_content,
+            logo_path=logo_path,
+            from_email=SENDER_EMAIL
+        )
 
     except Exception as e:
         print(f"Failed to send email to {to_email}: {e}")
