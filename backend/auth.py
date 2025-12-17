@@ -616,11 +616,11 @@ def reset_password(request: ResetPasswordRequest):
         # הצפנת הסיסמה החדשה
         new_hashed_password = hash_password(request.new_password)
 
-        # עדכון הסיסמה ומחיקת הקוד
+        # עדכון הסיסמה, מחיקת הקוד ואימות המייל (כי הוא קיבל את הקוד במייל)
         cur.execute(
             """
             UPDATE users
-            SET password = %s, reset_token = NULL, reset_token_expires = NULL
+            SET password = %s, reset_token = NULL, reset_token_expires = NULL, email_verified = TRUE
             WHERE id = %s
             RETURNING full_name;
             """,
