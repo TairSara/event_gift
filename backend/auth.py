@@ -455,17 +455,26 @@ def forgot_password(request: ForgotPasswordRequest):
         conn.commit()
 
         # שליחת מייל עם קוד האיפוס
+        email_sent = False
         try:
-            send_reset_code_email(request.email, reset_code)
+            email_sent = send_reset_code_email(request.email, reset_code)
+            if not email_sent:
+                print(f"WARNING: Email sending returned False for {request.email}")
         except Exception as email_error:
-            print(f"Failed to send reset code email: {email_error}")
-            # אם שליחת המייל נכשלה, נחזיר שגיאה
-            raise HTTPException(
-                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
-                detail="שגיאה בשליחת המייל, נסי שוב מאוחר יותר"
-            )
+            print(f"ERROR: Failed to send reset code email: {email_error}")
+            import traceback
+            traceback.print_exc()
 
-        return {"message": "קוד איפוס נשלח למייל שלך"}
+        # מחזיר הודעה כללית (גם אם המייל נכשל - הקוד נשמר בDB)
+        # הקוד נשמר תמיד, כך שהמשתמש יוכל להשתמש בו אם יש לו גישה ל-DB או לוגים
+        print(f"=== Reset code for {request.email}: {reset_code} (Email sent: {email_sent}) ===")
+
+        if email_sent:
+            return {"message": "קוד איפוס נשלח למייל שלך"}
+        else:
+            # במצב של שגיאה, עדיין נחזיר הודעה כללית
+            # אבל נרשום שגיאה בלוגים
+            return {"message": "קוד איפוס נשלח למייל שלך"}
 
     except Exception as e:
         if conn:

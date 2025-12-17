@@ -200,7 +200,7 @@ def send_email_with_logo(to_email: str, subject: str, html_content: str, logo_pa
                 msg.attach(logo)
 
         # התחברות לשרת SMTP ושליחת המייל
-        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT) as server:
+        with smtplib.SMTP(SMTP_SERVER, SMTP_PORT, timeout=10) as server:
             server.starttls()
             server.login(SENDER_EMAIL, SENDER_PASSWORD)
             server.send_message(msg)
@@ -210,6 +210,8 @@ def send_email_with_logo(to_email: str, subject: str, html_content: str, logo_pa
 
     except Exception as e:
         print(f"Failed to send email to {to_email}: {e}")
+        import traceback
+        traceback.print_exc()
         return False
 
 
