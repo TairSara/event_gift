@@ -144,6 +144,78 @@ async def send_address_request(request: SendAddressRequestRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.post("/send-template-invitation/{guest_id}")
+async def send_template_invitation(guest_id: int):
+    """Send template invitation message to a guest"""
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # Get guest and event details
+        cur.execute("""
+            SELECT g.name, g.phone, e.event_name, e.event_date, e.event_time, e.event_location
+            FROM guests g
+            JOIN events e ON g.event_id = e.id
+            WHERE g.id = %s
+        """, (guest_id,))
+
+        guest_data = cur.fetchone()
+        if not guest_data:
+            raise HTTPException(status_code=404, detail="Guest not found")
+
+        guest_name, phone, event_name, event_date, event_time, event_location = guest_data
+
+        if not phone:
+            raise HTTPException(status_code=400, detail="Guest has no phone number")
+
+        # Format phone number (ensure it has country code)
+        if not phone.startswith('+'):
+            phone = f'+{phone}'
+
+        # Format date and time
+        if isinstance(event_date, datetime):
+            formatted_date = event_date.strftime('%d/%m/%Y')
+        else:
+            formatted_date = str(event_date)
+
+        if isinstance(event_time, datetime):
+            formatted_time = event_time.strftime('%H:%M')
+        else:
+            formatted_time = str(event_time) if event_time else '18:00'
+
+        # Send template message
+        result = whatsapp_service.send_event_invitation_template(
+            destination=phone,
+            guest_name=guest_name,
+            event_name=event_name,
+            event_date=formatted_date,
+            event_time=formatted_time,
+            event_location=event_location or "יודיע בהמשך"
+        )
+
+        cur.close()
+        conn.close()
+
+        if not result['success']:
+            error_detail = result.get('error', 'Failed to send message')
+            if result.get('response_text'):
+                error_detail += f" - {result['response_text']}"
+            raise HTTPException(status_code=400, detail=error_detail)
+
+        return {
+            'success': True,
+            'guest_name': guest_name,
+            'phone': phone,
+            'message': 'Template invitation sent successfully',
+            'message_data': result.get('data')
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.post("/send-event-rsvp")
 async def send_event_rsvp(request: SendEventRSVPRequest):
     """Send RSVP buttons to a guest for an event"""

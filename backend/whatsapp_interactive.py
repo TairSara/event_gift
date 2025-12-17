@@ -12,7 +12,9 @@ import json
 GUPSHUP_API_KEY = os.getenv('GUPSHUP_API_KEY', 'sk_7c99c2f11f284370af9248ce40a4a7d9')
 GUPSHUP_APP_NAME = os.getenv('GUPSHUP_APP_NAME', 'saveday')
 WHATSAPP_SENDER_NUMBER = os.getenv('WHATSAPP_SENDER_NUMBER', '972525869312')
+WHATSAPP_TEMPLATE_NAME = os.getenv('WHATSAPP_TEMPLATE_NAME', 'event_invitation_new')
 GUPSHUP_API_URL = 'https://api.gupshup.io/wa/api/v1/msg'
+GUPSHUP_TEMPLATE_URL = 'https://api.gupshup.io/sm/api/v1/template/msg'
 
 
 class WhatsAppInteractiveService:
@@ -245,6 +247,101 @@ class WhatsAppInteractiveService:
             body=body,
             buttons=buttons,
             footer="תודה! 💝"
+        )
+
+    def send_template_message(
+        self,
+        destination: str,
+        template_name: str,
+        template_params: List[str]
+    ) -> Dict:
+        """
+        Send a WhatsApp template message
+
+        Args:
+            destination: Recipient phone number (with country code)
+            template_name: Name of the approved template
+            template_params: List of parameters to fill in the template
+
+        Example:
+            send_template_message(
+                destination="+972501234567",
+                template_name="event_invitation_new",
+                template_params=["שם האורח", "שם האירוע", "01/01/2025", "18:00", "מקום האירוע"]
+            )
+        """
+        headers = {
+            'apikey': self.api_key,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+
+        data = {
+            'channel': 'whatsapp',
+            'source': self.sender_number,
+            'destination': destination,
+            'src.name': self.app_name,
+            'template': json.dumps({
+                "id": template_name,
+                "params": template_params
+            })
+        }
+
+        try:
+            response = requests.post(GUPSHUP_TEMPLATE_URL, headers=headers, data=data)
+            response.raise_for_status()
+            return {
+                'success': True,
+                'data': response.json(),
+                'status_code': response.status_code
+            }
+        except requests.exceptions.RequestException as e:
+            return {
+                'success': False,
+                'error': str(e),
+                'status_code': getattr(e.response, 'status_code', None) if hasattr(e, 'response') else None,
+                'response_text': getattr(e.response, 'text', '') if hasattr(e, 'response') else ''
+            }
+
+    def send_event_invitation_template(
+        self,
+        destination: str,
+        guest_name: str,
+        event_name: str,
+        event_date: str,
+        event_time: str,
+        event_location: str
+    ) -> Dict:
+        """
+        Send event invitation using the event_invitation_new template
+
+        Template format:
+        שלום {{1}}
+        אנו שמחים להזמינכם {{2}}!
+        תאריך: {{3}}
+        שעה: {{4}}
+        מקום: {{5}}
+        💙 נשמח לאישור הגעתכם 💙
+
+        Args:
+            destination: Guest phone number
+            guest_name: Name of the guest
+            event_name: Name of the event
+            event_date: Date of the event (e.g., "01/01/2025")
+            event_time: Time of the event (e.g., "18:00")
+            event_location: Location of the event
+        """
+        template_params = [
+            guest_name,
+            event_name,
+            event_date,
+            event_time,
+            event_location
+        ]
+
+        return self.send_template_message(
+            destination=destination,
+            template_name=WHATSAPP_TEMPLATE_NAME,
+            template_params=template_params
         )
 
 

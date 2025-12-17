@@ -210,6 +210,29 @@ export const guestAPI = {
     }
   },
 
+  // Send WhatsApp invitation to guest
+  sendWhatsAppInvitation: async (guestId) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/whatsapp/send-template-invitation/${guestId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || 'שגיאה בשליחת ההזמנה');
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Send WhatsApp invitation error:', error);
+      throw error;
+    }
+  },
+
   // Upload Excel file with guests
   uploadExcel: async (eventId, file) => {
     try {
@@ -257,54 +280,6 @@ export const guestAPI = {
       return data;
     } catch (error) {
       console.error('Add guests bulk error:', error);
-      throw error;
-    }
-  }
-};
-
-// Invitations API
-export const invitationsAPI = {
-  // Send invitations to selected guests
-  sendInvitations: async (eventId, guestIds) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/invitations/send`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          event_id: eventId,
-          guest_ids: guestIds,
-          send_method: 'whatsapp'
-        }),
-      });
-
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.detail || 'שגיאה בשליחת ההזמנות');
-      }
-
-      return data;
-    } catch (error) {
-      console.error('Send invitations error:', error);
-      throw error;
-    }
-  },
-
-  // Get invitation status for an event
-  getInvitationStatus: async (eventId) => {
-    try {
-      const response = await fetch(`${API_BASE_URL}/invitations/status/${eventId}`);
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.detail || 'שגיאה בקבלת סטטוס ההזמנות');
-      }
-
-      return data;
-    } catch (error) {
-      console.error('Get invitation status error:', error);
       throw error;
     }
   }

@@ -104,6 +104,32 @@ export default function GuestManagement({ eventId, onUpdate }) {
     }
   };
 
+  const handleSendWhatsAppInvitation = async (guest) => {
+    if (!guest.phone) {
+      showNotification('למוזמן אין מספר טלפון', 'error');
+      return;
+    }
+
+    // Validate phone number format
+    const phoneRegex = /^\+?[0-9]{10,15}$/;
+    if (!phoneRegex.test(guest.phone)) {
+      showNotification('מספר הטלפון אינו תקין. יש להזין עם קידומת מדינה (לדוגמה: +972501234567)', 'error');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const result = await guestAPI.sendWhatsAppInvitation(guest.id);
+      showNotification(`ההזמנה נשלחה בהצלחה ל-${guest.name}! ✅`);
+      console.log('WhatsApp sent:', result);
+    } catch (error) {
+      showNotification(error.message || 'שגיאה בשליחת ההזמנה', 'error');
+      console.error('WhatsApp send error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleEditGuest = (guest) => {
     setEditingGuest(guest);
     setFormData({
@@ -359,6 +385,20 @@ export default function GuestManagement({ eventId, onUpdate }) {
                   <td>{guest.table_number || '-'}</td>
                   <td className="actions">
                     <button
+                      className="btn-icon btn-whatsapp"
+                      onClick={() => handleSendWhatsAppInvitation(guest)}
+                      title="שלח הזמנה ב-WhatsApp"
+                      disabled={!guest.phone || loading}
+                      style={{
+                        backgroundColor: '#25D366',
+                        color: 'white',
+                        opacity: !guest.phone ? 0.5 : 1,
+                        cursor: !guest.phone || loading ? 'not-allowed' : 'pointer'
+                      }}
+                    >
+                      <i className="fab fa-whatsapp"></i>
+                    </button>
+                    <button
                       className="btn-icon btn-edit"
                       onClick={() => handleEditGuest(guest)}
                       title="עריכה"
@@ -419,7 +459,13 @@ export default function GuestManagement({ eventId, onUpdate }) {
                     type="tel"
                     value={formData.phone}
                     onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                    placeholder="+972501234567"
+                    pattern="^\+?[0-9]{10,15}$"
+                    title="נא להזין מספר טלפון עם קידומת מדינה (לדוגמה: +972501234567)"
                   />
+                  <small style={{ color: '#666', fontSize: '0.85em' }}>
+                    יש להזין עם קידומת מדינה (לדוגמה: +972501234567)
+                  </small>
                 </div>
                 <div className="form-group">
                   <label>כמות</label>
