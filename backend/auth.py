@@ -239,14 +239,28 @@ def register(user: UserCreate):
 
         hashed_pw = hash_password(user.password)
 
-        cur.execute(
-            """
-            INSERT INTO users (email, password, full_name, phone)
-            VALUES (%s, %s, %s, %s)
-            RETURNING id;
-            """,
-            (user.email, hashed_pw, user.full_name, user.phone)
-        )
+        # ניסיון להכניס עם phone, אם נכשל - ננסה בלי
+        try:
+            cur.execute(
+                """
+                INSERT INTO users (email, password, full_name, phone)
+                VALUES (%s, %s, %s, %s)
+                RETURNING id;
+                """,
+                (user.email, hashed_pw, user.full_name, user.phone)
+            )
+        except psycopg2.errors.UndefinedColumn:
+            # אם עמודת phone לא קיימת, ננסה בלי
+            if conn:
+                conn.rollback()
+            cur.execute(
+                """
+                INSERT INTO users (email, password, full_name)
+                VALUES (%s, %s, %s)
+                RETURNING id;
+                """,
+                (user.email, hashed_pw, user.full_name)
+            )
 
         new_id = cur.fetchone()[0]
 
