@@ -52,17 +52,59 @@ class WhatsAppInteractiveService:
 
         try:
             response = requests.post(self.api_url, headers=headers, data=data)
+
+            print(f"\n📥 Gupshup Response:")
+            print(f"   Status Code: {response.status_code}")
+            print(f"   Response Body: {response.text}")
+
             response.raise_for_status()
+
+            # Parse JSON response
+            result = response.json()
+
+            # Gupshup can return 200 with an error in the response body
+            if 'status' in result and result['status'] == 'error':
+                error_msg = result.get('message', 'Unknown error from Gupshup')
+                print(f"❌ Gupshup API Error: {error_msg}")
+                return {
+                    'success': False,
+                    'error': error_msg,
+                    'status_code': response.status_code,
+                    'response_text': response.text
+                }
+
+            # Check if we have a message ID
+            if 'messageId' not in result:
+                error_msg = result.get('message', 'No message ID returned')
+                print(f"⚠️ Gupshup Warning: {error_msg}")
+                return {
+                    'success': False,
+                    'error': error_msg,
+                    'status_code': response.status_code,
+                    'response_text': response.text
+                }
+
+            print(f"✅ Message sent successfully, ID: {result.get('messageId')}")
+
             return {
                 'success': True,
-                'data': response.json(),
+                'data': result,
                 'status_code': response.status_code
             }
         except requests.exceptions.RequestException as e:
+            error_msg = str(e)
+            status_code = getattr(e.response, 'status_code', None) if hasattr(e, 'response') else None
+            response_text = getattr(e.response, 'text', '') if hasattr(e, 'response') else ''
+
+            print(f"❌ Gupshup Error: {error_msg}")
+            print(f"   Status Code: {status_code}")
+            print(f"   Response: {response_text}")
+
             return {
                 'success': False,
-                'error': str(e),
-                'status_code': getattr(e.response, 'status_code', None) if hasattr(e, 'response') else None
+                'error': error_msg,
+                'status_code': status_code,
+                'response_text': response_text
             }
 
     def send_list_message(
@@ -300,9 +342,38 @@ class WhatsAppInteractiveService:
             print(f"   Status Code: {response.status_code}")
             print(f"   Response Body: {response.text}")
 
+            # Check if HTTP status is OK
             response.raise_for_status()
 
+            # Parse JSON response
             result = response.json()
+
+            # Gupshup can return 200 with an error in the response body
+            # Check for common error indicators
+            if 'status' in result and result['status'] == 'error':
+                error_msg = result.get('message', 'Unknown error from Gupshup')
+                print(f"\n❌ Gupshup API Error:")
+                print(f"   Error Message: {error_msg}")
+                return {
+                    'success': False,
+                    'error': error_msg,
+                    'status_code': response.status_code,
+                    'response_text': response.text
+                }
+
+            # Check if we have a message ID (success indicator)
+            if 'messageId' not in result:
+                error_msg = result.get('message', 'No message ID returned - message may not have been sent')
+                print(f"\n⚠️ Gupshup Warning:")
+                print(f"   {error_msg}")
+                print(f"   Full response: {result}")
+                return {
+                    'success': False,
+                    'error': error_msg,
+                    'status_code': response.status_code,
+                    'response_text': response.text
+                }
+
             print(f"   ✅ Message accepted by Gupshup")
             print(f"   Message ID: {result.get('messageId', 'N/A')}")
 
