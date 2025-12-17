@@ -28,12 +28,7 @@ app.add_middleware(
 
 @app.get("/")
 def root():
-    return {
-        "message": "giftWeb API is running",
-        "version": "1.0",
-        "docs": "/docs",
-        "health": "/api/health"
-    }
+    return {"message": "giftWeb API is running", "version": "1.0", "docs": "/docs", "health": "/api/health"}
 
 @app.get("/api/health")
 def health():
