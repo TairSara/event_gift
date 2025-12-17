@@ -286,20 +286,46 @@ class WhatsAppInteractiveService:
             })
         }
 
+        print(f"\n📤 Sending template message to Gupshup:")
+        print(f"   URL: {GUPSHUP_TEMPLATE_URL}")
+        print(f"   Destination: {destination}")
+        print(f"   Template: {template_name}")
+        print(f"   Params: {template_params}")
+        print(f"   Data payload: {data}")
+
         try:
             response = requests.post(GUPSHUP_TEMPLATE_URL, headers=headers, data=data)
+
+            print(f"\n📥 Gupshup Response:")
+            print(f"   Status Code: {response.status_code}")
+            print(f"   Response Body: {response.text}")
+
             response.raise_for_status()
+
+            result = response.json()
+            print(f"   ✅ Message accepted by Gupshup")
+            print(f"   Message ID: {result.get('messageId', 'N/A')}")
+
             return {
                 'success': True,
-                'data': response.json(),
+                'data': result,
                 'status_code': response.status_code
             }
         except requests.exceptions.RequestException as e:
+            error_msg = str(e)
+            status_code = getattr(e.response, 'status_code', None) if hasattr(e, 'response') else None
+            response_text = getattr(e.response, 'text', '') if hasattr(e, 'response') else ''
+
+            print(f"\n❌ Gupshup Error:")
+            print(f"   Error: {error_msg}")
+            print(f"   Status Code: {status_code}")
+            print(f"   Response: {response_text}")
+
             return {
                 'success': False,
-                'error': str(e),
-                'status_code': getattr(e.response, 'status_code', None) if hasattr(e, 'response') else None,
-                'response_text': getattr(e.response, 'text', '') if hasattr(e, 'response') else ''
+                'error': error_msg,
+                'status_code': status_code,
+                'response_text': response_text
             }
 
     def send_event_invitation_template(

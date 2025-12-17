@@ -184,6 +184,12 @@ async def send_template_invitation(guest_id: int):
             formatted_time = str(event_time) if event_time else '18:00'
 
         # Send template message
+        print(f"📱 Sending WhatsApp to: {phone}")
+        print(f"👤 Guest: {guest_name}")
+        print(f"🎉 Event: {event_name}")
+        print(f"📅 Date: {formatted_date}, Time: {formatted_time}")
+        print(f"📍 Location: {event_location or 'יודיע בהמשך'}")
+
         result = whatsapp_service.send_event_invitation_template(
             destination=phone,
             guest_name=guest_name,
@@ -193,13 +199,16 @@ async def send_template_invitation(guest_id: int):
             event_location=event_location or "יודיע בהמשך"
         )
 
+        print(f"✉️ Gupshup Response: {result}")
+
         cur.close()
         conn.close()
 
         if not result['success']:
             error_detail = result.get('error', 'Failed to send message')
             if result.get('response_text'):
-                error_detail += f" - {result['response_text']}"
+                error_detail += f" - Response: {result['response_text']}"
+            print(f"❌ Send failed: {error_detail}")
             raise HTTPException(status_code=400, detail=error_detail)
 
         return {
