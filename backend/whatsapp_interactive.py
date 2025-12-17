@@ -14,7 +14,7 @@ GUPSHUP_APP_NAME = os.getenv('GUPSHUP_APP_NAME', 'saveday')
 WHATSAPP_SENDER_NUMBER = os.getenv('WHATSAPP_SENDER_NUMBER', '972525869312')
 WHATSAPP_TEMPLATE_NAME = os.getenv('WHATSAPP_TEMPLATE_NAME', 'event_invitation_new')
 GUPSHUP_API_URL = 'https://api.gupshup.io/wa/api/v1/msg'
-GUPSHUP_TEMPLATE_URL = 'https://api.gupshup.io/sm/api/v1/template/msg'
+GUPSHUP_TEMPLATE_URL = 'https://api.gupshup.io/wa/api/v1/template/msg'
 
 
 class WhatsAppInteractiveService:
