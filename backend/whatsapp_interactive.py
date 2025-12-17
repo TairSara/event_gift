@@ -453,19 +453,20 @@ class WhatsAppInteractiveService:
         # {{4}} labeled "תאריך" = actually event_time (20:00)
         # {{5}} labeled "שעה" = actually event_location (ירושלים)
 
+        # Clean all parameters - strip whitespace to avoid template mismatch
         template_params = [
-            guest_name,          # {{1}} - שלום
-            event_name,          # {{2}} - להזמינים
-            event_date,          # {{3}} - אירוח (but actually date!)
-            event_time,          # {{4}} - תאריך (but actually time!)
-            event_location,      # {{5}} - שעה (but actually location!)
-            "SaveDay Events"     # {{6}} - משפחת אירועי היום
+            str(guest_name).strip(),          # {{1}} - שלום
+            str(event_name).strip(),          # {{2}} - להזמינים
+            str(event_date).strip(),          # {{3}} - אירוח (but actually date!)
+            str(event_time).strip(),          # {{4}} - תאריך (but actually time!)
+            str(event_location).strip(),      # {{5}} - שעה (but actually location!)
+            "SaveDay Events"                  # {{6}} - משפחת אירועי היום
         ]
 
         print(f"🔍 Template Params Verification:")
         print(f"   Count: {len(template_params)} (must be 6)")
         for i, param in enumerate(template_params, 1):
-            print(f"   {{{{{{i}}}}}}: {param}")
+            print(f"   {{{{{{i}}}}}}: '{param}' (len={len(param)})")
 
         return self.send_template_message(
             destination=destination,
