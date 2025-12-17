@@ -22,12 +22,24 @@ export const authAPI = {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.detail || 'שגיאה בהרשמה');
+        console.error('Registration failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          data
+        });
+        // בדיקה אם data.detail הוא מחרוזת או אובייקט
+        const errorMessage = typeof data.detail === 'string'
+          ? data.detail
+          : (data.message || 'שגיאה בהרשמה');
+        throw new Error(errorMessage);
       }
 
       return data;
     } catch (error) {
-      console.error('Registration error:', error);
+      console.error('Registration error:', {
+        message: error.message,
+        error: error
+      });
       // אם זו שגיאת רשת (network error) ולא שגיאה מהשרת
       if (error.message === 'Failed to fetch' || !error.message) {
         throw new Error('לא ניתן להתחבר לשרת. בדוק את חיבור האינטרנט');
@@ -50,12 +62,24 @@ export const authAPI = {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.detail || 'שגיאה בהתחברות');
+        console.error('Login failed:', {
+          status: response.status,
+          statusText: response.statusText,
+          data
+        });
+        // בדיקה אם data.detail הוא מחרוזת או אובייקט
+        const errorMessage = typeof data.detail === 'string'
+          ? data.detail
+          : (data.message || 'שגיאה בהתחברות');
+        throw new Error(errorMessage);
       }
 
       return data;
     } catch (error) {
-      console.error('Login error:', error);
+      console.error('Login error:', {
+        message: error.message,
+        error: error
+      });
       // אם זו שגיאת רשת (network error) ולא שגיאה מהשרת
       if (error.message === 'Failed to fetch' || !error.message) {
         throw new Error('לא ניתן להתחבר לשרת. בדוק את חיבור האינטרנט');
