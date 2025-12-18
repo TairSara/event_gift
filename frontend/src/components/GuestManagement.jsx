@@ -183,7 +183,7 @@ export default function GuestManagement({ eventId, onUpdate }) {
     // יצירת מערך של נתונים לאקסל
     const excelData = guests.map(guest => ({
       'שם האורח': guest.name,
-      'כמות': guest.quantity || 1,
+      'כמות': guest.guests_count || guest.quantity || 1,
       'מספר טלפון': guest.phone || '',
       'אימייל': guest.email || '',
       'סטטוס אישור הגעה': guest.attendance_status === 'pending' ? 'ממתין' :
@@ -216,7 +216,7 @@ export default function GuestManagement({ eventId, onUpdate }) {
     // הכנת נתונים לטבלה
     const tableData = guests.map(guest => [
       guest.name,
-      guest.quantity || 1,
+      guest.guests_count || guest.quantity || 1,
       guest.phone || '-',
       guest.attendance_status === 'pending' ? 'ממתין' :
       guest.attendance_status === 'confirmed' ? 'אישר' : 'סירב',
@@ -272,7 +272,7 @@ export default function GuestManagement({ eventId, onUpdate }) {
     pending: guests.filter(g => g.attendance_status === 'pending').length,
     declined: guests.filter(g => g.attendance_status === 'declined').length,
     maybe: guests.filter(g => g.attendance_status === 'maybe').length,
-    totalQuantity: guests.reduce((sum, g) => sum + (g.quantity || 1), 0)
+    totalQuantity: guests.reduce((sum, g) => sum + (g.guests_count || g.quantity || 1), 0)
   };
 
   if (loading) {
@@ -380,7 +380,7 @@ export default function GuestManagement({ eventId, onUpdate }) {
               guests.map((guest) => (
                 <tr key={guest.id}>
                   <td className="guest-name">{guest.name}</td>
-                  <td>{guest.quantity || 1}</td>
+                  <td>{guest.guests_count || guest.quantity || 1}</td>
                   <td>{guest.phone || '-'}</td>
                   <td>{getStatusBadge(guest.attendance_status)}</td>
                   <td>{guest.table_number || '-'}</td>

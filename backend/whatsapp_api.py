@@ -478,10 +478,32 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                     cur.execute("""
                         UPDATE guests
                         SET attendance_status = %s, updated_at = NOW()
-                        WHERE phone LIKE %s OR phone LIKE %s
-                    """, (new_status, f'%{clean_phone}', f'+{clean_phone}'))
+                        WHERE phone LIKE %s OR phone LIKE %s OR phone LIKE %s
+                        RETURNING id, name, phone, attendance_status
+                    """, (new_status, f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
 
+                    updated_guests = cur.fetchall()
                     conn.commit()
+
+                    if updated_guests:
+                        print(f"✅ Updated {len(updated_guests)} guests:")
+                        for guest in updated_guests:
+                            print(f"   ID: {guest[0]}, Name: {guest[1]}, Phone: {guest[2]}, Status: {guest[3]}")
+
+                        # Send confirmation message based on status
+                        if new_status == 'declined':
+                            whatsapp_service.send_text_message(
+                                destination=sender_phone,
+                                text="תודה על עדכון! נשמח לראותך בהזדמנות אחרת 💙"
+                            )
+                        elif new_status == 'maybe':
+                            whatsapp_service.send_text_message(
+                                destination=sender_phone,
+                                text="תודה על עדכון! אשמח אם תעדכן כשתדע בוודאות 💙"
+                            )
+                    else:
+                        print(f"⚠️ No guests updated for phone: {sender_phone}")
+
                     print(f"✅ Updated guest status: {sender_phone} -> {new_status}")
 
             cur.close()
