@@ -328,48 +328,14 @@ class WhatsAppInteractiveService:
             if clean_image_url != image_url:
                 print(f"🧹 Cleaned image URL: {image_url} -> {clean_image_url}")
 
-        # Build template payload - trying components structure for Media templates
+        # Build template payload - Gupshup specific format
+        # Template object contains ID and text params ONLY
         template_data = {
             "id": template_name,
-            "language": {
-                "policy": "deterministic",
-                "code": "he"
-            }
+            "params": template_params
         }
 
-        # Build components array for WhatsApp Business API format
-        components = []
-
-        # Add header component with image if provided
-        if clean_image_url:
-            components.append({
-                "type": "header",
-                "parameters": [{
-                    "type": "image",
-                    "image": {
-                        "link": clean_image_url
-                    }
-                }]
-            })
-
-        # Add body component with text parameters
-        if template_params:
-            body_parameters = []
-            for param in template_params:
-                body_parameters.append({
-                    "type": "text",
-                    "text": param
-                })
-
-            components.append({
-                "type": "body",
-                "parameters": body_parameters
-            })
-
-        # Add components to template if we have any
-        if components:
-            template_data["components"] = components
-
+        # Build the data payload
         data = {
             'channel': 'whatsapp',
             'source': self.sender_number,
@@ -378,16 +344,26 @@ class WhatsAppInteractiveService:
             'template': json.dumps(template_data)
         }
 
+        # For Media templates, add SEPARATE message object with image
+        # This is Gupshup's specific format - NOT part of template object!
+        if clean_image_url:
+            message_data = {
+                "type": "image",
+                "image": {
+                    "link": clean_image_url
+                }
+            }
+            data['message'] = json.dumps(message_data)
+
         print(f"\n📤 Sending template message to Gupshup:")
         print(f"   URL: {GUPSHUP_TEMPLATE_URL}")
         print(f"   Destination: {destination}")
         print(f"   Template: {template_name}")
-        print(f"   Language: he (Hebrew)")
-        print(f"   Text Params: {len(template_params)} (must be 6)")
+        print(f"   Text Params: {len(template_params)}")
+        print(f"   Template JSON: {data['template']}")
         if clean_image_url:
-            print(f"   Image URL: {clean_image_url}")
-        print(f"   Template JSON: {json.dumps(template_data, ensure_ascii=False)}")
-        print(f"   Data payload: {data}")
+            print(f"   Image (separate): {data.get('message', 'N/A')}")
+        print(f"   Full Data payload keys: {list(data.keys())}")
 
         try:
             response = requests.post(GUPSHUP_TEMPLATE_URL, headers=headers, data=data)
