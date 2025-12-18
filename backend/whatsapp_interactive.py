@@ -9,11 +9,14 @@ from datetime import datetime
 import json
 
 # Gupshup API Configuration
+# TODO: Move GUPSHUP_API_KEY to environment variable for better security
 GUPSHUP_API_KEY = os.getenv('GUPSHUP_API_KEY', 'sk_7c99c2f11f284370af9248ce40a4a7d9')
 GUPSHUP_APP_NAME = os.getenv('GUPSHUP_APP_NAME', 'saveday')
 WHATSAPP_SENDER_NUMBER = os.getenv('WHATSAPP_SENDER_NUMBER', '972525869312')
 WHATSAPP_TEMPLATE_NAME = os.getenv('WHATSAPP_TEMPLATE_NAME', 'event_invitation_new')
 DEFAULT_INVITATION_IMAGE = os.getenv('DEFAULT_INVITATION_IMAGE', 'https://i.ibb.co/pKDqkh5/default-invitation.jpg')
+WHATSAPP_TEMPLATE_ID = os.getenv('WHATSAPP_TEMPLATE_ID', '99198662-73ee-43f2-bc1b-fe48e4a33656')
+WHATSAPP_TEMPLATE_IS_MEDIA = os.getenv('WHATSAPP_TEMPLATE_IS_MEDIA', 'true').lower() == 'true'
 GUPSHUP_API_URL = 'https://api.gupshup.io/wa/api/v1/msg'
 GUPSHUP_TEMPLATE_URL = 'https://api.gupshup.io/wa/api/v1/template/msg'
 
@@ -329,9 +332,16 @@ class WhatsAppInteractiveService:
                 print(f"🧹 Cleaned image URL: {image_url} -> {clean_image_url}")
 
         # Build template payload - Gupshup specific format
-        # Template object contains ID and text params ONLY
+        # Template object MUST use template UUID (not name) and text params ONLY
+        template_id = WHATSAPP_TEMPLATE_ID if WHATSAPP_TEMPLATE_ID else template_name
+
+        if not WHATSAPP_TEMPLATE_ID:
+            print(f"⚠️ WARNING: WHATSAPP_TEMPLATE_ID not set! Using template name '{template_name}' as fallback.")
+            print(f"⚠️ This may cause error 4003 'template did not match'.")
+            print(f"⚠️ Set WHATSAPP_TEMPLATE_ID env variable to your template UUID from Gupshup.")
+
         template_data = {
-            "id": template_name,
+            "id": template_id,
             "params": template_params
         }
 
@@ -347,13 +357,18 @@ class WhatsAppInteractiveService:
         # For Media templates, add SEPARATE message object with image
         # This is Gupshup's specific format - NOT part of template object!
         if clean_image_url:
-            message_data = {
-                "type": "image",
-                "image": {
-                    "link": clean_image_url
+            if WHATSAPP_TEMPLATE_IS_MEDIA:
+                message_data = {
+                    "type": "image",
+                    "image": {
+                        "link": clean_image_url
+                    }
                 }
-            }
-            data['message'] = json.dumps(message_data)
+                data['message'] = json.dumps(message_data)
+            else:
+                print(f"⚠️ WARNING: Template is NOT a Media template (WHATSAPP_TEMPLATE_IS_MEDIA=false)")
+                print(f"⚠️ Ignoring image URL: {clean_image_url}")
+                print(f"⚠️ If your template supports images, set WHATSAPP_TEMPLATE_IS_MEDIA=true")
 
         print(f"\n📤 Sending template message to Gupshup:")
         print(f"   URL: {GUPSHUP_TEMPLATE_URL}")
