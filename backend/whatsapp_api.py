@@ -411,7 +411,7 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                 # Map Hebrew button text to our internal button IDs
                 button_mapping = {
                     'מאשר הגעה': 'rsvp_yes',
-                    'לא בטוח': 'rsvp_maybe',
+                    'לא יודע כרגע': 'rsvp_maybe',
                     'לא מגיע': 'rsvp_no'
                 }
                 button_id = button_mapping.get(button_text, None)
@@ -425,51 +425,6 @@ async def gupshup_webhook(payload: Dict = Body(...)):
             # Update guest attendance status based on button clicked
             conn = get_db_connection()
             cur = conn.cursor()
-
-            # Handle number selection (how many guests)
-            if button_id and button_id.startswith('guest_count_'):
-                # Extract number from button_id like "guest_count_3"
-                try:
-                    guest_count_str = button_id.replace('guest_count_', '')
-
-                    # Special case: "3+" means more than 3, ask user to send number
-                    if guest_count_str == '3':
-                        cur.close()
-                        conn.close()
-
-                        # Ask user to send the exact number as text
-                        whatsapp_service.send_reply_buttons(
-                            destination=sender_phone,
-                            body="נהדר! 🎉\n\nאנא שלחו מספר (לדוגמה: 5)",
-                            buttons=[{"id": "cancel", "title": "ביטול"}],
-                            footer="פשוט שלחו מספר כהודעת טקסט"
-                        )
-                        return {"status": "success", "message": "Waiting for guest count"}
-
-                    guest_count = int(guest_count_str)
-                    clean_phone = sender_phone.replace('+', '')
-
-                    cur.execute("""
-                        UPDATE guests
-                        SET guests_count = %s, attendance_status = 'confirmed', updated_at = NOW()
-                        WHERE phone LIKE %s OR phone LIKE %s
-                    """, (guest_count, f'%{clean_phone}', f'+{clean_phone}'))
-
-                    conn.commit()
-                    print(f"✅ Updated guest count: {sender_phone} -> {guest_count} guests, status: confirmed")
-
-                    # Send confirmation message
-                    whatsapp_service.send_reply_buttons(
-                        destination=sender_phone,
-                        body=f"תודה רבה! רשמנו שמגיעים {guest_count} אנשים 🎉\nמחכים לראותכם!",
-                        buttons=[{"id": "done", "title": "תודה! 💙"}]
-                    )
-                except ValueError:
-                    print(f"❌ Invalid guest_count button_id: {button_id}")
-
-                cur.close()
-                conn.close()
-                return {"status": "success", "message": "Guest count updated"}
 
             # Handle initial RSVP response
             status_map = {
@@ -485,21 +440,22 @@ async def gupshup_webhook(payload: Dict = Body(...)):
 
                 if new_status == 'confirmed':
                     # Don't update status yet - wait for guest count
-                    # Send "how many guests?" message with buttons
-                    buttons = [
-                        {"id": "guest_count_1", "title": "1 אדם"},
-                        {"id": "guest_count_2", "title": "2 אנשים"},
-                        {"id": "guest_count_3", "title": "3+ אנשים"}
-                    ]
+                    # Send text message asking for guest count
+                    text_message = """נהדר! 🎉 שמחים שתגיעו!
 
-                    whatsapp_service.send_reply_buttons(
+כמה אנשים בסך הכל יגיעו? (כולל אתכם)
+
+אנא שלחו מספר בלבד, לדוגמה: 2"""
+
+                    result = whatsapp_service.send_text_message(
                         destination=sender_phone,
-                        body="נהדר! 🎉\n\nכמה אנשים בסך הכל יגיעו?\n(כולל אתכם)",
-                        buttons=buttons,
-                        footer="אם יותר מ-3, לחצו '3+ אנשים' ואז שלחו מספר"
+                        text=text_message
                     )
 
-                    print(f"📩 Sent guest count question to: {sender_phone}")
+                    if result['success']:
+                        print(f"📩 Sent guest count question to: {sender_phone}")
+                    else:
+                        print(f"❌ Failed to send guest count question: {result.get('error')}")
                 else:
                     # For 'maybe' or 'declined', update status directly
                     cur.execute("""
@@ -540,10 +496,9 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                         print(f"✅ Updated guest count from text: {sender_phone} -> {guest_count} guests")
 
                         # Send confirmation
-                        whatsapp_service.send_reply_buttons(
+                        whatsapp_service.send_text_message(
                             destination=sender_phone,
-                            body=f"תודה רבה! רשמנו שמגיעים {guest_count} אנשים 🎉\nמחכים לראותכם!",
-                            buttons=[{"id": "done", "title": "תודה! 💙"}]
+                            text=f"תודה רבה! רשמנו שמגיעים {guest_count} אנשים 🎉\nמחכים לראותכם! 💙"
                         )
                 except ValueError:
                     print(f"⚠️ Could not parse number from text: {text_content}")

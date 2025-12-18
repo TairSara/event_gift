@@ -30,6 +30,45 @@ class WhatsAppInteractiveService:
         self.sender_number = WHATSAPP_SENDER_NUMBER
         self.api_url = GUPSHUP_API_URL
 
+    def send_text_message(self, destination: str, text: str) -> Dict:
+        """
+        Send a simple text message (works within 24-hour window after user message)
+
+        Args:
+            destination: Recipient phone number
+            text: Text message to send
+        """
+        headers = {
+            'apikey': self.api_key,
+            'Content-Type': 'application/x-www-form-urlencoded'
+        }
+
+        data = {
+            'channel': 'whatsapp',
+            'source': self.sender_number,
+            'destination': destination,
+            'src.name': self.app_name,
+            'message': text
+        }
+
+        try:
+            response = requests.post(self.api_url, headers=headers, data=data)
+            print(f"\n📤 Sent text message:")
+            print(f"   To: {destination}")
+            print(f"   Text: {text[:100]}...")
+            print(f"   Response: {response.status_code} - {response.text}")
+
+            response.raise_for_status()
+            result = response.json()
+
+            if 'messageId' in result:
+                return {'success': True, 'data': result, 'status_code': response.status_code}
+            else:
+                return {'success': False, 'error': result.get('message', 'No message ID'), 'status_code': response.status_code}
+        except Exception as e:
+            print(f"❌ Error sending text: {str(e)}")
+            return {'success': False, 'error': str(e)}
+
     def _send_message(self, destination: str, message_payload: Dict) -> Dict:
         """
         Send message to Gupshup API
