@@ -408,6 +408,52 @@ async def gupshup_webhook(payload: Dict = Body(...)):
             conn = get_db_connection()
             cur = conn.cursor()
 
+            # Handle number selection (how many guests)
+            if button_id and button_id.startswith('guest_count_'):
+                # Extract number from button_id like "guest_count_3"
+                try:
+                    guest_count_str = button_id.replace('guest_count_', '')
+
+                    # Special case: "3+" means more than 3, ask user to send number
+                    if guest_count_str == '3':
+                        cur.close()
+                        conn.close()
+
+                        # Ask user to send the exact number as text
+                        whatsapp_service.send_reply_buttons(
+                            destination=sender_phone,
+                            body="נהדר! 🎉\n\nאנא שלחו מספר (לדוגמה: 5)",
+                            buttons=[{"id": "cancel", "title": "ביטול"}],
+                            footer="פשוט שלחו מספר כהודעת טקסט"
+                        )
+                        return {"status": "success", "message": "Waiting for guest count"}
+
+                    guest_count = int(guest_count_str)
+                    clean_phone = sender_phone.replace('+', '')
+
+                    cur.execute("""
+                        UPDATE guests
+                        SET guests_count = %s, attendance_status = 'confirmed', updated_at = NOW()
+                        WHERE phone LIKE %s OR phone LIKE %s
+                    """, (guest_count, f'%{clean_phone}', f'+{clean_phone}'))
+
+                    conn.commit()
+                    print(f"✅ Updated guest count: {sender_phone} -> {guest_count} guests, status: confirmed")
+
+                    # Send confirmation message
+                    whatsapp_service.send_reply_buttons(
+                        destination=sender_phone,
+                        body=f"תודה רבה! רשמנו שמגיעים {guest_count} אנשים 🎉\nמחכים לראותכם!",
+                        buttons=[{"id": "done", "title": "תודה! 💙"}]
+                    )
+                except ValueError:
+                    print(f"❌ Invalid guest_count button_id: {button_id}")
+
+                cur.close()
+                conn.close()
+                return {"status": "success", "message": "Guest count updated"}
+
+            # Handle initial RSVP response
             status_map = {
                 'rsvp_yes': 'confirmed',
                 'rsvp_maybe': 'maybe',
@@ -419,17 +465,70 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                 # Clean phone number for matching
                 clean_phone = sender_phone.replace('+', '')
 
-                cur.execute("""
-                    UPDATE guests
-                    SET attendance_status = %s, updated_at = NOW()
-                    WHERE phone LIKE %s OR phone LIKE %s
-                """, (new_status, f'%{clean_phone}', f'+{clean_phone}'))
+                if new_status == 'confirmed':
+                    # Don't update status yet - wait for guest count
+                    # Send "how many guests?" message with buttons
+                    buttons = [
+                        {"id": "guest_count_1", "title": "1 אדם"},
+                        {"id": "guest_count_2", "title": "2 אנשים"},
+                        {"id": "guest_count_3", "title": "3+ אנשים"}
+                    ]
 
-                conn.commit()
-                print(f"✅ Updated guest status: {sender_phone} -> {new_status}")
+                    whatsapp_service.send_reply_buttons(
+                        destination=sender_phone,
+                        body="נהדר! 🎉\n\nכמה אנשים בסך הכל יגיעו?\n(כולל אתכם)",
+                        buttons=buttons,
+                        footer="אם יותר מ-3, לחצו '3+ אנשים' ואז שלחו מספר"
+                    )
+
+                    print(f"📩 Sent guest count question to: {sender_phone}")
+                else:
+                    # For 'maybe' or 'declined', update status directly
+                    cur.execute("""
+                        UPDATE guests
+                        SET attendance_status = %s, updated_at = NOW()
+                        WHERE phone LIKE %s OR phone LIKE %s
+                    """, (new_status, f'%{clean_phone}', f'+{clean_phone}'))
+
+                    conn.commit()
+                    print(f"✅ Updated guest status: {sender_phone} -> {new_status}")
 
             cur.close()
             conn.close()
+
+        # Handle text message (user might send a number directly)
+        elif msg_type == 'text':
+            text_content = message_payload.get('payload', {}).get('text', '').strip()
+
+            # Check if it's a number (for guest count)
+            if text_content.isdigit():
+                try:
+                    guest_count = int(text_content)
+                    if 1 <= guest_count <= 50:  # Reasonable range
+                        conn = get_db_connection()
+                        cur = conn.cursor()
+                        clean_phone = sender_phone.replace('+', '')
+
+                        cur.execute("""
+                            UPDATE guests
+                            SET guests_count = %s, attendance_status = 'confirmed', updated_at = NOW()
+                            WHERE phone LIKE %s OR phone LIKE %s
+                        """, (guest_count, f'%{clean_phone}', f'+{clean_phone}'))
+
+                        conn.commit()
+                        cur.close()
+                        conn.close()
+
+                        print(f"✅ Updated guest count from text: {sender_phone} -> {guest_count} guests")
+
+                        # Send confirmation
+                        whatsapp_service.send_reply_buttons(
+                            destination=sender_phone,
+                            body=f"תודה רבה! רשמנו שמגיעים {guest_count} אנשים 🎉\nמחכים לראותכם!",
+                            buttons=[{"id": "done", "title": "תודה! 💙"}]
+                        )
+                except ValueError:
+                    print(f"⚠️ Could not parse number from text: {text_content}")
 
         # Handle location reply
         elif msg_type == 'location':
