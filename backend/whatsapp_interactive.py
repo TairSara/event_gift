@@ -305,14 +305,14 @@ class WhatsAppInteractiveService:
         Args:
             destination: Recipient phone number (with country code)
             template_name: Name of the approved template
-            template_params: List of parameters to fill in the template
-            image_url: Optional URL to an image for Media templates (required for Image type templates)
+            template_params: List of parameters to fill in the template (text params ONLY)
+            image_url: Optional URL to an image for Media templates (sent separately in attachments)
 
         Example:
             send_template_message(
                 destination="+972501234567",
                 template_name="event_invitation_new",
-                template_params=["שם האורח", "שם האירוע", "01/01/2025", "18:00", "מקום האירוע"],
+                template_params=["שם האורח", "שם האירוע", "01/01/2025", "18:00", "מקום האירוע", "חתימה"],
                 image_url="https://example.com/invitation.jpg"
             )
         """
@@ -321,20 +321,30 @@ class WhatsAppInteractiveService:
             'Content-Type': 'application/x-www-form-urlencoded'
         }
 
-        # Build template payload
-        # For Media templates with Image header, the image URL should be the FIRST parameter
+        # Clean image URL - remove query parameters that WhatsApp rejects
+        clean_image_url = None
         if image_url:
-            # Image header goes as first parameter, followed by text parameters
-            all_params = [image_url] + template_params
-            template_data = {
-                "id": template_name,
-                "params": all_params
+            clean_image_url = image_url.split('?')[0] if '?' in image_url else image_url
+            if clean_image_url != image_url:
+                print(f"🧹 Cleaned image URL: {image_url} -> {clean_image_url}")
+
+        # Build template payload with CORRECT structure
+        template_data = {
+            "id": template_name,
+            "params": template_params,  # ONLY text parameters (6 params for our template)
+            "language": {
+                "policy": "deterministic",
+                "code": "he"  # Hebrew language code - CRITICAL!
             }
-        else:
-            template_data = {
-                "id": template_name,
-                "params": template_params
-            }
+        }
+
+        # Add image as SEPARATE attachments array (not in params!)
+        if clean_image_url:
+            template_data["attachments"] = [{
+                "type": "image",
+                "url": clean_image_url,
+                "filename": "invite.jpg"
+            }]
 
         data = {
             'channel': 'whatsapp',
@@ -348,12 +358,10 @@ class WhatsAppInteractiveService:
         print(f"   URL: {GUPSHUP_TEMPLATE_URL}")
         print(f"   Destination: {destination}")
         print(f"   Template: {template_name}")
-        if image_url:
-            print(f"   Image URL (param 0): {image_url}")
-            print(f"   Total params: {len(template_data['params'])} (1 image + {len(template_params)} text)")
-        else:
-            print(f"   Total params: {len(template_params)}")
-        print(f"   All Params: {template_data['params']}")
+        print(f"   Language: he (Hebrew)")
+        print(f"   Text Params: {len(template_params)} (must be 6)")
+        if clean_image_url:
+            print(f"   Image URL: {clean_image_url}")
         print(f"   Template JSON: {json.dumps(template_data, ensure_ascii=False)}")
         print(f"   Data payload: {data}")
 
