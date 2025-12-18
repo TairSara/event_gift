@@ -28,10 +28,10 @@ export default function GuestManagement({ eventId, onUpdate }) {
   useEffect(() => {
     loadGuests();
 
-    // Auto-refresh every 10 seconds to catch WhatsApp RSVP updates
+    // Auto-refresh every 30 seconds to catch WhatsApp RSVP updates
     const intervalId = setInterval(() => {
       loadGuests(false); // Refresh without triggering onUpdate
-    }, 10000);
+    }, 30000);
 
     return () => clearInterval(intervalId);
   }, [eventId]);
@@ -133,6 +133,56 @@ export default function GuestManagement({ eventId, onUpdate }) {
     } catch (error) {
       showNotification(error.message || 'שגיאה בשליחת ההזמנה', 'error');
       console.error('WhatsApp send error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSendWhatsAppToAll = async () => {
+    // Filter guests with valid phone numbers
+    const guestsWithPhone = guests.filter(g => {
+      if (!g.phone) return false;
+      const phoneRegex = /^\+?[0-9]{10,15}$/;
+      return phoneRegex.test(g.phone);
+    });
+
+    if (guestsWithPhone.length === 0) {
+      showNotification('אין מוזמנים עם מספר טלפון תקין ברשימה', 'error');
+      return;
+    }
+
+    const confirmMessage = `האם אתה בטוח שברצונך לשלוח הזמנות ל-${guestsWithPhone.length} מוזמנים?`;
+    if (!window.confirm(confirmMessage)) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      let successCount = 0;
+      let failCount = 0;
+
+      showNotification(`שולח הזמנות ל-${guestsWithPhone.length} מוזמנים...`, 'info');
+
+      for (const guest of guestsWithPhone) {
+        try {
+          await guestAPI.sendWhatsAppInvitation(guest.id);
+          successCount++;
+          // Small delay between sends to avoid rate limiting
+          await new Promise(resolve => setTimeout(resolve, 500));
+        } catch (error) {
+          console.error(`Failed to send to ${guest.name}:`, error);
+          failCount++;
+        }
+      }
+
+      if (failCount === 0) {
+        showNotification(`✅ ההזמנות נשלחו בהצלחה ל-${successCount} מוזמנים!`);
+      } else {
+        showNotification(`נשלחו ${successCount} הזמנות. ${failCount} נכשלו.`, 'warning');
+      }
+    } catch (error) {
+      showNotification('שגיאה בשליחת ההזמנות', 'error');
+      console.error('Bulk send error:', error);
     } finally {
       setLoading(false);
     }
@@ -360,6 +410,25 @@ export default function GuestManagement({ eventId, onUpdate }) {
           </button>
         </div>
         <div className="actions-right">
+          <button
+            className="btn-whatsapp-all"
+            onClick={handleSendWhatsAppToAll}
+            disabled={guests.length === 0 || loading}
+            style={{
+              backgroundColor: '#25D366',
+              color: 'white',
+              border: 'none',
+              padding: '10px 20px',
+              borderRadius: '5px',
+              cursor: guests.length === 0 || loading ? 'not-allowed' : 'pointer',
+              opacity: guests.length === 0 || loading ? 0.5 : 1,
+              fontWeight: 'bold',
+              marginLeft: '10px'
+            }}
+          >
+            <i className="fab fa-whatsapp" style={{ marginLeft: '8px' }}></i>
+            שלח הזמנות לכולם
+          </button>
           <button className="btn-download btn-excel" onClick={downloadExcel} disabled={guests.length === 0}>
             <i className="fas fa-file-excel"></i>
             הורד Excel

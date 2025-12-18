@@ -791,7 +791,7 @@ def get_event_guests(event_id: int):
 
         cur.execute("""
             SELECT
-                id, name, phone, email, quantity, contact_method,
+                id, name, phone, email, guests_count, contact_method,
                 attendance_status, table_number, created_at, updated_at
             FROM guests
             WHERE event_id = %s
@@ -805,7 +805,8 @@ def get_event_guests(event_id: int):
                 "name": row[1],
                 "phone": row[2],
                 "email": row[3],
-                "quantity": row[4],
+                "guests_count": row[4],
+                "quantity": row[4],  # Keep for backward compatibility
                 "contact_method": row[5],
                 "attendance_status": row[6],
                 "table_number": row[7],

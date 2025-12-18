@@ -22,6 +22,14 @@
   border-right: 4px solid #f44336;
 }
 
+.notification.info {
+  border-right: 4px solid #2196f3;
+}
+
+.notification.warning {
+  border-right: 4px solid #ff9800;
+}
+
 @keyframes slideIn {
   from {
     transform: translateX(100%);
