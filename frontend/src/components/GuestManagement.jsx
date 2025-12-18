@@ -27,6 +27,13 @@ export default function GuestManagement({ eventId, onUpdate }) {
 
   useEffect(() => {
     loadGuests();
+
+    // Auto-refresh every 10 seconds to catch WhatsApp RSVP updates
+    const intervalId = setInterval(() => {
+      loadGuests(false); // Refresh without triggering onUpdate
+    }, 10000);
+
+    return () => clearInterval(intervalId);
   }, [eventId]);
 
   const loadGuests = async (shouldUpdate = false) => {
@@ -339,6 +346,17 @@ export default function GuestManagement({ eventId, onUpdate }) {
           >
             <i className="fas fa-file-upload"></i>
             העלה מ-Excel
+          </button>
+          <button
+            className="btn-secondary"
+            onClick={() => {
+              loadGuests(false);
+              showNotification('הרשימה רוענן בהצלחה!');
+            }}
+            title="רענן רשימת מוזמנים"
+          >
+            <i className="fas fa-sync-alt"></i>
+            רענן
           </button>
         </div>
         <div className="actions-right">
