@@ -328,23 +328,47 @@ class WhatsAppInteractiveService:
             if clean_image_url != image_url:
                 print(f"🧹 Cleaned image URL: {image_url} -> {clean_image_url}")
 
-        # Build template payload with CORRECT structure
+        # Build template payload - trying components structure for Media templates
         template_data = {
             "id": template_name,
-            "params": template_params,  # ONLY text parameters (6 params for our template)
             "language": {
                 "policy": "deterministic",
-                "code": "he"  # Hebrew language code - CRITICAL!
+                "code": "he"
             }
         }
 
-        # Add image as SEPARATE attachments array (not in params!)
+        # Build components array for WhatsApp Business API format
+        components = []
+
+        # Add header component with image if provided
         if clean_image_url:
-            template_data["attachments"] = [{
-                "type": "image",
-                "url": clean_image_url,
-                "filename": "invite.jpg"
-            }]
+            components.append({
+                "type": "header",
+                "parameters": [{
+                    "type": "image",
+                    "image": {
+                        "link": clean_image_url
+                    }
+                }]
+            })
+
+        # Add body component with text parameters
+        if template_params:
+            body_parameters = []
+            for param in template_params:
+                body_parameters.append({
+                    "type": "text",
+                    "text": param
+                })
+
+            components.append({
+                "type": "body",
+                "parameters": body_parameters
+            })
+
+        # Add components to template if we have any
+        if components:
+            template_data["components"] = components
 
         data = {
             'channel': 'whatsapp',
