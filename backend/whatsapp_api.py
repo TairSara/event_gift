@@ -215,10 +215,32 @@ async def send_template_invitation(guest_id: int):
         else:
             formatted_time = str(event_time) if event_time else '18:00'
 
-        # TEMPORARY DEBUG: Force hardcoded safe image URL to test template
-        # This bypasses any image URL issues from database/default
-        image_url = "https://www.gstatic.com/webp/gallery/1.jpg"
-        print(f"🔧 DEBUG MODE: Using hardcoded safe image URL for testing")
+        # Extract image URL from invitation_data
+        print(f"🔍 DEBUG: invitation_data type: {type(invitation_data)}")
+        print(f"🔍 DEBUG: invitation_data content: {invitation_data}")
+
+        image_url = None
+        if invitation_data:
+            # invitation_data is a JSON/dict that may contain image URL
+            if isinstance(invitation_data, dict):
+                print(f"🔍 DEBUG: invitation_data keys: {list(invitation_data.keys())}")
+                # Try common keys where image might be stored
+                image_url = (
+                    invitation_data.get('image_url') or
+                    invitation_data.get('imageUrl') or
+                    invitation_data.get('image') or
+                    invitation_data.get('invitation_image') or
+                    invitation_data.get('url') or
+                    invitation_data.get('imageURL')
+                )
+            print(f"🖼️ Extracted image from invitation_data: {image_url}")
+        else:
+            print(f"⚠️ invitation_data is empty or None")
+
+        # Fallback to default if no image found
+        if not image_url:
+            image_url = DEFAULT_INVITATION_IMAGE
+            print(f"⚠️ No image in invitation_data, using default: {image_url}")
 
         # Prepare final location (fallback to default if empty)
         final_location = event_location or "יודיע בהמשך"
@@ -483,11 +505,26 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                         cur = conn.cursor()
                         clean_phone = sender_phone.replace('+', '')
 
+                        # Debug: Check which guests match
+                        print(f"🔍 Looking for guest with phone: {sender_phone} (cleaned: {clean_phone})")
+                        cur.execute("""
+                            SELECT id, name, phone FROM guests
+                            WHERE phone LIKE %s OR phone LIKE %s OR phone LIKE %s
+                        """, (f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
+
+                        matching_guests = cur.fetchall()
+                        print(f"🔍 Found {len(matching_guests)} matching guests: {matching_guests}")
+
+                        # Update all matching guests
                         cur.execute("""
                             UPDATE guests
                             SET guests_count = %s, attendance_status = 'confirmed', updated_at = NOW()
-                            WHERE phone LIKE %s OR phone LIKE %s
-                        """, (guest_count, f'%{clean_phone}', f'+{clean_phone}'))
+                            WHERE phone LIKE %s OR phone LIKE %s OR phone LIKE %s
+                            RETURNING id, name, phone
+                        """, (guest_count, f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
+
+                        updated_guests = cur.fetchall()
+                        print(f"✅ Updated {len(updated_guests)} guests: {updated_guests}")
 
                         conn.commit()
                         cur.close()
