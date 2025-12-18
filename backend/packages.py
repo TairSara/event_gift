@@ -666,7 +666,7 @@ def create_guest(event_id: int, guest: GuestCreate):
 
         cur.execute("""
             INSERT INTO guests (
-                event_id, full_name, phone, email, guests_count,
+                event_id, name, phone, email, guests_count,
                 contact_method, attendance_status, table_number
             )
             VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
@@ -732,7 +732,7 @@ def create_guests_bulk(event_id: int, data: GuestBulkCreate):
         for guest_data in data.guests:
             cur.execute("""
                 INSERT INTO guests (
-                    event_id, name, phone, email, quantity,
+                    event_id, name, phone, email, guests_count,
                     contact_method, attendance_status, table_number
                 )
                 VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
@@ -857,7 +857,7 @@ def update_guest(guest_id: int, guest: GuestUpdate):
             params.append(guest.email)
 
         if guest.quantity is not None:
-            updates.append("quantity = %s")
+            updates.append("guests_count = %s")
             params.append(guest.quantity)
 
         if guest.contact_method is not None:
@@ -1064,7 +1064,7 @@ async def upload_guests_excel(event_id: int, file: UploadFile = File(...)):
                 # הכנסה לדאטאבייס
                 cur.execute("""
                     INSERT INTO guests (
-                        event_id, name, phone, email, quantity,
+                        event_id, name, phone, email, guests_count,
                         contact_method, attendance_status, table_number
                     )
                     VALUES (%s, %s, %s, %s, %s, %s, %s, %s)

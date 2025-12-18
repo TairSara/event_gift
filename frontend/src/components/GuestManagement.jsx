@@ -27,13 +27,6 @@ export default function GuestManagement({ eventId, onUpdate }) {
 
   useEffect(() => {
     loadGuests();
-
-    // Auto-refresh every 30 seconds to catch WhatsApp RSVP updates
-    const intervalId = setInterval(() => {
-      loadGuests(false); // Refresh without triggering onUpdate
-    }, 30000);
-
-    return () => clearInterval(intervalId);
   }, [eventId]);
 
   const loadGuests = async (shouldUpdate = false) => {
