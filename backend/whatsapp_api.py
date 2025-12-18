@@ -400,9 +400,27 @@ async def gupshup_webhook(payload: Dict = Body(...)):
         msg_type = message_payload.get('type')
         sender_phone = message_payload.get('sender', {}).get('phone')
 
-        # Handle button reply (RSVP response)
-        if msg_type == 'button_reply':
-            button_id = message_payload.get('payload', {}).get('id')
+        # Handle quick_reply (buttons from templates) OR button_reply (interactive buttons)
+        if msg_type in ['button_reply', 'quick_reply']:
+            # For quick_reply, button text is in payload.postbackText or payload.text
+            # For button_reply, button ID is in payload.id
+            if msg_type == 'quick_reply':
+                button_text = message_payload.get('payload', {}).get('postbackText', '').strip()
+                print(f"📩 Received quick_reply: '{button_text}' from {sender_phone}")
+
+                # Map Hebrew button text to our internal button IDs
+                button_mapping = {
+                    'מאשר הגעה': 'rsvp_yes',
+                    'לא בטוח': 'rsvp_maybe',
+                    'לא מגיע': 'rsvp_no'
+                }
+                button_id = button_mapping.get(button_text, None)
+
+                if not button_id:
+                    print(f"⚠️ Unknown quick_reply button: '{button_text}'")
+                    return {"status": "ignored", "reason": "Unknown button text"}
+            else:
+                button_id = message_payload.get('payload', {}).get('id')
 
             # Update guest attendance status based on button clicked
             conn = get_db_connection()
