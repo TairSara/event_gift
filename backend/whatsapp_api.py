@@ -216,31 +216,26 @@ async def send_template_invitation(guest_id: int):
             formatted_time = str(event_time) if event_time else '18:00'
 
         # Extract image URL from invitation_data
-        print(f"🔍 DEBUG: invitation_data type: {type(invitation_data)}")
-        print(f"🔍 DEBUG: invitation_data content: {invitation_data}")
-
+        # Note: invitation_data contains template info, not a direct image URL
+        # The invitation is generated dynamically in the frontend
         image_url = None
-        if invitation_data:
-            # invitation_data is a JSON/dict that may contain image URL
-            if isinstance(invitation_data, dict):
-                print(f"🔍 DEBUG: invitation_data keys: {list(invitation_data.keys())}")
-                # Try common keys where image might be stored
-                image_url = (
-                    invitation_data.get('image_url') or
-                    invitation_data.get('imageUrl') or
-                    invitation_data.get('image') or
-                    invitation_data.get('invitation_image') or
-                    invitation_data.get('url') or
-                    invitation_data.get('imageURL')
-                )
-            print(f"🖼️ Extracted image from invitation_data: {image_url}")
-        else:
-            print(f"⚠️ invitation_data is empty or None")
+
+        if invitation_data and isinstance(invitation_data, dict):
+            # Check if there's a generated/uploaded image URL
+            image_url = (
+                invitation_data.get('generated_image_url') or
+                invitation_data.get('image_url') or
+                invitation_data.get('imageUrl')
+            )
+
+            if image_url:
+                print(f"🖼️ Found custom image in invitation_data: {image_url}")
 
         # Fallback to default if no image found
         if not image_url:
             image_url = DEFAULT_INVITATION_IMAGE
-            print(f"⚠️ No image in invitation_data, using default: {image_url}")
+            print(f"⚠️ No custom image found, using default: {image_url}")
+            print(f"💡 TIP: To use event-specific images, save 'generated_image_url' in invitation_data")
 
         # Prepare final location (fallback to default if empty)
         final_location = event_location or "יודיע בהמשך"
@@ -520,11 +515,13 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                             UPDATE guests
                             SET guests_count = %s, attendance_status = 'confirmed', updated_at = NOW()
                             WHERE phone LIKE %s OR phone LIKE %s OR phone LIKE %s
-                            RETURNING id, name, phone
+                            RETURNING id, name, phone, guests_count, attendance_status
                         """, (guest_count, f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
 
                         updated_guests = cur.fetchall()
-                        print(f"✅ Updated {len(updated_guests)} guests: {updated_guests}")
+                        print(f"✅ Updated {len(updated_guests)} guests:")
+                        for guest in updated_guests:
+                            print(f"   ID: {guest[0]}, Name: {guest[1]}, Phone: {guest[2]}, Count: {guest[3]}, Status: {guest[4]}")
 
                         conn.commit()
                         cur.close()

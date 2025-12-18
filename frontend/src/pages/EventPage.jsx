@@ -67,6 +67,25 @@ export default function EventPage() {
 
       if (template) {
         renderSide(invitationCanvasRef.current, template, invitationData.values, 'front');
+
+        // Auto-capture and upload invitation image
+        setTimeout(async () => {
+          try {
+            const canvas = invitationCanvasRef.current;
+            const base64Image = canvas.toDataURL('image/png');
+
+            const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+            await fetch(`${API_URL}/packages/events/${event.id}/upload-invitation-image`, {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ image_data: base64Image })
+            });
+
+            console.log('✅ Invitation image uploaded successfully');
+          } catch (error) {
+            console.error('❌ Failed to upload invitation image:', error);
+          }
+        }, 1000);
       }
     }
   }, [event]);
