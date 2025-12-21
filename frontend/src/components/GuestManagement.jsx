@@ -181,6 +181,83 @@ export default function GuestManagement({ eventId, onUpdate }) {
     }
   };
 
+  const handleSendSMSInvitation = async (guest) => {
+    if (!guest.phone) {
+      showNotification('למוזמן אין מספר טלפון', 'error');
+      return;
+    }
+
+    // Validate phone number format
+    const phoneRegex = /^\+?[0-9]{10,15}$/;
+    if (!phoneRegex.test(guest.phone)) {
+      showNotification('מספר הטלפון אינו תקין. יש להזין עם קידומת מדינה (לדוגמה: +972501234567)', 'error');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const result = await guestAPI.sendSMSInvitation(guest.id);
+      const guestName = result.guest_name || guest.name || 'האורח';
+      showNotification(`SMS נשלח בהצלחה ל-${guestName}! ✅`);
+      console.log('SMS sent:', result);
+    } catch (error) {
+      showNotification(error.message || 'שגיאה בשליחת SMS', 'error');
+      console.error('SMS send error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSendSMSToAll = async () => {
+    // Filter guests with valid phone numbers
+    const guestsWithPhone = guests.filter(g => {
+      if (!g.phone) return false;
+      const phoneRegex = /^\+?[0-9]{10,15}$/;
+      return phoneRegex.test(g.phone);
+    });
+
+    if (guestsWithPhone.length === 0) {
+      showNotification('אין מוזמנים עם מספר טלפון תקין ברשימה', 'error');
+      return;
+    }
+
+    const confirmMessage = `האם אתה בטוח שברצונך לשלוח SMS ל-${guestsWithPhone.length} מוזמנים?`;
+    if (!window.confirm(confirmMessage)) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      let successCount = 0;
+      let failCount = 0;
+
+      showNotification(`שולח SMS ל-${guestsWithPhone.length} מוזמנים...`, 'info');
+
+      for (const guest of guestsWithPhone) {
+        try {
+          await guestAPI.sendSMSInvitation(guest.id);
+          successCount++;
+          // Small delay between sends to avoid rate limiting
+          await new Promise(resolve => setTimeout(resolve, 500));
+        } catch (error) {
+          console.error(`Failed to send SMS to ${guest.name}:`, error);
+          failCount++;
+        }
+      }
+
+      if (failCount === 0) {
+        showNotification(`✅ הודעות SMS נשלחו בהצלחה ל-${successCount} מוזמנים!`);
+      } else {
+        showNotification(`נשלחו ${successCount} הודעות SMS. ${failCount} נכשלו.`, 'warning');
+      }
+    } catch (error) {
+      showNotification('שגיאה בשליחת הודעות SMS', 'error');
+      console.error('Bulk SMS send error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleEditGuest = (guest) => {
     setEditingGuest(guest);
     setFormData({
@@ -422,6 +499,25 @@ export default function GuestManagement({ eventId, onUpdate }) {
             <i className="fab fa-whatsapp" style={{ marginLeft: '8px' }}></i>
             שלח הזמנות לכולם
           </button>
+          <button
+            className="btn-sms-all"
+            onClick={handleSendSMSToAll}
+            disabled={guests.length === 0 || loading}
+            style={{
+              backgroundColor: '#4285F4',
+              color: 'white',
+              border: 'none',
+              padding: '10px 20px',
+              borderRadius: '5px',
+              cursor: guests.length === 0 || loading ? 'not-allowed' : 'pointer',
+              opacity: guests.length === 0 || loading ? 0.5 : 1,
+              fontWeight: 'bold',
+              marginLeft: '10px'
+            }}
+          >
+            <i className="fas fa-sms" style={{ marginLeft: '8px' }}></i>
+            שלח SMS לכולם
+          </button>
           <button className="btn-download btn-excel" onClick={downloadExcel} disabled={guests.length === 0}>
             <i className="fas fa-file-excel"></i>
             הורד Excel
@@ -478,6 +574,20 @@ export default function GuestManagement({ eventId, onUpdate }) {
                       }}
                     >
                       <i className="fab fa-whatsapp"></i>
+                    </button>
+                    <button
+                      className="btn-icon btn-sms"
+                      onClick={() => handleSendSMSInvitation(guest)}
+                      title="שלח הזמנה ב-SMS"
+                      disabled={!guest.phone || loading}
+                      style={{
+                        backgroundColor: '#4285F4',
+                        color: 'white',
+                        opacity: !guest.phone ? 0.5 : 1,
+                        cursor: !guest.phone || loading ? 'not-allowed' : 'pointer'
+                      }}
+                    >
+                      <i className="fas fa-sms"></i>
                     </button>
                     <button
                       className="btn-icon btn-edit"

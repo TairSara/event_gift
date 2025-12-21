@@ -279,6 +279,52 @@ export const guestAPI = {
     }
   },
 
+  // Send SMS invitation to guest
+  sendSMSInvitation: async (guestId) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/sms/send-invitation/${guestId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || 'שגיאה בשליחת SMS');
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Send SMS invitation error:', error);
+      throw error;
+    }
+  },
+
+  // Send SMS invitations to all guests of an event
+  sendBulkSMSInvitations: async (eventId) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/sms/send-bulk-invitations/${eventId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || 'שגיאה בשליחת SMS המונית');
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Send bulk SMS error:', error);
+      throw error;
+    }
+  },
+
   // Upload Excel file with guests
   uploadExcel: async (eventId, file) => {
     try {
