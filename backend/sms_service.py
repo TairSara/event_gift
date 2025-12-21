@@ -32,11 +32,13 @@ class SMS019Service:
         """
         try:
             headers = {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Authorization': f'Bearer {self.api_token}'
             }
 
             print(f"📤 Sending SMS API request to: {self.api_url}")
             print(f"📊 Request data: {data}")
+            print(f"🔑 Auth header: Bearer {self.api_token[:20]}...")
 
             response = requests.post(
                 self.api_url,
@@ -113,7 +115,6 @@ class SMS019Service:
 
         payload = {
             "username": self.username,
-            "password": self.api_token,
             "source": source[:11],  # Max 11 characters
             "destination": clean_dest,
             "message": message_text
