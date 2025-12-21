@@ -22,45 +22,13 @@ class SendSMSRequest(BaseModel):
     event_location: str
 
 
-def format_israeli_phone(phone: str) -> str:
-    """
-    Format Israeli phone number to international format for 019SMS.
-
-    Converts Israeli numbers like:
-    - 0501234567 -> 972501234567
-    - 050-123-4567 -> 972501234567
-    - +972501234567 -> 972501234567
-
-    Args:
-        phone: Raw phone number from database
-
-    Returns:
-        Formatted phone number without + prefix (e.g., 972501234567)
-    """
-    # Remove all non-digit characters
-    digits_only = ''.join(filter(str.isdigit, phone))
-
-    # If it starts with 972, it's already in international format
-    if digits_only.startswith('972'):
-        return digits_only
-
-    # If it starts with 0, it's an Israeli local number
-    if digits_only.startswith('0'):
-        # Remove leading 0 and add 972 country code
-        return '972' + digits_only[1:]
-
-    # If no leading 0 or 972, assume it's missing the country code
-    # and treat it as a local number (add 972)
-    return '972' + digits_only
-
-
 @router.post("/send-invitation/{guest_id}")
 async def send_sms_invitation(guest_id: int):
     """Send SMS invitation to a specific guest"""
     try:
         conn = get_db_connection()
         cur = conn.cursor()
-
+        
         # Get guest and event details
         cur.execute("""
             SELECT g.name, g.phone, e.event_name, e.event_date, e.event_time, e.event_location
@@ -77,9 +45,6 @@ async def send_sms_invitation(guest_id: int):
 
         if not phone:
             raise HTTPException(status_code=400, detail="Guest has no phone number")
-
-        # Format phone number for Israeli numbers (050... -> 97250...)
-        formatted_phone = format_israeli_phone(phone)
 
         # Format date and time
         if isinstance(event_date, datetime):
@@ -105,14 +70,14 @@ async def send_sms_invitation(guest_id: int):
         event_description = event_name
 
         # Send SMS
-        print(f"📱 Sending SMS to: {formatted_phone}")
+        print(f"📱 Sending SMS to: {phone}")
         print(f"👤 Guest: {guest_name}")
         print(f"🎉 Event: {event_name}")
         print(f"📅 Date: {formatted_date}, Time: {formatted_time}")
         print(f"📍 Location: {final_location}")
 
         result = sms_service.send_event_invitation_sms(
-            destination=formatted_phone,
+            destination=phone,
             greeting=greeting,
             intro_text=intro_text,
             event_description=event_description,
@@ -136,7 +101,7 @@ async def send_sms_invitation(guest_id: int):
         return {
             'success': True,
             'guest_name': guest_name,
-            'phone': formatted_phone,
+            'phone': phone,
             'message': 'SMS invitation sent successfully',
             'message_data': result.get('data')
         }
@@ -150,7 +115,7 @@ async def send_sms_invitation(guest_id: int):
 
 @router.post("/send-bulk-invitations/{event_id}")
 async def send_bulk_sms_invitations(event_id: int):
-    """Send SMS invitations to all guests of an event"""
+    """Send SMS invitations to all guests of an event using bulk API"""
     try:
         conn = get_db_connection()
         cur = conn.cursor()
@@ -170,11 +135,11 @@ async def send_bulk_sms_invitations(event_id: int):
         if not guests:
             raise HTTPException(status_code=404, detail="No guests with phone numbers found for this event")
 
-        results = []
-        for guest_id, guest_name, phone, event_name, event_date, event_time, event_location in guests:
-            # Format phone number for Israeli numbers (050... -> 97250...)
-            formatted_phone = format_israeli_phone(phone)
+        # Prepare all messages for bulk sending
+        bulk_messages = []
+        guest_info = []  # Track guest info for response
 
+        for guest_id, guest_name, phone, event_name, event_date, event_time, event_location in guests:
             # Format date and time
             if isinstance(event_date, datetime):
                 formatted_date = event_date.strftime('%d/%m/%Y')
@@ -193,38 +158,45 @@ async def send_bulk_sms_invitations(event_id: int):
             # Prepare final location
             final_location = event_location or "יודיע בהמשך"
 
-            # Prepare SMS content
-            greeting = f"שלום {guest_name},"
-            intro_text = "אנו שמחים להזמינכם"
-            event_description = event_name
+            # Build message text
+            message_parts = [
+                f"שלום {guest_name},",
+                "אנו שמחים להזמינכם",
+                f"ל{event_name}",
+                f"בתאריך {formatted_date} בשעה {formatted_time}",
+                f"מיקום: {final_location}"
+            ]
+            message_text = "\n".join(message_parts)
 
-            # Send SMS
-            result = sms_service.send_event_invitation_sms(
-                destination=formatted_phone,
-                greeting=greeting,
-                intro_text=intro_text,
-                event_description=event_description,
-                event_date=formatted_date,
-                event_time=formatted_time,
-                event_location=final_location
-            )
-
-            results.append({
-                'guest_id': guest_id,
-                'guest_name': guest_name,
-                'phone': formatted_phone,
-                'success': result['success'],
-                'data': result.get('data') if result['success'] else result.get('error')
+            bulk_messages.append({
+                "destination": phone,
+                "message": message_text
             })
 
-        successful = sum(1 for r in results if r['success'])
-        failed = len(results) - successful
+            guest_info.append({
+                'guest_id': guest_id,
+                'guest_name': guest_name,
+                'phone': phone
+            })
+
+        print(f"📱 Sending bulk SMS to {len(bulk_messages)} guests")
+
+        # Send all messages in a single bulk API call
+        result = sms_service.send_bulk_sms(messages=bulk_messages)
+
+        if not result['success']:
+            error_detail = result.get('error', 'Failed to send bulk SMS')
+            print(f"❌ Bulk send failed: {error_detail}")
+            raise HTTPException(status_code=400, detail=error_detail)
+
+        print(f"✅ Bulk SMS sent successfully: {result.get('data')}")
 
         return {
-            'total': len(results),
-            'successful': successful,
-            'failed': failed,
-            'results': results
+            'total': len(bulk_messages),
+            'successful': len(bulk_messages),  # All sent in single API call
+            'failed': 0,
+            'guests': guest_info,
+            'api_response': result.get('data')
         }
 
     except HTTPException:
@@ -238,10 +210,8 @@ async def send_bulk_sms_invitations(event_id: int):
 async def send_custom_sms(request: SendSMSRequest):
     """Send custom SMS with specific parameters"""
     try:
-        formatted_phone = format_israeli_phone(request.destination)
-
         result = sms_service.send_event_invitation_sms(
-            destination=formatted_phone,
+            destination=request.destination,
             greeting=request.greeting,
             intro_text=request.intro_text,
             event_description=request.event_description,
@@ -255,7 +225,7 @@ async def send_custom_sms(request: SendSMSRequest):
 
         return {
             'success': True,
-            'phone': formatted_phone,
+            'phone': request.destination,
             'message': 'SMS sent successfully',
             'data': result.get('data')
         }

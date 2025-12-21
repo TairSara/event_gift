@@ -25,7 +25,7 @@ class SMS019Service:
         Send request to 019SMS API
 
         Args:
-            data: Request payload (XML or JSON format)
+            data: Request payload (JSON format)
 
         Returns:
             Dict with 'success' boolean and 'data' or 'error'
@@ -53,18 +53,36 @@ class SMS019Service:
             if response.status_code == 200:
                 try:
                     response_data = response.json()
+
+                    # Check if API returned success status (status == 0 means success)
+                    api_status = response_data.get('status')
+                    if api_status == 0:
+                        return {
+                            'success': True,
+                            'data': response_data,
+                            'status_code': response.status_code
+                        }
+                    else:
+                        # API returned error status
+                        error_message = response_data.get('message', 'Unknown API error')
+                        return {
+                            'success': False,
+                            'error': f'API error (status {api_status}): {error_message}',
+                            'response_data': response_data,
+                            'status_code': response.status_code
+                        }
                 except:
                     response_data = {'raw_response': response.text}
-
-                return {
-                    'success': True,
-                    'data': response_data,
-                    'status_code': response.status_code
-                }
+                    return {
+                        'success': False,
+                        'error': 'Failed to parse API response',
+                        'response_text': response.text,
+                        'status_code': response.status_code
+                    }
             else:
                 return {
                     'success': False,
-                    'error': f'API returned status {response.status_code}',
+                    'error': f'API returned HTTP status {response.status_code}',
                     'response_text': response.text,
                     'status_code': response.status_code
                 }
@@ -123,13 +141,19 @@ class SMS019Service:
             # Assume it's missing the leading 0
             clean_dest = '0' + digits_only
 
+        # Build payload according to official 019SMS API documentation
+        # The entire payload must be wrapped in 'sms' key
         payload = {
-            "username": self.username,
-            "source": source[:11],  # Max 11 characters
-            "destinations": {
-                "phone": clean_dest
-            },
-            "message": message_text
+            "sms": {
+                "user": {
+                    "username": self.username
+                },
+                "source": source[:11],  # Max 11 characters, alphanumeric sender ID
+                "destinations": {
+                    "phone": [clean_dest]  # Array of phone number strings
+                },
+                "message": message_text
+            }
         }
 
         return self._send_request(payload)
@@ -201,6 +225,56 @@ class SMS019Service:
             message_text=message,
             source=source
         )
+
+    def send_bulk_sms(
+        self,
+        messages: List[Dict[str, str]],
+        source: str = "SaveDay"
+    ) -> Dict:
+        """
+        Send multiple SMS messages in a single API call using 019SMS bulk API
+
+        Args:
+            messages: List of dicts with 'destination' and 'message' keys
+                Example: [
+                    {"destination": "0501234567", "message": "שלום..."},
+                    {"destination": "0509876543", "message": "שלום..."}
+                ]
+            source: Sender name (max 11 chars)
+
+        Returns:
+            Dict with 'success' boolean and 'data' or 'error'
+        """
+        # Format all phone numbers
+        formatted_messages = []
+        for msg in messages:
+            digits_only = ''.join(filter(str.isdigit, msg['destination']))
+
+            # Remove country code if present
+            if digits_only.startswith('972'):
+                clean_dest = '0' + digits_only[3:]
+            elif digits_only.startswith('0'):
+                clean_dest = digits_only
+            else:
+                clean_dest = '0' + digits_only
+
+            formatted_messages.append({
+                "phone": clean_dest,
+                "message": msg['message']
+            })
+
+        # Build bulk payload according to 019SMS API documentation
+        payload = {
+            "bulk": {
+                "user": {
+                    "username": self.username
+                },
+                "source": source[:11],
+                "messages": formatted_messages
+            }
+        }
+
+        return self._send_request(payload)
 
 
 # Global instance
