@@ -254,6 +254,19 @@ async def handle_incoming_sms(request: Request, background_tasks: BackgroundTask
         return {"status": "error", "message": str(e)}
 
 
+@router.get("/incoming")
+async def webhook_info():
+    """Info endpoint for webhook - accessible via GET"""
+    return {
+        "message": "SMS Webhook Endpoint",
+        "method": "POST only",
+        "description": "This endpoint receives incoming SMS webhooks from 019SMS",
+        "webhook_url": "https://event-gift.onrender.com/api/sms-webhook/incoming",
+        "status": "active",
+        "configure_in_019sms": "Add this URL to your 019SMS dashboard as the incoming SMS webhook"
+    }
+
+
 @router.get("/health")
 async def webhook_health():
     """Health check for SMS webhook"""
