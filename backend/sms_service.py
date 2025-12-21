@@ -126,7 +126,9 @@ class SMS019Service:
         payload = {
             "username": self.username,
             "source": source[:11],  # Max 11 characters
-            "destination": clean_dest,
+            "destinations": {
+                "phone": clean_dest
+            },
             "message": message_text
         }
 
