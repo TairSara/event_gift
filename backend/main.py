@@ -15,6 +15,19 @@ from sms_webhook import router as sms_webhook_router
 
 app = FastAPI(title="giftWeb-api")
 
+# Run database migrations on startup
+@app.on_event("startup")
+async def startup_migrations():
+    """Run database migrations on application startup"""
+    try:
+        print("🔧 Running database migrations...")
+        from add_guest_status_columns import add_status_columns
+        add_status_columns()
+        print("✅ Database migrations completed")
+    except Exception as e:
+        print(f"⚠️ Migration warning: {str(e)}")
+        # Don't crash the app if migration fails (columns might already exist)
+
 # CORS Configuration - נאפשר לפרונט לגשת ל-API
 origins = [
     "http://localhost:5173",
