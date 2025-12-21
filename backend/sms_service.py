@@ -108,10 +108,20 @@ class SMS019Service:
                 message_text="שלום יוסי, אנו שמחים להזמינכם..."
             )
         """
-        # Format destination - remove leading 0 if exists, should be 972XXXXXXXX format
-        clean_dest = destination.lstrip('0')
-        if not clean_dest.startswith('972'):
-            clean_dest = '972' + clean_dest
+        # Format destination for 019SMS API
+        # API expects Israeli local format: 5xxxxxxx or 05xxxxxxx (not international 972xxx)
+        digits_only = ''.join(filter(str.isdigit, destination))
+
+        # Remove country code if present
+        if digits_only.startswith('972'):
+            # Remove 972 and add leading 0
+            clean_dest = '0' + digits_only[3:]
+        elif digits_only.startswith('0'):
+            # Already in correct format
+            clean_dest = digits_only
+        else:
+            # Assume it's missing the leading 0
+            clean_dest = '0' + digits_only
 
         payload = {
             "username": self.username,
