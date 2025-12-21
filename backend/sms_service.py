@@ -189,7 +189,8 @@ class SMS019Service:
             intro_text,
             f"ל{event_description}",
             f"בתאריך {event_date} בשעה {event_time}",
-            f"מיקום: {event_location}"
+            f"מיקום: {event_location}",
+            "נא הגיבו בהודעה חוזרת 1 אם אתם מגיעים, אחרת - 0."
         ]
 
         message_text = "\n".join(message_parts)

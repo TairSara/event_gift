@@ -164,7 +164,8 @@ async def send_bulk_sms_invitations(event_id: int):
                 "אנו שמחים להזמינכם",
                 f"ל{event_name}",
                 f"בתאריך {formatted_date} בשעה {formatted_time}",
-                f"מיקום: {final_location}"
+                f"מיקום: {final_location}",
+                "נא הגיבו בהודעה חוזרת 1 אם אתם מגיעים, אחרת - 0."
             ]
             message_text = "\n".join(message_parts)
 
