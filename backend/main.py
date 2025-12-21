@@ -11,6 +11,7 @@ from admin_api import router as admin_api_router
 from whatsapp_api import router as whatsapp_router
 from invitation_image_upload import router as invitation_router
 from sms_router import router as sms_router
+from sms_webhook import router as sms_webhook_router
 
 app = FastAPI(title="giftWeb-api")
 
@@ -81,3 +82,6 @@ app.include_router(invitation_router)
 
 # חיבור ראוט SMS (019SMS)
 app.include_router(sms_router)
+
+# חיבור ראוט SMS Webhook (קבלת תשובות SMS)
+app.include_router(sms_webhook_router)
