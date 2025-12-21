@@ -127,17 +127,23 @@ async def handle_incoming_sms(request: Request, background_tasks: BackgroundTask
         if request.method == "GET":
             # 019SMS uses GET with query parameters
             params = request.query_params
-            from_number = params.get('msisdn') or params.get('from') or params.get('phone')
-            message = params.get('msg') or params.get('message') or params.get('text')
 
-            print(f"📥 Received SMS webhook (GET): msisdn={from_number}, msg={message}")
+            # Log ALL parameters for debugging
+            print(f"📥 Received SMS webhook (GET)")
+            print(f"   All params: {dict(params)}")
+
+            from_number = params.get('msisdn') or params.get('from') or params.get('phone') or params.get('sender')
+            message = params.get('msg') or params.get('message') or params.get('text') or params.get('content')
+
+            print(f"   Extracted: from_number={from_number}, message={message}")
         else:
             # Fallback to POST with JSON (for testing)
             payload = await request.json()
-            from_number = payload.get('msisdn') or payload.get('from') or payload.get('from_number') or payload.get('phone')
-            message = payload.get('msg') or payload.get('message') or payload.get('text') or payload.get('content')
 
             print(f"📥 Received SMS webhook (POST): {payload}")
+
+            from_number = payload.get('msisdn') or payload.get('from') or payload.get('from_number') or payload.get('phone')
+            message = payload.get('msg') or payload.get('message') or payload.get('text') or payload.get('content')
 
         if not from_number or message is None:
             print(f"❌ Invalid webhook data: from={from_number}, msg={message}")
