@@ -15,6 +15,16 @@ from rsvp_router import router as rsvp_router
 
 app = FastAPI(title="giftWeb-api")
 
+# Run database migrations on startup
+@app.on_event("startup")
+async def startup_migrations():
+    """Ensure database schema is up to date"""
+    try:
+        from ensure_guest_columns import ensure_columns
+        ensure_columns()
+    except Exception as e:
+        print(f"⚠️ Migration warning: {str(e)}")
+
 # CORS Configuration - נאפשר לפרונט לגשת ל-API
 origins = [
     "http://localhost:5173",
