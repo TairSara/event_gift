@@ -84,13 +84,17 @@ async def send_sms_invitation(guest_id: int):
         # Format date and time
         if isinstance(event_date, datetime):
             formatted_date = event_date.strftime('%d/%m/%Y')
-        else:
+        elif event_date:
             formatted_date = str(event_date)
+        else:
+            formatted_date = "יודיע בהמשך"
 
         if isinstance(event_time, datetime):
             formatted_time = event_time.strftime('%H:%M')
+        elif event_time:
+            formatted_time = str(event_time)
         else:
-            formatted_time = str(event_time) if event_time else '18:00'
+            formatted_time = '18:00'
 
         # Prepare final location (fallback to default if empty)
         final_location = event_location or "יודיע בהמשך"
@@ -174,13 +178,17 @@ async def send_bulk_sms_invitations(event_id: int):
             # Format date and time
             if isinstance(event_date, datetime):
                 formatted_date = event_date.strftime('%d/%m/%Y')
-            else:
+            elif event_date:
                 formatted_date = str(event_date)
+            else:
+                formatted_date = "יודיע בהמשך"
 
             if isinstance(event_time, datetime):
                 formatted_time = event_time.strftime('%H:%M')
+            elif event_time:
+                formatted_time = str(event_time)
             else:
-                formatted_time = str(event_time) if event_time else '18:00'
+                formatted_time = '18:00'
 
             # Prepare final location
             final_location = event_location or "יודיע בהמשך"
