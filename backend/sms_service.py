@@ -161,43 +161,26 @@ class SMS019Service:
     def send_event_invitation_sms(
         self,
         destination: str,
-        greeting: str,
-        intro_text: str,
-        event_description: str,
-        event_date: str,
-        event_time: str,
-        event_location: str
+        event_name: str,
+        rsvp_link: str
     ) -> Dict:
         """
-        Send event invitation SMS
+        Send event invitation SMS with RSVP link
 
         Args:
             destination: Phone number in international format (972501234567)
-            greeting: Greeting message (e.g., "שלום יוסי")
-            intro_text: Introduction text (e.g., "אנו שמחים להזמינכם")
-            event_description: Event description
-            event_date: Event date (e.g., "25/12/2025")
-            event_time: Event time (e.g., "19:00")
-            event_location: Event location
+            event_name: Event name (e.g., "חתונה של דוד ורות")
+            rsvp_link: Link to RSVP page
 
         Returns:
             Dict with 'success' boolean and 'data' or 'error'
         """
-        # Build the message text
-        message_parts = [
-            greeting,
-            intro_text,
-            f"ל{event_description}",
-            f"בתאריך {event_date} בשעה {event_time}",
-            f"מיקום: {event_location}",
-            "נא הגיבו בהודעה חוזרת 1 אם אתם מגיעים, אחרת - 0."
-        ]
-
-        message_text = "\n".join(message_parts)
+        # Build the message text with link
+        message_text = f"הנכם מוזמנים ל{event_name}, נשמח שתאשרו הגעתכם בלינק הבא: {rsvp_link}"
 
         print(f"📱 Preparing SMS invitation:")
         print(f"   To: {destination}")
-        print(f"   Message:\n{message_text}")
+        print(f"   Message: {message_text}")
 
         return self.send_template_sms(
             destination=destination,

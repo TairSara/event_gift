@@ -6,20 +6,11 @@ from pydantic import BaseModel
 from typing import Optional
 from datetime import datetime
 import psycopg2
+import hashlib
 from db import get_db_connection
 from sms_service import sms_service
 
 router = APIRouter(prefix="/api/sms", tags=["SMS"])
-
-
-class SendSMSRequest(BaseModel):
-    destination: str
-    greeting: str
-    intro_text: str
-    event_description: str
-    event_date: str
-    event_time: str
-    event_location: str
 
 
 @router.post("/send-invitation/{guest_id}")
@@ -61,29 +52,21 @@ async def send_sms_invitation(guest_id: int):
         else:
             formatted_time = '18:00'
 
-        # Prepare final location (fallback to default if empty)
-        final_location = event_location or "יודיע בהמשך"
-
-        # Prepare SMS content based on template structure
-        greeting = f"שלום {guest_name},"
-        intro_text = "אנו שמחים להזמינכם"
-        event_description = event_name
+        # Generate RSVP link
+        # Create unique token for this guest
+        token = hashlib.sha256(f"{guest_id}-{phone}-{event_name}".encode()).hexdigest()[:16]
+        rsvp_link = f"https://event-gift-frontend.onrender.com/rsvp/{guest_id}?token={token}"
 
         # Send SMS
         print(f"📱 Sending SMS to: {phone}")
         print(f"👤 Guest: {guest_name}")
         print(f"🎉 Event: {event_name}")
-        print(f"📅 Date: {formatted_date}, Time: {formatted_time}")
-        print(f"📍 Location: {final_location}")
+        print(f"🔗 RSVP Link: {rsvp_link}")
 
         result = sms_service.send_event_invitation_sms(
             destination=phone,
-            greeting=greeting,
-            intro_text=intro_text,
-            event_description=event_description,
-            event_date=formatted_date,
-            event_time=formatted_time,
-            event_location=final_location
+            event_name=event_name,
+            rsvp_link=rsvp_link
         )
 
         print(f"✉️ 019SMS Response: {result}")
@@ -155,19 +138,12 @@ async def send_bulk_sms_invitations(event_id: int):
             else:
                 formatted_time = '18:00'
 
-            # Prepare final location
-            final_location = event_location or "יודיע בהמשך"
+            # Generate RSVP link for this guest
+            token = hashlib.sha256(f"{guest_id}-{phone}-{event_name}".encode()).hexdigest()[:16]
+            rsvp_link = f"https://event-gift-frontend.onrender.com/rsvp/{guest_id}?token={token}"
 
-            # Build message text
-            message_parts = [
-                f"שלום {guest_name},",
-                "אנו שמחים להזמינכם",
-                f"ל{event_name}",
-                f"בתאריך {formatted_date} בשעה {formatted_time}",
-                f"מיקום: {final_location}",
-                "נא הגיבו בהודעה חוזרת 1 אם אתם מגיעים, אחרת - 0."
-            ]
-            message_text = "\n".join(message_parts)
+            # Build message text with RSVP link
+            message_text = f"הנכם מוזמנים ל{event_name}, נשמח שתאשרו הגעתכם בלינק הבא: {rsvp_link}"
 
             bulk_messages.append({
                 "destination": phone,
@@ -207,35 +183,6 @@ async def send_bulk_sms_invitations(event_id: int):
         raise HTTPException(status_code=500, detail=str(e))
 
 
-@router.post("/send-custom")
-async def send_custom_sms(request: SendSMSRequest):
-    """Send custom SMS with specific parameters"""
-    try:
-        result = sms_service.send_event_invitation_sms(
-            destination=request.destination,
-            greeting=request.greeting,
-            intro_text=request.intro_text,
-            event_description=request.event_description,
-            event_date=request.event_date,
-            event_time=request.event_time,
-            event_location=request.event_location
-        )
-
-        if not result['success']:
-            raise HTTPException(status_code=400, detail=result.get('error', 'Failed to send SMS'))
-
-        return {
-            'success': True,
-            'phone': request.destination,
-            'message': 'SMS sent successfully',
-            'data': result.get('data')
-        }
-
-    except HTTPException:
-        raise
-    except Exception as e:
-        print(f"❌ Error sending custom SMS: {str(e)}")
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.get("/health")

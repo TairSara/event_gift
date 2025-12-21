@@ -11,22 +11,8 @@ from admin_api import router as admin_api_router
 from whatsapp_api import router as whatsapp_router
 from invitation_image_upload import router as invitation_router
 from sms_router import router as sms_router
-from sms_webhook import router as sms_webhook_router
 
 app = FastAPI(title="giftWeb-api")
-
-# Run database migrations on startup
-@app.on_event("startup")
-async def startup_migrations():
-    """Run database migrations on application startup"""
-    try:
-        print("🔧 Running database migrations...")
-        from add_guest_status_columns import add_status_columns
-        add_status_columns()
-        print("✅ Database migrations completed")
-    except Exception as e:
-        print(f"⚠️ Migration warning: {str(e)}")
-        # Don't crash the app if migration fails (columns might already exist)
 
 # CORS Configuration - נאפשר לפרונט לגשת ל-API
 origins = [
@@ -95,6 +81,3 @@ app.include_router(invitation_router)
 
 # חיבור ראוט SMS (019SMS)
 app.include_router(sms_router)
-
-# חיבור ראוט SMS Webhook (קבלת תשובות SMS)
-app.include_router(sms_webhook_router)
