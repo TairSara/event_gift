@@ -111,31 +111,37 @@ async def send_reply_sms(phone: str, message: str):
     return result
 
 
-@router.post("/incoming")
+@router.api_route("/incoming", methods=["GET", "POST"])
 async def handle_incoming_sms(request: Request, background_tasks: BackgroundTasks):
     """
     Handle incoming SMS from 019SMS webhook
 
-    Expected payload from 019SMS:
-    {
-        "from": "0501234567",
-        "message": "1",
-        "timestamp": "2025-12-21 10:30:00",
-        "message_id": "msg_12345"
-    }
+    019SMS sends via GET with query parameters:
+    - msisdn: The sender's phone number
+    - msg: The message content
+
+    Example: /incoming?msisdn=0547804286&msg=1
     """
     try:
-        # Parse incoming webhook data
-        payload = await request.json()
-        print(f"📥 Received SMS webhook: {payload}")
+        # Check if GET or POST request
+        if request.method == "GET":
+            # 019SMS uses GET with query parameters
+            params = request.query_params
+            from_number = params.get('msisdn') or params.get('from') or params.get('phone')
+            message = params.get('msg') or params.get('message') or params.get('text')
 
-        # Extract data (adapt field names based on 019SMS webhook format)
-        from_number = payload.get('from') or payload.get('from_number') or payload.get('phone')
-        message = payload.get('message') or payload.get('text') or payload.get('content')
+            print(f"📥 Received SMS webhook (GET): msisdn={from_number}, msg={message}")
+        else:
+            # Fallback to POST with JSON (for testing)
+            payload = await request.json()
+            from_number = payload.get('msisdn') or payload.get('from') or payload.get('from_number') or payload.get('phone')
+            message = payload.get('msg') or payload.get('message') or payload.get('text') or payload.get('content')
+
+            print(f"📥 Received SMS webhook (POST): {payload}")
 
         if not from_number or message is None:
-            print(f"❌ Invalid webhook payload: {payload}")
-            return {"status": "error", "message": "Invalid payload"}
+            print(f"❌ Invalid webhook data: from={from_number}, msg={message}")
+            return {"status": "ok", "message": "Missing required parameters"}
 
         message = message.strip()
 
@@ -179,7 +185,7 @@ async def handle_incoming_sms(request: Request, background_tasks: BackgroundTask
                     print(f"✅ Updated guest {guest_name}: confirmed, {attending_count} attendees")
 
                     return {
-                        "status": "success",
+                        "status": "ok",
                         "message": f"Guest confirmed with {attending_count} attendees",
                         "guest_id": guest_id,
                         "attending_count": attending_count
@@ -210,7 +216,7 @@ async def handle_incoming_sms(request: Request, background_tasks: BackgroundTask
             print(f"✅ Guest {guest_name} responded YES, waiting for count")
 
             return {
-                "status": "success",
+                "status": "ok",
                 "message": "Guest confirmed attendance, waiting for count",
                 "guest_id": guest_id
             }
@@ -230,10 +236,9 @@ async def handle_incoming_sms(request: Request, background_tasks: BackgroundTask
             print(f"✅ Guest {guest_name} declined invitation")
 
             return {
-                "status": "success",
+                "status": "ok",
                 "message": "Guest declined invitation",
-                "guest_id": guest_id,
-                "status": "declined"
+                "guest_id": guest_id
             }
 
         else:
@@ -251,20 +256,9 @@ async def handle_incoming_sms(request: Request, background_tasks: BackgroundTask
 
     except Exception as e:
         print(f"❌ Error processing SMS webhook: {str(e)}")
-        return {"status": "error", "message": str(e)}
-
-
-@router.get("/incoming")
-async def webhook_info():
-    """Info endpoint for webhook - accessible via GET"""
-    return {
-        "message": "SMS Webhook Endpoint",
-        "method": "POST only",
-        "description": "This endpoint receives incoming SMS webhooks from 019SMS",
-        "webhook_url": "https://event-gift.onrender.com/api/sms-webhook/incoming",
-        "status": "active",
-        "configure_in_019sms": "Add this URL to your 019SMS dashboard as the incoming SMS webhook"
-    }
+        import traceback
+        traceback.print_exc()
+        return {"status": "ok", "message": "Error processed"}
 
 
 @router.get("/health")
