@@ -24,6 +24,7 @@ import AdminUsers from './pages/AdminUsers.jsx'
 import AdminEvents from './pages/AdminEvents.jsx'
 import AdminPackages from './pages/AdminPackages.jsx'
 import AdminContacts from './pages/AdminContacts.jsx'
+import RSVPPage from './pages/RSVPPage.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -44,6 +45,9 @@ createRoot(document.getElementById('root')).render(
           <Route path="/login-success" element={<LoginSuccess />} />
           <Route path="/create-invitation/:eventType" element={<TemplateSelection />} />
           <Route path="/create-invitation/:eventType/editor" element={<InvitationEditor />} />
+
+          {/* RSVP Page - Public route for guests */}
+          <Route path="/rsvp/:guestId" element={<RSVPPage />} />
 
           {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
