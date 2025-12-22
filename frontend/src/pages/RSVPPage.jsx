@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import axios from 'axios';
 
+// RSVP Page with Revolutionary Design - v2.0
 // Remove /api suffix if present in env var, we'll add the full path
 const API_BASE = (import.meta.env.VITE_API_URL || 'http://localhost:8000').replace(/\/api$/, '');
 
