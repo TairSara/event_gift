@@ -27,7 +27,15 @@ export default function RSVPPage() {
         setLoading(true);
         setError('');
 
-        const res = await axios.get(`${API_BASE}/api/rsvp/${guestId}?token=${token}`);
+        // Add timestamp to prevent caching
+        const timestamp = new Date().getTime();
+        const res = await axios.get(`${API_BASE}/api/rsvp/${guestId}?token=${token}&_t=${timestamp}`, {
+          headers: {
+            'Cache-Control': 'no-cache, no-store, must-revalidate',
+            'Pragma': 'no-cache',
+            'Expires': '0'
+          }
+        });
 
         setGuest(res.data.guest);
         setEvent(res.data.event);
