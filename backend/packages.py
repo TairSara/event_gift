@@ -666,14 +666,15 @@ def create_guest(event_id: int, guest: GuestCreate):
 
         cur.execute("""
             INSERT INTO guests (
-                event_id, name, phone, email, guests_count,
+                event_id, full_name, name, phone, email, guests_count,
                 contact_method, attendance_status, table_number
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             RETURNING id, created_at;
         """, (
             event_id,
-            guest.name,
+            guest.name,  # full_name
+            guest.name,  # name (for backwards compatibility)
             guest.phone,
             guest.email,
             guest.quantity or 1,
