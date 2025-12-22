@@ -9,9 +9,18 @@ export default function Pricing() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [openFaq, setOpenFaq] = useState(null);
+  const [selectedPackageForModal, setSelectedPackageForModal] = useState(null);
+  const [selectedGuestCount, setSelectedGuestCount] = useState(null);
   const { showSuccess, showInfo, NotificationComponent } = useNotification();
 
-  const handlePackageSelect = async (packageId, packageName) => {
+  const handlePackageSelect = async (packageId, packageName, packageData) => {
+    // אם החבילה היא לא חבילת בסיס (יש לה subPackages), נפתח מודאל לבחירת מספר מוזמנים
+    if (packageData.subPackages && packageData.subPackages.length > 0) {
+      setSelectedPackageForModal(packageData);
+      return;
+    }
+
+    // אם זו חבילת בסיס, ממשיכים כרגיל
     if (!user) {
       // אם המשתמש לא מחובר - שמירת החבילה ב-localStorage וניתוב להרשמה
       localStorage.setItem('selectedPackage', JSON.stringify({
@@ -23,35 +32,70 @@ export default function Pricing() {
       setTimeout(() => navigate('/register'), 1500);
     } else {
       // אם המשתמש מחובר - ביצוע הרכישה
-      const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
-
-      try {
-        const response = await fetch(`${API_URL}/packages/purchase`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            user_id: user.id,
-            package_id: packageId,
-            package_name: packageName
-          })
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          showSuccess('הרכישה בוצעה בהצלחה!');
-          // ניתוב לדף ניהול אישי אחרי שנייה
-          setTimeout(() => navigate('/dashboard'), 1500);
-        } else {
-          showInfo(data.detail || 'שגיאה ביצירת הרכישה');
-        }
-      } catch (error) {
-        console.error('Error purchasing package:', error);
-        showInfo('שגיאה בתקשורת עם השרת');
-      }
+      await purchasePackage(packageId, packageName, null);
     }
+  };
+
+  const purchasePackage = async (packageId, packageName, guestCount) => {
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
+    try {
+      const response = await fetch(`${API_URL}/packages/purchase`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          user_id: user.id,
+          package_id: packageId,
+          package_name: packageName,
+          guest_count: guestCount
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        showSuccess('הרכישה בוצעה בהצלחה!');
+        // ניתוב לדף ניהול אישי אחרי שנייה
+        setTimeout(() => navigate('/dashboard'), 1500);
+      } else {
+        showInfo(data.detail || 'שגיאה ביצירת הרכישה');
+      }
+    } catch (error) {
+      console.error('Error purchasing package:', error);
+      showInfo('שגיאה בתקשורת עם השרת');
+    }
+  };
+
+  const handleGuestCountSelect = async (subPackage) => {
+    if (!user) {
+      // אם המשתמש לא מחובר - שמירת החבילה ב-localStorage וניתוב להרשמה
+      localStorage.setItem('selectedPackage', JSON.stringify({
+        packageId: selectedPackageForModal.id,
+        packageName: selectedPackageForModal.name,
+        guestCount: subPackage.records,
+        timestamp: new Date().getTime()
+      }));
+      showInfo("יש להירשם כדי לבחור חבילה");
+      setTimeout(() => navigate('/register'), 1500);
+    } else {
+      // סגירת המודאל
+      setSelectedPackageForModal(null);
+      setSelectedGuestCount(null);
+
+      // ביצוע הרכישה
+      await purchasePackage(
+        selectedPackageForModal.id,
+        selectedPackageForModal.name,
+        subPackage.records
+      );
+    }
+  };
+
+  const closeModal = () => {
+    setSelectedPackageForModal(null);
+    setSelectedGuestCount(null);
   };
 
   const faqData = [
@@ -303,7 +347,7 @@ export default function Pricing() {
                 <div className="package-footer">
                   <button
                     className="btn-select-package"
-                    onClick={() => handlePackageSelect(pkg.id, pkg.name)}
+                    onClick={() => handlePackageSelect(pkg.id, pkg.name, pkg)}
                   >
                     בחר חבילה
                   </button>
@@ -387,6 +431,44 @@ export default function Pricing() {
           </button>
         </div>
       </section>
+
+      {/* Guest Count Selection Modal */}
+      {selectedPackageForModal && (
+        <div className="modal-overlay" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <button className="modal-close" onClick={closeModal}>
+              <i className="fas fa-times"></i>
+            </button>
+
+            <div className="modal-header">
+              <h2>{selectedPackageForModal.name}</h2>
+              <p>בחר את מספר המוזמנים המתאים לאירוע שלך</p>
+            </div>
+
+            <div className="modal-guest-options">
+              {selectedPackageForModal.subPackages.map((subPkg, idx) => (
+                <div
+                  key={idx}
+                  className="guest-option"
+                  onClick={() => handleGuestCountSelect(subPkg)}
+                >
+                  <div className="guest-option-info">
+                    <i className="fas fa-users"></i>
+                    <span className="guest-count">{subPkg.records}</span>
+                  </div>
+                  <div className="guest-option-price">
+                    <span className="price-label">מחיר:</span>
+                    <span className="price-value">{subPkg.price}</span>
+                  </div>
+                  <div className="guest-option-arrow">
+                    <i className="fas fa-arrow-left"></i>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Footer */}
       <footer className="footer">
