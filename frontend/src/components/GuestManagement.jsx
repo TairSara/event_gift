@@ -264,9 +264,9 @@ export default function GuestManagement({ eventId, onUpdate }) {
       name: guest.name || '',
       phone: guest.phone || '',
       email: guest.email || '',
-      quantity: guest.quantity || 1,
+      quantity: guest.attending_count || guest.guests_count || guest.quantity || 1,
       contact_method: guest.contact_method || 'WhatsApp',
-      attendance_status: guest.attendance_status || 'pending',
+      attendance_status: guest.status || guest.attendance_status || 'pending',
       table_number: guest.table_number || ''
     });
   };
@@ -308,15 +308,19 @@ export default function GuestManagement({ eventId, onUpdate }) {
 
   const downloadExcel = () => {
     // יצירת מערך של נתונים לאקסל
-    const excelData = guests.map(guest => ({
-      'שם האורח': guest.name,
-      'כמות': guest.guests_count || guest.quantity || 1,
-      'מספר טלפון': guest.phone || '',
-      'אימייל': guest.email || '',
-      'סטטוס אישור הגעה': guest.attendance_status === 'pending' ? 'ממתין' :
-                            guest.attendance_status === 'confirmed' ? 'אישר' : 'סירב',
-      'מספר שולחן': guest.table_number || ''
-    }));
+    const excelData = guests.map(guest => {
+      const currentStatus = guest.status || guest.attendance_status;
+      const currentCount = guest.attending_count || guest.guests_count || guest.quantity || 1;
+      return {
+        'שם האורח': guest.name,
+        'כמות': currentCount,
+        'מספר טלפון': guest.phone || '',
+        'אימייל': guest.email || '',
+        'סטטוס אישור הגעה': currentStatus === 'pending' ? 'ממתין' :
+                              currentStatus === 'confirmed' ? 'אישר' : 'סירב',
+        'מספר שולחן': guest.table_number || ''
+      };
+    });
 
     // יצירת workbook ו-worksheet
     const worksheet = XLSX.utils.json_to_sheet(excelData);
@@ -341,14 +345,18 @@ export default function GuestManagement({ eventId, onUpdate }) {
     doc.text('רשימת מוזמנים', 148, 15, { align: 'center' });
 
     // הכנת נתונים לטבלה
-    const tableData = guests.map(guest => [
-      guest.name,
-      guest.guests_count || guest.quantity || 1,
-      guest.phone || '-',
-      guest.attendance_status === 'pending' ? 'ממתין' :
-      guest.attendance_status === 'confirmed' ? 'אישר' : 'סירב',
-      guest.table_number || '-'
-    ]);
+    const tableData = guests.map(guest => {
+      const currentStatus = guest.status || guest.attendance_status;
+      const currentCount = guest.attending_count || guest.guests_count || guest.quantity || 1;
+      return [
+        guest.name,
+        currentCount,
+        guest.phone || '-',
+        currentStatus === 'pending' ? 'ממתין' :
+        currentStatus === 'confirmed' ? 'אישר' : 'סירב',
+        guest.table_number || '-'
+      ];
+    });
 
     // יצירת הטבלה
     doc.autoTable({
@@ -395,11 +403,11 @@ export default function GuestManagement({ eventId, onUpdate }) {
 
   const stats = {
     total: guests.length,
-    confirmed: guests.filter(g => g.attendance_status === 'confirmed').length,
-    pending: guests.filter(g => g.attendance_status === 'pending').length,
-    declined: guests.filter(g => g.attendance_status === 'declined').length,
-    maybe: guests.filter(g => g.attendance_status === 'maybe').length,
-    totalQuantity: guests.reduce((sum, g) => sum + (g.guests_count || g.quantity || 1), 0)
+    confirmed: guests.filter(g => (g.status || g.attendance_status) === 'confirmed').length,
+    pending: guests.filter(g => (g.status || g.attendance_status) === 'pending').length,
+    declined: guests.filter(g => (g.status || g.attendance_status) === 'declined').length,
+    maybe: guests.filter(g => (g.status || g.attendance_status) === 'maybe').length,
+    totalQuantity: guests.reduce((sum, g) => sum + (g.attending_count || g.guests_count || g.quantity || 1), 0)
   };
 
   if (loading) {
@@ -556,9 +564,9 @@ export default function GuestManagement({ eventId, onUpdate }) {
               guests.map((guest) => (
                 <tr key={guest.id}>
                   <td className="guest-name">{guest.name}</td>
-                  <td>{guest.guests_count || guest.quantity || 1}</td>
+                  <td>{guest.attending_count || guest.guests_count || guest.quantity || 1}</td>
                   <td>{guest.phone || '-'}</td>
-                  <td>{getStatusBadge(guest.attendance_status)}</td>
+                  <td>{getStatusBadge(guest.status || guest.attendance_status)}</td>
                   <td>{guest.table_number || '-'}</td>
                   <td className="actions">
                     <button
