@@ -793,7 +793,8 @@ def get_event_guests(event_id: int):
         cur.execute("""
             SELECT
                 id, name, phone, email, guests_count, contact_method,
-                attendance_status, table_number, created_at, updated_at
+                attendance_status, table_number, created_at, updated_at,
+                status, attending_count
             FROM guests
             WHERE event_id = %s
             ORDER BY created_at DESC;
@@ -801,15 +802,21 @@ def get_event_guests(event_id: int):
 
         guests = []
         for row in cur.fetchall():
+            # Use status if available, otherwise fall back to attendance_status
+            current_status = row[10] if row[10] else row[6]
+            current_count = row[11] if row[11] is not None else row[4]
+
             guests.append({
                 "id": row[0],
                 "name": row[1],
                 "phone": row[2],
                 "email": row[3],
-                "guests_count": row[4],
-                "quantity": row[4],  # Keep for backward compatibility
+                "guests_count": current_count,
+                "quantity": current_count,  # Keep for backward compatibility
                 "contact_method": row[5],
-                "attendance_status": row[6],
+                "attendance_status": current_status,  # Use synced status
+                "status": current_status,  # RSVP status
+                "attending_count": current_count,  # RSVP count
                 "table_number": row[7],
                 "created_at": row[8].isoformat() if row[8] else None,
                 "updated_at": row[9].isoformat() if row[9] else None
