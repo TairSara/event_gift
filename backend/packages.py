@@ -868,6 +868,13 @@ def update_guest(guest_id: int, guest: GuestUpdate):
         if guest.attendance_status is not None:
             updates.append("attendance_status = %s")
             params.append(guest.attendance_status)
+            # Also update the status field for RSVP sync
+            updates.append("status = %s")
+            params.append(guest.attendance_status)
+            # Reset attending_count if status is pending or declined
+            if guest.attendance_status in ['pending', 'declined']:
+                updates.append("attending_count = %s")
+                params.append(0)
 
         if guest.table_number is not None:
             updates.append("table_number = %s")
