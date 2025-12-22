@@ -39,19 +39,14 @@ export default function Navbar() {
         <ul className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
           <li>
             <a
-              href="/#events"
+              href="/"
               onClick={(e) => {
-                if (window.location.pathname === '/') {
-                  e.preventDefault();
-                  document.getElementById('events')?.scrollIntoView({
-                    behavior: 'smooth',
-                    block: 'start'
-                  });
-                }
+                e.preventDefault();
                 setMobileMenuOpen(false);
+                navigate('/');
               }}
             >
-              מתנות באשראי
+              דף הבית
             </a>
           </li>
           <li>

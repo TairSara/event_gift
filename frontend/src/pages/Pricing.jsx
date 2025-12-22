@@ -90,89 +90,128 @@ export default function Pricing() {
   const packages = [
     {
       id: 1,
-      name: "חבילה בסיסית",
-      tagline: "מושלם לאירועים קטנים ואינטימיים",
-      price: "1 ₪",
-      priceUnit: "לרשומה",
+      name: "💡 חבילת בסיס – ידני",
+      tagline: "אתם שולחים לבד – המערכת עושה לכם סדר, בלי אקסלים ובלי בלגן",
+      price: "₪39",
+      priceUnit: "",
       color: "turquoise",
       popular: false,
       features: [
-        { text: "שליחת תמונה או סרטון מרהיבים עם ההזמנה בוואטסאפ - הרושם הראשון שנשאר לנצח!", included: true },
-        { text: "שני סיבובי וואטסאפ ו-SMS חכמים - כי כל אורח חשוב לנו", included: true },
-        { text: "תזכורת SMS ביום האירוע + ניווט ווייז ישיר - הגעה בלי סטרס", included: true },
-        { text: "עיצוב הזמנה דיגיטלית מדהימה לחלוטין בחינם - כן, שמעתם נכון!", included: true },
-        { text: "מערכת ניהול חכמה עם דשבורד אישי - שליטה מלאה בזמן אמת", included: true },
-        { text: "קישור לשליחה ידנית בקבוצות - גמישות מקסימלית, אישורי הגעה ללא הגבלה", included: true },
-        { text: "מספרי שולחנות אוטומטיים בהודעת התזכורת - ארגון מושלם בחינם", included: true },
-        { text: "אפשרות קבלת מתנות באשראי - נוח לכם, נוח לאורחים", included: true },
+        { text: "הזמנה דיגיטלית מעוצבת", included: true },
+        { text: "מערכת אישורי הגעה ללא הגבלה", included: true },
+        { text: "ניהול מוזמנים (ידני / אקסל)", included: true },
+        { text: "שליחה ידנית ב־WhatsApp", included: true },
+        { text: "סטטוס אישורים בזמן אמת", included: true },
       ],
-      note: "ללא הגבלת מוזמנים - כמה שתרצו!"
+      note: "למי שרוצה מינימום עלות ומקסימום סדר"
     },
     {
       id: 2,
-      name: "חבילה בינונית",
-      tagline: "שילוב מושלם של איכות ומחיר הוגן!",
-      price: "180 ₪",
-      priceUnit: "עד 300 איש",
+      name: "📩 אוטומטי SMS",
+      tagline: "שליחה ואישורי הגעה ב־SMS",
+      price: null,
+      priceUnit: "",
       color: "sage",
       popular: false,
-      features: [
-        { text: "שני סיבובי וואטסאפ ו-SMS אוטומטיים - הטכנולוגיה עובדת בשבילכם", included: true },
-        { text: "שלושה סבבי שיחות טלפוניות אישיות - מגע אנושי שעושה את ההבדל", included: true },
-        { text: "עיצוב הזמנה דיגיטלית מהממת לחלוטין בחינם - תראו מקצועי ברמה אחרת", included: true },
-        { text: "שליחת תמונה או סרטון אישי בוואטסאפ - תנו להזמנה שלכם להתבלט", included: true },
-        { text: "תזכורת חכמה ביום האירוע + ניווט ווייז - אף אורח לא יתעה בדרך", included: true },
-        { text: "מערכת ניהול פרימיום עם דשבורד מתקדם - עקבו אחר כל פרט בזמן אמת", included: true },
-        { text: "קישור ידני לקבוצות וואטסאפ - שליטה ומעקב ללא גבולות", included: true },
-        { text: "מערכת מתנות באשראי משוכללת - הכסף זורם ישירות אליכם", included: true },
-        { text: "הודעות תודה אוטומטיות למחרת - סגירת מעגל מושלמת", included: true },
-        { text: "שיבוץ שולחנות אוטומטי בתזכורת - ארגון ברמה של event planner מקצועי", included: true },
+      subPackages: [
+        { records: "150 רשומות", price: "₪59" },
+        { records: "300 רשומות", price: "₪79" },
+        { records: "500 רשומות", price: "₪109" },
+        { records: "800 רשומות", price: "₪159" },
+        { records: "1,000 רשומות", price: "₪189" },
+        { records: "2,000 רשומות", price: "₪319" }
       ],
-      note: "החבילה המומלצת - כולל הכל מה שצריך!"
+      features: [
+        { text: "הזמנה דיגיטלית", included: true },
+        { text: "שליחת הזמנות ב־SMS", included: true },
+        { text: "אישורי הגעה אוטומטיים", included: true },
+        { text: "תזכורת לפני האירוע", included: true },
+        { text: "דוח אישורים מסודר", included: true },
+      ],
+      note: "פתרון פשוט ומהיר למוזמנים מבוגרים"
     },
     {
       id: 3,
-      name: "חבילה כלכלית",
-      tagline: "הפתרון החכם - מקסימום ערך במינימום עלות!",
-      price: "1.6 ₪",
-      priceUnit: "לרשומה",
+      name: "💬 אוטומטי WhatsApp ⭐",
+      tagline: "שליחה ואישורים אוטומטיים ב־WhatsApp",
+      price: null,
+      priceUnit: "",
       color: "gold",
-      popular: false,
-      features: [
-        { text: "שני סיבובי וואטסאפ ו-SMS מקצועיים - כיסוי מלא לכל האורחים", included: true },
-        { text: "שלושה סבבי שיחות טלפוניות - מעקב מסור עד קבלת אישור הגעה", included: true },
-        { text: "עיצוב הזמנה דיגיטלית מושלמת בחינם - יוקרה במחיר חכם", included: true },
-        { text: "שליחת תמונה או סרטון מותאם אישית - תנו לאירוע שלכם זהות ייחודית", included: true },
-        { text: "תזכורת מתוזמנת ביום האירוע + ווייז - נסיעה חלקה לכל האורחים", included: true },
-        { text: "מערכת ניהול מתקדמת עם דשבורד - מעקב וניהול בזמן אמת", included: true },
-        { text: "קישור לשיתוף חופשי בקבוצות - אישורי הגעה ללא הגבלות", included: true },
-        { text: "הודעות תודה אוטומטיות למחרת - סיום אלגנטי ומכובד", included: true },
-        { text: "שיבוץ שולחנות חכם - אופציה להכניס מספר שולחן לכל מוזמן", included: true },
-        { text: "מתנות באשראי", included: false },
+      popular: true,
+      subPackages: [
+        { records: "עד 50", price: "₪69" },
+        { records: "עד 100", price: "₪109" },
+        { records: "עד 150", price: "₪169" },
+        { records: "עד 200", price: "₪229" },
+        { records: "עד 300", price: "₪329" },
+        { records: "עד 400", price: "₪419" },
+        { records: "עד 500", price: "₪509" },
+        { records: "עד 600", price: "₪589" },
+        { records: "עד 700", price: "₪649" },
+        { records: "עד 800", price: "₪709" }
       ],
-      note: "הכי הרבה תמורה לכסף - כל הפיצ'רים ללא מתנות באשראי"
+      features: [
+        { text: "שליחת הזמנה ב־WhatsApp אוטומטי", included: true },
+        { text: "2 סבבי אישור הגעה", included: true },
+        { text: "תזכורת לפני האירוע (SMS)", included: true },
+        { text: "הודעת תודה אחרי האירוע (אופציונלי)", included: true },
+        { text: "ניהול מוזמנים + דוחות", included: true },
+        { text: "עיצובים לבחירה", included: true },
+      ],
+      note: "הכי נמכר - חוויית שימוש קלה ונוחה"
     },
     {
       id: 4,
-      name: "חבילה מלאה",
-      tagline: "שגר ושכח - אנחנו דואגים לכל הפרטים!",
-      price: "250 ₪",
-      priceUnit: "ללא הגבלת אורחים",
+      name: "📞 אוטומטי \"ראש שקט\"",
+      tagline: "WhatsApp + טלפונים אנושיים",
+      price: null,
+      priceUnit: "",
       color: "rose",
-      popular: true,
-      features: [
-        { text: "שני סיבובי וואטסאפ ו-SMS מתוזמנים - מקסימום כיסוי, מינימום טרחה", included: true },
-        { text: "שלושה סבבי שיחות מקצועיות - נוודא שכל אורח קיבל את ההזמנה", included: true },
-        { text: "עיצוב הזמנה דיגיטלית ייחודית בחינם - שתגרום לאורחים לומר WOW", included: true },
-        { text: "שליחת תמונה או סרטון מרגש בוואטסאפ - הזמנה שזוכרים", included: true },
-        { text: "תזכורת אינטליגנטית ביום האירוע + ווייז - הכל מסודר ומתוזמן", included: true },
-        { text: "מערכת ניהול VIP מקצועית - דשבורד מתקדם עם כל הכלים", included: true },
-        { text: "קישור בלתי מוגבל לשיתוף - אין גבולות למספר האורחים", included: true },
-        { text: "מערכת מתנות פרימיום באשראי - הכי נוח ומאובטח", included: true },
-        { text: "הודעות תודה מעוצבות למחרת האירוע - סיום מושלם ומרגש", included: true },
-        { text: "שיבוץ שולחנות חכם - אופציה להכניס מספר שולחן לכל מוזמן", included: true },
+      popular: false,
+      subPackages: [
+        { records: "עד 100", price: "₪239" },
+        { records: "עד 200", price: "₪469" },
+        { records: "עד 300", price: "₪679" },
+        { records: "עד 400", price: "₪869" },
+        { records: "עד 500", price: "₪1,039" },
+        { records: "עד 600", price: "₪1,189" },
+        { records: "עד 700", price: "₪1,389" },
+        { records: "עד 800", price: "₪1,589" }
       ],
-      note: "לאירועים גדולים - אין מגבלות, רק הצלחה!"
+      features: [
+        { text: "כל מה שבאוטומטי WhatsApp", included: true },
+        { text: "מוקד אנושי לשיחות טלפון", included: true },
+        { text: "מספר סבבי התקשרות", included: true },
+        { text: "טיפול במוזמנים שלא ענו", included: true },
+      ],
+      note: "שקט נפשי אמיתי - לא רוצים להתעסק בכלל"
+    },
+    {
+      id: 5,
+      name: "⭐ אוטומטי \"ראש שקט פלוס\" 💎",
+      tagline: "הכל כלול – פרימיום",
+      price: null,
+      priceUnit: "",
+      color: "purple",
+      popular: false,
+      subPackages: [
+        { records: "עד 100", price: "₪339" },
+        { records: "עד 200", price: "₪569" },
+        { records: "עד 300", price: "₪779" },
+        { records: "עד 400", price: "₪969" },
+        { records: "עד 500", price: "₪1,139" },
+        { records: "עד 600", price: "₪1,289" },
+        { records: "עד 700", price: "₪1,489" },
+        { records: "עד 800", price: "₪1,689" }
+      ],
+      features: [
+        { text: "כל מה שבחבילת \"ראש שקט\"", included: true },
+        { text: "תזכורות גם ב־WhatsApp", included: true },
+        { text: "כפתור ניווט לאולם", included: true },
+        { text: "הושבה דיגיטלית כלולה", included: true },
+        { text: "שליחת מספר שולחן ביום האירוע", included: true },
+      ],
+      note: "חוויית פרימיום - אפס התעסקות עד יום האירוע"
     }
   ];
 
@@ -191,6 +230,10 @@ export default function Pricing() {
             ותן לנו לעשות לך ראש שקט<br />
             <span style={{fontSize: '0.9em', opacity: 0.9}}>תמחור שקוף והוגן, ללא עלויות נסתרות - שגר ושכח</span>
           </p>
+          <div style={{marginTop: '2rem', fontSize: '1.1rem', color: 'var(--cream)'}}>
+            <strong>🤍 לא בטוחים מה לבחור?</strong><br/>
+            <span style={{fontSize: '0.95rem'}}>דברו איתנו – ונעזור לכם לבחור את החבילה שהכי מתאימה לאירוע שלכם.</span>
+          </div>
         </div>
       </section>
 
@@ -214,17 +257,31 @@ export default function Pricing() {
                   <div className="package-icon">
                     <i className={`fas ${
                       pkg.id === 1 ? 'fa-rocket' :
-                      pkg.id === 2 ? 'fa-star' :
-                      pkg.id === 3 ? 'fa-gem' :
-                      'fa-coins'
+                      pkg.id === 2 ? 'fa-envelope' :
+                      pkg.id === 3 ? 'fa-comments' :
+                      pkg.id === 4 ? 'fa-phone' :
+                      'fa-crown'
                     }`}></i>
                   </div>
                   <h3 className="package-name">{pkg.name}</h3>
                   <p className="package-tagline">{pkg.tagline}</p>
-                  <div className="package-price">
-                    <span className="price">{pkg.price}</span>
-                    <span className="price-unit">{pkg.priceUnit}</span>
-                  </div>
+
+                  {pkg.price ? (
+                    <div className="package-price">
+                      <span className="price">{pkg.price}</span>
+                      <span className="price-unit">{pkg.priceUnit}</span>
+                    </div>
+                  ) : (
+                    <div className="package-price-list">
+                      {pkg.subPackages && pkg.subPackages.map((sub, idx) => (
+                        <div key={idx} className="sub-package-price">
+                          <span className="records">{sub.records}</span>
+                          <span className="price">{sub.price}</span>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
                   <p className="package-note">{pkg.note}</p>
                   <div className="hover-hint">
                     <i className="fas fa-hand-pointer"></i>
@@ -253,6 +310,39 @@ export default function Pricing() {
                 </div>
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Add-ons Section */}
+      <section className="addons-section">
+        <div className="addons-container">
+          <div className="section-title">
+            <h2>➕ תוספות (לבחירה)</h2>
+            <p className="section-subtitle">שדרגו את החבילה שלכם עם התוספות הבאות</p>
+          </div>
+          <div className="addons-grid">
+            <div className="addon-card">
+              <div className="addon-icon">
+                <i className="fas fa-chair"></i>
+              </div>
+              <h3>הושבה דיגיטלית</h3>
+              <p>מערכת הושבה חכמה לאירוע שלכם</p>
+            </div>
+            <div className="addon-card">
+              <div className="addon-icon">
+                <i className="fas fa-credit-card"></i>
+              </div>
+              <h3>מתנות באשראי</h3>
+              <p>אפשרות קבלת מתנות דרך כרטיס אשראי</p>
+            </div>
+            <div className="addon-card">
+              <div className="addon-icon">
+                <i className="fas fa-palette"></i>
+              </div>
+              <h3>עיצוב הזמנה בהתאמה אישית</h3>
+              <p>הזמנה ייחודית שמותאמת בדיוק לסגנון שלכם</p>
+            </div>
           </div>
         </div>
       </section>
