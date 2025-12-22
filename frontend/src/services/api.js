@@ -162,10 +162,15 @@ export const guestAPI = {
   // Get all guests for an event
   getEventGuests: async (eventId) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/packages/events/${eventId}/guests`, {
+      // Add timestamp to prevent caching
+      const timestamp = new Date().getTime();
+      const response = await fetch(`${API_BASE_URL}/packages/events/${eventId}/guests?_t=${timestamp}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
         },
       });
 
