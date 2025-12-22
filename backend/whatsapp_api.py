@@ -477,10 +477,10 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                     # For 'maybe' or 'declined', update status directly
                     cur.execute("""
                         UPDATE guests
-                        SET attendance_status = %s, updated_at = NOW()
+                        SET status = %s, attendance_status = %s, updated_at = NOW()
                         WHERE phone LIKE %s OR phone LIKE %s OR phone LIKE %s
-                        RETURNING id, name, phone, attendance_status
-                    """, (new_status, f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
+                        RETURNING id, name, phone, status
+                    """, (new_status, new_status, f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
 
                     updated_guests = cur.fetchall()
                     conn.commit()
@@ -535,10 +535,10 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                         # Update all matching guests
                         cur.execute("""
                             UPDATE guests
-                            SET guests_count = %s, attendance_status = 'confirmed', updated_at = NOW()
+                            SET attending_count = %s, guests_count = %s, status = 'confirmed', attendance_status = 'confirmed', updated_at = NOW()
                             WHERE phone LIKE %s OR phone LIKE %s OR phone LIKE %s
-                            RETURNING id, name, phone, guests_count, attendance_status
-                        """, (guest_count, f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
+                            RETURNING id, name, phone, attending_count, status
+                        """, (guest_count, guest_count, f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
 
                         updated_guests = cur.fetchall()
                         print(f"✅ Updated {len(updated_guests)} guests:")
