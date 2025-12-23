@@ -134,7 +134,7 @@ export default function Pricing() {
   const packages = [
     {
       id: 1,
-      name: "💡 חבילת בסיס – ידני",
+      name: "חבילת בסיס – ידני",
       tagline: "אתם שולחים לבד – המערכת עושה לכם סדר, בלי אקסלים ובלי בלגן",
       price: "₪39",
       priceUnit: "",
@@ -151,7 +151,7 @@ export default function Pricing() {
     },
     {
       id: 2,
-      name: "📩 אוטומטי SMS",
+      name: "אוטומטי SMS",
       tagline: "שליחה ואישורי הגעה ב־SMS",
       price: null,
       priceUnit: "",
@@ -176,7 +176,7 @@ export default function Pricing() {
     },
     {
       id: 3,
-      name: "💬 אוטומטי WhatsApp ⭐",
+      name: "אוטומטי WhatsApp",
       tagline: "שליחה ואישורים אוטומטיים ב־WhatsApp",
       price: null,
       priceUnit: "",
@@ -206,7 +206,7 @@ export default function Pricing() {
     },
     {
       id: 4,
-      name: "📞 אוטומטי \"ראש שקט\"",
+      name: "אוטומטי \"ראש שקט\"",
       tagline: "WhatsApp + טלפונים אנושיים",
       price: null,
       priceUnit: "",
@@ -232,7 +232,7 @@ export default function Pricing() {
     },
     {
       id: 5,
-      name: "⭐ אוטומטי \"ראש שקט פלוס\" 💎",
+      name: "אוטומטי \"ראש שקט פלוס\"",
       tagline: "הכל כלול – פרימיום",
       price: null,
       priceUnit: "",
@@ -284,6 +284,10 @@ export default function Pricing() {
       {/* Packages Section */}
       <section className="packages-section">
         <div className="packages-container">
+          <div className="section-title">
+            <h2>בחר את החבילה המושלמת</h2>
+            <p className="section-subtitle">כל החבילות כוללות הזמנה דיגיטלית מעוצבת וניהול מוזמנים מתקדם</p>
+          </div>
           <div className="packages-grid">
             {packages.map((pkg) => (
               <div
@@ -298,15 +302,6 @@ export default function Pricing() {
                 )}
 
                 <div className="package-header">
-                  <div className="package-icon">
-                    <i className={`fas ${
-                      pkg.id === 1 ? 'fa-rocket' :
-                      pkg.id === 2 ? 'fa-envelope' :
-                      pkg.id === 3 ? 'fa-comments' :
-                      pkg.id === 4 ? 'fa-phone' :
-                      'fa-crown'
-                    }`}></i>
-                  </div>
                   <h3 className="package-name">{pkg.name}</h3>
                   <p className="package-tagline">{pkg.tagline}</p>
 
@@ -328,7 +323,6 @@ export default function Pricing() {
 
                   <p className="package-note">{pkg.note}</p>
                   <div className="hover-hint">
-                    <i className="fas fa-hand-pointer"></i>
                     <span>עבור עם העכבר לפרטים נוספים</span>
                   </div>
                 </div>
@@ -337,7 +331,6 @@ export default function Pricing() {
                   <ul className="features-list">
                     {pkg.features.map((feature, index) => (
                       <li key={index} className={feature.included ? "included" : "not-included"}>
-                        <i className={`fas ${feature.included ? 'fa-check-circle' : 'fa-times-circle'}`}></i>
                         <span>{feature.text}</span>
                       </li>
                     ))}
@@ -362,30 +355,30 @@ export default function Pricing() {
       <section className="addons-section">
         <div className="addons-container">
           <div className="section-title">
-            <h2>➕ תוספות (לבחירה)</h2>
+            <h2>תוספות לבחירה</h2>
             <p className="section-subtitle">שדרגו את החבילה שלכם עם התוספות הבאות</p>
           </div>
           <div className="addons-grid">
-            <div className="addon-card">
-              <div className="addon-icon">
+            <div className="addon-card addon-card-seating">
+              <div className="addon-icon addon-icon-seating">
                 <i className="fas fa-chair"></i>
               </div>
               <h3>הושבה דיגיטלית</h3>
-              <p>מערכת הושבה חכמה לאירוע שלכם</p>
+              <p>מערכת הושבה חכמה לאירוע שלכם - שלחו לכל אורח את מספר השולחן שלו אוטומטית</p>
             </div>
-            <div className="addon-card">
-              <div className="addon-icon">
-                <i className="fas fa-credit-card"></i>
+            <div className="addon-card addon-card-gift">
+              <div className="addon-icon addon-icon-gift">
+                <i className="fas fa-gift"></i>
               </div>
               <h3>מתנות באשראי</h3>
-              <p>אפשרות קבלת מתנות דרך כרטיס אשראי</p>
+              <p>אפשרו לאורחים לתת מתנה בכרטיס אשראי - נוח, מהיר ובטוח</p>
             </div>
-            <div className="addon-card">
-              <div className="addon-icon">
-                <i className="fas fa-palette"></i>
+            <div className="addon-card addon-card-design">
+              <div className="addon-icon addon-icon-design">
+                <i className="fas fa-magic"></i>
               </div>
               <h3>עיצוב הזמנה בהתאמה אישית</h3>
-              <p>הזמנה ייחודית שמותאמת בדיוק לסגנון שלכם</p>
+              <p>הזמנה ייחודית שמעוצבת במיוחד עבורכם על ידי המעצבים שלנו</p>
             </div>
           </div>
         </div>

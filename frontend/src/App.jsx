@@ -77,8 +77,8 @@ export default function App() {
   // פונקציה לפתיחת המודל
   const handleEventClick = (eventType, eventTitle) => {
     // אפשר ליצור הזמנות גם בלי להתחבר
-    // If it's a wedding, hina, bar-mitzvah, bat-mitzvah, brit, brita, or knasim event, show intro modal for invitation builder
-    const invitationBuilderEvents = ['wedding', 'hina', 'bar-mitzvah', 'bat-mitzvah', 'brit', 'brita', 'knasim'];
+    // If it's a wedding, hina, bar-mitzvah, bat-mitzvah, brit, brita, birthday, or knasim event, show intro modal for invitation builder
+    const invitationBuilderEvents = ['wedding', 'hina', 'bar-mitzvah', 'bat-mitzvah', 'brit', 'brita', 'birthday', 'knasim'];
 
     if (invitationBuilderEvents.includes(eventType)) {
       setIntroEventType(eventType);
@@ -112,31 +112,6 @@ export default function App() {
 
       {/* Hero Section */}
       <section className="hero">
-        {/* Confetti */}
-        {showHeroConfetti && (
-          <div className="confetti-container">
-            {Array.from({ length: 60 }).map((_, i) => (
-              <div
-                key={i}
-                className="confetti"
-                style={{
-                  left: `${Math.random() * 100}%`,
-                  animationDelay: `${Math.random() * 3}s`,
-                  animationDuration: `${3 + Math.random() * 2}s`,
-                  backgroundColor: [
-                    '#6B5638',
-                    '#8B6F47',
-                    '#C9A887',
-                    '#4ECDC4',
-                    '#FFFFFF',
-                    '#F5F5F5'
-                  ][Math.floor(Math.random() * 6)]
-                }}
-              />
-            ))}
-          </div>
-        )}
-
         <div className="hero-container">
           <div className="hero-content">
            <h1 className="hero-title">Save The Day</h1>
@@ -150,7 +125,6 @@ export default function App() {
   <strong>וגם – קבלו הזמנה לאירוע בחינם !</strong>
 </p>
 
-
             <div className="hero-buttons">
               <button
                 className="btn-primary btn-large"
@@ -161,9 +135,14 @@ export default function App() {
                   });
                 }}
               >
-                יצירת הזמנה דיגיטלית
+                <span>ליצירת הזמנה</span>
               </button>
-              <button className="btn-secondary btn-large">יצירת חשבון אישורי הגעה</button>
+              <button
+                className="btn-secondary btn-large"
+                onClick={() => navigate('/register')}
+              >
+                <span>להרשמה לאתר</span>
+              </button>
             </div>
           </div>
 
@@ -270,477 +249,81 @@ export default function App() {
             <div
               className="event-card event-card-wedding"
               onClick={() => handleEventClick('wedding', 'חתונה')}
-              style={{
-                cursor: 'pointer',
-                backgroundImage: 'url(/images/A.webp)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                position: 'relative',
-                width: '100%',
-                aspectRatio: '1/1',
-                borderRadius: '12px',
-                border: '3px solid white',
-                boxShadow: '0 4px 16px rgba(139, 111, 71, 0.2)',
-                transition: 'all 0.3s ease',
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'flex-end'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(139, 111, 71, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 111, 71, 0.2)';
-              }}
+              style={{ backgroundImage: 'url(/images/A.webp)' }}
             >
-              {Array.from({ length: 20 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="event-card-confetti"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 2}s`,
-                    backgroundColor: ['#4ECDC4', '#A3B18A', '#D5A6BD', '#C9A887', '#6B5638'][Math.floor(Math.random() * 5)]
-                  }}
-                />
-              ))}
-              <h3 style={{
-                width: '100%',
-                margin: 0,
-                background: 'rgba(255, 255, 255, 0.95)',
-                padding: '0.8rem',
-                textAlign: 'center',
-                color: 'var(--brown-dark)',
-                fontSize: '1.3rem',
-                fontWeight: 'bold'
-              }}>חתונה</h3>
+              <h3>חתונה</h3>
             </div>
 
             {/* חינה */}
             <div
               className="event-card"
               onClick={() => handleEventClick('hina', 'חינה')}
-              style={{
-                cursor: 'pointer',
-                backgroundImage: 'url(/images/B.webp)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                position: 'relative',
-                width: '100%',
-                aspectRatio: '1/1',
-                borderRadius: '12px',
-                border: '3px solid white',
-                boxShadow: '0 4px 16px rgba(139, 111, 71, 0.2)',
-                transition: 'all 0.3s ease',
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'flex-end'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(139, 111, 71, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 111, 71, 0.2)';
-              }}
+              style={{ backgroundImage: 'url(/images/B.webp)' }}
             >
-              {Array.from({ length: 20 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="event-card-confetti"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 2}s`,
-                    backgroundColor: ['#4ECDC4', '#A3B18A', '#D5A6BD', '#C9A887', '#6B5638'][Math.floor(Math.random() * 5)]
-                  }}
-                />
-              ))}
-              <h3 style={{
-                width: '100%',
-                margin: 0,
-                background: 'rgba(255, 255, 255, 0.95)',
-                padding: '0.8rem',
-                textAlign: 'center',
-                color: 'var(--brown-dark)',
-                fontSize: '1.3rem',
-                fontWeight: 'bold'
-              }}>חינה</h3>
+              <h3>חינה</h3>
             </div>
 
             {/* ברית */}
             <div
               className="event-card"
               onClick={() => handleEventClick('brit', 'ברית')}
-              style={{
-                cursor: 'pointer',
-                backgroundImage: 'url(/images/C.webp)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                position: 'relative',
-                width: '100%',
-                aspectRatio: '1/1',
-                borderRadius: '12px',
-                border: '3px solid white',
-                boxShadow: '0 4px 16px rgba(139, 111, 71, 0.2)',
-                transition: 'all 0.3s ease',
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'flex-end'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(139, 111, 71, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 111, 71, 0.2)';
-              }}
+              style={{ backgroundImage: 'url(/images/C.webp)' }}
             >
-              {Array.from({ length: 20 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="event-card-confetti"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 2}s`,
-                    backgroundColor: ['#4ECDC4', '#A3B18A', '#D5A6BD', '#C9A887', '#6B5638'][Math.floor(Math.random() * 5)]
-                  }}
-                />
-              ))}
-              <h3 style={{
-                width: '100%',
-                margin: 0,
-                background: 'rgba(255, 255, 255, 0.95)',
-                padding: '0.8rem',
-                textAlign: 'center',
-                color: 'var(--brown-dark)',
-                fontSize: '1.3rem',
-                fontWeight: 'bold'
-              }}>ברית</h3>
+              <h3>ברית</h3>
             </div>
 
             {/* זבד הבת */}
             <div
               className="event-card"
               onClick={() => handleEventClick('brita', 'זבד הבת')}
-              style={{
-                cursor: 'pointer',
-                backgroundImage: 'url(/images/D.webp)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                position: 'relative',
-                width: '100%',
-                aspectRatio: '1/1',
-                borderRadius: '12px',
-                border: '3px solid white',
-                boxShadow: '0 4px 16px rgba(139, 111, 71, 0.2)',
-                transition: 'all 0.3s ease',
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'flex-end'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(139, 111, 71, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 111, 71, 0.2)';
-              }}
+              style={{ backgroundImage: 'url(/images/D.webp)' }}
             >
-              {Array.from({ length: 20 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="event-card-confetti"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 2}s`,
-                    backgroundColor: ['#4ECDC4', '#A3B18A', '#D5A6BD', '#C9A887', '#6B5638'][Math.floor(Math.random() * 5)]
-                  }}
-                />
-              ))}
-              <h3 style={{
-                width: '100%',
-                margin: 0,
-                background: 'rgba(255, 255, 255, 0.95)',
-                padding: '0.8rem',
-                textAlign: 'center',
-                color: 'var(--brown-dark)',
-                fontSize: '1.3rem',
-                fontWeight: 'bold'
-              }}>זבד הבת</h3>
+              <h3>זבד הבת</h3>
             </div>
 
             {/* בת מצווה */}
             <div
               className="event-card"
               onClick={() => handleEventClick('bat-mitzvah', 'בת מצווה')}
-              style={{
-                cursor: 'pointer',
-                backgroundImage: 'url(/images/F.webp)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                position: 'relative',
-                width: '100%',
-                aspectRatio: '1/1',
-                borderRadius: '12px',
-                border: '3px solid white',
-                boxShadow: '0 4px 16px rgba(139, 111, 71, 0.2)',
-                transition: 'all 0.3s ease',
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'flex-end'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(139, 111, 71, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 111, 71, 0.2)';
-              }}
+              style={{ backgroundImage: 'url(/images/F.webp)' }}
             >
-              {Array.from({ length: 20 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="event-card-confetti"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 2}s`,
-                    backgroundColor: ['#4ECDC4', '#A3B18A', '#D5A6BD', '#C9A887', '#6B5638'][Math.floor(Math.random() * 5)]
-                  }}
-                />
-              ))}
-              <h3 style={{
-                width: '100%',
-                margin: 0,
-                background: 'rgba(255, 255, 255, 0.95)',
-                padding: '0.8rem',
-                textAlign: 'center',
-                color: 'var(--brown-dark)',
-                fontSize: '1.3rem',
-                fontWeight: 'bold'
-              }}>בת מצווה</h3>
+              <h3>בת מצווה</h3>
             </div>
 
             {/* בר מצווה */}
             <div
               className="event-card"
               onClick={() => handleEventClick('bar-mitzvah', 'בר מצווה')}
-              style={{
-                cursor: 'pointer',
-                backgroundImage: 'url(/images/G.webp)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                position: 'relative',
-                width: '100%',
-                aspectRatio: '1/1',
-                borderRadius: '12px',
-                border: '3px solid white',
-                boxShadow: '0 4px 16px rgba(139, 111, 71, 0.2)',
-                transition: 'all 0.3s ease',
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'flex-end'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(139, 111, 71, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 111, 71, 0.2)';
-              }}
+              style={{ backgroundImage: 'url(/images/G.webp)' }}
             >
-              {Array.from({ length: 20 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="event-card-confetti"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 2}s`,
-                    backgroundColor: ['#4ECDC4', '#A3B18A', '#D5A6BD', '#C9A887', '#6B5638'][Math.floor(Math.random() * 5)]
-                  }}
-                />
-              ))}
-              <h3 style={{
-                width: '100%',
-                margin: 0,
-                background: 'rgba(255, 255, 255, 0.95)',
-                padding: '0.8rem',
-                textAlign: 'center',
-                color: 'var(--brown-dark)',
-                fontSize: '1.3rem',
-                fontWeight: 'bold'
-              }}>בר מצווה</h3>
+              <h3>בר מצווה</h3>
             </div>
 
             {/* יום הולדת */}
             <div
               className="event-card"
               onClick={() => handleEventClick('birthday', 'יום הולדת')}
-              style={{
-                cursor: 'pointer',
-                backgroundImage: 'url(/images/H.webp)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                position: 'relative',
-                width: '100%',
-                aspectRatio: '1/1',
-                borderRadius: '12px',
-                border: '3px solid white',
-                boxShadow: '0 4px 16px rgba(139, 111, 71, 0.2)',
-                transition: 'all 0.3s ease',
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'flex-end'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(139, 111, 71, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 111, 71, 0.2)';
-              }}
+              style={{ backgroundImage: 'url(/images/H.webp)' }}
             >
-              {Array.from({ length: 20 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="event-card-confetti"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 2}s`,
-                    backgroundColor: ['#4ECDC4', '#A3B18A', '#D5A6BD', '#C9A887', '#6B5638'][Math.floor(Math.random() * 5)]
-                  }}
-                />
-              ))}
-              <h3 style={{
-                width: '100%',
-                margin: 0,
-                background: 'rgba(255, 255, 255, 0.95)',
-                padding: '0.8rem',
-                textAlign: 'center',
-                color: 'var(--brown-dark)',
-                fontSize: '1.3rem',
-                fontWeight: 'bold'
-              }}>יום הולדת</h3>
+              <h3>יום הולדת</h3>
             </div>
 
             {/* כנסים ואירועי חברה */}
             <div
               className="event-card"
               onClick={() => handleEventClick('knasim', 'כנסים ואירועי חברה')}
-              style={{
-                cursor: 'pointer',
-                backgroundImage: 'url(/images/I.webp)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                position: 'relative',
-                width: '100%',
-                aspectRatio: '1/1',
-                borderRadius: '12px',
-                border: '3px solid white',
-                boxShadow: '0 4px 16px rgba(139, 111, 71, 0.2)',
-                transition: 'all 0.3s ease',
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'flex-end'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(139, 111, 71, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 111, 71, 0.2)';
-              }}
+              style={{ backgroundImage: 'url(/images/I.webp)' }}
             >
-              {Array.from({ length: 20 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="event-card-confetti"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 2}s`,
-                    backgroundColor: ['#4ECDC4', '#A3B18A', '#D5A6BD', '#C9A887', '#6B5638'][Math.floor(Math.random() * 5)]
-                  }}
-                />
-              ))}
-              <h3 style={{
-                width: '100%',
-                margin: 0,
-                background: 'rgba(255, 255, 255, 0.95)',
-                padding: '0.8rem',
-                textAlign: 'center',
-                color: 'var(--brown-dark)',
-                fontSize: '1.3rem',
-                fontWeight: 'bold'
-              }}>כנסים ואירועי חברה</h3>
+              <h3>כנסים ואירועי חברה</h3>
             </div>
 
             {/* אירועים נוספים */}
             <div
               className="event-card"
               onClick={() => handleEventClick('other', 'אירועים נוספים')}
-              style={{
-                cursor: 'pointer',
-                backgroundImage: 'url(/images/M.webp)',
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                backgroundRepeat: 'no-repeat',
-                position: 'relative',
-                width: '100%',
-                aspectRatio: '1/1',
-                borderRadius: '12px',
-                border: '3px solid white',
-                boxShadow: '0 4px 16px rgba(139, 111, 71, 0.2)',
-                transition: 'all 0.3s ease',
-                overflow: 'hidden',
-                display: 'flex',
-                alignItems: 'flex-end'
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.transform = 'translateY(-8px)';
-                e.currentTarget.style.boxShadow = '0 8px 24px rgba(139, 111, 71, 0.3)';
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 111, 71, 0.2)';
-              }}
+              style={{ backgroundImage: 'url(/images/M.webp)' }}
             >
-              {Array.from({ length: 20 }).map((_, i) => (
-                <div
-                  key={i}
-                  className="event-card-confetti"
-                  style={{
-                    left: `${Math.random() * 100}%`,
-                    animationDelay: `${Math.random() * 2}s`,
-                    backgroundColor: ['#4ECDC4', '#A3B18A', '#D5A6BD', '#C9A887', '#6B5638'][Math.floor(Math.random() * 5)]
-                  }}
-                />
-              ))}
-              <h3 style={{
-                width: '100%',
-                margin: 0,
-                background: 'rgba(255, 255, 255, 0.95)',
-                padding: '0.8rem',
-                textAlign: 'center',
-                color: 'var(--brown-dark)',
-                fontSize: '1.3rem',
-                fontWeight: 'bold'
-              }}>אירועים נוספים</h3>
+              <h3>אירועים נוספים</h3>
             </div>
           </div>
         </div>
