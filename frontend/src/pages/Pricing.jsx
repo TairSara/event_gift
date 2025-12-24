@@ -9,20 +9,36 @@ export default function Pricing() {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [openFaq, setOpenFaq] = useState(null);
-  const [selectedPackageForModal, setSelectedPackageForModal] = useState(null);
-  const [selectedGuestCount, setSelectedGuestCount] = useState(null);
+  const [selectedGuestCounts, setSelectedGuestCounts] = useState({});
   const { showSuccess, showInfo, NotificationComponent } = useNotification();
 
   const handlePackageSelect = async (packageId, packageName, packageData) => {
-    // אם החבילה היא לא חבילת בסיס (יש לה subPackages), נפתח מודאל לבחירת מספר מוזמנים
+    // אם החבילה היא לא חבילת בסיס (יש לה subPackages), בודקים אם נבחרה כמות אורחים
     if (packageData.subPackages && packageData.subPackages.length > 0) {
-      setSelectedPackageForModal(packageData);
+      const selectedGuest = selectedGuestCounts[packageId];
+      if (!selectedGuest) {
+        showInfo("יש לבחור כמות אורחים");
+        return;
+      }
+
+      // ממשיכים עם הכמות שנבחרה
+      if (!user) {
+        localStorage.setItem('selectedPackage', JSON.stringify({
+          packageId,
+          packageName,
+          guestCount: selectedGuest,
+          timestamp: new Date().getTime()
+        }));
+        showInfo("יש להירשם כדי לבחור חבילה");
+        setTimeout(() => navigate('/register'), 1500);
+      } else {
+        await purchasePackage(packageId, packageName, selectedGuest);
+      }
       return;
     }
 
     // אם זו חבילת בסיס, ממשיכים כרגיל
     if (!user) {
-      // אם המשתמש לא מחובר - שמירת החבילה ב-localStorage וניתוב להרשמה
       localStorage.setItem('selectedPackage', JSON.stringify({
         packageId,
         packageName,
@@ -31,7 +47,6 @@ export default function Pricing() {
       showInfo("יש להירשם כדי לבחור חבילה");
       setTimeout(() => navigate('/register'), 1500);
     } else {
-      // אם המשתמש מחובר - ביצוע הרכישה
       await purchasePackage(packageId, packageName, null);
     }
   };
@@ -68,34 +83,11 @@ export default function Pricing() {
     }
   };
 
-  const handleGuestCountSelect = async (subPackage) => {
-    if (!user) {
-      // אם המשתמש לא מחובר - שמירת החבילה ב-localStorage וניתוב להרשמה
-      localStorage.setItem('selectedPackage', JSON.stringify({
-        packageId: selectedPackageForModal.id,
-        packageName: selectedPackageForModal.name,
-        guestCount: subPackage.records,
-        timestamp: new Date().getTime()
-      }));
-      showInfo("יש להירשם כדי לבחור חבילה");
-      setTimeout(() => navigate('/register'), 1500);
-    } else {
-      // סגירת המודאל
-      setSelectedPackageForModal(null);
-      setSelectedGuestCount(null);
-
-      // ביצוע הרכישה
-      await purchasePackage(
-        selectedPackageForModal.id,
-        selectedPackageForModal.name,
-        subPackage.records
-      );
-    }
-  };
-
-  const closeModal = () => {
-    setSelectedPackageForModal(null);
-    setSelectedGuestCount(null);
+  const handleGuestCountClick = (packageId, guestCount) => {
+    setSelectedGuestCounts(prev => ({
+      ...prev,
+      [packageId]: guestCount
+    }));
   };
 
   const faqData = [
@@ -275,7 +267,7 @@ export default function Pricing() {
             <span style={{fontSize: '0.9em', opacity: 0.9}}>תמחור שקוף והוגן, ללא עלויות נסתרות - שגר ושכח</span>
           </p>
           <div style={{marginTop: '2rem', fontSize: '1.1rem', color: 'var(--cream)'}}>
-            <strong>🤍 לא בטוחים מה לבחור?</strong><br/>
+            <strong>לא בטוחים מה לבחור? 🤍</strong><br/>
             <span style={{fontSize: '0.95rem'}}>דברו איתנו – ונעזור לכם לבחור את החבילה שהכי מתאימה לאירוע שלכם.</span>
           </div>
         </div>
@@ -311,14 +303,24 @@ export default function Pricing() {
                       <span className="price-unit">{pkg.priceUnit}</span>
                     </div>
                   ) : (
-                    <div className="package-price-list">
-                      {pkg.subPackages && pkg.subPackages.map((sub, idx) => (
-                        <div key={idx} className="sub-package-price">
-                          <span className="records">{sub.records}</span>
-                          <span className="price">{sub.price}</span>
-                        </div>
-                      ))}
-                    </div>
+                    <>
+                      <p className="guest-selection-label">בחר כמות אורחים:</p>
+                      <div className="guest-selection-grid">
+                        {pkg.subPackages && pkg.subPackages.map((sub, idx) => (
+                          <button
+                            key={idx}
+                            className={`guest-option-btn ${selectedGuestCounts[pkg.id] === sub.records ? 'selected' : ''}`}
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleGuestCountClick(pkg.id, sub.records);
+                            }}
+                          >
+                            <span className="guest-records">{sub.records}</span>
+                            <span className="guest-price">{sub.price}</span>
+                          </button>
+                        ))}
+                      </div>
+                    </>
                   )}
 
                   <p className="package-note">{pkg.note}</p>
@@ -368,10 +370,10 @@ export default function Pricing() {
             </div>
             <div className="addon-card addon-card-gift">
               <div className="addon-icon addon-icon-gift">
-                <i className="fas fa-gift"></i>
+                <i className="fas fa-envelope-open-text"></i>
               </div>
-              <h3>מתנות באשראי</h3>
-              <p>אפשרו לאורחים לתת מתנה בכרטיס אשראי - נוח, מהיר ובטוח</p>
+              <h3>הודעות תודה אוטומטיות</h3>
+              <p>שליחת הודעות תודה אישיות לכל האורחים אחרי האירוע - מגע חם ואוטומטי</p>
             </div>
             <div className="addon-card addon-card-design">
               <div className="addon-icon addon-icon-design">
@@ -424,44 +426,6 @@ export default function Pricing() {
           </button>
         </div>
       </section>
-
-      {/* Guest Count Selection Modal */}
-      {selectedPackageForModal && (
-        <div className="modal-overlay" onClick={closeModal}>
-          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-            <button className="modal-close" onClick={closeModal}>
-              <i className="fas fa-times"></i>
-            </button>
-
-            <div className="modal-header">
-              <h2>{selectedPackageForModal.name}</h2>
-              <p>בחר את מספר המוזמנים המתאים לאירוע שלך</p>
-            </div>
-
-            <div className="modal-guest-options">
-              {selectedPackageForModal.subPackages.map((subPkg, idx) => (
-                <div
-                  key={idx}
-                  className="guest-option"
-                  onClick={() => handleGuestCountSelect(subPkg)}
-                >
-                  <div className="guest-option-info">
-                    <i className="fas fa-users"></i>
-                    <span className="guest-count">{subPkg.records}</span>
-                  </div>
-                  <div className="guest-option-price">
-                    <span className="price-label">מחיר:</span>
-                    <span className="price-value">{subPkg.price}</span>
-                  </div>
-                  <div className="guest-option-arrow">
-                    <i className="fas fa-arrow-left"></i>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
 
       {/* Footer */}
       <footer className="footer">

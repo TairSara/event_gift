@@ -505,6 +505,11 @@
   transform: translateY(-10px);
 }
 
+/* Popular Package - Hide Hover Hint */
+.package-card.popular .hover-hint {
+  display: none;
+}
+
 /* Package Features - Hidden by Default */
 .package-features {
   padding: 0 1rem;
@@ -524,6 +529,22 @@
   border-top: 4px solid var(--accent-gold);
   box-shadow: inset 0 6px 15px rgba(212, 175, 55, 0.15);
   border-radius: 0 0 20px 20px;
+}
+
+/* Popular Package - Always Expanded */
+.package-card.popular .package-features {
+  max-height: 1500px;
+  opacity: 1;
+  padding: 1rem 1rem;
+  background: white;
+  border-top: 4px solid var(--accent-gold);
+  box-shadow: inset 0 6px 15px rgba(212, 175, 55, 0.15);
+  border-radius: 0 0 20px 20px;
+}
+
+.package-card.popular .package-header {
+  background: white;
+  border-radius: 24px;
 }
 
 .package-card-turquoise:hover .package-features {
@@ -561,6 +582,16 @@
   transition: all 0.3s ease;
   opacity: 0;
   transform: translateX(-20px);
+}
+
+.package-card:hover .features-list li {
+  animation: slideInRight 0.5s ease forwards;
+}
+
+/* Popular Package - Features Always Visible */
+.package-card.popular .features-list li {
+  opacity: 1;
+  transform: translateX(0);
   animation: slideInRight 0.5s ease forwards;
 }
 
@@ -646,6 +677,12 @@
 }
 
 .package-card:hover .package-footer {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Popular Package - Always Show Footer */
+.package-card.popular .package-footer {
   opacity: 1;
   transform: translateY(0);
 }
@@ -810,6 +847,79 @@
 .package-card-purple .features-list li.included i {
   color: var(--accent-gold);
   filter: drop-shadow(0 2px 4px rgba(212, 175, 55, 0.3));
+}
+
+/* Guest Selection */
+.guest-selection-label {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--brown-dark);
+  margin: 1.5rem 0 1rem;
+  text-align: center;
+}
+
+.guest-selection-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.7rem;
+  padding: 0.5rem;
+  max-height: 300px;
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: var(--accent-gold) rgba(212, 175, 55, 0.1);
+}
+
+.guest-selection-grid::-webkit-scrollbar {
+  width: 6px;
+}
+
+.guest-selection-grid::-webkit-scrollbar-track {
+  background: rgba(212, 175, 55, 0.1);
+  border-radius: 3px;
+}
+
+.guest-selection-grid::-webkit-scrollbar-thumb {
+  background: var(--accent-gold);
+  border-radius: 3px;
+}
+
+.guest-option-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.9rem 0.6rem;
+  background: white;
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+}
+
+.guest-option-btn:hover {
+  border-color: var(--accent-gold);
+  background: rgba(212, 175, 55, 0.05);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(212, 175, 55, 0.2);
+}
+
+.guest-option-btn.selected {
+  border-color: var(--accent-gold);
+  background: linear-gradient(135deg, rgba(212, 175, 55, 0.15), rgba(212, 175, 55, 0.1));
+  box-shadow: 0 0 0 3px rgba(212, 175, 55, 0.2);
+}
+
+.guest-records {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--brown-dark);
+}
+
+.guest-price {
+  font-size: 1.1rem;
+  font-weight: 800;
+  color: var(--accent-gold);
 }
 
 /* Package Price List for Sub-Packages */
@@ -1039,7 +1149,7 @@
 /* FAQ Section - Accordion Style */
 .faq-section {
   padding: 8rem 3rem;
-  background: linear-gradient(135deg, #F8F8F8 0%, #EAEAEA 100%);
+  background: linear-gradient(135deg, #FDFBF7 0%, #F5EFE7 100%);
   position: relative;
   overflow: hidden;
 }
@@ -1049,10 +1159,23 @@
   position: absolute;
   top: 10%;
   right: 5%;
-  width: 350px;
-  height: 350px;
+  width: 450px;
+  height: 450px;
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+  border-radius: 50%;
+  animation: float 20s ease-in-out infinite;
+}
+
+.faq-section::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  left: -5%;
+  width: 400px;
+  height: 400px;
   background: radial-gradient(circle, rgba(190, 121, 62, 0.08) 0%, transparent 70%);
   border-radius: 50%;
+  animation: float 25s ease-in-out infinite reverse;
 }
 
 .faq-section .section-title {
