@@ -19,12 +19,6 @@
   gap: 2rem;
 }
 
-.notification-bell-left {
-  display: flex;
-  align-items: center;
-  z-index: 1001;
-}
-
 .logo {
   cursor: pointer;
   display: flex;
@@ -71,12 +65,12 @@
   left: 0;
   width: 0;
   height: 2px;
-  background: var(--turquoise);
+  background: var(--cream);
   transition: width 0.3s ease;
 }
 
 .nav-links a:hover {
-  color: var(--turquoise);
+  color: var(--cream);
 }
 
 .nav-links a:hover::after {
@@ -97,8 +91,8 @@
 }
 
 .logout-btn {
-  background: rgba(78, 205, 196, 0.2);
-  border: 2px solid var(--turquoise);
+  background: rgba(245, 222, 179, 0.2);
+  border: 2px solid var(--cream);
   color: var(--cream-light);
   padding: 0.5rem 1.2rem;
   border-radius: 10px;
@@ -109,10 +103,10 @@
 }
 
 .logout-btn:hover {
-  background: var(--turquoise);
+  background: var(--cream);
   color: var(--brown-dark);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+  box-shadow: 0 4px 12px rgba(245, 222, 179, 0.3);
 }
 
 /* Mobile Menu Button */
