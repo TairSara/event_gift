@@ -216,6 +216,14 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
                   </option>
                 ))}
               </select>
+
+              {/* הצגת החבילה שנבחרה */}
+              {selectedPackage && (
+                <div className="selected-package-display">
+                  <i className="fas fa-check-circle"></i>
+                  <span>החבילה שנבחרה: {availablePackages.find(p => p.id === parseInt(selectedPackage))?.package_name}</span>
+                </div>
+              )}
             </div>
           )}
 

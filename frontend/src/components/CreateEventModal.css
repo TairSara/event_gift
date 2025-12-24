@@ -15,13 +15,13 @@
 .create-event-modal {
   background: linear-gradient(to bottom, #ffffff 0%, #f8f9fa 100%);
   border-radius: 20px;
-  max-width: 450px;
+  max-width: 650px;
   width: 100%;
-  max-height: 85vh;
+  max-height: 90vh;
   overflow-y: auto;
   position: relative;
   margin: 0 auto;
-  box-shadow: 0 15px 50px rgba(78, 205, 196, 0.25), 0 5px 20px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 15px 50px rgba(139, 111, 71, 0.25), 0 5px 20px rgba(0, 0, 0, 0.15);
   animation: modalSlideUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
   border: none;
 }
@@ -147,24 +147,24 @@
 /* Modal Event Types Grid - Compact and centered */
 .modal-event-types-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 0.6rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.8rem;
   width: 100%;
-  max-width: 420px;
+  max-width: 580px;
   margin: 0 auto;
 }
 
 .modal-event-card {
   padding: 0;
-  border-radius: 8px;
+  border-radius: 10px;
   text-align: center;
   box-shadow: 0 2px 10px rgba(139, 111, 71, 0.2);
   transition: all 0.3s ease;
   cursor: pointer;
-  border: 2px solid var(--brown);
+  border: 3px solid var(--brown-light);
   width: 100%;
-  max-width: 130px;
-  min-height: 110px;
+  max-width: 135px;
+  min-height: 100px;
   margin: 0 auto;
   aspect-ratio: 1/1;
   display: flex;
@@ -211,6 +211,42 @@
 
 .modal-event-card-selected {
   transform: scale(1.08);
+}
+
+/* Selected Package Display */
+.selected-package-display {
+  margin-top: 1rem;
+  padding: 1rem 1.5rem;
+  background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+  border: 2px solid #4caf50;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  animation: slideIn 0.3s ease;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.selected-package-display i {
+  color: #4caf50;
+  font-size: 1.5rem;
+}
+
+.selected-package-display span {
+  color: #2e7d32;
+  font-weight: 700;
+  font-size: 1.05rem;
 }
 
 .no-packages-warning {
@@ -335,23 +371,24 @@
   }
 
   .modal-event-types-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 0.6rem;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
     max-width: 100%;
   }
 
   .modal-event-card {
     max-width: 100%;
-    min-height: 90px;
-    padding: 0.6rem;
+    min-height: 85px;
+    padding: 0;
   }
 
   .modal-event-card i {
-    font-size: 1.8rem;
+    font-size: 1.5rem;
   }
 
   .modal-event-card h3 {
-    font-size: 0.85rem !important;
+    font-size: 0.75rem !important;
+    padding: 0.4rem 0.3rem !important;
   }
 
   .modal-footer {
@@ -371,6 +408,19 @@
   .btn-create i,
   .btn-cancel i {
     font-size: 1rem;
+  }
+
+  .selected-package-display {
+    padding: 0.8rem 1rem;
+    margin-top: 0.8rem;
+  }
+
+  .selected-package-display i {
+    font-size: 1.2rem;
+  }
+
+  .selected-package-display span {
+    font-size: 0.9rem;
   }
 }
 
