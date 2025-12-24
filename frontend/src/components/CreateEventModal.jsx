@@ -94,10 +94,6 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
   return (
     <div className="create-event-modal-overlay" onClick={onClose}>
       <div className="create-event-modal" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close-btn" onClick={onClose}>
-          <i className="fas fa-times"></i>
-        </button>
-
         <h2 className="modal-title">
           <i className="fas fa-plus-circle"></i>
           צור אירוע חדש
