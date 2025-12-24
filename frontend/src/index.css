@@ -1,21 +1,15 @@
 :root {
-  /* Brown and Cream Color Palette */
-  --cream-light: #FAF7F2;
-  --cream: #F5EFE7;
-  --cream-dark: #E8DCC4;
-  --brown-light: #C9A887;
-  --brown: #8B6F47;
-  --brown-dark: #6B5638;
-  --brown-darker: #4A3F2E;
-  --accent-gold: #D4AF37;
-
-  /* Vibrant Color Palette - חום בהיר ולבן */
-  --dusty-rose: #D4AF87;
-  --dusty-rose-light: #E8D5C4;
-  --turquoise: #4ECDC4;
-  --turquoise-light: #81E6DF;
-  --sage-green: #FFFFFF;
-  --sage-green-light: #F5F5F5;
+  /* High-End Brown & Gold Color Palette */
+  --cream-light: #EAEAEA;
+  --cream: #F5F5F5;
+  --cream-dark: #E0E0E0;
+  --brown-light: #AD974F;
+  --brown: #BE793E;
+  --brown-dark: #231F20;
+  --brown-darker: #1A1717;
+  --accent-gold: #BE793E;
+  --gold-light: #AD974F;
+  --charcoal: #231F20;
 
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   line-height: 1.6;

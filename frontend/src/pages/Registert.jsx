@@ -130,28 +130,6 @@ export default function Registert() {
   return (
     <div className="register-page">
       {NotificationComponent}
-      {/* Confetti Background */}
-      <div className="register-confetti-container">
-        {Array.from({ length: 40 }).map((_, i) => (
-          <div
-            key={i}
-            className="register-confetti"
-            style={{
-              left: `${Math.random() * 100}%`,
-              animationDelay: `${Math.random() * 3}s`,
-              animationDuration: `${3 + Math.random() * 2}s`,
-              backgroundColor: [
-                '#6B5638',
-                '#8B6F47',
-                '#C9A887',
-                '#4ECDC4',
-                '#FFFFFF',
-                '#F5F5F5'
-              ][Math.floor(Math.random() * 6)]
-            }}
-          />
-        ))}
-      </div>
 
       {/* Navigation */}
       <Navbar />
