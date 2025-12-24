@@ -162,8 +162,8 @@ export default function Dashboard() {
 
       <section className="dashboard-hero">
         <div className="dashboard-hero-content">
-          <h1>שלום, {user?.full_name || user?.email}!</h1>
-          <p>ברוכים הבאים לדף הניהול האישי שלכם</p>
+          <h1>שלום {user?.full_name || user?.email}</h1>
+          <p>ניהול אישי</p>
         </div>
       </section>
 
@@ -173,22 +173,17 @@ export default function Dashboard() {
           {/* החבילות שלי */}
           <div className="dashboard-section">
             <div className="section-header">
-              <h2>
-                <i className="fas fa-box-open"></i>
-                החבילות שלי
-              </h2>
+              <h2>החבילות שלי</h2>
               <button
                 className="btn-primary-small"
                 onClick={() => navigate('/pricing')}
               >
-                <i className="fas fa-plus"></i>
                 רכוש חבילה נוספת
               </button>
             </div>
 
             {purchases.length === 0 ? (
               <div className="empty-state">
-                <i className="fas fa-shopping-cart"></i>
                 <h3>טרם נרכשה חבילה</h3>
                 <p>התחל ברכישת חבילה כדי ליצור אירועים מדהימים</p>
                 <button
@@ -220,22 +215,17 @@ export default function Dashboard() {
           {/* האירועים שלי */}
           <div className="dashboard-section">
             <div className="section-header">
-              <h2>
-                <i className="fas fa-calendar-alt"></i>
-                האירועים שלי
-              </h2>
+              <h2>האירועים שלי</h2>
               <button
                 className="btn-primary-small"
                 onClick={() => setShowCreateEventModal(true)}
               >
-                <i className="fas fa-plus"></i>
                 צור אירוע חדש
               </button>
             </div>
 
             {events.length === 0 ? (
               <div className="empty-state">
-                <i className="fas fa-calendar-times"></i>
                 <h3>אין אירועים</h3>
                 <p>צור את האירוע הראשון שלך והתחל לשלוח הזמנות</p>
                 <button
@@ -260,7 +250,6 @@ export default function Dashboard() {
                         <p className="event-type">{event.event_type}</p>
                         {event.event_date && (
                           <p className="event-date">
-                            <i className="fas fa-calendar"></i>
                             {new Date(event.event_date).toLocaleDateString('he-IL', {
                               year: 'numeric',
                               month: 'long',
@@ -272,7 +261,6 @@ export default function Dashboard() {
                         )}
                         {event.event_location && (
                           <p className="event-location">
-                            <i className="fas fa-map-marker-alt"></i>
                             {event.event_location}
                           </p>
                         )}
@@ -286,35 +274,30 @@ export default function Dashboard() {
                       <h4>סטטיסטיקה</h4>
                       <div className="stats-grid">
                         <div className="stat-item">
-                          <i className="fas fa-users"></i>
                           <div className="stat-info">
                             <span className="stat-value">{event.statistics.total_guests}</span>
                             <span className="stat-label">מוזמנים</span>
                           </div>
                         </div>
                         <div className="stat-item">
-                          <i className="fas fa-check-circle"></i>
                           <div className="stat-info">
                             <span className="stat-value">{event.statistics.confirmed_guests}</span>
                             <span className="stat-label">אישרו הגעה</span>
                           </div>
                         </div>
                         <div className="stat-item">
-                          <i className="fas fa-percentage"></i>
                           <div className="stat-info">
                             <span className="stat-value">{event.statistics.confirmation_rate}%</span>
                             <span className="stat-label">אחוז אישורים</span>
                           </div>
                         </div>
                         <div className="stat-item">
-                          <i className="fas fa-gift"></i>
                           <div className="stat-info">
                             <span className="stat-value">{event.statistics.total_gifts}</span>
                             <span className="stat-label">מתנות</span>
                           </div>
                         </div>
                         <div className="stat-item">
-                          <i className="fas fa-shekel-sign"></i>
                           <div className="stat-info">
                             <span className="stat-value">
                               {event.statistics.total_gift_amount.toLocaleString('he-IL')}₪
@@ -344,7 +327,6 @@ export default function Dashboard() {
 
                     {event.package_purchase_id && (
                       <div className="event-package-assigned">
-                        <i className="fas fa-check"></i>
                         <span>חבילה משוייכת</span>
                       </div>
                     )}
@@ -361,19 +343,13 @@ export default function Dashboard() {
         <div className="modal-overlay" onClick={handleCancelActivation}>
           <div className="modal-content" onClick={(e) => e.stopPropagation()}>
             <div className="modal-header">
-              <h2>
-                <i className="fas fa-gift"></i>
-                השלמת הרכישה
-              </h2>
-              <button className="modal-close" onClick={handleCancelActivation}>
-                <i className="fas fa-times"></i>
-              </button>
+              <h2>השלמת הרכישה</h2>
+              <button className="modal-close" onClick={handleCancelActivation}>×</button>
             </div>
             <div className="modal-body">
               <div className="activate-package-info">
-                <i className="fas fa-info-circle"></i>
                 <p>בחרת בחבילה: <strong>{selectedPackageForActivation.packageName}</strong></p>
-                <p>כדי להשלים את הרכישה, לחצי על "המשך לתשלום"</p>
+                <p>כדי להשלים את הרכישה, לחץ על "המשך לתשלום"</p>
               </div>
             </div>
             <div className="modal-footer">
@@ -381,7 +357,6 @@ export default function Dashboard() {
                 ביטול
               </button>
               <button className="btn-primary" onClick={handleActivateSelectedPackage}>
-                <i className="fas fa-credit-card"></i>
                 המשך לתשלום
               </button>
             </div>
