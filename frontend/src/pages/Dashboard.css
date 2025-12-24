@@ -575,6 +575,40 @@
   margin-top: 0.2rem;
 }
 
+/* Event Actions Button Container */
+.event-actions-btn {
+  margin-top: 1.5rem;
+  display: flex;
+  justify-content: center;
+  padding-top: 1rem;
+  border-top: 2px solid rgba(212, 175, 55, 0.2);
+}
+
+.btn-view-event {
+  background: linear-gradient(135deg, var(--brown-dark) 0%, var(--brown) 100%);
+  color: white;
+  border: none;
+  padding: 0.9rem 2rem;
+  border-radius: 25px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  box-shadow: 0 4px 15px rgba(139, 111, 71, 0.3);
+}
+
+.btn-view-event:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 20px rgba(139, 111, 71, 0.4);
+}
+
+.btn-view-event i {
+  font-size: 1.1rem;
+}
+
 /* Event Actions */
 .event-actions {
   margin-top: 1.5rem;

@@ -18,6 +18,7 @@ export default function Dashboard() {
   const [showCreateEventModal, setShowCreateEventModal] = useState(false);
   const [showActivatePackageModal, setShowActivatePackageModal] = useState(false);
   const [selectedPackageForActivation, setSelectedPackageForActivation] = useState(null);
+  const [expandedEvents, setExpandedEvents] = useState({});
 
   // טעינת נתונים בעת טעינת הדף
   useEffect(() => {
@@ -89,6 +90,13 @@ export default function Dashboard() {
     localStorage.removeItem('selectedPackage');
     setShowActivatePackageModal(false);
     setSelectedPackageForActivation(null);
+  };
+
+  const toggleEventExpand = (eventId) => {
+    setExpandedEvents(prev => ({
+      ...prev,
+      [eventId]: !prev[eventId]
+    }));
   };
 
   const handleAssignPackageToEvent = async (eventId, packagePurchaseId) => {
@@ -246,13 +254,26 @@ export default function Dashboard() {
                   <div
                     key={event.id}
                     className="event-card-dashboard"
-                    onClick={() => navigate(`/event/${event.id}`)}
-                    style={{ cursor: 'pointer' }}
                   >
-                    <div className="event-card-header">
+                    <div
+                      className="event-card-header"
+                      onClick={() => toggleEventExpand(event.id)}
+                      style={{ cursor: 'pointer' }}
+                    >
                       <div className="event-info">
-                        <h3>{event.event_title}</h3>
+                        <h3>
+                          {event.event_title}
+                          <i className={`fas fa-chevron-${expandedEvents[event.id] ? 'up' : 'down'}`} style={{ marginRight: '0.5rem', fontSize: '0.9rem' }}></i>
+                        </h3>
                         <p className="event-type">{event.event_type}</p>
+                      </div>
+                      <div className="event-status">
+                        {getStatusBadge(event.status)}
+                      </div>
+                    </div>
+
+                    {expandedEvents[event.id] && (
+                      <>
                         {event.event_date && (
                           <p className="event-date">
                             {new Date(event.event_date).toLocaleDateString('he-IL', {
@@ -269,49 +290,48 @@ export default function Dashboard() {
                             {event.event_location}
                           </p>
                         )}
-                      </div>
-                      <div className="event-status">
-                        {getStatusBadge(event.status)}
-                      </div>
-                    </div>
 
-                    <div className="event-statistics">
-                      <h4>סטטיסטיקה</h4>
-                      <div className="stats-grid">
-                        <div className="stat-item">
-                          <div className="stat-info">
-                            <span className="stat-value">{event.statistics.total_guests}</span>
-                            <span className="stat-label">מוזמנים</span>
+                        <div className="event-statistics">
+                          <h4>סטטיסטיקה</h4>
+                          <div className="stats-grid">
+                            <div className="stat-item">
+                              <div className="stat-info">
+                                <span className="stat-value">{event.statistics.total_guests}</span>
+                                <span className="stat-label">מוזמנים</span>
+                              </div>
+                            </div>
+                            <div className="stat-item">
+                              <div className="stat-info">
+                                <span className="stat-value">{event.statistics.confirmed_guests}</span>
+                                <span className="stat-label">אישרו הגעה</span>
+                              </div>
+                            </div>
+                            <div className="stat-item">
+                              <div className="stat-info">
+                                <span className="stat-value">{event.statistics.confirmation_rate}%</span>
+                                <span className="stat-label">אחוז אישורים</span>
+                              </div>
+                            </div>
+                            <div className="stat-item">
+                              <div className="stat-info">
+                                <span className="stat-value">{event.statistics.total_gifts}</span>
+                                <span className="stat-label">מתנות</span>
+                              </div>
+                            </div>
                           </div>
                         </div>
-                        <div className="stat-item">
-                          <div className="stat-info">
-                            <span className="stat-value">{event.statistics.confirmed_guests}</span>
-                            <span className="stat-label">אישרו הגעה</span>
-                          </div>
+
+                        <div className="event-actions-btn">
+                          <button
+                            className="btn-view-event"
+                            onClick={() => navigate(`/event/${event.id}`)}
+                          >
+                            <i className="fas fa-eye"></i>
+                            צפה באירוע
+                          </button>
                         </div>
-                        <div className="stat-item">
-                          <div className="stat-info">
-                            <span className="stat-value">{event.statistics.confirmation_rate}%</span>
-                            <span className="stat-label">אחוז אישורים</span>
-                          </div>
-                        </div>
-                        <div className="stat-item">
-                          <div className="stat-info">
-                            <span className="stat-value">{event.statistics.total_gifts}</span>
-                            <span className="stat-label">מתנות</span>
-                          </div>
-                        </div>
-                        <div className="stat-item">
-                          <div className="stat-info">
-                            <span className="stat-value">
-                              {event.statistics.total_gift_amount.toLocaleString('he-IL')}₪
-                            </span>
-                            <span className="stat-label">סכום מתנות</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
+                      </>
+                    )}
 
                     {!event.package_purchase_id && purchases.length > 0 && (
                       <div className="event-actions">
