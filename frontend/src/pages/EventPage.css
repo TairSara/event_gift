@@ -1,16 +1,47 @@
 .event-page {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  background: linear-gradient(135deg, #FDFBF7 0%, #F5EFE7 50%, #EAE0D5 100%);
+  position: relative;
+  overflow-x: hidden;
 }
 
-/* Loading */
-.event-loading {
+/* Loading State - Brown/Gold Theme */
+.dashboard-loading {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 70vh;
-  gap: 1.5rem;
+  gap: 2rem;
+  position: relative;
+  z-index: 1;
+}
+
+.spinner {
+  width: 70px;
+  height: 70px;
+  border: 5px solid rgba(212, 175, 55, 0.2);
+  border-top-color: var(--accent-gold);
+  border-right-color: var(--brown-dark);
+  border-radius: 50%;
+  animation: spin 1s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite;
+  box-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+}
+
+.dashboard-loading p {
+  font-size: 1.3rem;
+  color: var(--brown-dark);
+  font-weight: 600;
+  animation: pulse 2s ease infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.6; }
 }
 
 /* Header */

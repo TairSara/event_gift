@@ -366,9 +366,9 @@ export default function EventPage() {
       <div className="event-page">
         {NotificationComponent}
         <Navbar />
-        <div className="event-loading">
+        <div className="dashboard-loading">
           <div className="spinner"></div>
-          <p>טוען את פרטי האירוע...</p>
+          <p>טוען נתונים...</p>
         </div>
       </div>
     );
