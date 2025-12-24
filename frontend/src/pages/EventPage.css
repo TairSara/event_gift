@@ -46,7 +46,7 @@
 
 /* Header */
 .event-header {
-  background: linear-gradient(135deg, var(--sage-green) 0%, var(--turquoise) 100%);
+  background: linear-gradient(135deg, var(--brown-dark) 0%, var(--brown) 100%);
   color: white;
   padding: 2rem;
 }
@@ -213,6 +213,20 @@
   max-width: 1400px;
   margin: 0 auto;
   display: grid;
+  grid-template-columns: 1fr 1.5fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.left-column {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.right-column {
+  display: flex;
+  flex-direction: column;
   gap: 2rem;
 }
 
@@ -235,20 +249,17 @@
 
 .event-section .section-header h2 {
   font-size: 1.8rem;
-  color: var(--sage-green);
+  color: var(--brown-dark);
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
 .event-section .section-header h2 i {
-  color: var(--turquoise);
+  color: var(--cream);
 }
 
 /* Invitation Section */
-.invitation-section {
-  grid-column: 1 / -1;
-}
 
 .invitation-preview-simple {
   display: flex;
@@ -258,7 +269,7 @@
   padding: 3rem 2rem;
   background: linear-gradient(135deg, #ffffff 0%, #f8f9fa 100%);
   border-radius: 30px;
-  box-shadow: 0 10px 40px rgba(78, 205, 196, 0.15);
+  box-shadow: 0 10px 40px rgba(139, 111, 71, 0.15);
 }
 
 .invitation-success-header {
@@ -266,9 +277,9 @@
   align-items: center;
   gap: 1rem;
   padding: 1.5rem 3rem;
-  background: linear-gradient(135deg, rgba(78, 205, 196, 0.1) 0%, rgba(125, 168, 141, 0.1) 100%);
+  background: linear-gradient(135deg, rgba(245, 222, 179, 0.2) 0%, rgba(160, 130, 109, 0.1) 100%);
   border-radius: 50px;
-  border: 2px solid rgba(78, 205, 196, 0.3);
+  border: 2px solid rgba(245, 222, 179, 0.5);
 }
 
 .invitation-success-header i {
@@ -279,7 +290,7 @@
 
 .invitation-success-header h3 {
   font-size: 1.8rem;
-  color: var(--sage-green);
+  color: var(--brown-dark);
   margin: 0;
   font-weight: 700;
 }
@@ -289,8 +300,8 @@
   background: linear-gradient(135deg, #f8f9fa 0%, #e8ecf1 100%);
   border-radius: 25px;
   padding: 2.5rem;
-  box-shadow: 0 15px 50px rgba(78, 205, 196, 0.2);
-  border: 3px solid rgba(78, 205, 196, 0.25);
+  box-shadow: 0 15px 50px rgba(139, 111, 71, 0.2);
+  border: 3px solid rgba(245, 222, 179, 0.4);
 }
 
 .invitation-canvas-preview {
@@ -322,7 +333,7 @@
 
 .invitation-status-success h3 {
   font-size: 1.8rem;
-  color: var(--sage-green);
+  color: var(--brown-dark);
   margin: 0;
 }
 
@@ -347,22 +358,22 @@
   padding: 1rem;
   background: white;
   border-radius: 10px;
-  border: 2px solid var(--turquoise);
+  border: 2px solid var(--cream);
 }
 
 .invitation-detail-item i {
   font-size: 1.5rem;
-  color: var(--turquoise);
+  color: var(--cream);
 }
 
 .invitation-detail-item span {
   font-size: 1rem;
-  color: var(--sage-green);
+  color: var(--brown-dark);
   font-weight: 600;
 }
 
 .btn-update-invitation {
-  background: linear-gradient(135deg, var(--turquoise) 0%, var(--sage-green) 100%);
+  background: linear-gradient(135deg, var(--brown-dark) 0%, var(--brown) 100%);
   color: white;
   border: none;
   padding: 1.25rem 3.5rem;
@@ -374,12 +385,12 @@
   align-items: center;
   gap: 1rem;
   transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-  box-shadow: 0 8px 25px rgba(78, 205, 196, 0.3);
+  box-shadow: 0 8px 25px rgba(139, 111, 71, 0.3);
 }
 
 .btn-update-invitation:hover {
   transform: translateY(-5px) scale(1.05);
-  box-shadow: 0 15px 40px rgba(78, 205, 196, 0.5);
+  box-shadow: 0 15px 40px rgba(139, 111, 71, 0.5);
 }
 
 .btn-update-invitation i {
@@ -389,12 +400,12 @@
 .no-invitation {
   text-align: center;
   padding: 4rem 2rem;
-  color: var(--sage-green);
+  color: var(--brown-dark);
 }
 
 .no-invitation i {
   font-size: 4rem;
-  color: var(--turquoise);
+  color: var(--cream);
   margin-bottom: 1.5rem;
   opacity: 0.5;
 }
@@ -412,7 +423,7 @@
 }
 
 .btn-create-invitation {
-  background: linear-gradient(135deg, var(--turquoise) 0%, var(--sage-green) 100%);
+  background: linear-gradient(135deg, var(--brown-dark) 0%, var(--brown) 100%);
   color: white;
   border: none;
   padding: 1rem 2.5rem;
@@ -428,7 +439,7 @@
 
 .btn-create-invitation:hover {
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
+  box-shadow: 0 8px 25px rgba(139, 111, 71, 0.4);
 }
 
 /* Details Section */
@@ -450,14 +461,14 @@
 }
 
 .detail-item:hover {
-  border-color: var(--turquoise);
+  border-color: var(--cream);
   transform: translateY(-3px);
-  box-shadow: 0 5px 15px rgba(78, 205, 196, 0.2);
+  box-shadow: 0 5px 15px rgba(245, 222, 179, 0.3);
 }
 
 .detail-item i {
   font-size: 2rem;
-  color: var(--turquoise);
+  color: var(--cream);
 }
 
 .detail-item > div {
@@ -481,7 +492,7 @@
 .detail-value {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--sage-green);
+  color: var(--brown-dark);
 }
 
 .detail-value-container {
@@ -521,8 +532,8 @@
 
 .edit-detail-input {
   background: white;
-  border: 2px solid var(--turquoise);
-  color: #2563eb;
+  border: 2px solid var(--cream);
+  color: var(--brown-dark);
   padding: 0.6rem 1rem;
   border-radius: 10px;
   font-size: 1rem;
@@ -533,8 +544,8 @@
 
 .edit-detail-input:focus {
   outline: none;
-  border-color: var(--sage-green);
-  box-shadow: 0 3px 15px rgba(78, 205, 196, 0.2);
+  border-color: var(--brown);
+  box-shadow: 0 3px 15px rgba(245, 222, 179, 0.3);
 }
 
 .edit-detail-buttons {
@@ -582,7 +593,7 @@
 
 /* Guests & Gifts Sections */
 .btn-add-guests {
-  background: var(--turquoise);
+  background: var(--brown-dark);
   color: white;
   border: none;
   padding: 0.75rem 1.5rem;
@@ -597,9 +608,9 @@
 }
 
 .btn-add-guests:hover {
-  background: var(--sage-green);
+  background: var(--brown);
   transform: translateY(-2px);
-  box-shadow: 0 5px 15px rgba(78, 205, 196, 0.3);
+  box-shadow: 0 5px 15px rgba(139, 111, 71, 0.3);
 }
 
 .guests-placeholder,
@@ -623,7 +634,7 @@
 
 /* Footer */
 .footer {
-  background: var(--sage-green);
+  background: var(--brown-dark);
   color: white;
   padding: 2rem;
   margin-top: 4rem;
@@ -641,6 +652,10 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .event-container {
+    grid-template-columns: 1fr;
+  }
+
   .event-header-content h1 {
     font-size: 2rem;
   }

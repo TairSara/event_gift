@@ -431,206 +431,211 @@ export default function EventPage() {
       <section className="event-main-content">
         <div className="event-container">
 
-          {/* הזמנה */}
-          <div className="event-section invitation-section">
-            <div className="section-header">
-              <h2>
-                <i className="fas fa-envelope"></i>
-                ההזמנה שלך
-              </h2>
+          {/* Left Column - Invitation */}
+          <div className="left-column">
+            <div className="event-section invitation-section">
+              <div className="section-header">
+                <h2>
+                  <i className="fas fa-envelope"></i>
+                  ההזמנה שלך
+                </h2>
+              </div>
+
+              {event.invitation_data ? (
+                <div className="invitation-preview-simple">
+                  <div className="invitation-success-header">
+                    <i className="fas fa-check-circle"></i>
+                    <h3>ההזמנה נקלטה בהצלחה!</h3>
+                  </div>
+
+                  <div className="invitation-canvas-wrapper">
+                    <canvas
+                      ref={invitationCanvasRef}
+                      className="invitation-canvas-preview"
+                      width={1080}
+                      height={1350}
+                    />
+                  </div>
+
+                  <button className="btn-update-invitation" onClick={handleEditInvitation}>
+                    <i className="fas fa-edit"></i>
+                    עדכון הזמנה
+                  </button>
+                </div>
+              ) : (
+                <div className="no-invitation">
+                  <i className="fas fa-envelope-open-text"></i>
+                  <h3>טרם נוצרה הזמנה</h3>
+                  <p>צור את ההזמנה הדיגיטלית שלך עכשיו</p>
+                  <button className="btn-create-invitation" onClick={handleCreateInvitation}>
+                    <i className="fas fa-plus"></i>
+                    צור הזמנה
+                  </button>
+                </div>
+              )}
             </div>
-
-            {event.invitation_data ? (
-              <div className="invitation-preview-simple">
-                <div className="invitation-success-header">
-                  <i className="fas fa-check-circle"></i>
-                  <h3>ההזמנה נקלטה בהצלחה!</h3>
-                </div>
-
-                <div className="invitation-canvas-wrapper">
-                  <canvas
-                    ref={invitationCanvasRef}
-                    className="invitation-canvas-preview"
-                    width={1080}
-                    height={1350}
-                  />
-                </div>
-
-                <button className="btn-update-invitation" onClick={handleEditInvitation}>
-                  <i className="fas fa-edit"></i>
-                  עדכון הזמנה
-                </button>
-              </div>
-            ) : (
-              <div className="no-invitation">
-                <i className="fas fa-envelope-open-text"></i>
-                <h3>טרם נוצרה הזמנה</h3>
-                <p>צור את ההזמנה הדיגיטלית שלך עכשיו</p>
-                <button className="btn-create-invitation" onClick={handleCreateInvitation}>
-                  <i className="fas fa-plus"></i>
-                  צור הזמנה
-                </button>
-              </div>
-            )}
           </div>
 
-          {/* פרטי האירוע */}
-          <div className="event-section details-section">
-            <div className="section-header">
-              <h2>
-                <i className="fas fa-info-circle"></i>
-                פרטי האירוע
-              </h2>
-            </div>
+          {/* Right Column - Details, Guests, Gifts */}
+          <div className="right-column">
+            {/* פרטי האירוע */}
+            <div className="event-section details-section">
+              <div className="section-header">
+                <h2>
+                  <i className="fas fa-info-circle"></i>
+                  פרטי האירוע
+                </h2>
+              </div>
 
-            <div className="details-grid">
-              <div className="detail-item">
-                <i className="fas fa-calendar"></i>
-                <div className="detail-content">
-                  <span className="detail-label">תאריך</span>
-                  {isEditingDate ? (
-                    <div className="edit-detail-container">
-                      <input
-                        type="datetime-local"
-                        className="edit-detail-input"
-                        value={editedDate}
-                        onChange={(e) => setEditedDate(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') handleSaveDate();
-                          if (e.key === 'Escape') handleCancelDateEdit();
-                        }}
-                      />
-                      <div className="edit-detail-buttons">
-                        <button className="save-detail-btn" onClick={handleSaveDate}>
-                          <i className="fas fa-check"></i>
-                        </button>
-                        <button className="cancel-detail-btn" onClick={handleCancelDateEdit}>
-                          <i className="fas fa-times"></i>
+              <div className="details-grid">
+                <div className="detail-item">
+                  <i className="fas fa-calendar"></i>
+                  <div className="detail-content">
+                    <span className="detail-label">תאריך</span>
+                    {isEditingDate ? (
+                      <div className="edit-detail-container">
+                        <input
+                          type="datetime-local"
+                          className="edit-detail-input"
+                          value={editedDate}
+                          onChange={(e) => setEditedDate(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleSaveDate();
+                            if (e.key === 'Escape') handleCancelDateEdit();
+                          }}
+                        />
+                        <div className="edit-detail-buttons">
+                          <button className="save-detail-btn" onClick={handleSaveDate}>
+                            <i className="fas fa-check"></i>
+                          </button>
+                          <button className="cancel-detail-btn" onClick={handleCancelDateEdit}>
+                            <i className="fas fa-times"></i>
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="detail-value-container">
+                        <span className="detail-value">
+                          {(() => {
+                            // Try event_date first, then invitation date
+                            const dateSource = event.event_date ||
+                              (event.invitation_data?.values?.date);
+
+                            if (!dateSource) return 'לא הוגדר';
+
+                            // If it's from invitation, just display it as is (it's already formatted)
+                            if (!event.event_date && event.invitation_data?.values?.date) {
+                              return event.invitation_data.values.date;
+                            }
+
+                            // Otherwise format the event_date
+                            return new Date(event.event_date).toLocaleDateString('he-IL', {
+                              year: 'numeric',
+                              month: 'long',
+                              day: 'numeric',
+                              hour: '2-digit',
+                              minute: '2-digit'
+                            });
+                          })()}
+                        </span>
+                        <button className="edit-detail-icon-btn" onClick={handleEditDate} title="ערוך תאריך">
+                          <i className="fas fa-pencil-alt"></i>
                         </button>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="detail-value-container">
-                      <span className="detail-value">
-                        {(() => {
-                          // Try event_date first, then invitation date
-                          const dateSource = event.event_date ||
-                            (event.invitation_data?.values?.date);
-
-                          if (!dateSource) return 'לא הוגדר';
-
-                          // If it's from invitation, just display it as is (it's already formatted)
-                          if (!event.event_date && event.invitation_data?.values?.date) {
-                            return event.invitation_data.values.date;
-                          }
-
-                          // Otherwise format the event_date
-                          return new Date(event.event_date).toLocaleDateString('he-IL', {
-                            year: 'numeric',
-                            month: 'long',
-                            day: 'numeric',
-                            hour: '2-digit',
-                            minute: '2-digit'
-                          });
-                        })()}
-                      </span>
-                      <button className="edit-detail-icon-btn" onClick={handleEditDate} title="ערוך תאריך">
-                        <i className="fas fa-pencil-alt"></i>
-                      </button>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              <div className="detail-item">
-                <i className="fas fa-map-marker-alt"></i>
-                <div className="detail-content">
-                  <span className="detail-label">מיקום</span>
-                  {isEditingLocation ? (
-                    <div className="edit-detail-container">
-                      <input
-                        type="text"
-                        className="edit-detail-input"
-                        value={editedLocation}
-                        onChange={(e) => setEditedLocation(e.target.value)}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') handleSaveLocation();
-                          if (e.key === 'Escape') handleCancelLocationEdit();
-                        }}
-                        placeholder="הזן מיקום"
-                      />
-                      <div className="edit-detail-buttons">
-                        <button className="save-detail-btn" onClick={handleSaveLocation}>
-                          <i className="fas fa-check"></i>
-                        </button>
-                        <button className="cancel-detail-btn" onClick={handleCancelLocationEdit}>
-                          <i className="fas fa-times"></i>
+                <div className="detail-item">
+                  <i className="fas fa-map-marker-alt"></i>
+                  <div className="detail-content">
+                    <span className="detail-label">מיקום</span>
+                    {isEditingLocation ? (
+                      <div className="edit-detail-container">
+                        <input
+                          type="text"
+                          className="edit-detail-input"
+                          value={editedLocation}
+                          onChange={(e) => setEditedLocation(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleSaveLocation();
+                            if (e.key === 'Escape') handleCancelLocationEdit();
+                          }}
+                          placeholder="הזן מיקום"
+                        />
+                        <div className="edit-detail-buttons">
+                          <button className="save-detail-btn" onClick={handleSaveLocation}>
+                            <i className="fas fa-check"></i>
+                          </button>
+                          <button className="cancel-detail-btn" onClick={handleCancelLocationEdit}>
+                            <i className="fas fa-times"></i>
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="detail-value-container">
+                        <span className="detail-value">
+                          {event.event_location ||
+                           event.invitation_data?.values?.location ||
+                           'לא הוגדר'}
+                        </span>
+                        <button className="edit-detail-icon-btn" onClick={handleEditLocation} title="ערוך מיקום">
+                          <i className="fas fa-pencil-alt"></i>
                         </button>
                       </div>
-                    </div>
-                  ) : (
-                    <div className="detail-value-container">
-                      <span className="detail-value">
-                        {event.event_location ||
-                         event.invitation_data?.values?.location ||
-                         'לא הוגדר'}
-                      </span>
-                      <button className="edit-detail-icon-btn" onClick={handleEditLocation} title="ערוך מיקום">
-                        <i className="fas fa-pencil-alt"></i>
-                      </button>
-                    </div>
-                  )}
+                    )}
+                  </div>
                 </div>
-              </div>
 
-              <div className="detail-item">
-                <i className="fas fa-circle"></i>
-                <div>
-                  <span className="detail-label">סטטוס</span>
-                  <span className="detail-value">
-                    {event.status === 'pending' && 'ממתין'}
-                    {event.status === 'active' && 'פעיל'}
-                    {event.status === 'scheduled' && 'מתוזמן'}
-                    {event.status === 'completed' && 'הסתיים'}
-                  </span>
+                <div className="detail-item">
+                  <i className="fas fa-circle"></i>
+                  <div>
+                    <span className="detail-label">סטטוס</span>
+                    <span className="detail-value">
+                      {event.status === 'pending' && 'ממתין'}
+                      {event.status === 'active' && 'פעיל'}
+                      {event.status === 'scheduled' && 'מתוזמן'}
+                      {event.status === 'completed' && 'הסתיים'}
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              <div className="detail-item">
-                <i className="fas fa-clock"></i>
-                <div>
-                  <span className="detail-label">נוצר בתאריך</span>
-                  <span className="detail-value">
-                    {new Date(event.created_at).toLocaleDateString('he-IL')}
-                  </span>
+                <div className="detail-item">
+                  <i className="fas fa-clock"></i>
+                  <div>
+                    <span className="detail-label">נוצר בתאריך</span>
+                    <span className="detail-value">
+                      {new Date(event.created_at).toLocaleDateString('he-IL')}
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          {/* מוזמנים */}
-          <div className="event-section guests-section">
-            <div className="section-header">
-              <h2>
-                <i className="fas fa-users"></i>
-                ניהול מוזמנים
-              </h2>
-            </div>
-            <GuestManagement eventId={eventId} onUpdate={fetchEventData} />
-          </div>
-
-          {/* מתנות */}
-          <div className="event-section gifts-section">
-            <div className="section-header">
-              <h2>
-                <i className="fas fa-gift"></i>
-                ניהול מתנות
-              </h2>
+            {/* מוזמנים */}
+            <div className="event-section guests-section">
+              <div className="section-header">
+                <h2>
+                  <i className="fas fa-users"></i>
+                  ניהול מוזמנים
+                </h2>
+              </div>
+              <GuestManagement eventId={eventId} onUpdate={fetchEventData} />
             </div>
 
-            <div className="gifts-placeholder">
-              <i className="fas fa-hand-holding-heart"></i>
-              <p>ניהול מתנות יתווסף בקרוב</p>
+            {/* מתנות */}
+            <div className="event-section gifts-section">
+              <div className="section-header">
+                <h2>
+                  <i className="fas fa-gift"></i>
+                  ניהול מתנות
+                </h2>
+              </div>
+
+              <div className="gifts-placeholder">
+                <i className="fas fa-hand-holding-heart"></i>
+                <p>ניהול מתנות יתווסף בקרוב</p>
+              </div>
             </div>
           </div>
 

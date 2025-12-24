@@ -305,13 +305,18 @@ export default function InvitationEditor() {
         back_approved: backApproved
       };
 
+      // Extract location from invitation values (venue or city)
+      const eventLocation = values.venue || values.city || null;
+
       const response = await fetch(`${API_URL}/packages/events/${eventId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          invitation_data: invitationData
+          invitation_data: invitationData,
+          event_date: values.eventDate || null,
+          event_location: eventLocation
         })
       });
 
