@@ -136,7 +136,7 @@
         {
           "key": "dateHebrewLine",
           "x": 540,
-          "y": 600,
+          "y": 1000,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -160,7 +160,7 @@
         {
           "key": "dateEnglishAndTime",
           "x": 540,
-          "y": 660,
+          "y": 1070,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 700,
@@ -185,19 +185,19 @@
           "label": "שעת האירוע",
           "isInput": true,
           "type": "time",
-          "defaultValue": "09:00"
+          "defaultValue": "14:00"
         },
         {
           "key": "timePrefix",
           "x": 540,
-          "y": 660,
+          "y": 1100,
           "staticText": "בשעה",
           "isInput": false
         },
         {
           "key": "venueLine",
           "x": 540,
-          "y": 720,
+          "y": 1130,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -232,7 +232,7 @@
           "key": "familyName",
           "label": "שם המשפחה",
           "x": 540,
-          "y": 800,
+          "y": 1250,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -257,7 +257,7 @@
         {
           "key": "dateHebrewLine",
           "x": 540,
-          "y": 600,
+          "y": 900,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -281,7 +281,7 @@
         {
           "key": "dateEnglishAndTime",
           "x": 540,
-          "y": 660,
+          "y": 960,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 700,
@@ -306,19 +306,19 @@
           "label": "שעת האירוע",
           "isInput": true,
           "type": "time",
-          "defaultValue": "09:00"
+          "defaultValue": "14:00"
         },
         {
           "key": "timePrefix",
           "x": 540,
-          "y": 660,
+          "y": 1000,
           "staticText": "בשעה",
           "isInput": false
         },
         {
           "key": "venueLine",
           "x": 540,
-          "y": 720,
+          "y": 1020,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -353,7 +353,7 @@
           "key": "familyName",
           "label": "שם המשפחה",
           "x": 540,
-          "y": 800,
+          "y": 1240,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -378,7 +378,7 @@
         {
           "key": "dateHebrewLine",
           "x": 540,
-          "y": 600,
+          "y": 900,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -402,7 +402,7 @@
         {
           "key": "dateEnglishAndTime",
           "x": 540,
-          "y": 660,
+          "y": 970,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 700,
@@ -427,7 +427,7 @@
           "label": "שעת האירוע",
           "isInput": true,
           "type": "time",
-          "defaultValue": "09:00"
+          "defaultValue": "14:00"
         },
         {
           "key": "timePrefix",
@@ -439,7 +439,7 @@
         {
           "key": "venueLine",
           "x": 540,
-          "y": 720,
+          "y": 1040,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -474,7 +474,7 @@
           "key": "familyName",
           "label": "שם המשפחה",
           "x": 540,
-          "y": 800,
+          "y": 1260,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,

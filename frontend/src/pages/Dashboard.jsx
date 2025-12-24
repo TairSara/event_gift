@@ -199,6 +199,11 @@ export default function Dashboard() {
                   <div key={purchase.id} className="package-item">
                     <div className="package-item-header">
                       <h3>{purchase.package_name}</h3>
+                      {purchase.guest_count && (
+                        <span className="guest-count-badge">
+                          {purchase.guest_count} אורחים
+                        </span>
+                      )}
                       <span className="purchase-date">
                         נרכש ב-{new Date(purchase.purchased_at).toLocaleDateString('he-IL')}
                       </span>

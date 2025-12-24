@@ -13,18 +13,17 @@
           "key": "names",
           "label": "שם התינוקת",
           "x": 540,
-          "y": 600,
+          "y": 300,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
-          "fontSize": 45,
-          "color": "#EC4899",
-          "prefix": "הננו מתכבדים להזמינכם לחגוג את ברית הבת של בתנו "
+          "fontSize": 300,
+          "color": "#EC4899"
         },
         {
           "key": "dateCombined",
           "x": 540,
-          "y": 670,
+          "y": 960,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -42,10 +41,17 @@
           "isInput": true,
           "type": "date"
         },
+           {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time",
+          "defaultValue": "14:00"
+        },
         {
           "key": "venueCombined",
           "x": 540,
-          "y": 740,
+          "y": 1020,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -70,7 +76,7 @@
         {
           "key": "timeDisplay",
           "x": 540,
-          "y": 810,
+          "y": 1070,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -95,20 +101,19 @@
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
           "fontSize": 40,
-          "color": "#EC4899",
-          "staticText": "נשמח לראותכם בשמחתנו"
-        },
+          "color": "#EC4899"
+                },
         {
           "key": "familyName",
           "label": "שם המשפחה",
           "x": 540,
-          "y": 1000,
+          "y": 1310,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
-          "fontSize": 35,
+          "fontSize": 40 ,
           "color": "#EC4899",
-          "prefix": "משפחת\n"
+          "prefix": "משפחת "
         }
       ],
       "frontSlots": []
@@ -125,18 +130,17 @@
           "key": "names",
           "label": "שם התינוקת",
           "x": 540,
-          "y": 600,
+          "y": 820,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
-          "fontSize": 45,
-          "color": "#EC4899",
-          "prefix": "הננו מתכבדים להזמינכם לחגוג את ברית הבת של בתנו "
-        },
+          "fontSize": 200,
+          "color": "#EC4899"
+                },
         {
           "key": "dateCombined",
           "x": 540,
-          "y": 670,
+          "y": 980,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -157,7 +161,7 @@
         {
           "key": "venueCombined",
           "x": 540,
-          "y": 740,
+          "y": 1030,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -179,10 +183,17 @@
           "label": "עיר",
           "isInput": true
         },
+           {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time",
+          "defaultValue": "14:00"
+        },
         {
           "key": "timeDisplay",
           "x": 540,
-          "y": 810,
+          "y": 1080,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -207,20 +218,19 @@
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
           "fontSize": 40,
-          "color": "#EC4899",
-          "staticText": "נשמח לראותכם בשמחתנו"
+          "color": "#EC4899"
         },
         {
           "key": "familyName",
           "label": "שם המשפחה",
           "x": 540,
-          "y": 1000,
+          "y": 1240,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
-          "fontSize": 35,
+          "fontSize": 45,
           "color": "#EC4899",
-          "prefix": "משפחת\n"
+          "prefix": "משפחת "
         }
       ],
       "frontSlots": []
@@ -237,18 +247,16 @@
           "key": "names",
           "label": "שם התינוקת",
           "x": 540,
-          "y": 600,
+          "y": 750,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
-          "fontSize": 45,
-          "color": "#EC4899",
-          "prefix": "הננו מתכבדים להזמינכם לחגוג את ברית הבת של בתנו "
-        },
+          "fontSize": 300,
+          "color": "#EC4899"        },
         {
           "key": "dateCombined",
-          "x": 540,
-          "y": 670,
+          "x": 590,
+          "y": 920,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -260,6 +268,13 @@
           "combineSeparator": " ",
           "isInput": false
         },
+           {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time",
+          "defaultValue": "14:00"
+        },
         {
           "key": "eventDate",
           "label": "תאריך האירוע",
@@ -269,7 +284,7 @@
         {
           "key": "venueCombined",
           "x": 540,
-          "y": 740,
+          "y": 980,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -294,7 +309,7 @@
         {
           "key": "timeDisplay",
           "x": 540,
-          "y": 810,
+          "y": 1050,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -319,20 +334,19 @@
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
           "fontSize": 40,
-          "color": "#EC4899",
-          "staticText": "נשמח לראותכם בשמחתנו"
-        },
+          "color": "#EC4899"
+                },
         {
           "key": "familyName",
           "label": "שם המשפחה",
-          "x": 540,
-          "y": 1000,
+          "x": 600,
+          "y": 1280,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
           "fontSize": 35,
           "color": "#EC4899",
-          "prefix": "משפחת\n"
+          "prefix": "משפחת "
         }
       ],
       "frontSlots": []
@@ -349,18 +363,23 @@
           "key": "names",
           "label": "שם התינוקת",
           "x": 540,
-          "y": 600,
+          "y": 790,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
-          "fontSize": 45,
-          "color": "#EC4899",
-          "prefix": "הננו מתכבדים להזמינכם לחגוג את ברית הבת של בתנו "
+          "fontSize": 250,
+          "color": "#EC4899"        },
+           {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time",
+          "defaultValue": "14:00"
         },
         {
           "key": "dateCombined",
-          "x": 540,
-          "y": 670,
+          "x": 580,
+          "y": 900,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -381,7 +400,7 @@
         {
           "key": "venueCombined",
           "x": 540,
-          "y": 740,
+          "y": 950,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -406,7 +425,7 @@
         {
           "key": "timeDisplay",
           "x": 540,
-          "y": 810,
+          "y": 1000,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
@@ -431,20 +450,18 @@
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
           "fontSize": 40,
-          "color": "#EC4899",
-          "staticText": "נשמח לראותכם בשמחתנו"
-        },
+          "color": "#EC4899"        },
         {
           "key": "familyName",
           "label": "שם המשפחה",
           "x": 540,
-          "y": 1000,
+          "y": 1100,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontWeight": 400,
           "fontSize": 35,
           "color": "#EC4899",
-          "prefix": "משפחת\n"
+          "prefix": "משפחת "
         }
       ],
       "frontSlots": []
