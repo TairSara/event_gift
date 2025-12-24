@@ -131,67 +131,9 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
                   key={type.value}
                   className={`modal-event-card ${selectedEventType === type.value ? 'modal-event-card-selected' : ''}`}
                   onClick={() => setSelectedEventType(type.value)}
-                  style={{
-                    cursor: 'pointer',
-                    backgroundImage: `url(${type.image})`,
-                    backgroundSize: 'cover',
-                    backgroundPosition: 'center',
-                    backgroundRepeat: 'no-repeat',
-                    position: 'relative',
-                    borderRadius: '12px',
-                    border: selectedEventType === type.value ? '4px solid var(--turquoise)' : '3px solid white',
-                    boxShadow: selectedEventType === type.value ? '0 8px 24px rgba(78, 205, 196, 0.5)' : '0 4px 16px rgba(139, 111, 71, 0.2)',
-                    transition: 'all 0.3s ease',
-                    overflow: 'hidden',
-                    display: 'flex',
-                    alignItems: 'flex-end'
-                  }}
-                  onMouseEnter={(e) => {
-                    if (selectedEventType !== type.value) {
-                      e.currentTarget.style.transform = 'translateY(-8px)';
-                      e.currentTarget.style.boxShadow = '0 8px 24px rgba(139, 111, 71, 0.3)';
-                    }
-                  }}
-                  onMouseLeave={(e) => {
-                    if (selectedEventType !== type.value) {
-                      e.currentTarget.style.transform = 'translateY(0)';
-                      e.currentTarget.style.boxShadow = '0 4px 16px rgba(139, 111, 71, 0.2)';
-                    }
-                  }}
                 >
-                  {Array.from({ length: 15 }).map((_, i) => (
-                    <div
-                      key={i}
-                      className="modal-event-card-confetti"
-                      style={{
-                        position: 'absolute',
-                        top: '-10px',
-                        left: `${Math.random() * 100}%`,
-                        width: '7px',
-                        height: '7px',
-                        opacity: 0,
-                        zIndex: 2,
-                        pointerEvents: 'none',
-                        animationDelay: `${Math.random() * 2}s`,
-                        backgroundColor: ['#4ECDC4', '#A3B18A', '#D5A6BD', '#C9A887', '#6B5638'][Math.floor(Math.random() * 5)]
-                      }}
-                    />
-                  ))}
-                  <h3 style={{
-                    width: '100%',
-                    margin: 0,
-                    background: 'rgba(255, 255, 255, 0.95)',
-                    padding: '0.6rem 0.5rem',
-                    textAlign: 'center',
-                    color: 'var(--brown-dark)',
-                    fontSize: '1rem',
-                    fontWeight: 'bold',
-                    zIndex: 3,
-                    position: 'absolute',
-                    bottom: 0,
-                    left: 0,
-                    right: 0
-                  }}>{type.label}</h3>
+                  <i className={`fas ${type.icon}`}></i>
+                  <span>{type.label}</span>
                 </div>
               ))}
             </div>
