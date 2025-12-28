@@ -1,0 +1,373 @@
+.terms-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10000;
+  padding: 9rem 1rem 1rem 1rem;
+  overflow-y: auto;
+}
+
+.terms-modal-content {
+  background: linear-gradient(135deg, var(--cream) 0%, #ffffff 100%);
+  border-radius: 20px;
+  max-width: 900px;
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 20px 60px rgba(101, 67, 33, 0.3);
+  animation: termsSlideUp 0.4s ease-out;
+}
+
+@keyframes termsSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.terms-modal-close {
+  position: absolute;
+  top: 1rem;
+  right: 2rem;
+  width: 30px;
+  height: 30px;
+  border: none;
+  background: transparent;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.terms-modal-close:hover {
+  opacity: 0.8;
+}
+
+.terms-modal-header {
+  background: linear-gradient(135deg, var(--brown-dark) 0%, var(--brown) 100%);
+  color: var(--cream);
+  padding: 2.5rem 2rem 2rem 2rem;
+  border-radius: 20px 20px 0 0;
+  text-align: center;
+  position: relative;
+}
+
+.terms-modal-header h2 {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 700;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.terms-modal-subtitle {
+  margin: 0.5rem 0 0 0;
+  font-size: 1.1rem;
+  opacity: 0.95;
+  font-weight: 500;
+}
+
+.terms-modal-body {
+  padding: 2.5rem;
+  color: #333;
+  line-height: 1.8;
+}
+
+.terms-intro {
+  font-size: 1.05rem;
+  margin-bottom: 1.5rem;
+  color: #444;
+  background: rgba(139, 90, 43, 0.05);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border-right: 4px solid var(--brown);
+}
+
+.terms-section {
+  margin-bottom: 2.5rem;
+}
+
+.terms-section h3 {
+  color: var(--brown-dark);
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin: 0 0 1rem 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 2px solid var(--brown);
+  position: relative;
+}
+
+.terms-section h3::after {
+  content: '';
+  position: absolute;
+  bottom: -2px;
+  right: 0;
+  width: 60px;
+  height: 2px;
+  background: var(--brown-dark);
+}
+
+.terms-section h4 {
+  color: var(--brown);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin: 1.5rem 0 0.8rem 0;
+}
+
+.terms-section p {
+  margin: 0.8rem 0;
+  font-size: 1rem;
+  color: #444;
+}
+
+.terms-section ul {
+  margin: 1rem 0;
+  padding-right: 1.5rem;
+  list-style: none;
+}
+
+.terms-section ul li {
+  margin: 0.7rem 0;
+  padding-right: 1.5rem;
+  position: relative;
+  font-size: 1rem;
+  color: #444;
+}
+
+.terms-section ul li::before {
+  content: '▪';
+  position: absolute;
+  right: 0;
+  color: var(--brown);
+  font-size: 1.2rem;
+}
+
+.terms-highlight {
+  background: linear-gradient(135deg, rgba(139, 90, 43, 0.1) 0%, rgba(245, 222, 179, 0.2) 100%);
+  padding: 1.2rem;
+  border-radius: 10px;
+  border-right: 4px solid var(--brown-dark);
+  margin: 1.5rem 0;
+}
+
+.terms-contact-box {
+  background: linear-gradient(135deg, var(--brown-dark) 0%, var(--brown) 100%);
+  color: var(--cream);
+  padding: 1.5rem;
+  border-radius: 12px;
+  margin: 1.5rem 0;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(101, 67, 33, 0.2);
+}
+
+.terms-contact-box h3 {
+  color: var(--cream);
+  margin: 0 0 1rem 0;
+  border: none;
+  font-size: 1.3rem;
+}
+
+.terms-contact-box h3::after {
+  display: none;
+}
+
+.terms-contact-box p {
+  margin: 0;
+  font-size: 1.1rem;
+  color: var(--cream);
+}
+
+.terms-contact-box i {
+  margin-left: 0.5rem;
+  color: var(--cream);
+}
+
+.terms-contact-box a {
+  color: var(--cream);
+  text-decoration: underline;
+  transition: opacity 0.3s ease;
+}
+
+.terms-contact-box a:hover {
+  opacity: 0.8;
+}
+
+.terms-contact-final {
+  background: linear-gradient(135deg, rgba(139, 90, 43, 0.05) 0%, rgba(245, 222, 179, 0.1) 100%);
+  padding: 2rem;
+  border-radius: 15px;
+  border: 2px solid var(--brown);
+  margin-top: 3rem;
+}
+
+.terms-final-note {
+  font-style: italic;
+  color: #666;
+  margin-top: 1rem;
+}
+
+.terms-footer {
+  background: rgba(139, 90, 43, 0.08);
+  padding: 1.5rem;
+  border-radius: 12px;
+  text-align: center;
+  margin-top: 2rem;
+  border-top: 2px solid var(--brown);
+}
+
+.terms-footer p {
+  margin: 0.5rem 0;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.terms-footer strong {
+  color: var(--brown-dark);
+  font-weight: 700;
+}
+
+/* Scrollbar styling */
+.terms-modal-content::-webkit-scrollbar {
+  width: 10px;
+}
+
+.terms-modal-content::-webkit-scrollbar-track {
+  background: rgba(139, 90, 43, 0.1);
+  border-radius: 10px;
+}
+
+.terms-modal-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(135deg, var(--brown-dark) 0%, var(--brown) 100%);
+  border-radius: 10px;
+}
+
+.terms-modal-content::-webkit-scrollbar-thumb:hover {
+  background: var(--brown-dark);
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+  .terms-modal-overlay {
+    padding: 7rem 1rem 1rem 1rem;
+  }
+
+  .terms-modal-content {
+    max-height: 95vh;
+    border-radius: 15px;
+  }
+
+  .terms-modal-header {
+    padding: 2rem 1.5rem 1.5rem 1.5rem;
+    border-radius: 15px 15px 0 0;
+  }
+
+  .terms-modal-header h2 {
+    font-size: 1.5rem;
+  }
+
+  .terms-modal-subtitle {
+    font-size: 1rem;
+  }
+
+  .terms-modal-body {
+    padding: 1.5rem;
+  }
+
+  .terms-section h3 {
+    font-size: 1.3rem;
+  }
+
+  .terms-section h4 {
+    font-size: 1.1rem;
+  }
+
+  .terms-section p,
+  .terms-section ul li {
+    font-size: 0.95rem;
+  }
+
+  .terms-contact-box {
+    padding: 1.2rem;
+  }
+
+  .terms-contact-box h3 {
+    font-size: 1.1rem;
+  }
+
+  .terms-contact-box p {
+    font-size: 1rem;
+  }
+
+  .terms-modal-close {
+    top: 0.8rem;
+    right: 1.5rem;
+    width: 28px;
+    height: 28px;
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .terms-modal-overlay {
+    padding: 7rem 0.5rem 0.5rem 0.5rem;
+  }
+
+  .terms-modal-content {
+    border-radius: 12px;
+  }
+
+  .terms-modal-header {
+    padding: 1.5rem 1rem 1rem 1rem;
+    border-radius: 12px 12px 0 0;
+  }
+
+  .terms-modal-header h2 {
+    font-size: 1.3rem;
+  }
+
+  .terms-modal-subtitle {
+    font-size: 0.9rem;
+  }
+
+  .terms-modal-body {
+    padding: 1rem;
+  }
+
+  .terms-section {
+    margin-bottom: 2rem;
+  }
+
+  .terms-section h3 {
+    font-size: 1.2rem;
+  }
+
+  .terms-section h4 {
+    font-size: 1rem;
+  }
+
+  .terms-intro {
+    padding: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .terms-highlight {
+    padding: 1rem;
+  }
+
+  .terms-contact-final {
+    padding: 1.5rem;
+  }
+}

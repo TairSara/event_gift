@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import ConfirmationModal from "./components/ConfirmationModal";
 import IntroModal from "./components/IntroModal";
+import TermsModal from "./components/TermsModal";
 import Navbar from "./components/Navbar";
 import "./App.css";
 
@@ -17,6 +18,7 @@ export default function App() {
   const [introModalOpen, setIntroModalOpen] = useState(false);
   const [introEventType, setIntroEventType] = useState(null);
   const [showHeroConfetti, setShowHeroConfetti] = useState(true);
+  const [termsModalOpen, setTermsModalOpen] = useState(false);
 
   // Array of image paths (1-8)
   const images = [
@@ -105,6 +107,12 @@ export default function App() {
         onClose={() => setModalOpen(false)}
         eventType={selectedEvent?.type}
         eventTitle={selectedEvent?.title}
+      />
+
+      {/* Terms Modal */}
+      <TermsModal
+        isOpen={termsModalOpen}
+        onClose={() => setTermsModalOpen(false)}
       />
 
       {/* Navigation */}
@@ -430,6 +438,17 @@ export default function App() {
               <h3>תמיכה</h3>
               <ul className="footer-links">
                 <li><a href="#contact">צור קשר</a></li>
+                <li>
+                  <a
+                    href="#"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      setTermsModalOpen(true);
+                    }}
+                  >
+                    תקנון
+                  </a>
+                </li>
                 <li><a href="#faq">שאלות נפוצות</a></li>
                 <li><a href="#terms">תנאי שימוש</a></li>
                 <li><a href="#privacy">מדיניות פרטיות</a></li>
