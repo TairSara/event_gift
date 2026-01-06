@@ -55,7 +55,28 @@ export default function Pricing() {
     const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
 
     try {
-      const response = await fetch(`${API_URL}/packages/purchase`, {
+      // קבלת מחיר החבילה
+      const selectedPackage = packages.find(p => p.id === packageId);
+      let amount = 0;
+
+      if (selectedPackage.price) {
+        // חבילה עם מחיר קבוע
+        amount = parseFloat(selectedPackage.price.replace('₪', '').replace(',', ''));
+      } else if (guestCount && selectedPackage.subPackages) {
+        // חבילה עם תת-חבילות לפי כמות אורחים
+        const subPackage = selectedPackage.subPackages.find(sub => sub.records === guestCount);
+        if (subPackage) {
+          amount = parseFloat(subPackage.price.replace('₪', '').replace(',', ''));
+        }
+      }
+
+      if (amount === 0) {
+        showInfo('שגיאה בחישוב מחיר החבילה');
+        return;
+      }
+
+      // יצירת תשלום ב-Backend
+      const response = await fetch(`${API_URL}/payments/initiate`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -64,18 +85,31 @@ export default function Pricing() {
           user_id: user.id,
           package_id: packageId,
           package_name: packageName,
-          guest_count: guestCount
+          amount: amount
         })
       });
 
       const data = await response.json();
 
-      if (response.ok) {
-        showSuccess('הרכישה בוצעה בהצלחה!');
-        // ניתוב לדף ניהול אישי אחרי שנייה
-        setTimeout(() => navigate('/dashboard'), 1500);
+      if (response.ok && data.payment_url && data.form_data) {
+        // יצירת טופס POST ושליחה אוטומטית לטרנזילה
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = data.payment_url;
+
+        // הוספת כל השדות לטופס
+        Object.keys(data.form_data).forEach(key => {
+          const input = document.createElement('input');
+          input.type = 'hidden';
+          input.name = key;
+          input.value = data.form_data[key];
+          form.appendChild(input);
+        });
+
+        document.body.appendChild(form);
+        form.submit();
       } else {
-        showInfo(data.detail || 'שגיאה ביצירת הרכישה');
+        showInfo(data.detail || 'שגיאה ביצירת התשלום');
       }
     } catch (error) {
       console.error('Error purchasing package:', error);

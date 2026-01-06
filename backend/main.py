@@ -12,6 +12,7 @@ from whatsapp_api import router as whatsapp_router
 from invitation_image_upload import router as invitation_router
 from sms_router import router as sms_router
 from rsvp_router import router as rsvp_router
+from payment_routes import router as payment_router
 
 app = FastAPI(title="giftWeb-api")
 
@@ -95,3 +96,6 @@ app.include_router(sms_router)
 
 # חיבור ראוט RSVP (אישור הגעה)
 app.include_router(rsvp_router)
+
+# חיבור ראוט Payments (תשלומים דרך טרנזילה)
+app.include_router(payment_router)
