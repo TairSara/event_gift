@@ -79,8 +79,8 @@ export default function App() {
   // פונקציה לפתיחת המודל
   const handleEventClick = (eventType, eventTitle) => {
     // אפשר ליצור הזמנות גם בלי להתחבר
-    // If it's a wedding, hina, bar-mitzvah, bat-mitzvah, brit, brita, birthday, or knasim event, show intro modal for invitation builder
-    const invitationBuilderEvents = ['wedding', 'hina', 'bar-mitzvah', 'bat-mitzvah', 'brit', 'brita', 'birthday', 'knasim'];
+    // If it's a wedding, hina, bar-mitzvah, bat-mitzvah, brit, brita, birthday, knasim, or other event, show intro modal for invitation builder
+    const invitationBuilderEvents = ['wedding', 'hina', 'bar-mitzvah', 'bat-mitzvah', 'brit', 'brita', 'birthday', 'knasim', 'other'];
 
     if (invitationBuilderEvents.includes(eventType)) {
       setIntroEventType(eventType);

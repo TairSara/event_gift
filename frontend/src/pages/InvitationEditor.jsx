@@ -105,6 +105,11 @@ export default function InvitationEditor() {
     }
   }, [eventType, templateId, navigate, isSingleSided]);
 
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   // Render front canvas
   useEffect(() => {
     if (template && frontCanvasRef.current) {
@@ -142,6 +147,7 @@ export default function InvitationEditor() {
   // Show confetti when combined view is shown
   useEffect(() => {
     if (showCombined) {
+      window.scrollTo(0, 0); // Scroll to top when showing combined view
       setShowConfetti(true);
       // Hide confetti after 4 seconds
       const timer = setTimeout(() => {
@@ -458,6 +464,81 @@ export default function InvitationEditor() {
                         onChange={(time) => handleInputChange(field.key, time)}
                         disabled={!isSingleSided && (currentSide === 'front' ? frontApproved : backApproved)}
                       />
+                    ) : field.type === 'image' ? (
+                      <div className="image-upload-container">
+                        <input
+                          type="file"
+                          id={field.key}
+                          accept="image/*"
+                          onChange={(e) => {
+                            const file = e.target.files[0];
+                            if (file) {
+                              const reader = new FileReader();
+                              reader.onload = (event) => {
+                                handleInputChange(field.key, event.target.result);
+                              };
+                              reader.readAsDataURL(file);
+                            }
+                          }}
+                          disabled={!isSingleSided && (currentSide === 'front' ? frontApproved : backApproved)}
+                          style={{ display: 'none' }}
+                        />
+                        <label
+                          htmlFor={field.key}
+                          className="image-upload-btn"
+                          style={{
+                            display: 'inline-block',
+                            padding: '12px 24px',
+                            backgroundColor: '#4ECDC4',
+                            color: 'white',
+                            borderRadius: '8px',
+                            cursor: 'pointer',
+                            textAlign: 'center',
+                            transition: 'all 0.3s ease',
+                            fontWeight: '500',
+                            fontSize: '16px',
+                            border: 'none',
+                            boxShadow: '0 2px 8px rgba(78, 205, 196, 0.3)'
+                          }}
+                        >
+                          <i className="fas fa-upload" style={{ marginLeft: '8px' }}></i>
+                          {values[field.key] ? 'החלף לוגו' : 'העלה לוגו'}
+                        </label>
+                        {values[field.key] && (
+                          <div className="image-preview" style={{ marginTop: '1rem', textAlign: 'center' }}>
+                            <img
+                              src={values[field.key]}
+                              alt="תצוגה מקדימה"
+                              style={{
+                                maxWidth: '100%',
+                                maxHeight: '200px',
+                                height: 'auto',
+                                borderRadius: '12px',
+                                boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                                border: '2px solid #f0f0f0'
+                              }}
+                            />
+                            <button
+                              type="button"
+                              onClick={() => handleInputChange(field.key, '')}
+                              style={{
+                                marginTop: '8px',
+                                padding: '6px 16px',
+                                backgroundColor: '#ff4444',
+                                color: 'white',
+                                border: 'none',
+                                borderRadius: '6px',
+                                cursor: 'pointer',
+                                fontSize: '14px',
+                                transition: 'all 0.2s ease'
+                              }}
+                            >
+                              <i className="fas fa-trash" style={{ marginLeft: '6px' }}></i>
+                              הסר לוגו
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     ) : (
                       <input
                         type="text"
@@ -489,37 +570,89 @@ export default function InvitationEditor() {
                 {/* Custom Background Upload */}
                 {template.allowCustomBackground && (
                   <div className="form-group">
-                    <label htmlFor={`customBackground${currentSide === 'front' ? 'Front' : 'Back'}`}>
+                    <label>
                       {currentSide === 'front' ? 'תמונת רקע לצד קדמי' : 'תמונת רקע לצד אחורי'}
                     </label>
-                    <input
-                      type="file"
-                      id={`customBackground${currentSide === 'front' ? 'Front' : 'Back'}`}
-                      accept="image/*"
-                      onChange={(e) => {
-                        const file = e.target.files[0];
-                        if (file) {
-                          const reader = new FileReader();
-                          reader.onload = (event) => {
-                            handleInputChange(
+                    <div className="image-upload-container">
+                      <input
+                        type="file"
+                        id={`customBackground${currentSide === 'front' ? 'Front' : 'Back'}`}
+                        accept="image/*"
+                        onChange={(e) => {
+                          const file = e.target.files[0];
+                          if (file) {
+                            const reader = new FileReader();
+                            reader.onload = (event) => {
+                              handleInputChange(
+                                currentSide === 'front' ? 'customBackgroundFront' : 'customBackgroundBack',
+                                event.target.result
+                              );
+                            };
+                            reader.readAsDataURL(file);
+                          }
+                        }}
+                        disabled={currentSide === 'front' ? frontApproved : backApproved}
+                        style={{ display: 'none' }}
+                      />
+                      <label
+                        htmlFor={`customBackground${currentSide === 'front' ? 'Front' : 'Back'}`}
+                        className="image-upload-btn"
+                        style={{
+                          display: 'inline-block',
+                          padding: '12px 24px',
+                          backgroundColor: '#4ECDC4',
+                          color: 'white',
+                          borderRadius: '8px',
+                          cursor: 'pointer',
+                          textAlign: 'center',
+                          transition: 'all 0.3s ease',
+                          fontWeight: '500',
+                          fontSize: '16px',
+                          border: 'none',
+                          boxShadow: '0 2px 8px rgba(78, 205, 196, 0.3)'
+                        }}
+                      >
+                        <i className="fas fa-upload" style={{ marginLeft: '8px' }}></i>
+                        {values[currentSide === 'front' ? 'customBackgroundFront' : 'customBackgroundBack'] ? 'החלף תמונה' : 'העלה תמונה'}
+                      </label>
+                      {values[currentSide === 'front' ? 'customBackgroundFront' : 'customBackgroundBack'] && (
+                        <div className="image-preview" style={{ marginTop: '1rem', textAlign: 'center' }}>
+                          <img
+                            src={values[currentSide === 'front' ? 'customBackgroundFront' : 'customBackgroundBack']}
+                            alt="תצוגה מקדימה של התמונה"
+                            style={{
+                              maxWidth: '100%',
+                              maxHeight: '200px',
+                              height: 'auto',
+                              borderRadius: '12px',
+                              boxShadow: '0 4px 12px rgba(0,0,0,0.15)',
+                              border: '2px solid #f0f0f0'
+                            }}
+                          />
+                          <button
+                            type="button"
+                            onClick={() => handleInputChange(
                               currentSide === 'front' ? 'customBackgroundFront' : 'customBackgroundBack',
-                              event.target.result
-                            );
-                          };
-                          reader.readAsDataURL(file);
-                        }
-                      }}
-                      disabled={currentSide === 'front' ? frontApproved : backApproved}
-                    />
-                    {values[currentSide === 'front' ? 'customBackgroundFront' : 'customBackgroundBack'] && (
-                      <div className="image-preview">
-                        <img
-                          src={values[currentSide === 'front' ? 'customBackgroundFront' : 'customBackgroundBack']}
-                          alt="תצוגה מקדימה של התמונה"
-                          style={{ maxWidth: '100%', height: 'auto', borderRadius: '8px', marginTop: '0.5rem' }}
-                        />
-                      </div>
-                    )}
+                              ''
+                            )}
+                            style={{
+                              marginTop: '8px',
+                              padding: '6px 16px',
+                              backgroundColor: '#ff4444',
+                              color: 'white',
+                              border: 'none',
+                              borderRadius: '6px',
+                              cursor: 'pointer',
+                              fontSize: '14px',
+                              transition: 'all 0.2s ease'
+                            }}
+                          >
+                            <i className="fas fa-trash" style={{ marginLeft: '6px' }}></i>
+                            הסר תמונה
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 )}
 

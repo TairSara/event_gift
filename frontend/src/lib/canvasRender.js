@@ -141,9 +141,46 @@ export async function renderSide(canvas, template, values, side = 'front') {
     const fields = side === 'front' ? template.frontFields : template.backFields;
     const colorOverride = values.textColor || null;
 
-    fields.forEach(field => {
+    for (const field of fields) {
+      // Handle image fields separately
+      if (field.type === 'image' && values[field.key]) {
+        console.log(`Drawing image field ${field.key}`);
+        try {
+          const img = await loadImage(values[field.key]);
+          const maxWidth = field.maxWidth || 300;
+          const maxHeight = field.maxHeight || 150;
+
+          // Calculate aspect ratio
+          let drawWidth = img.width;
+          let drawHeight = img.height;
+
+          if (drawWidth > maxWidth) {
+            drawHeight = (maxWidth / drawWidth) * drawHeight;
+            drawWidth = maxWidth;
+          }
+
+          if (drawHeight > maxHeight) {
+            drawWidth = (maxHeight / drawHeight) * drawWidth;
+            drawHeight = maxHeight;
+          }
+
+          // Calculate position based on alignment
+          let drawX = field.x;
+          if (field.align === 'center') {
+            drawX = field.x - drawWidth / 2;
+          } else if (field.align === 'right') {
+            drawX = field.x - drawWidth;
+          }
+
+          ctx.drawImage(img, drawX, field.y, drawWidth, drawHeight);
+        } catch (error) {
+          console.error(`Error loading image for ${field.key}:`, error);
+        }
+        continue;
+      }
+
       // Skip fields that are only for input (not for display)
-      if (field.isInput) return;
+      if (field.isInput) continue;
 
       let value;
 
@@ -192,7 +229,7 @@ export async function renderSide(canvas, template, values, side = 'front') {
         console.log(`Drawing field ${field.key}:`, value);
         drawTextField(ctx, value, field, colorOverride);
       }
-    });
+    }
 
     // Draw slots
     const slots = side === 'front' ? template.frontSlots : template.backSlots;
