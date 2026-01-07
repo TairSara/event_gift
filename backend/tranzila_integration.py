@@ -40,19 +40,23 @@ class TranzilaPayment:
             Dict עם כל השדות הנדרשים לטופס
         """
         form_data = {
-            # שדות חובה לפי מפרט טרנזילה
+            # שדות חובה לפי מפרט טרנזילה Direct Payment
             "supplier": self.terminal_name,
             "sum": str(amount),
-            "currency": "1",  # 1 = ILS (שקל חדש)
+            "currency": "1",  # 1 = ILS
             "cred_type": "1",  # 1 = חיוב רגיל
+            "tranmode": "A",  # A = debit transaction
 
             # כתובות חזרה
             "success_url_address": success_url,
             "fail_url_address": fail_url,
             "notify_url_address": notify_url,
 
-            # מזהה הזמנה - נשלח כפרמטר נפרד ב-notify_url
+            # מזהה הזמנה
             "order_id": order_id,
+
+            # שדות נוספים שעשויים להיות חובה
+            "pdesc": "Save the Day - Package Purchase",  # תיאור המוצר
         }
 
         # שדות אופציונליים
