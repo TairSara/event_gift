@@ -42,7 +42,7 @@ class TranzilaPayment:
         form_data = {
             # שדות חובה לפי מפרט טרנזילה Direct Payment
             "supplier": self.terminal_name,
-            "sum": str(amount),
+            "sum": f"{float(amount):.2f}",  # פורמט: "100.00" - מחרוזת עם 2 ספרות אחרי הנקודה
             "currency": "1",  # 1 = ILS
             "cred_type": "1",  # 1 = חיוב רגיל
 
