@@ -42,6 +42,14 @@
   color: #10b981;
 }
 
+.payment-result-card.success .result-icon.checking {
+  color: #3b82f6;
+}
+
+.payment-result-card.success .result-icon.timeout {
+  color: #f59e0b;
+}
+
 .payment-result-card.failure .result-icon {
   color: #ef4444;
 }
@@ -158,6 +166,24 @@
 
 .failure-reasons li i {
   color: #f59e0b;
+}
+
+.timeout-message {
+  background: #fef3c7;
+  border-radius: 12px;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.timeout-message p {
+  margin: 0.5rem 0;
+  color: #92400e;
+}
+
+.timeout-message i {
+  color: #f59e0b;
+  margin-left: 0.5rem;
 }
 
 .action-buttons {

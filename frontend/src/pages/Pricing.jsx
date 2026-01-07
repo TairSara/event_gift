@@ -55,37 +55,9 @@ export default function Pricing() {
     const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
 
     try {
-      // קבלת מחיר החבילה
-      const selectedPackage = packages.find(p => p.id === packageId);
-      let amount = 0;
+      console.log('Initiating payment:', { packageId, packageName, guestCount });
 
-      console.log('Selected Package:', selectedPackage);
-      console.log('Guest Count:', guestCount);
-
-      if (selectedPackage.price) {
-        // חבילה עם מחיר קבוע
-        const priceString = selectedPackage.price.replace(/₪/g, '').replace(/,/g, '').trim();
-        amount = parseFloat(priceString);
-        console.log('Fixed price package:', priceString, '→', amount);
-      } else if (guestCount && selectedPackage.subPackages) {
-        // חבילה עם תת-חבילות לפי כמות אורחים
-        const subPackage = selectedPackage.subPackages.find(sub => sub.records === guestCount);
-        console.log('Found sub-package:', subPackage);
-        if (subPackage) {
-          const priceString = subPackage.price.replace(/₪/g, '').replace(/,/g, '').trim();
-          amount = parseFloat(priceString);
-          console.log('Sub-package price:', priceString, '→', amount);
-        }
-      }
-
-      console.log('Final amount:', amount);
-
-      if (amount === 0 || isNaN(amount)) {
-        showInfo('שגיאה בחישוב מחיר החבילה');
-        return;
-      }
-
-      // יצירת תשלום ב-Backend
+      // יצירת תשלום ב-Backend - השרת יחשב את המחיר
       const response = await fetch(`${API_URL}/payments/initiate`, {
         method: 'POST',
         headers: {
@@ -95,7 +67,7 @@ export default function Pricing() {
           user_id: user.id,
           package_id: packageId,
           package_name: packageName,
-          amount: amount
+          guest_count: guestCount  // שולחים null לחבילה בסיס, או הכמות שנבחרה
         })
       });
 

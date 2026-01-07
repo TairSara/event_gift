@@ -12,6 +12,63 @@ import os
 from db import get_db_connection
 from tranzila_integration import tranzila
 
+# הגדרת מחירי חבילות - מכיוון שאין טבלת מחירים ב-DB
+PACKAGES_PRICING = {
+    1: {"name": "חבילת בסיס – ידני", "price": 39},  # מחיר קבוע
+    2: {  # SMS - לפי כמות רשומות
+        "name": "אוטומטי SMS",
+        "prices": {
+            "150 רשומות": 59,
+            "300 רשומות": 79,
+            "500 רשומות": 109,
+            "800 רשומות": 159,
+            "1,000 רשומות": 189,
+            "2,000 רשומות": 319
+        }
+    },
+    3: {  # WhatsApp - לפי כמות
+        "name": "אוטומטי WhatsApp",
+        "prices": {
+            "עד 50": 69,
+            "עד 100": 109,
+            "עד 150": 169,
+            "עד 200": 229,
+            "עד 300": 329,
+            "עד 400": 419,
+            "עד 500": 509,
+            "עד 600": 589,
+            "עד 700": 649,
+            "עד 800": 709
+        }
+    },
+    4: {  # ראש שקט
+        "name": "אוטומטי \"ראש שקט\"",
+        "prices": {
+            "עד 100": 239,
+            "עד 200": 469,
+            "עד 300": 679,
+            "עד 400": 869,
+            "עד 500": 1039,
+            "עד 600": 1189,
+            "עד 700": 1389,
+            "עד 800": 1589
+        }
+    },
+    5: {  # ראש שקט פלוס
+        "name": "אוטומטי \"ראש שקט פלוס\"",
+        "prices": {
+            "עד 100": 339,
+            "עד 200": 569,
+            "עד 300": 779,
+            "עד 400": 969,
+            "עד 500": 1139,
+            "עד 600": 1289,
+            "עד 700": 1489,
+            "עד 800": 1689
+        }
+    }
+}
+
 router = APIRouter(
     prefix="/api/payments",
     tags=["payments"]
@@ -24,7 +81,7 @@ class PaymentInitRequest(BaseModel):
     user_id: int
     package_id: int
     package_name: str
-    amount: float
+    guest_count: Optional[str] = None  # לדוגמה: "עד 100", "150 רשומות"
 
 
 # ========== Endpoints ==========
@@ -43,6 +100,35 @@ async def initiate_payment(payment: PaymentInitRequest):
     cur = None
 
     try:
+        # חישוב מחיר מתוך ההגדרות
+        package_config = PACKAGES_PRICING.get(payment.package_id)
+
+        if not package_config:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail=f"חבילה {payment.package_id} לא נמצאה"
+            )
+
+        # חישוב המחיר
+        if "price" in package_config:
+            # חבילה עם מחיר קבוע
+            amount = package_config["price"]
+        elif "prices" in package_config and payment.guest_count:
+            # חבילה עם מחירים משתנים לפי כמות
+            amount = package_config["prices"].get(payment.guest_count)
+            if amount is None:
+                raise HTTPException(
+                    status_code=status.HTTP_400_BAD_REQUEST,
+                    detail=f"כמות אורחים '{payment.guest_count}' לא תקינה לחבילה זו"
+                )
+        else:
+            raise HTTPException(
+                status_code=status.HTTP_400_BAD_REQUEST,
+                detail="חסרה כמות אורחים לחבילה זו"
+            )
+
+        print(f"[Payment Init] Package {payment.package_id}, Guest Count: {payment.guest_count}, Amount: ₪{amount}")
+
         conn = get_db_connection()
         cur = conn.cursor()
 
@@ -72,13 +158,17 @@ async def initiate_payment(payment: PaymentInitRequest):
         purchase_id = cur.fetchone()[0]
         conn.commit()
 
-        # בניית URLs
-        frontend_url = os.getenv("FRONTEND_URL", "https://event-gift-frontend.onrender.com")
-        backend_url = os.getenv("BACKEND_URL", "https://event-gift.onrender.com")
+        # בניית URLs - הסרת לוכסן כפול
+        frontend_url = os.getenv("FRONTEND_URL", "https://event-gift-frontend.onrender.com").rstrip('/')
+        backend_url = os.getenv("BACKEND_URL", "https://event-gift.onrender.com").rstrip('/')
 
         success_url = f"{frontend_url}/payment/success?order_id={order_id}&purchase_id={purchase_id}"
         fail_url = f"{frontend_url}/payment/failure?order_id={order_id}&purchase_id={purchase_id}"
         notify_url = f"{backend_url}/api/payments/callback?order_id={order_id}"
+
+        print(f"[Payment URLs] Success: {success_url}")
+        print(f"[Payment URLs] Fail: {fail_url}")
+        print(f"[Payment URLs] Notify: {notify_url}")
 
         # קבלת פרטי המשתמש
         cur.execute("""
