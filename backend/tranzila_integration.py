@@ -40,7 +40,7 @@ class TranzilaPayment:
             Dict עם כל השדות הנדרשים לטופס
         """
         form_data = {
-            # שדות חובה
+            # שדות חובה לפי מפרט טרנזילה
             "supplier": self.terminal_name,
             "sum": str(amount),
             "currency": "1",  # 1 = ILS (שקל חדש)
@@ -49,10 +49,10 @@ class TranzilaPayment:
             # כתובות חזרה
             "success_url_address": success_url,
             "fail_url_address": fail_url,
-            "notify_url_address": f"{notify_url}?order_id={order_id}",
+            "notify_url_address": notify_url,
 
-            # מזהה עסקה - לזיהוי בחזרה
-            "pdesc": order_id,  # תיאור המוצר/עסקה
+            # מזהה הזמנה - נשלח כפרמטר נפרד ב-notify_url
+            "order_id": order_id,
         }
 
         # שדות אופציונליים
@@ -75,10 +75,13 @@ class TranzilaPayment:
             Dict עם סטטוס התשלום והמידע הרלוונטי
         """
         response_code = callback_data.get("Response", "")
+        # order_id מגיע מהשדה שעברנו בטופס
         order_id = callback_data.get("order_id", "")
 
         # בדיקת הצלחה: Response = "000" או "00"
         success = response_code in ["000", "00"]
+
+        print(f"[Tranzila Callback] Response: {response_code}, Order ID: {order_id}, Success: {success}")
 
         return {
             "success": success,
@@ -86,6 +89,7 @@ class TranzilaPayment:
             "order_id": order_id,
             "transaction_id": callback_data.get("TranzilaTK", ""),  # מזהה עסקה מטרנזילה
             "card_suffix": callback_data.get("ccno", ""),  # 4 ספרות אחרונות של הכרטיס
+            "confirmation_code": callback_data.get("ConfirmationCode", ""),  # קוד אישור
             "raw_data": callback_data
         }
 

@@ -78,7 +78,7 @@ async def initiate_payment(payment: PaymentInitRequest):
 
         success_url = f"{frontend_url}/payment/success?order_id={order_id}&purchase_id={purchase_id}"
         fail_url = f"{frontend_url}/payment/failure?order_id={order_id}&purchase_id={purchase_id}"
-        notify_url = f"{backend_url}/api/payments/callback"
+        notify_url = f"{backend_url}/api/payments/callback?order_id={order_id}"
 
         # קבלת פרטי המשתמש
         cur.execute("""

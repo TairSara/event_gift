@@ -173,7 +173,7 @@ def get_user_purchases(user_id: int):
         cur.execute("""
             SELECT id, package_id, package_name, purchased_at, status
             FROM package_purchases
-            WHERE user_id = %s
+            WHERE user_id = %s AND status = 'active'
             ORDER BY purchased_at DESC;
         """, (user_id,))
 
