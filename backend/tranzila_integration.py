@@ -11,8 +11,8 @@ class TranzilaPayment:
 
     def __init__(self):
         self.terminal_name = os.getenv("TRANZILA_TERMINAL_NAME", "saveday1")
-        # כתובת היעד לשליחת הטופס
-        self.payment_url = f"https://direct.tranzila.com/{self.terminal_name}"
+        # כתובת היעד לשליחת הטופס - Redirect/iframe payment page
+        self.payment_url = f"https://direct.tranzila.com/{self.terminal_name}/iframenew.php"
 
     def create_payment_form_data(
         self,
