@@ -59,18 +59,28 @@ export default function Pricing() {
       const selectedPackage = packages.find(p => p.id === packageId);
       let amount = 0;
 
+      console.log('Selected Package:', selectedPackage);
+      console.log('Guest Count:', guestCount);
+
       if (selectedPackage.price) {
         // חבילה עם מחיר קבוע
-        amount = parseFloat(selectedPackage.price.replace('₪', '').replace(',', ''));
+        const priceString = selectedPackage.price.replace(/₪/g, '').replace(/,/g, '').trim();
+        amount = parseFloat(priceString);
+        console.log('Fixed price package:', priceString, '→', amount);
       } else if (guestCount && selectedPackage.subPackages) {
         // חבילה עם תת-חבילות לפי כמות אורחים
         const subPackage = selectedPackage.subPackages.find(sub => sub.records === guestCount);
+        console.log('Found sub-package:', subPackage);
         if (subPackage) {
-          amount = parseFloat(subPackage.price.replace('₪', '').replace(',', ''));
+          const priceString = subPackage.price.replace(/₪/g, '').replace(/,/g, '').trim();
+          amount = parseFloat(priceString);
+          console.log('Sub-package price:', priceString, '→', amount);
         }
       }
 
-      if (amount === 0) {
+      console.log('Final amount:', amount);
+
+      if (amount === 0 || isNaN(amount)) {
         showInfo('שגיאה בחישוב מחיר החבילה');
         return;
       }
