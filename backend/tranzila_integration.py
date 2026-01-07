@@ -45,7 +45,6 @@ class TranzilaPayment:
             "sum": str(amount),
             "currency": "1",  # 1 = ILS
             "cred_type": "1",  # 1 = חיוב רגיל
-            "tranmode": "A",  # A = debit transaction
 
             # כתובות חזרה
             "success_url_address": success_url,
@@ -55,8 +54,8 @@ class TranzilaPayment:
             # מזהה הזמנה
             "order_id": order_id,
 
-            # שדות נוספים שעשויים להיות חובה
-            "pdesc": "Save the Day - Package Purchase",  # תיאור המוצר
+            # תיאור המוצר
+            "pdesc": "Save the Day - Package Purchase",
         }
 
         # שדות אופציונליים
