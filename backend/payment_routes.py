@@ -149,7 +149,7 @@ async def initiate_payment(payment: PaymentInitRequest):
             payment.package_id,
             payment.package_name,
             'pending',
-            payment.amount,
+            amount,  # משתמשים ב-amount שחישבנו למעלה
             'ILS',
             order_id,
             'pending'
