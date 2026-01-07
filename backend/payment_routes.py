@@ -184,7 +184,7 @@ async def initiate_payment(payment: PaymentInitRequest):
         # יצירת נתוני טופס
         form_data = tranzila.create_payment_form_data(
             order_id=order_id,
-            amount=payment.amount,
+            amount=amount,  # משתמשים ב-amount שחישבנו
             success_url=success_url,
             fail_url=fail_url,
             notify_url=notify_url,
@@ -197,7 +197,7 @@ async def initiate_payment(payment: PaymentInitRequest):
             "form_data": form_data,
             "order_id": order_id,
             "purchase_id": purchase_id,
-            "amount": payment.amount,
+            "amount": amount,  # משתמשים ב-amount שחישבנו
             "message": "התשלום נוצר בהצלחה"
         }
 
