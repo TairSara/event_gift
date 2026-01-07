@@ -192,6 +192,14 @@ async def initiate_payment(payment: PaymentInitRequest):
             customer_email=customer_email
         )
 
+        # לוג מפורט של נתוני הטופס
+        print("=" * 80)
+        print("[Tranzila Form Data]")
+        print(f"Payment URL: {tranzila.payment_url}")
+        for key, value in form_data.items():
+            print(f"  {key}: {value}")
+        print("=" * 80)
+
         return {
             "payment_url": tranzila.payment_url,
             "form_data": form_data,
