@@ -56,6 +56,10 @@ class TranzilaPayment:
 
             # תיאור המוצר
             "pdesc": "Save the Day - Package Purchase",
+
+            # הפעלת ארנקים דיגיטליים
+            "google_pay": "1",
+            "apple_pay": "1",
         }
 
         # שדות אופציונליים
