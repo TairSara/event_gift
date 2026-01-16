@@ -385,6 +385,14 @@
   filter: drop-shadow(0 2px 4px rgba(139, 111, 71, 0.15));
 }
 
+/* Dark brown price for basic package */
+.package-card-turquoise .price {
+  background: var(--brown-dark);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .price-unit {
   font-size: 0.85rem;
   color: var(--brown);

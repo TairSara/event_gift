@@ -129,7 +129,7 @@ export default function App() {
   וניהול מתנות באשראי – הכול במקום אחד חכם ונוח.<br />
   שלחו הזמנה, עקבו אחר התגובות וקבלו שליטה מלאה על האירוע שלכם.<br />
   Save The Day הופכת כל הזמנה לחוויה יוקרתית,<br />
-  מרגשת ובלתי נשכחת – כמו שהאירוע שלכם ראוי לה להיות.<br /><br />
+  מרגשת ובלתי נשכחת – כמו שהאירוע שלכם ראוי להיות.<br /><br />
   <strong>וגם – קבלו הזמנה לאירוע בחינם !</strong>
 </p>
 
@@ -204,17 +204,12 @@ export default function App() {
             <div className="feature-card feature-card-turquoise">
               <div className="feature-icon"><i className="fas fa-envelope-open-text"></i></div>
               <h3>הזמנות דיגיטליות</h3>
-              <p>עיצובים מרהיבים ומותאמים אישית לכל סוג אירוע. שלח בקלות באמצעות WhatsApp או SMS</p>
+              <p>עיצובים מרהיבים ומותאמים אישית לכל סוג אירוע. שליחה אוטומטית באמצעות WhatsApp ו־SMS</p>
             </div>
             <div className="feature-card feature-card-turquoise">
               <div className="feature-icon"><i className="fas fa-clipboard-check"></i></div>
               <h3>ניהול אישורי הגעה</h3>
-              <p>מערכת חכמה למעקב אחר האורחים שלך. דע מי מגיע, מי לא ומה הם רוצים לתרום</p>
-            </div>
-            <div className="feature-card feature-card-turquoise">
-              <div className="feature-icon"><i className="fas fa-gift"></i></div>
-              <h3>איסוף מתנות</h3>
-              <p>קבל מתנות כספיות בצורה נוחה ומאובטחת. האורחים יכולים לצרף ברכה אישית ותמונה</p>
+              <p>מערכת חכמה למעקב אחר האורחים שלך. דע מי מגיע ומי לא בזמן אמת</p>
             </div>
             <div className="feature-card feature-card-turquoise">
               <div className="feature-icon"><i className="fas fa-chart-line"></i></div>
@@ -376,8 +371,8 @@ export default function App() {
             <div className="step">
               <div className="step-number">5</div>
               <div className="step-content">
-                <h3>שלח את ההזמנות</h3>
-                <p>שלח את ההזמנות באמצעות WhatsApp, SMS או קישור ישיר לשיתוף</p>
+                <h3>אנחנו נשלח אוטומטית</h3>
+                <p>ההזמנות נשלחות אוטומטית באמצעות WhatsApp ו־SMS</p>
               </div>
             </div>
             <div className="step">

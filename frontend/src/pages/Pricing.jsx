@@ -155,7 +155,8 @@ export default function Pricing() {
         { text: "שליחה ידנית ב־WhatsApp", included: true },
         { text: "סטטוס אישורים בזמן אמת", included: true },
       ],
-      note: "למי שרוצה מינימום עלות ומקסימום סדר"
+      note: "למי שרוצה מינימום עלות ומקסימום סדר",
+      digitalNote: null
     },
     {
       id: 2,
@@ -174,9 +175,8 @@ export default function Pricing() {
         { records: "2,000 רשומות", price: "₪319" }
       ],
       features: [
-        { text: "הזמנה דיגיטלית", included: true },
-        { text: "שליחת הזמנות ב־SMS", included: true },
-        { text: "אישורי הגעה אוטומטיים", included: true },
+        { text: "יצירת הזמנה דיגיטלית מותאמת לכל אירוע", included: true },
+        { text: "שליחת הזמנות אוטומטית ב־SMS", included: true },
         { text: "תזכורת לפני האירוע", included: true },
         { text: "דוח אישורים מסודר", included: true },
       ],
@@ -203,9 +203,10 @@ export default function Pricing() {
         { records: "עד 800", price: "₪709" }
       ],
       features: [
-        { text: "שליחת הזמנה ב־WhatsApp אוטומטי", included: true },
-        { text: "2 סבבי אישור הגעה", included: true },
-        { text: "תזכורת לפני האירוע (SMS)", included: true },
+        { text: "יצירת הזמנה דיגיטלית מותאמת לכל אירוע", included: true },
+        { text: "שליחה אוטומטית ב־WhatsApp", included: true },
+        { text: "3 סבבי שיחות טלפוניות", included: true },
+        { text: "תזכורת ביום האירוע (SMS)", included: true },
         { text: "הודעת תודה אחרי האירוע (אופציונלי)", included: true },
         { text: "ניהול מוזמנים + דוחות", included: true },
         { text: "עיצובים לבחירה", included: true },
@@ -214,8 +215,8 @@ export default function Pricing() {
     },
     {
       id: 4,
-      name: "אוטומטי \"ראש שקט\"",
-      tagline: "WhatsApp + טלפונים אנושיים",
+      name: "אוטומטי הכל כלול",
+      tagline: "דואגים לכם להכל – אפס התעסקות מצידכם",
       price: null,
       priceUnit: "",
       color: "rose",
@@ -231,39 +232,17 @@ export default function Pricing() {
         { records: "עד 800", price: "₪1,589" }
       ],
       features: [
-        { text: "כל מה שבאוטומטי WhatsApp", included: true },
-        { text: "מוקד אנושי לשיחות טלפון", included: true },
-        { text: "מספר סבבי התקשרות", included: true },
-        { text: "טיפול במוזמנים שלא ענו", included: true },
+        { text: "יצירת הזמנה דיגיטלית מותאמת לכל אירוע", included: true },
+        { text: "שליחת הזמנות אוטומטית ב־WhatsApp", included: true },
+        { text: "מוקד אנושי לשיחות טלפון עם מספר סבבי התקשרות", included: true },
+        { text: "טיפול מלא במוזמנים שלא ענו", included: true },
+        { text: "תזכורות ביום האירוע ב־WhatsApp וב־SMS", included: true },
+        { text: "כפתור ניווט חכם לאולם", included: true },
+        { text: "הושבה דיגיטלית מלאה", included: true },
+        { text: "שליחת מספר שולחן אוטומטית ביום האירוע", included: true },
+        { text: "ניהול מוזמנים + דוחות מתקדמים", included: true },
       ],
-      note: "שקט נפשי אמיתי - לא רוצים להתעסק בכלל"
-    },
-    {
-      id: 5,
-      name: "אוטומטי \"ראש שקט פלוס\"",
-      tagline: "הכל כלול – פרימיום",
-      price: null,
-      priceUnit: "",
-      color: "purple",
-      popular: false,
-      subPackages: [
-        { records: "עד 100", price: "₪339" },
-        { records: "עד 200", price: "₪569" },
-        { records: "עד 300", price: "₪779" },
-        { records: "עד 400", price: "₪969" },
-        { records: "עד 500", price: "₪1,139" },
-        { records: "עד 600", price: "₪1,289" },
-        { records: "עד 700", price: "₪1,489" },
-        { records: "עד 800", price: "₪1,689" }
-      ],
-      features: [
-        { text: "כל מה שבחבילת \"ראש שקט\"", included: true },
-        { text: "תזכורות גם ב־WhatsApp", included: true },
-        { text: "כפתור ניווט לאולם", included: true },
-        { text: "הושבה דיגיטלית כלולה", included: true },
-        { text: "שליחת מספר שולחן ביום האירוע", included: true },
-      ],
-      note: "חוויית פרימיום - אפס התעסקות עד יום האירוע"
+      note: "דואגים לכם להכל – אפס התעסקות מצידכם"
     }
   ];
 
