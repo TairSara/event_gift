@@ -265,7 +265,7 @@ export default function TermsModal({ isOpen, onClose }) {
           </section>
 
           <div className="terms-footer">
-            <p>מסמך זה עודכן לאחרונה ביום: <strong>28/12/2024</strong></p>
+            <p>מסמך זה עודכן לאחרונה ביום: <strong>16/01/2026</strong></p>
             <p>שמירת המסמך או צילום מסך שלו מומלצים לעיון עתידי</p>
           </div>
         </div>

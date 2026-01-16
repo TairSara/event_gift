@@ -105,7 +105,7 @@ export default function Contact() {
                   </div>
                   <div className="contact-method-content">
                     <h3>אימייל</h3>
-                    <p>info@savetheday.co.il</p>
+                    <p>savedayevents@gmail.com</p>
                   </div>
                 </div>
 
@@ -115,17 +115,7 @@ export default function Contact() {
                   </div>
                   <div className="contact-method-content">
                     <h3>טלפון</h3>
-                    <p>03-1234567</p>
-                  </div>
-                </div>
-
-                <div className="contact-method">
-                  <div className="contact-method-icon">
-                    <i className="fas fa-map-marker-alt"></i>
-                  </div>
-                  <div className="contact-method-content">
-                    <h3>כתובת</h3>
-                    <p>תל אביב, ישראל</p>
+                    <p>053-948-8300</p>
                   </div>
                 </div>
 
@@ -143,17 +133,17 @@ export default function Contact() {
               <div className="contact-social">
                 <h3>עקבו אחרינו</h3>
                 <div className="social-icons">
-                  <a href="#facebook" className="social-icon">
+                  <a href="https://www.facebook.com/share/19V4kUiqvV/?mibextid=wwXIfr" target="_blank" rel="noopener noreferrer" className="social-icon">
                     <i className="fab fa-facebook-f"></i>
                   </a>
-                  <a href="#instagram" className="social-icon">
+                  <a href="https://www.instagram.com/savetheday_events?igsh=MXR2eDFiamM2dmFlaw==" target="_blank" rel="noopener noreferrer" className="social-icon">
                     <i className="fab fa-instagram"></i>
                   </a>
-                  <a href="#whatsapp" className="social-icon">
-                    <i className="fab fa-whatsapp"></i>
+                  <a href="https://www.tiktok.com/@savetheday_events?_r=1&_t=ZS-934AqAceeu2" target="_blank" rel="noopener noreferrer" className="social-icon">
+                    <i className="fab fa-tiktok"></i>
                   </a>
-                  <a href="#linkedin" className="social-icon">
-                    <i className="fab fa-linkedin-in"></i>
+                  <a href="https://wa.me/972539488300" target="_blank" rel="noopener noreferrer" className="social-icon">
+                    <i className="fab fa-whatsapp"></i>
                   </a>
                 </div>
               </div>
