@@ -50,6 +50,7 @@ export default function Contact() {
         // שליחה ל-Google Sheets (עם אימייל התראה)
         fetch(GOOGLE_SHEET_URL, {
           method: "POST",
+          mode: "no-cors",
           body: JSON.stringify(contactData)
         }).catch(err => console.log("Google Sheets error:", err))
       ]);
