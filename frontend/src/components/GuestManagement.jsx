@@ -649,6 +649,7 @@ export default function GuestManagement({ eventId, onUpdate }) {
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
                   required
+                  autoFocus
                 />
               </div>
               <div className="form-row">
@@ -676,26 +677,31 @@ export default function GuestManagement({ eventId, onUpdate }) {
                   />
                 </div>
               </div>
-              <div className="form-group">
-                <label>אימייל</label>
-                <input
-                  type="email"
-                  value={formData.email}
-                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                />
-              </div>
-              <div className="form-group">
-                <label>סטטוס אישור הגעה</label>
-                <select
-                  value={formData.attendance_status}
-                  onChange={(e) => setFormData({ ...formData, attendance_status: e.target.value })}
-                >
-                  <option value="pending">ממתין</option>
-                  <option value="confirmed">אישר</option>
-                  <option value="declined">סירב</option>
-                  <option value="maybe">לא יודע</option>
-                </select>
-              </div>
+              {/* אימייל וסטטוס רק בעריכת מוזמן קיים */}
+              {editingGuest && (
+                <>
+                  <div className="form-group">
+                    <label>אימייל</label>
+                    <input
+                      type="email"
+                      value={formData.email}
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                    />
+                  </div>
+                  <div className="form-group">
+                    <label>סטטוס אישור הגעה</label>
+                    <select
+                      value={formData.attendance_status}
+                      onChange={(e) => setFormData({ ...formData, attendance_status: e.target.value })}
+                    >
+                      <option value="pending">ממתין</option>
+                      <option value="confirmed">אישר</option>
+                      <option value="declined">סירב</option>
+                      <option value="maybe">לא יודע</option>
+                    </select>
+                  </div>
+                </>
+              )}
               <div className="form-group">
                 <label>מספר שולחן</label>
                 <input

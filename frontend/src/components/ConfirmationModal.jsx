@@ -17,7 +17,7 @@ export default function ConfirmationModal({ isOpen, onClose, eventType, eventTit
         <h2 className="modal-title">בניית הזמנה ל{eventTitle}</h2>
 
         <p className="modal-description">
-          את עומדת לעבור לממשק הבנייה המלא שבו תוכלי:
+          אתה עומד לעבור לממשק הבנייה המלא שבו תוכל:
         </p>
 
         <ul className="modal-features">
@@ -33,7 +33,7 @@ export default function ConfirmationModal({ isOpen, onClose, eventType, eventTit
             ביטול
           </button>
           <button className="btn-primary btn-large" onClick={handleConfirm}>
-            בואי נתחיל
+            בוא נתחיל
           </button>
         </div>
       </div>

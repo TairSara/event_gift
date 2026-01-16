@@ -93,10 +93,11 @@ export default function Registert() {
             setTimeout(() => navigate(`/dashboard?activatePackage=${parsed.packageId}`), 1000);
           } catch (err) {
             console.error('Error parsing package:', err);
-            setTimeout(() => navigate("/"), 1000);
+            setTimeout(() => navigate("/dashboard"), 1000);
           }
         } else {
-          setTimeout(() => navigate("/"), 1000);
+          // ניתוב ישיר לדשבורד לאחר התחברות
+          setTimeout(() => navigate("/dashboard"), 1000);
         }
       } else {
         // Register

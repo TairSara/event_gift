@@ -55,8 +55,8 @@ export default function LoginSuccess() {
             : `שלום ${fullName || email}! התחברת בהצלחה`
         );
 
-        // Redirect to home page after 2 seconds
-        setTimeout(() => navigate("/"), 2000);
+        // Redirect to dashboard after 2 seconds
+        setTimeout(() => navigate("/dashboard"), 2000);
       } catch (error) {
         console.error("Google callback error:", error);
         setStatus("error");
@@ -115,7 +115,7 @@ export default function LoginSuccess() {
               </div>
               <h1>{isNewUser ? "ברוך הבא!" : "שלום שוב!"}</h1>
               <p className="success-message">{message}</p>
-              <p className="redirect-message">מעביר אותך לדף הבית...</p>
+              <p className="redirect-message">מעביר אותך לניהול אישי...</p>
             </>
           )}
 

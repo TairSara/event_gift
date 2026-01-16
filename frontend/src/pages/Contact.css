@@ -245,7 +245,7 @@
 /* Submit Button */
 .btn-submit-contact {
   background: var(--turquoise);
-  color: white;
+  color: var(--brown-dark);
   border: none;
   padding: 1rem 2rem;
   border-radius: 12px;

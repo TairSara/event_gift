@@ -152,9 +152,9 @@ export default function Contact() {
             {/* Contact Form */}
             <div className="contact-form-wrapper">
               <div className="contact-form-card">
-                <h2>השאר/י פנייה</h2>
+                <h2>השאר פנייה</h2>
                 <p className="form-description">
-                  מלא/י את הטופס ונחזור אליך בהקדם האפשרי
+                  מלא את הטופס ונחזור אליך בהקדם האפשרי
                 </p>
 
                 <form onSubmit={handleSubmit} className="contact-form">
@@ -166,7 +166,7 @@ export default function Contact() {
                       name="fullName"
                       value={formData.fullName}
                       onChange={handleChange}
-                      placeholder="הכנס/י את שמך המלא"
+                      placeholder="הכנס את שמך המלא"
                       required
                     />
                   </div>
@@ -207,7 +207,7 @@ export default function Contact() {
                       onChange={handleChange}
                       required
                     >
-                      <option value="">בחר/י נושא</option>
+                      <option value="">בחר נושא</option>
                       <option value="general">שאלה כללית</option>
                       <option value="pricing">שאלה לגבי מחירים</option>
                       <option value="technical">תמיכה טכנית</option>
@@ -223,7 +223,7 @@ export default function Contact() {
                       name="message"
                       value={formData.message}
                       onChange={handleChange}
-                      placeholder="כתוב/י את הודעתך כאן..."
+                      placeholder="כתוב את הודעתך כאן..."
                       rows="5"
                       required
                     ></textarea>
