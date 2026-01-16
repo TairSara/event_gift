@@ -738,7 +738,7 @@ async def submit_contact_message(contact: ContactMessageCreate):
         cursor = conn.cursor()
 
         cursor.execute("""
-            INSERT INTO contact_messages (full_name, email, phone, message, status)
+            INSERT INTO contact_messages (name, email, phone, message, status)
             VALUES (%s, %s, %s, %s, 'new')
             RETURNING id
         """, (contact.full_name, contact.email, contact.phone, contact.message))
@@ -835,7 +835,7 @@ async def get_contact_messages(
         # Get messages
         offset = (page - 1) * limit
         query = f"""
-            SELECT id, full_name, email, phone, subject, message, status, created_at, responded_at
+            SELECT id, name, email, phone, subject, message, status, created_at, responded_at
             FROM contact_messages
             {where_clause}
             ORDER BY created_at DESC
