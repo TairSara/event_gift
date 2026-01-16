@@ -725,7 +725,6 @@ class ContactMessageCreate(BaseModel):
     full_name: str
     email: str
     phone: Optional[str] = None
-    subject: str
     message: str
 
 @router.post("/api/contact/submit")
@@ -739,10 +738,10 @@ async def submit_contact_message(contact: ContactMessageCreate):
         cursor = conn.cursor()
 
         cursor.execute("""
-            INSERT INTO contact_messages (full_name, email, phone, subject, message, status)
-            VALUES (%s, %s, %s, %s, %s, 'new')
+            INSERT INTO contact_messages (full_name, email, phone, message, status)
+            VALUES (%s, %s, %s, %s, 'new')
             RETURNING id
-        """, (contact.full_name, contact.email, contact.phone, contact.subject, contact.message))
+        """, (contact.full_name, contact.email, contact.phone, contact.message))
 
         message_id = cursor.fetchone()[0]
         conn.commit()

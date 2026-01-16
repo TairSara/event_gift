@@ -9,7 +9,6 @@ export default function Contact() {
     fullName: "",
     email: "",
     phone: "",
-    subject: "",
     message: ""
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,28 +27,36 @@ export default function Contact() {
     setSubmitStatus(null);
 
     const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+    const GOOGLE_SHEET_URL = 'https://script.google.com/macros/s/AKfycbwZiMi_kJC68G78xtFofBDyuZdh8l54_bFO0EQ2WgjzCBfbp3bbIpVQVJMEBbkrNQbl2A/exec';
 
     try {
-      // שליחת הפנייה לשרת
-      const response = await fetch(`${API_URL}/contact/submit`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          full_name: formData.fullName,
-          email: formData.email,
-          phone: formData.phone,
-          subject: formData.subject,
-          message: formData.message
-        })
-      });
+      const contactData = {
+        full_name: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        message: formData.message
+      };
 
-      if (!response.ok) {
+      // שליחה לשרת המקומי ול-Google Sheets במקביל
+      const [serverResponse] = await Promise.all([
+        // שליחה לשרת
+        fetch(`${API_URL}/contact/submit`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(contactData)
+        }),
+        // שליחה ל-Google Sheets (עם אימייל התראה)
+        fetch(GOOGLE_SHEET_URL, {
+          method: "POST",
+          body: JSON.stringify(contactData)
+        }).catch(err => console.log("Google Sheets error:", err))
+      ]);
+
+      if (!serverResponse.ok) {
         throw new Error("Failed to submit contact form");
       }
-
-      const data = await response.json();
 
       setSubmitStatus("success");
       alert("תודה על פנייתך! נחזור אליך בהקדם האפשרי.");
@@ -59,7 +66,6 @@ export default function Contact() {
         fullName: "",
         email: "",
         phone: "",
-        subject: "",
         message: ""
       });
     } catch (error) {
@@ -196,24 +202,6 @@ export default function Contact() {
                         placeholder="050-1234567"
                       />
                     </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label htmlFor="subject">נושא הפנייה *</label>
-                    <select
-                      id="subject"
-                      name="subject"
-                      value={formData.subject}
-                      onChange={handleChange}
-                      required
-                    >
-                      <option value="">בחר נושא</option>
-                      <option value="general">שאלה כללית</option>
-                      <option value="pricing">שאלה לגבי מחירים</option>
-                      <option value="technical">תמיכה טכנית</option>
-                      <option value="partnership">שיתוף פעולה</option>
-                      <option value="other">אחר</option>
-                    </select>
                   </div>
 
                   <div className="form-group">
