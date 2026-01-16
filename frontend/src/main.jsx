@@ -18,6 +18,7 @@ import VerifyEmail from './pages/VerifyEmail.jsx'
 import LoginSuccess from './pages/LoginSuccess.jsx'
 import ProtectedAuthRoute from './components/ProtectedAuthRoute.jsx'
 import ProtectedAdminRoute from './components/ProtectedAdminRoute.jsx'
+import WhatsAppFloat from './components/WhatsAppFloat.jsx'
 import AdminLogin from './pages/AdminLogin.jsx'
 import AdminDashboard from './pages/AdminDashboard.jsx'
 import AdminUsers from './pages/AdminUsers.jsx'
@@ -32,6 +33,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
       <BrowserRouter>
+        <WhatsAppFloat />
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/pricing" element={<Pricing />} />
