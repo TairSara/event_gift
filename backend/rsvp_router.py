@@ -29,11 +29,11 @@ async def get_rsvp_details(guest_id: int, token: str):
         conn = get_db_connection()
         cur = conn.cursor()
 
-        # Get guest and event details
+        # Get guest and event details including invitation image
         cur.execute("""
             SELECT
                 g.id, g.name, g.phone, g.status, g.attending_count,
-                e.id, e.event_name, e.event_date, e.event_time, e.event_location
+                e.id, e.event_name, e.event_date, e.event_time, e.event_location, e.invitation_data
             FROM guests g
             JOIN events e ON g.event_id = e.id
             WHERE g.id = %s
@@ -46,7 +46,16 @@ async def get_rsvp_details(guest_id: int, token: str):
             raise HTTPException(status_code=404, detail="Guest not found")
 
         guest_id, guest_name, phone, status, attending_count, \
-            event_id, event_name, event_date, event_time, event_location = result
+            event_id, event_name, event_date, event_time, event_location, invitation_data = result
+
+        # Extract invitation image URL
+        invitation_image_url = None
+        if invitation_data and isinstance(invitation_data, dict):
+            invitation_image_url = (
+                invitation_data.get('generated_image_url') or
+                invitation_data.get('image_url') or
+                invitation_data.get('imageUrl')
+            )
 
         # Verify token
         if not verify_token(guest_id, phone or "", event_name or "", token):
@@ -70,7 +79,8 @@ async def get_rsvp_details(guest_id: int, token: str):
                 "event_name": event_name,
                 "event_date": event_date.isoformat() if event_date else None,
                 "event_time": str(event_time) if event_time else None,
-                "event_location": event_location
+                "event_location": event_location,
+                "invitation_image_url": invitation_image_url
             }
         }
 

@@ -19,6 +19,7 @@ export default function RSVPPage() {
   const [response, setResponse] = useState(null);
   const [attendingCount, setAttendingCount] = useState(1);
   const [submitted, setSubmitted] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   // Load guest and event data
   useEffect(() => {
@@ -87,19 +88,30 @@ export default function RSVPPage() {
     }
   };
 
+  // Format date nicely
+  const formatDate = (dateStr) => {
+    if (!dateStr) return '';
+    return new Date(dateStr).toLocaleDateString('he-IL', {
+      weekday: 'long',
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
+
   // Loading State
   if (loading) {
     return (
-      <div className="rsvp-page">
-        <div className="rsvp-blob rsvp-blob-1"></div>
-        <div className="rsvp-blob rsvp-blob-2"></div>
-        <div className="rsvp-blob rsvp-blob-3"></div>
-
+      <div className="rsvp-page" dir="rtl">
+        <div className="rsvp-background">
+          <div className="rsvp-pattern"></div>
+        </div>
         <div className="rsvp-container">
           <div className="loading-state">
-            <div className="loading-spinner-box">
-              <div className="spinner-ring"></div>
-              <div className="spinner-ring"></div>
+            <div className="loading-spinner-elegant">
+              <div className="spinner-dot"></div>
+              <div className="spinner-dot"></div>
+              <div className="spinner-dot"></div>
             </div>
             <p className="loading-text">טוען את ההזמנה...</p>
           </div>
@@ -111,20 +123,23 @@ export default function RSVPPage() {
   // Error State
   if (error) {
     return (
-      <div className="rsvp-page">
-        <div className="rsvp-blob rsvp-blob-1"></div>
-        <div className="rsvp-blob rsvp-blob-2"></div>
-        <div className="rsvp-blob rsvp-blob-3"></div>
-
+      <div className="rsvp-page" dir="rtl">
+        <div className="rsvp-background">
+          <div className="rsvp-pattern"></div>
+        </div>
         <div className="rsvp-container">
           <div className="state-container">
             <div className="state-icon error">
-              <span className="state-emoji">✕</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10"/>
+                <line x1="15" y1="9" x2="9" y2="15"/>
+                <line x1="9" y1="9" x2="15" y2="15"/>
+              </svg>
             </div>
             <h2 className="state-title">אופס!</h2>
             <p className="state-message">{error}</p>
             <a href="/">
-              <button className="close-button">חזרה לדף הבית</button>
+              <button className="btn-secondary">חזרה לדף הבית</button>
             </a>
           </div>
         </div>
@@ -135,102 +150,110 @@ export default function RSVPPage() {
   // Success/Submitted State
   if (submitted) {
     return (
-      <div className="rsvp-page">
-        <div className="rsvp-blob rsvp-blob-1"></div>
-        <div className="rsvp-blob rsvp-blob-2"></div>
-        <div className="rsvp-blob rsvp-blob-3"></div>
-
+      <div className="rsvp-page" dir="rtl">
+        <div className="rsvp-background">
+          <div className="rsvp-pattern"></div>
+        </div>
         <div className="rsvp-container">
           {response === 'confirmed' ? (
-            <div className="state-container">
-              <div className="state-icon">
-                <span className="state-emoji">✓</span>
+            <div className="state-container success">
+              <div className="state-icon success">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M20 6L9 17l-5-5"/>
+                </svg>
               </div>
 
               <h2 className="state-title">תודה רבה!</h2>
-
               <p className="state-message">התשובה שלכם התקבלה בהצלחה</p>
 
-              <div className="count-display">
-                <span className="count-number">
-                  {attendingCount} {attendingCount === 1 ? 'מגיע' : 'מגיעים'}
-                </span>
+              <div className="count-badge">
+                <span className="count-number">{attendingCount}</span>
+                <span className="count-label">{attendingCount === 1 ? 'מגיע' : 'מגיעים'}</span>
               </div>
 
-              <div className="success-event-details">
+              <div className="success-event-card">
                 <h3>פרטי האירוע</h3>
 
-                <div className="event-detail-row">
-                  <div className="detail-icon-box">
-                    <span className="detail-icon">🎊</span>
+                <div className="event-info-list">
+                  <div className="event-info-item">
+                    <div className="info-icon">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                        <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
+                      </svg>
+                    </div>
+                    <div className="info-content">
+                      <span className="info-label">שם האירוע</span>
+                      <span className="info-value">{event?.event_name}</span>
+                    </div>
                   </div>
-                  <div className="detail-info">
-                    <p className="detail-info-label">שם האירוע</p>
-                    <p className="detail-info-value">{event?.event_name}</p>
-                  </div>
+
+                  {event?.event_date && (
+                    <div className="event-info-item">
+                      <div className="info-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                          <line x1="16" y1="2" x2="16" y2="6"/>
+                          <line x1="8" y1="2" x2="8" y2="6"/>
+                          <line x1="3" y1="10" x2="21" y2="10"/>
+                        </svg>
+                      </div>
+                      <div className="info-content">
+                        <span className="info-label">תאריך</span>
+                        <span className="info-value">{formatDate(event.event_date)}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {event?.event_time && (
+                    <div className="event-info-item">
+                      <div className="info-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <circle cx="12" cy="12" r="10"/>
+                          <polyline points="12 6 12 12 16 14"/>
+                        </svg>
+                      </div>
+                      <div className="info-content">
+                        <span className="info-label">שעה</span>
+                        <span className="info-value">{event.event_time}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {event?.event_location && (
+                    <div className="event-info-item">
+                      <div className="info-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                          <circle cx="12" cy="10" r="3"/>
+                        </svg>
+                      </div>
+                      <div className="info-content">
+                        <span className="info-label">מיקום</span>
+                        <span className="info-value">{event.event_location}</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
-
-                {event?.event_date && (
-                  <div className="event-detail-row">
-                    <div className="detail-icon-box date">
-                      <span className="detail-icon">📅</span>
-                    </div>
-                    <div className="detail-info">
-                      <p className="detail-info-label">תאריך</p>
-                      <p className="detail-info-value">
-                        {new Date(event.event_date).toLocaleDateString('he-IL', {
-                          weekday: 'long',
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric'
-                        })}
-                      </p>
-                    </div>
-                  </div>
-                )}
-
-                {event?.event_time && (
-                  <div className="event-detail-row">
-                    <div className="detail-icon-box time">
-                      <span className="detail-icon">🕐</span>
-                    </div>
-                    <div className="detail-info">
-                      <p className="detail-info-label">שעה</p>
-                      <p className="detail-info-value">{event.event_time}</p>
-                    </div>
-                  </div>
-                )}
-
-                {event?.event_location && (
-                  <div className="event-detail-row">
-                    <div className="detail-icon-box location">
-                      <span className="detail-icon">📍</span>
-                    </div>
-                    <div className="detail-info">
-                      <p className="detail-info-label">מיקום</p>
-                      <p className="detail-info-value">{event.event_location}</p>
-                    </div>
-                  </div>
-                )}
               </div>
 
-              <p className="farewell-message">נשמח לראותכם! 💝</p>
+              <p className="farewell-message">נשמח לראותכם!</p>
 
-              <button onClick={() => window.close()} className="close-button">
+              <button onClick={() => window.close()} className="btn-secondary">
                 סגירה
               </button>
             </div>
           ) : (
-            <div className="state-container">
+            <div className="state-container declined">
               <div className="state-icon declined">
-                <span className="state-emoji">💐</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                </svg>
               </div>
 
               <h2 className="state-title">תודה על העדכון</h2>
-
               <p className="state-message">נשמח לראותכם בהזדמנות אחרת!</p>
 
-              <button onClick={() => window.close()} className="close-button">
+              <button onClick={() => window.close()} className="btn-secondary">
                 סגירה
               </button>
             </div>
@@ -243,56 +266,104 @@ export default function RSVPPage() {
   // Main RSVP Form
   return (
     <div className="rsvp-page" dir="rtl">
-      <div className="rsvp-blob rsvp-blob-1"></div>
-      <div className="rsvp-blob rsvp-blob-2"></div>
-      <div className="rsvp-blob rsvp-blob-3"></div>
+      <div className="rsvp-background">
+        <div className="rsvp-pattern"></div>
+      </div>
 
       <div className="rsvp-container">
-        <div className="rsvp-header">
-          <div className="rsvp-header-content">
-            <div className="rsvp-emoji">💌</div>
-            <h1>הנכם מוזמנים!</h1>
-            <p>שלום {guest?.name || 'אורח יקר'},</p>
-          </div>
-        </div>
-
-        <div className="rsvp-content">
-          <div className="event-name">
-            <h2>{event?.event_name}</h2>
-
-            <div className="event-details">
-              {event?.event_date && (
-                <div className="event-detail-card date">
-                  <div className="event-detail-icon">📅</div>
-                  <p className="event-detail-label">תאריך</p>
-                  <p className="event-detail-value">
-                    {new Date(event.event_date).toLocaleDateString('he-IL', {
-                      day: 'numeric',
-                      month: 'long',
-                      year: 'numeric'
-                    })}
-                  </p>
-                </div>
-              )}
-
-              {event?.event_time && (
-                <div className="event-detail-card time">
-                  <div className="event-detail-icon">🕐</div>
-                  <p className="event-detail-label">שעה</p>
-                  <p className="event-detail-value">{event.event_time}</p>
-                </div>
-              )}
-
-              {event?.event_location && (
-                <div className="event-detail-card location">
-                  <div className="event-detail-icon">📍</div>
-                  <p className="event-detail-label">מיקום</p>
-                  <p className="event-detail-value">{event.event_location}</p>
+        {/* Invitation Image Section */}
+        {event?.invitation_image_url && (
+          <div className="invitation-image-section">
+            <div className={`invitation-image-wrapper ${imageLoaded ? 'loaded' : ''}`}>
+              <img
+                src={event.invitation_image_url}
+                alt="הזמנה לאירוע"
+                className="invitation-image"
+                onLoad={() => setImageLoaded(true)}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                }}
+              />
+              {!imageLoaded && (
+                <div className="image-placeholder">
+                  <div className="loading-spinner-elegant small">
+                    <div className="spinner-dot"></div>
+                    <div className="spinner-dot"></div>
+                    <div className="spinner-dot"></div>
+                  </div>
                 </div>
               )}
             </div>
           </div>
+        )}
 
+        {/* Header Section */}
+        <div className="rsvp-header">
+          <div className="header-ornament">
+            <svg viewBox="0 0 100 20" className="ornament-svg">
+              <path d="M0,10 Q25,0 50,10 T100,10" fill="none" stroke="currentColor" strokeWidth="1"/>
+            </svg>
+          </div>
+          <h1>הנכם מוזמנים</h1>
+          <p className="guest-greeting">שלום <span className="guest-name">{guest?.name || 'אורח יקר'}</span>,</p>
+          <div className="header-ornament bottom">
+            <svg viewBox="0 0 100 20" className="ornament-svg">
+              <path d="M0,10 Q25,20 50,10 T100,10" fill="none" stroke="currentColor" strokeWidth="1"/>
+            </svg>
+          </div>
+        </div>
+
+        {/* Event Details */}
+        <div className="rsvp-content">
+          <div className="event-title-section">
+            <h2>{event?.event_name}</h2>
+            <div className="title-underline"></div>
+          </div>
+
+          <div className="event-details-grid">
+            {event?.event_date && (
+              <div className="detail-card">
+                <div className="detail-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                  </svg>
+                </div>
+                <span className="detail-label">תאריך</span>
+                <span className="detail-value">{formatDate(event.event_date)}</span>
+              </div>
+            )}
+
+            {event?.event_time && (
+              <div className="detail-card">
+                <div className="detail-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <circle cx="12" cy="12" r="10"/>
+                    <polyline points="12 6 12 12 16 14"/>
+                  </svg>
+                </div>
+                <span className="detail-label">שעה</span>
+                <span className="detail-value">{event.event_time}</span>
+              </div>
+            )}
+
+            {event?.event_location && (
+              <div className="detail-card">
+                <div className="detail-icon-wrapper">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                    <circle cx="12" cy="10" r="3"/>
+                  </svg>
+                </div>
+                <span className="detail-label">מיקום</span>
+                <span className="detail-value">{event.event_location}</span>
+              </div>
+            )}
+          </div>
+
+          {/* RSVP Section */}
           <div className="rsvp-section">
             <h3>נשמח לדעת אם תגיעו</h3>
 
@@ -300,60 +371,68 @@ export default function RSVPPage() {
               <div className="response-buttons">
                 <button
                   onClick={() => setResponse('confirmed')}
-                  className="response-button"
+                  className="response-btn confirm"
                   disabled={submitting}
                 >
-                  <span className="button-emoji">✅</span>
-                  <span className="button-text">כן, נגיע!</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="btn-icon">
+                    <path d="M20 6L9 17l-5-5"/>
+                  </svg>
+                  <span>כן, נגיע!</span>
                 </button>
 
                 <button
                   onClick={() => setResponse('declined')}
-                  className="response-button decline"
+                  className="response-btn decline"
                   disabled={submitting}
                 >
-                  <span className="button-emoji">❌</span>
-                  <span className="button-text">לא נוכל להגיע</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="btn-icon">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                  </svg>
+                  <span>לא נוכל להגיע</span>
                 </button>
               </div>
             )}
 
             {response === 'confirmed' && (
               <div className="attending-section">
-                <label>
-                  <span className="attending-label">כמה תגיעו?</span>
+                <label className="attending-label">כמה תגיעו?</label>
 
-                  <div className="attending-counter">
-                    <button
-                      onClick={() => setAttendingCount(Math.max(1, attendingCount - 1))}
-                      className="counter-button"
-                      disabled={submitting || attendingCount <= 1}
-                    >
-                      -
-                    </button>
+                <div className="attending-counter">
+                  <button
+                    onClick={() => setAttendingCount(Math.max(1, attendingCount - 1))}
+                    className="counter-btn"
+                    disabled={submitting || attendingCount <= 1}
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                  </button>
 
-                    <div className="counter-display">
-                      <div className="counter-value">{attendingCount}</div>
-                    </div>
-
-                    <button
-                      onClick={() => setAttendingCount(attendingCount + 1)}
-                      className="counter-button"
-                      disabled={submitting}
-                    >
-                      +
-                    </button>
+                  <div className="counter-display">
+                    <span className="counter-value">{attendingCount}</span>
                   </div>
-                </label>
+
+                  <button
+                    onClick={() => setAttendingCount(attendingCount + 1)}
+                    className="counter-btn"
+                    disabled={submitting}
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <line x1="12" y1="5" x2="12" y2="19"/>
+                      <line x1="5" y1="12" x2="19" y2="12"/>
+                    </svg>
+                  </button>
+                </div>
 
                 <button
                   onClick={() => handleSubmit(true)}
                   disabled={submitting}
-                  className="submit-button"
+                  className="submit-btn"
                 >
                   {submitting ? (
-                    <span className="button-loading">
-                      <div className="loading-spinner"></div>
+                    <span className="btn-loading">
+                      <div className="loading-spinner-small"></div>
                       שומר...
                     </span>
                   ) : (
@@ -364,7 +443,7 @@ export default function RSVPPage() {
                 <button
                   onClick={() => setResponse(null)}
                   disabled={submitting}
-                  className="back-button"
+                  className="back-btn"
                 >
                   חזרה
                 </button>
@@ -374,17 +453,17 @@ export default function RSVPPage() {
             {response === 'declined' && (
               <div className="declined-section">
                 <p className="declined-message">
-                  אנחנו מבינים, נשמח לראותכם בהזדמנות אחרת 💝
+                  אנחנו מבינים, נשמח לראותכם בהזדמנות אחרת
                 </p>
 
                 <button
                   onClick={() => handleSubmit(false)}
                   disabled={submitting}
-                  className="submit-button decline-submit"
+                  className="submit-btn decline"
                 >
                   {submitting ? (
-                    <span className="button-loading">
-                      <div className="loading-spinner"></div>
+                    <span className="btn-loading">
+                      <div className="loading-spinner-small"></div>
                       שומר...
                     </span>
                   ) : (
@@ -395,7 +474,7 @@ export default function RSVPPage() {
                 <button
                   onClick={() => setResponse(null)}
                   disabled={submitting}
-                  className="back-button"
+                  className="back-btn"
                 >
                   חזרה
                 </button>
@@ -406,6 +485,11 @@ export default function RSVPPage() {
           {error && (
             <div className="error-message">{error}</div>
           )}
+        </div>
+
+        {/* Footer */}
+        <div className="rsvp-footer">
+          <span>Save The Day</span>
         </div>
       </div>
     </div>
