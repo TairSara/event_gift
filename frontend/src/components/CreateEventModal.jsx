@@ -10,6 +10,15 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
   const [loading, setLoading] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
+  // מצב לתזמון הודעות
+  const [messageScheduleType, setMessageScheduleType] = useState("default"); // "default" או "custom"
+  const [customSchedule, setCustomSchedule] = useState({
+    message1: 21, // ימים לפני האירוע (3 שבועות)
+    message2: 14, // ימים לפני האירוע (שבועיים)
+    message3: 7,  // ימים לפני האירוע (שבוע)
+    message4: 2   // ימים לפני האירוע (יומיים)
+  });
+
   if (!isOpen) return null;
 
   const availablePackages = userPackages.filter(pkg => pkg.status === 'active');
@@ -160,6 +169,122 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
                 <div className="selected-package-display">
                   <i className="fas fa-check-circle"></i>
                   <span>החבילה שנבחרה: {availablePackages.find(p => p.id === parseInt(selectedPackage))?.package_name}</span>
+                </div>
+              )}
+            </div>
+          )}
+
+          {/* בחירת תזמון הודעות - מופיע רק אחרי בחירת חבילה */}
+          {selectedPackage && (
+            <div className="form-group message-schedule-section">
+              <label>
+                <i className="fas fa-clock"></i>
+                תזמון שליחת הודעות
+              </label>
+
+              <div className="schedule-type-selector">
+                <div
+                  className={`schedule-type-option ${messageScheduleType === 'default' ? 'selected' : ''}`}
+                  onClick={() => setMessageScheduleType('default')}
+                >
+                  <i className="fas fa-magic"></i>
+                  <div className="schedule-type-content">
+                    <strong>ברירת מחדל (מומלץ)</strong>
+                    <p>הודעות יישלחו 3 שבועות, שבועיים, שבוע ויומיים לפני האירוע</p>
+                  </div>
+                  {messageScheduleType === 'default' && <i className="fas fa-check-circle check-icon"></i>}
+                </div>
+
+                <div
+                  className={`schedule-type-option ${messageScheduleType === 'custom' ? 'selected' : ''}`}
+                  onClick={() => setMessageScheduleType('custom')}
+                >
+                  <i className="fas fa-sliders-h"></i>
+                  <div className="schedule-type-content">
+                    <strong>התאמה אישית</strong>
+                    <p>בחר בעצמך מתי לשלוח כל הודעה</p>
+                  </div>
+                  {messageScheduleType === 'custom' && <i className="fas fa-check-circle check-icon"></i>}
+                </div>
+              </div>
+
+              {/* הגדרות מותאמות אישית */}
+              {messageScheduleType === 'custom' && (
+                <div className="custom-schedule-settings">
+                  <div className="schedule-info-box">
+                    <i className="fas fa-info-circle"></i>
+                    <span>ההודעה הראשונה עד חודש לפני האירוע, האחרונה לפחות שבוע לפני</span>
+                  </div>
+
+                  <div className="custom-schedule-grid">
+                    <div className="schedule-item">
+                      <label>הודעה ראשונה</label>
+                      <div className="schedule-input-wrapper">
+                        <input
+                          type="number"
+                          min="7"
+                          max="30"
+                          value={customSchedule.message1}
+                          onChange={(e) => {
+                            const val = Math.min(30, Math.max(7, parseInt(e.target.value) || 7));
+                            setCustomSchedule({ ...customSchedule, message1: val });
+                          }}
+                        />
+                        <span>ימים לפני</span>
+                      </div>
+                    </div>
+
+                    <div className="schedule-item">
+                      <label>הודעה שנייה</label>
+                      <div className="schedule-input-wrapper">
+                        <input
+                          type="number"
+                          min="7"
+                          max="30"
+                          value={customSchedule.message2}
+                          onChange={(e) => {
+                            const val = Math.min(30, Math.max(7, parseInt(e.target.value) || 7));
+                            setCustomSchedule({ ...customSchedule, message2: val });
+                          }}
+                        />
+                        <span>ימים לפני</span>
+                      </div>
+                    </div>
+
+                    <div className="schedule-item">
+                      <label>הודעה שלישית</label>
+                      <div className="schedule-input-wrapper">
+                        <input
+                          type="number"
+                          min="7"
+                          max="30"
+                          value={customSchedule.message3}
+                          onChange={(e) => {
+                            const val = Math.min(30, Math.max(7, parseInt(e.target.value) || 7));
+                            setCustomSchedule({ ...customSchedule, message3: val });
+                          }}
+                        />
+                        <span>ימים לפני</span>
+                      </div>
+                    </div>
+
+                    <div className="schedule-item">
+                      <label>הודעה רביעית</label>
+                      <div className="schedule-input-wrapper">
+                        <input
+                          type="number"
+                          min="7"
+                          max="30"
+                          value={customSchedule.message4}
+                          onChange={(e) => {
+                            const val = Math.min(30, Math.max(7, parseInt(e.target.value) || 7));
+                            setCustomSchedule({ ...customSchedule, message4: val });
+                          }}
+                        />
+                        <span>ימים לפני</span>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               )}
             </div>
