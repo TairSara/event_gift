@@ -15,8 +15,7 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
   const [customSchedule, setCustomSchedule] = useState({
     message1: 21, // ימים לפני האירוע (3 שבועות)
     message2: 14, // ימים לפני האירוע (שבועיים)
-    message3: 7,  // ימים לפני האירוע (שבוע)
-    message4: 2   // ימים לפני האירוע (יומיים)
+    message3: 7   // ימים לפני האירוע (שבוע)
   });
 
   if (!isOpen) return null;
