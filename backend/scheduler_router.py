@@ -198,3 +198,17 @@ async def scheduler_health():
         "service": "scheduler",
         "timestamp": datetime.now().isoformat()
     }
+
+
+@router.post("/run-migrations")
+async def run_scheduler_migrations():
+    """Manually run scheduler migrations to create tables"""
+    try:
+        from add_message_schedule_columns import run_migrations
+        run_migrations()
+        return {
+            "success": True,
+            "message": "Migrations completed successfully"
+        }
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
