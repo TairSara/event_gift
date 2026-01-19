@@ -408,7 +408,7 @@ def get_event(event_id: int):
             SELECT
                 e.id, e.user_id, e.package_purchase_id, e.event_type, e.event_title,
                 e.event_date, e.event_location, e.invitation_data, e.status, e.created_at,
-                e.bit_payment_link, pp.package_name
+                e.bit_payment_link, pp.package_name, pp.package_id
             FROM events e
             LEFT JOIN package_purchases pp ON e.package_purchase_id = pp.id
             WHERE e.id = %s;
@@ -433,7 +433,8 @@ def get_event(event_id: int):
             "status": row[8],
             "created_at": row[9].isoformat() if row[9] else None,
             "bit_payment_link": row[10],
-            "package_name": row[11]
+            "package_name": row[11],
+            "package_id": row[12]
         }
 
     except HTTPException:

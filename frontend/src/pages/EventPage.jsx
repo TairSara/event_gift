@@ -728,7 +728,7 @@ export default function EventPage() {
                   ניהול מוזמנים
                 </h2>
               </div>
-              <GuestManagement eventId={eventId} onUpdate={fetchEventData} packageName={event.package_name} />
+              <GuestManagement eventId={eventId} onUpdate={fetchEventData} packageId={event.package_id} />
             </div>
 
             {/* מתנות */}

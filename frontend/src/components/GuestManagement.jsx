@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
-export default function GuestManagement({ eventId, onUpdate, packageName }) {
+export default function GuestManagement({ eventId, onUpdate, packageId }) {
   const [guests, setGuests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -407,12 +407,13 @@ export default function GuestManagement({ eventId, onUpdate, packageName }) {
       .reduce((sum, g) => sum + (g.attending_count || g.guests_count || g.quantity || 1), 0)
   };
 
-  // קביעת אילו כפתורי שליחה להציג לפי סוג החבילה
-  // חבילת בסיס / אוטומטי WhatsApp / אוטומטי הכל כלול = רק WhatsApp
-  // אוטומטי SMS = רק SMS
-  const isSmsOnlyPackage = packageName === 'אוטומטי SMS';
-  const showWhatsApp = !isSmsOnlyPackage;
-  const showSms = isSmsOnlyPackage;
+  // קביעת אילו כפתורי שליחה להציג לפי סוג החבילה (לפי package_id)
+  // package_id = 1: חבילת בסיס – ידני (WhatsApp בלבד)
+  // package_id = 2: אוטומטי SMS (SMS בלבד)
+  // package_id = 3: אוטומטי WhatsApp (WhatsApp בלבד)
+  // package_id = 4: אוטומטי הכל כלול (WhatsApp בלבד)
+  const showWhatsApp = packageId !== 2;
+  const showSms = packageId === 2;
 
   if (loading) {
     return <div className="loading">טוען מוזמנים...</div>;
