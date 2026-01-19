@@ -412,8 +412,10 @@ export default function GuestManagement({ eventId, onUpdate, packageId }) {
   // package_id = 2: אוטומטי SMS (SMS בלבד)
   // package_id = 3: אוטומטי WhatsApp (WhatsApp בלבד)
   // package_id = 4: אוטומטי הכל כלול (WhatsApp בלבד)
+  console.log('packageId received:', packageId, '| type:', typeof packageId);
   const showWhatsApp = packageId !== 2;
   const showSms = packageId === 2;
+  console.log('showWhatsApp:', showWhatsApp, '| showSms:', showSms);
 
   if (loading) {
     return <div className="loading">טוען מוזמנים...</div>;
