@@ -24,7 +24,13 @@ async def startup_migrations():
         from ensure_guest_columns import ensure_columns
         ensure_columns()
     except Exception as e:
-        print(f"⚠️ Migration warning: {str(e)}")
+        print(f"⚠️ Migration warning (guests): {str(e)}")
+
+    try:
+        from add_bit_link_column import add_bit_link_column
+        add_bit_link_column()
+    except Exception as e:
+        print(f"⚠️ Migration warning (bit_link): {str(e)}")
 
 # CORS Configuration - נאפשר לפרונט לגשת ל-API
 origins = [
