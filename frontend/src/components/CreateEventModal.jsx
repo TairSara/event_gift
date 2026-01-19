@@ -266,23 +266,6 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
                         <span>ימים לפני</span>
                       </div>
                     </div>
-
-                    <div className="schedule-item">
-                      <label>הודעה רביעית</label>
-                      <div className="schedule-input-wrapper">
-                        <input
-                          type="number"
-                          min="7"
-                          max="30"
-                          value={customSchedule.message4}
-                          onChange={(e) => {
-                            const val = Math.min(30, Math.max(7, parseInt(e.target.value) || 7));
-                            setCustomSchedule({ ...customSchedule, message4: val });
-                          }}
-                        />
-                        <span>ימים לפני</span>
-                      </div>
-                    </div>
                   </div>
                 </div>
               )}
