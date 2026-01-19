@@ -68,7 +68,13 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
           package_purchase_id: selectedPackage ? parseInt(selectedPackage) : null,
           event_type: selectedEventType,
           event_title: eventTitle,
-          status: 'pending'
+          status: 'pending',
+          message_schedule: {
+            schedule_type: messageScheduleType,
+            days_before: messageScheduleType === 'default'
+              ? [21, 14, 7]
+              : [customSchedule.message1, customSchedule.message2, customSchedule.message3].sort((a, b) => b - a)
+          }
         })
       });
 

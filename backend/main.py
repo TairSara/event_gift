@@ -13,6 +13,7 @@ from invitation_image_upload import router as invitation_router
 from sms_router import router as sms_router
 from rsvp_router import router as rsvp_router
 from payment_routes import router as payment_router
+from scheduler_router import router as scheduler_router
 
 app = FastAPI(title="giftWeb-api")
 
@@ -31,6 +32,12 @@ async def startup_migrations():
         add_bit_link_column()
     except Exception as e:
         print(f"⚠️ Migration warning (bit_link): {str(e)}")
+
+    try:
+        from add_message_schedule_columns import run_migrations as run_scheduler_migrations
+        run_scheduler_migrations()
+    except Exception as e:
+        print(f"⚠️ Migration warning (scheduler): {str(e)}")
 
 # CORS Configuration - נאפשר לפרונט לגשת ל-API
 origins = [
@@ -105,3 +112,6 @@ app.include_router(rsvp_router)
 
 # חיבור ראוט Payments (תשלומים דרך טרנזילה)
 app.include_router(payment_router)
+
+# חיבור ראוט Scheduler (תזמון הודעות אוטומטי)
+app.include_router(scheduler_router)

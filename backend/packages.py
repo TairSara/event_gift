@@ -30,6 +30,7 @@ class EventCreate(BaseModel):
     event_date: Optional[str] = None
     event_location: Optional[str] = None
     invitation_data: Optional[dict] = None
+    message_schedule: Optional[dict] = None  # {schedule_type: 'default'|'custom', days_before: [21, 14, 7]}
 
 class EventUpdate(BaseModel):
     event_title: Optional[str] = None
@@ -253,12 +254,19 @@ def create_event(event: EventCreate):
         # המרת invitation_data ל-JSON
         invitation_json = json.dumps(event.invitation_data) if event.invitation_data else None
 
+        # הגדרת תזמון הודעות - ברירת מחדל אם לא נשלח
+        message_schedule = event.message_schedule or {
+            "schedule_type": "default",
+            "days_before": [21, 14, 7]
+        }
+        message_schedule_json = json.dumps(message_schedule)
+
         cur.execute("""
             INSERT INTO events (
                 user_id, package_purchase_id, event_type, event_title, event_name,
-                event_date, event_location, invitation_data, status
+                event_date, event_location, invitation_data, status, message_schedule
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'active')
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'active', %s)
             RETURNING id, created_at;
         """, (
             event.user_id,
@@ -268,7 +276,8 @@ def create_event(event: EventCreate):
             event.event_title,  # נשתמש ב-event_title גם עבור event_name
             event.event_date,
             event.event_location,
-            invitation_json
+            invitation_json,
+            message_schedule_json
         ))
 
         event_id, created_at = cur.fetchone()
@@ -518,6 +527,30 @@ def update_event(event_id: int, event: EventUpdate):
             )
 
         conn.commit()
+
+        # אם עודכן תאריך האירוע, נעדכן את ההודעות המתוזמנות
+        if event.event_date is not None:
+            try:
+                from scheduler_service import update_event_schedules_on_date_change
+                from datetime import datetime as dt
+
+                # קבלת ה-message_schedule הנוכחי של האירוע
+                cur2 = conn.cursor()
+                cur2.execute("SELECT message_schedule FROM events WHERE id = %s", (event_id,))
+                schedule_row = cur2.fetchone()
+                cur2.close()
+
+                message_schedule = schedule_row[0] if schedule_row and schedule_row[0] else {
+                    "schedule_type": "default",
+                    "days_before": [21, 14, 7]
+                }
+
+                # המרת התאריך ועדכון ההודעות המתוזמנות
+                event_date_obj = dt.fromisoformat(event.event_date).date() if isinstance(event.event_date, str) else event.event_date
+                update_event_schedules_on_date_change(event_id, event_date_obj, message_schedule)
+                print(f"✅ Updated scheduled messages for event {event_id}")
+            except Exception as schedule_error:
+                print(f"⚠️ Warning: Could not update scheduled messages: {schedule_error}")
 
         return {"message": "האירוע עודכן בהצלחה", "id": result[0]}
 
