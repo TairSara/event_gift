@@ -406,11 +406,12 @@ def get_event(event_id: int):
 
         cur.execute("""
             SELECT
-                id, user_id, package_purchase_id, event_type, event_title,
-                event_date, event_location, invitation_data, status, created_at,
-                bit_payment_link
-            FROM events
-            WHERE id = %s;
+                e.id, e.user_id, e.package_purchase_id, e.event_type, e.event_title,
+                e.event_date, e.event_location, e.invitation_data, e.status, e.created_at,
+                e.bit_payment_link, pp.package_name
+            FROM events e
+            LEFT JOIN package_purchases pp ON e.package_purchase_id = pp.id
+            WHERE e.id = %s;
         """, (event_id,))
 
         row = cur.fetchone()
@@ -431,7 +432,8 @@ def get_event(event_id: int):
             "invitation_data": row[7],
             "status": row[8],
             "created_at": row[9].isoformat() if row[9] else None,
-            "bit_payment_link": row[10]
+            "bit_payment_link": row[10],
+            "package_name": row[11]
         }
 
     except HTTPException:

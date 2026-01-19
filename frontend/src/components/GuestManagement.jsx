@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import 'jspdf-autotable';
 
-export default function GuestManagement({ eventId, onUpdate }) {
+export default function GuestManagement({ eventId, onUpdate, packageName }) {
   const [guests, setGuests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showAddModal, setShowAddModal] = useState(false);
@@ -395,20 +395,24 @@ export default function GuestManagement({ eventId, onUpdate }) {
     return <span className={`status-badge ${statusInfo.class}`}>{statusInfo.label}</span>;
   };
 
-  const getContactMethodIcon = (method) => {
-    return method === 'WhatsApp' ?
-      <i className="fab fa-whatsapp" style={{ color: '#25D366' }}></i> :
-      <i className="fas fa-sms" style={{ color: '#4285F4' }}></i>;
-  };
-
   const stats = {
     total: guests.length,
     confirmed: guests.filter(g => (g.status || g.attendance_status) === 'confirmed').length,
     pending: guests.filter(g => (g.status || g.attendance_status) === 'pending').length,
     declined: guests.filter(g => (g.status || g.attendance_status) === 'declined').length,
     maybe: guests.filter(g => (g.status || g.attendance_status) === 'maybe').length,
-    totalQuantity: guests.reduce((sum, g) => sum + (g.attending_count || g.guests_count || g.quantity || 1), 0)
+    totalQuantity: guests.reduce((sum, g) => sum + (g.attending_count || g.guests_count || g.quantity || 1), 0),
+    confirmedQuantity: guests
+      .filter(g => (g.status || g.attendance_status) === 'confirmed')
+      .reduce((sum, g) => sum + (g.attending_count || g.guests_count || g.quantity || 1), 0)
   };
+
+  // קביעת אילו כפתורי שליחה להציג לפי סוג החבילה
+  // חבילת בסיס / אוטומטי WhatsApp / אוטומטי הכל כלול = רק WhatsApp
+  // אוטומטי SMS = רק SMS
+  const isSmsOnlyPackage = packageName === 'אוטומטי SMS';
+  const showWhatsApp = !isSmsOnlyPackage;
+  const showSms = isSmsOnlyPackage;
 
   if (loading) {
     return <div className="loading">טוען מוזמנים...</div>;
@@ -440,8 +444,8 @@ export default function GuestManagement({ eventId, onUpdate }) {
         <div className="stat-card confirmed">
           <i className="fas fa-check-circle"></i>
           <div className="stat-info">
-            <span className="stat-value">{stats.confirmed}</span>
-            <span className="stat-label">אישרו</span>
+            <span className="stat-value">{stats.confirmedQuantity}</span>
+            <span className="stat-label">אישרו הגעה</span>
           </div>
         </div>
         <div className="stat-card pending">
@@ -488,44 +492,48 @@ export default function GuestManagement({ eventId, onUpdate }) {
           </button>
         </div>
         <div className="actions-right">
-          <button
-            className="btn-whatsapp-all"
-            onClick={handleSendWhatsAppToAll}
-            disabled={guests.length === 0 || loading}
-            style={{
-              backgroundColor: '#25D366',
-              color: 'white',
-              border: 'none',
-              padding: '10px 20px',
-              borderRadius: '5px',
-              cursor: guests.length === 0 || loading ? 'not-allowed' : 'pointer',
-              opacity: guests.length === 0 || loading ? 0.5 : 1,
-              fontWeight: 'bold',
-              marginLeft: '10px'
-            }}
-          >
-            <i className="fab fa-whatsapp" style={{ marginLeft: '8px' }}></i>
-            שלח הזמנות לכולם
-          </button>
-          <button
-            className="btn-sms-all"
-            onClick={handleSendSMSToAll}
-            disabled={guests.length === 0 || loading}
-            style={{
-              backgroundColor: '#4285F4',
-              color: 'white',
-              border: 'none',
-              padding: '10px 20px',
-              borderRadius: '5px',
-              cursor: guests.length === 0 || loading ? 'not-allowed' : 'pointer',
-              opacity: guests.length === 0 || loading ? 0.5 : 1,
-              fontWeight: 'bold',
-              marginLeft: '10px'
-            }}
-          >
-            <i className="fas fa-sms" style={{ marginLeft: '8px' }}></i>
-            שלח SMS לכולם
-          </button>
+          {showWhatsApp && (
+            <button
+              className="btn-whatsapp-all"
+              onClick={handleSendWhatsAppToAll}
+              disabled={guests.length === 0 || loading}
+              style={{
+                backgroundColor: '#25D366',
+                color: 'white',
+                border: 'none',
+                padding: '10px 20px',
+                borderRadius: '5px',
+                cursor: guests.length === 0 || loading ? 'not-allowed' : 'pointer',
+                opacity: guests.length === 0 || loading ? 0.5 : 1,
+                fontWeight: 'bold',
+                marginLeft: '10px'
+              }}
+            >
+              <i className="fab fa-whatsapp" style={{ marginLeft: '8px' }}></i>
+              שלח הזמנות לכולם
+            </button>
+          )}
+          {showSms && (
+            <button
+              className="btn-sms-all"
+              onClick={handleSendSMSToAll}
+              disabled={guests.length === 0 || loading}
+              style={{
+                backgroundColor: '#4285F4',
+                color: 'white',
+                border: 'none',
+                padding: '10px 20px',
+                borderRadius: '5px',
+                cursor: guests.length === 0 || loading ? 'not-allowed' : 'pointer',
+                opacity: guests.length === 0 || loading ? 0.5 : 1,
+                fontWeight: 'bold',
+                marginLeft: '10px'
+              }}
+            >
+              <i className="fas fa-sms" style={{ marginLeft: '8px' }}></i>
+              שלח SMS לכולם
+            </button>
+          )}
           <button className="btn-download btn-excel" onClick={downloadExcel} disabled={guests.length === 0}>
             <i className="fas fa-file-excel"></i>
             הורד Excel
@@ -569,34 +577,38 @@ export default function GuestManagement({ eventId, onUpdate }) {
                   <td>{getStatusBadge(guest.status || guest.attendance_status)}</td>
                   <td>{guest.table_number || '-'}</td>
                   <td className="actions">
-                    <button
-                      className="btn-icon btn-whatsapp"
-                      onClick={() => handleSendWhatsAppInvitation(guest)}
-                      title="שלח הזמנה ב-WhatsApp"
-                      disabled={!guest.phone || loading}
-                      style={{
-                        backgroundColor: '#25D366',
-                        color: 'white',
-                        opacity: !guest.phone ? 0.5 : 1,
-                        cursor: !guest.phone || loading ? 'not-allowed' : 'pointer'
-                      }}
-                    >
-                      <i className="fab fa-whatsapp"></i>
-                    </button>
-                    <button
-                      className="btn-icon btn-sms"
-                      onClick={() => handleSendSMSInvitation(guest)}
-                      title="שלח הזמנה ב-SMS"
-                      disabled={!guest.phone || loading}
-                      style={{
-                        backgroundColor: '#4285F4',
-                        color: 'white',
-                        opacity: !guest.phone ? 0.5 : 1,
-                        cursor: !guest.phone || loading ? 'not-allowed' : 'pointer'
-                      }}
-                    >
-                      <i className="fas fa-sms"></i>
-                    </button>
+                    {showWhatsApp && (
+                      <button
+                        className="btn-icon btn-whatsapp"
+                        onClick={() => handleSendWhatsAppInvitation(guest)}
+                        title="שלח הזמנה ב-WhatsApp"
+                        disabled={!guest.phone || loading}
+                        style={{
+                          backgroundColor: '#25D366',
+                          color: 'white',
+                          opacity: !guest.phone ? 0.5 : 1,
+                          cursor: !guest.phone || loading ? 'not-allowed' : 'pointer'
+                        }}
+                      >
+                        <i className="fab fa-whatsapp"></i>
+                      </button>
+                    )}
+                    {showSms && (
+                      <button
+                        className="btn-icon btn-sms"
+                        onClick={() => handleSendSMSInvitation(guest)}
+                        title="שלח הזמנה ב-SMS"
+                        disabled={!guest.phone || loading}
+                        style={{
+                          backgroundColor: '#4285F4',
+                          color: 'white',
+                          opacity: !guest.phone ? 0.5 : 1,
+                          cursor: !guest.phone || loading ? 'not-allowed' : 'pointer'
+                        }}
+                      >
+                        <i className="fas fa-sms"></i>
+                      </button>
+                    )}
                     <button
                       className="btn-icon btn-edit"
                       onClick={() => handleEditGuest(guest)}
