@@ -591,6 +591,42 @@
   transform: scale(1.1);
 }
 
+/* BIT Link Styles */
+.bit-link-item {
+  grid-column: 1 / -1;
+  background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+  border: 2px solid #7dd3fc;
+}
+
+.bit-link-item:hover {
+  border-color: #38bdf8;
+  box-shadow: 0 5px 15px rgba(56, 189, 248, 0.2);
+}
+
+.bit-link-item i.fa-credit-card {
+  color: #0284c7;
+}
+
+.bit-link-value {
+  color: #0284c7;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 1rem;
+  word-break: break-all;
+  transition: all 0.2s ease;
+}
+
+.bit-link-value:hover {
+  color: #0369a1;
+  text-decoration: underline;
+}
+
+.detail-value.no-link {
+  color: #94a3b8;
+  font-style: italic;
+  font-weight: 400;
+}
+
 /* Guests & Gifts Sections */
 .btn-add-guests {
   background: var(--brown-dark);

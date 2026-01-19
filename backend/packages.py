@@ -37,6 +37,7 @@ class EventUpdate(BaseModel):
     event_location: Optional[str] = None
     invitation_data: Optional[dict] = None
     status: Optional[str] = None
+    bit_payment_link: Optional[str] = None
 
 class GuestCreate(BaseModel):
     event_id: int
@@ -406,7 +407,8 @@ def get_event(event_id: int):
         cur.execute("""
             SELECT
                 id, user_id, package_purchase_id, event_type, event_title,
-                event_date, event_location, invitation_data, status, created_at
+                event_date, event_location, invitation_data, status, created_at,
+                bit_payment_link
             FROM events
             WHERE id = %s;
         """, (event_id,))
@@ -428,7 +430,8 @@ def get_event(event_id: int):
             "event_location": row[6],
             "invitation_data": row[7],
             "status": row[8],
-            "created_at": row[9].isoformat() if row[9] else None
+            "created_at": row[9].isoformat() if row[9] else None,
+            "bit_payment_link": row[10]
         }
 
     except HTTPException:
@@ -481,6 +484,10 @@ def update_event(event_id: int, event: EventUpdate):
         if event.status is not None:
             updates.append("status = %s")
             params.append(event.status)
+
+        if event.bit_payment_link is not None:
+            updates.append("bit_payment_link = %s")
+            params.append(event.bit_payment_link)
 
         if not updates:
             raise HTTPException(

@@ -30,6 +30,8 @@ export default function EventPage() {
   const [editedDate, setEditedDate] = useState('');
   const [isEditingLocation, setIsEditingLocation] = useState(false);
   const [editedLocation, setEditedLocation] = useState('');
+  const [isEditingBitLink, setIsEditingBitLink] = useState(false);
+  const [editedBitLink, setEditedBitLink] = useState('');
   const invitationCanvasRef = useRef(null);
 
   useEffect(() => {
@@ -333,6 +335,61 @@ export default function EventPage() {
     setEditedLocation('');
   };
 
+  const handleEditBitLink = () => {
+    setEditedBitLink(event.bit_payment_link || '');
+    setIsEditingBitLink(true);
+  };
+
+  const handleSaveBitLink = async () => {
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
+    try {
+      const response = await fetch(
+        `${API_URL}/packages/events/${eventId}`,
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            bit_payment_link: editedBitLink.trim()
+          })
+        }
+      );
+
+      if (response.ok) {
+        setEvent({ ...event, bit_payment_link: editedBitLink.trim() });
+        setIsEditingBitLink(false);
+        showSuccess('קישור BIT עודכן בהצלחה');
+
+        // Create notification
+        await fetch(`${API_URL}/notifications/create`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            user_id: user.id,
+            event_id: parseInt(eventId),
+            notification_type: 'event_updated',
+            title: 'עדכון קישור BIT',
+            message: editedBitLink.trim() ? 'קישור BIT נוסף לאירוע' : 'קישור BIT הוסר מהאירוע'
+          })
+        });
+      } else {
+        showInfo('שגיאה בעדכון קישור BIT');
+      }
+    } catch (error) {
+      console.error('Error updating BIT link:', error);
+      showInfo('שגיאה בעדכון קישור BIT');
+    }
+  };
+
+  const handleCancelBitLinkEdit = () => {
+    setIsEditingBitLink(false);
+    setEditedBitLink('');
+  };
+
   // Check if event date has passed and update status
   useEffect(() => {
     if (event && event.event_date) {
@@ -607,6 +664,57 @@ export default function EventPage() {
                     <span className="detail-value">
                       {new Date(event.created_at).toLocaleDateString('he-IL')}
                     </span>
+                  </div>
+                </div>
+
+                <div className="detail-item bit-link-item">
+                  <i className="fas fa-credit-card"></i>
+                  <div className="detail-content">
+                    <span className="detail-label">קישור BIT למתנות</span>
+                    {isEditingBitLink ? (
+                      <div className="edit-detail-container">
+                        <input
+                          type="url"
+                          className="edit-detail-input"
+                          value={editedBitLink}
+                          onChange={(e) => setEditedBitLink(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleSaveBitLink();
+                            if (e.key === 'Escape') handleCancelBitLinkEdit();
+                          }}
+                          placeholder="הדבק כאן את הקישור ל-BIT"
+                          dir="ltr"
+                        />
+                        <div className="edit-detail-buttons">
+                          <button className="save-detail-btn" onClick={handleSaveBitLink}>
+                            <i className="fas fa-check"></i>
+                          </button>
+                          <button className="cancel-detail-btn" onClick={handleCancelBitLinkEdit}>
+                            <i className="fas fa-times"></i>
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="detail-value-container">
+                        {event.bit_payment_link ? (
+                          <a
+                            href={event.bit_payment_link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="bit-link-value"
+                          >
+                            {event.bit_payment_link.length > 40
+                              ? event.bit_payment_link.substring(0, 40) + '...'
+                              : event.bit_payment_link}
+                          </a>
+                        ) : (
+                          <span className="detail-value no-link">לא הוגדר קישור</span>
+                        )}
+                        <button className="edit-detail-icon-btn" onClick={handleEditBitLink} title="ערוך קישור BIT">
+                          <i className="fas fa-pencil-alt"></i>
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
