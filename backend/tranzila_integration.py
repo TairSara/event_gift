@@ -55,7 +55,10 @@ class TranzilaPayment:
             "order_id": order_id,
 
             # תיאור המוצר
-            "pdesc": "Save the Day - Package Purchase",
+            "pdesc": "Save the Day - רכישת חבילה",
+
+            # שפת הממשק - עברית
+            "lang": "il",
 
             # הפעלת ארנקים דיגיטליים
             "google_pay": "1",
