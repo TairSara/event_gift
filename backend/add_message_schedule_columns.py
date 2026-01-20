@@ -62,7 +62,30 @@ def create_scheduled_messages_table():
         conn = get_db_connection()
         cur = conn.cursor()
 
-        # Check if table exists
+        # Check if table exists with correct structure (has message_number column)
+        cur.execute("""
+            SELECT column_name FROM information_schema.columns
+            WHERE table_name = 'scheduled_messages' AND column_name = 'message_number';
+        """)
+        has_correct_structure = cur.fetchone() is not None
+
+        # Check if table exists at all
+        cur.execute("""
+            SELECT EXISTS (
+                SELECT FROM information_schema.tables
+                WHERE table_name = 'scheduled_messages'
+            );
+        """)
+        table_exists = cur.fetchone()[0]
+
+        # If table exists but with wrong structure, drop it
+        if table_exists and not has_correct_structure:
+            print("Dropping old scheduled_messages table with incorrect structure...")
+            cur.execute("DROP TABLE IF EXISTS scheduled_messages CASCADE;")
+            conn.commit()
+            table_exists = False
+
+        # Now check again if table exists
         cur.execute("""
             SELECT EXISTS (
                 SELECT FROM information_schema.tables
