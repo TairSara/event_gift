@@ -468,7 +468,7 @@
 
 .detail-item i {
   font-size: 2rem;
-  color: var(--cream);
+  color: var(--brown-dark);
 }
 
 .detail-item > div {
@@ -486,13 +486,14 @@
 
 .detail-label {
   font-size: 0.9rem;
-  color: #666;
+  color: #333;
+  font-weight: 500;
 }
 
 .detail-value {
   font-size: 1.1rem;
   font-weight: 600;
-  color: var(--brown-dark);
+  color: #1a1a1a;
 }
 
 .detail-value-container {

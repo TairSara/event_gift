@@ -514,7 +514,7 @@ def update_event(event_id: int, event: EventUpdate):
             UPDATE events
             SET {', '.join(updates)}
             WHERE id = %s
-            RETURNING id;
+            RETURNING id, event_title, event_date, event_location, status, bit_payment_link;
         """
 
         cur.execute(query, params)
@@ -552,7 +552,15 @@ def update_event(event_id: int, event: EventUpdate):
             except Exception as schedule_error:
                 print(f"⚠️ Warning: Could not update scheduled messages: {schedule_error}")
 
-        return {"message": "האירוע עודכן בהצלחה", "id": result[0]}
+        return {
+            "message": "האירוע עודכן בהצלחה",
+            "id": result[0],
+            "event_title": result[1],
+            "event_date": result[2].isoformat() if result[2] else None,
+            "event_location": result[3],
+            "status": result[4],
+            "bit_payment_link": result[5]
+        }
 
     except HTTPException:
         if conn:

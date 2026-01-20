@@ -234,7 +234,8 @@ export default function EventPage() {
       );
 
       if (response.ok) {
-        setEvent({ ...event, event_date: editedDate });
+        const updatedEvent = await response.json();
+        setEvent(prev => ({ ...prev, event_date: updatedEvent.event_date || editedDate }));
         setIsEditingDate(false);
         showSuccess('תאריך האירוע עודכן בהצלחה');
 
@@ -261,6 +262,8 @@ export default function EventPage() {
           })
         });
       } else {
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Error response:', errorData);
         showInfo('שגיאה בעדכון תאריך האירוע');
       }
     } catch (error) {
@@ -560,6 +563,7 @@ export default function EventPage() {
                             if (e.key === 'Enter') handleSaveDate();
                             if (e.key === 'Escape') handleCancelDateEdit();
                           }}
+                          autoFocus
                         />
                         <div className="edit-detail-buttons">
                           <button className="save-detail-btn" onClick={handleSaveDate}>
