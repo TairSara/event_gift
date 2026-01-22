@@ -9,3 +9,9 @@ services:
         value: 18
       - key: VITE_API_URL
         value: https://event-gift.onrender.com/api
+
+headers:
+  # 2. פתיחת חסימת ה-eval (השגיאה שראית במסוף)
+  - path: /*
+    name: Content-Security-Policy
+    value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://code.jquery.com https://*.tranzila.com; frame-src 'self' https://*.tranzila.com https://direct.tranzila.com; connect-src 'self' https://event-gift.onrender.com https://*.tranzila.com;"
