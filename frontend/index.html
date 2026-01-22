@@ -3,7 +3,6 @@
   <head>
     <meta charset="UTF-8" />
 
-    <!-- Primary Meta Tags -->
     <title>Save the Day - הזמנות דיגיטליות מעוצבות | ניהול אירועים חכם</title>
     <meta
       name="title"
@@ -28,7 +27,6 @@
     />
     <link rel="canonical" href="https://www.savetheday.co.il/" />
 
-    <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://www.savetheday.co.il/" />
     <meta
@@ -48,7 +46,6 @@
     <meta property="og:locale" content="he_IL" />
     <meta property="og:site_name" content="Save the Day" />
 
-    <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://www.savetheday.co.il/" />
     <meta
@@ -64,22 +61,18 @@
       content="https://www.savetheday.co.il/images/og-image.jpg"
     />
 
-    <!-- Favicon -->
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <!-- Preconnect for Performance -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
 
-    <!-- DNS Prefetch -->
     <link rel="dns-prefetch" href="https://fonts.googleapis.com" />
     <link rel="dns-prefetch" href="https://fonts.gstatic.com" />
 
-    <!-- Fonts - Optimized -->
     <link
       href="https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;600;700&family=Noto+Serif+Hebrew:wght@300;400;500;600;700;800&display=swap"
       rel="stylesheet"
@@ -89,11 +82,9 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
     />
 
-    <!-- Preload Critical Images -->
     <link rel="preload" as="image" href="/images/1.webp" />
     <link rel="preload" as="image" href="/images/A.webp" />
 
-    <!-- Structured Data - Organization Schema -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -119,7 +110,6 @@
       }
     </script>
 
-    <!-- Structured Data - WebSite Schema -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -135,7 +125,6 @@
       }
     </script>
 
-    <!-- Structured Data - Service Schema -->
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -162,9 +151,17 @@
       }
     </script>
 
-    <!-- Theme Color -->
     <meta name="theme-color" content="#4ECDC4" />
     <meta name="msapplication-TileColor" content="#4ECDC4" />
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://direct.tranzila.com/js/tranzilanapple_v3.js"></script>
+    <script>
+      // Prevent jQuery conflicts with other libraries in React
+      if (window.jQuery) {
+        window.$n = jQuery.noConflict(true);
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
