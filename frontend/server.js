@@ -17,6 +17,18 @@ app.get('/.well-known/apple-developer-merchantid-domain-association', (req, res)
   res.send(APPLE_MERCHANT_VERIFICATION);
 });
 
+// Handle POST redirects from Tranzila payment gateway
+// Tranzila sends POST to success/failure URLs, we redirect to GET with query params
+app.post('/payment/success', (req, res) => {
+  const queryString = new URLSearchParams(req.query).toString();
+  res.redirect(303, `/payment/success${queryString ? '?' + queryString : ''}`);
+});
+
+app.post('/payment/failure', (req, res) => {
+  const queryString = new URLSearchParams(req.query).toString();
+  res.redirect(303, `/payment/failure${queryString ? '?' + queryString : ''}`);
+});
+
 // Serve static files from dist folder
 app.use(express.static(path.join(__dirname, 'dist')));
 
