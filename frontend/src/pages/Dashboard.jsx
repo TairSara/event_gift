@@ -178,53 +178,6 @@ export default function Dashboard() {
       <section className="dashboard-content">
         <div className="dashboard-container">
 
-          {/* החבילות שלי */}
-          <div className="dashboard-section">
-            <div className="section-header">
-              <h2>החבילות שלי</h2>
-              <button
-                className="btn-primary-small"
-                onClick={() => navigate('/pricing')}
-              >
-                רכוש חבילה נוספת
-              </button>
-            </div>
-
-            {purchases.length === 0 ? (
-              <div className="empty-state">
-                <h3>טרם נרכשה חבילה</h3>
-                <p>התחל ברכישת חבילה כדי ליצור אירועים מדהימים</p>
-                <button
-                  className="btn-primary"
-                  onClick={() => navigate('/pricing')}
-                >
-                  לרכישת חבילה
-                </button>
-              </div>
-            ) : (
-              <div className="packages-grid">
-                {purchases.map((purchase) => (
-                  <div key={purchase.id} className="package-item">
-                    <div className="package-item-header">
-                      <h3>{purchase.package_name}</h3>
-                      {purchase.guest_count && (
-                        <span className="guest-count-badge">
-                          {purchase.guest_count} אורחים
-                        </span>
-                      )}
-                      <span className="purchase-date">
-                        נרכש ב-{new Date(purchase.purchased_at).toLocaleDateString('he-IL')}
-                      </span>
-                    </div>
-                    <div className="package-item-status">
-                      {getStatusBadge(purchase.status)}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-
           {/* האירועים שלי */}
           <div className="dashboard-section">
             <div className="section-header">
@@ -355,6 +308,53 @@ export default function Dashboard() {
                         <span>חבילה משוייכת</span>
                       </div>
                     )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* החבילות שלי */}
+          <div className="dashboard-section">
+            <div className="section-header">
+              <h2>החבילות שלי</h2>
+              <button
+                className="btn-primary-small"
+                onClick={() => navigate('/pricing')}
+              >
+                רכוש חבילה נוספת
+              </button>
+            </div>
+
+            {purchases.length === 0 ? (
+              <div className="empty-state">
+                <h3>טרם נרכשה חבילה</h3>
+                <p>התחל ברכישת חבילה כדי ליצור אירועים מדהימים</p>
+                <button
+                  className="btn-primary"
+                  onClick={() => navigate('/pricing')}
+                >
+                  לרכישת חבילה
+                </button>
+              </div>
+            ) : (
+              <div className="packages-grid">
+                {purchases.map((purchase) => (
+                  <div key={purchase.id} className="package-item">
+                    <div className="package-item-header">
+                      <h3>{purchase.package_name}</h3>
+                      {purchase.guest_count && (
+                        <span className="guest-count-badge">
+                          {purchase.guest_count} אורחים
+                        </span>
+                      )}
+                      <span className="purchase-date">
+                        נרכש ב-{new Date(purchase.purchased_at).toLocaleDateString('he-IL')}
+                      </span>
+                    </div>
+                    <div className="package-item-status">
+                      {getStatusBadge(purchase.status)}
+                    </div>
                   </div>
                 ))}
               </div>

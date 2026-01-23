@@ -689,6 +689,7 @@ export default function GuestManagement({ eventId, onUpdate, packageId }) {
                     min="1"
                     value={formData.quantity}
                     onChange={(e) => setFormData({ ...formData, quantity: parseInt(e.target.value) || 1 })}
+                    onWheel={(e) => e.target.blur()}
                   />
                 </div>
               </div>
@@ -724,6 +725,7 @@ export default function GuestManagement({ eventId, onUpdate, packageId }) {
                   min="1"
                   value={formData.table_number}
                   onChange={(e) => setFormData({ ...formData, table_number: e.target.value })}
+                  onWheel={(e) => e.target.blur()}
                 />
               </div>
               <div className="modal-actions">
