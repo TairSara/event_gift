@@ -552,17 +552,40 @@
 @media (max-width: 768px) {
   .guests-stats {
     grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  .stat-card {
+    padding: 12px;
+    gap: 10px;
+    border-radius: 10px;
+  }
+
+  .stat-card i {
+    font-size: 1.5rem;
+  }
+
+  .stat-value {
+    font-size: 1.4rem;
+  }
+
+  .stat-label {
+    font-size: 0.8rem;
   }
 
   .guests-actions {
     flex-direction: column;
     align-items: stretch;
+    gap: 10px;
+    margin-bottom: 15px;
   }
 
   .actions-left,
   .actions-right {
     flex-direction: column;
     width: 100%;
+    gap: 8px;
   }
 
   .btn-primary,
@@ -570,14 +593,29 @@
   .btn-download {
     width: 100%;
     justify-content: center;
+    padding: 10px 16px;
+    font-size: 0.9rem;
   }
 
   .guests-table-container {
     overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    border-radius: 10px;
   }
 
   .guests-table {
-    min-width: 800px;
+    min-width: 600px;
+    font-size: 0.85rem;
+  }
+
+  .guests-table th {
+    padding: 10px 8px;
+    font-size: 0.8rem;
+  }
+
+  .guests-table td {
+    padding: 10px 8px;
+    font-size: 0.85rem;
   }
 
   .form-row {
@@ -586,5 +624,125 @@
 
   .modal-content {
     width: 95%;
+    margin: 0.5rem;
+  }
+
+  .modal-header {
+    padding: 16px;
+  }
+
+  .modal-header h3 {
+    font-size: 1.2rem;
+  }
+
+  .modal-content form {
+    padding: 16px;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+
+  .modal-actions {
+    flex-direction: column-reverse;
+    gap: 8px;
+  }
+
+  .modal-actions .btn-primary,
+  .modal-actions .btn-secondary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .upload-content {
+    padding: 16px;
+  }
+
+  .upload-area {
+    padding: 25px 15px;
+  }
+
+  .btn-upload {
+    padding: 12px 24px;
+    font-size: 1rem;
+  }
+
+  .empty-state {
+    padding: 40px 15px;
+  }
+
+  .empty-state i {
+    font-size: 3rem;
+  }
+
+  .empty-state p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .guests-stats {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 15px;
+  }
+
+  .stat-card {
+    padding: 10px 8px;
+    gap: 8px;
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .stat-card i {
+    font-size: 1.3rem;
+  }
+
+  .stat-value {
+    font-size: 1.2rem;
+  }
+
+  .stat-label {
+    font-size: 0.75rem;
+  }
+
+  .guests-table {
+    min-width: 550px;
+    font-size: 0.8rem;
+  }
+
+  .guests-table th {
+    padding: 8px 6px;
+    font-size: 0.75rem;
+  }
+
+  .guests-table td {
+    padding: 8px 6px;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-download {
+    padding: 9px 14px;
+    font-size: 0.85rem;
+  }
+
+  .modal-content {
+    width: 98%;
+    margin: 0.25rem;
+  }
+
+  .modal-header {
+    padding: 12px;
+  }
+
+  .modal-header h3 {
+    font-size: 1.1rem;
+  }
+
+  .modal-content form {
+    padding: 12px;
   }
 }

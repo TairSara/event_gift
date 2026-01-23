@@ -16,6 +16,7 @@ import VerifyCode from './pages/VerifyCode.jsx'
 import ResetPassword from './pages/ResetPassword.jsx'
 import VerifyEmail from './pages/VerifyEmail.jsx'
 import LoginSuccess from './pages/LoginSuccess.jsx'
+import ScrollToTop from './components/ScrollToTop.jsx'
 import ProtectedAuthRoute from './components/ProtectedAuthRoute.jsx'
 import ProtectedAdminRoute from './components/ProtectedAdminRoute.jsx'
 import WhatsAppFloat from './components/WhatsAppFloat.jsx'
@@ -33,6 +34,7 @@ createRoot(document.getElementById('root')).render(
   <StrictMode>
     <AuthProvider>
       <BrowserRouter>
+        <ScrollToTop />
         <WhatsAppFloat />
         <Routes>
           <Route path="/" element={<App />} />
