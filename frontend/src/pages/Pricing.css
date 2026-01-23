@@ -137,7 +137,7 @@
 
 .packages-grid {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   gap: 1.5rem;
   margin: 3rem auto 0;
   width: 100%;
@@ -1724,7 +1724,7 @@
 /* Responsive - Desktop Medium */
 @media (max-width: 1400px) {
   .packages-grid {
-    grid-template-columns: repeat(5, 1fr);
+    grid-template-columns: repeat(4, 1fr);
     gap: 1rem;
   }
 

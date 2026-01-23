@@ -211,7 +211,7 @@ export default function Pricing() {
       tagline: "שליחה ואישורי הגעה ב־SMS",
       price: null,
       priceUnit: "",
-      color: "sage",
+      color: "rose",
       popular: false,
       subPackages: [
         { records: "150 רשומות", price: "₪59" },
@@ -236,7 +236,7 @@ export default function Pricing() {
       price: null,
       priceUnit: "",
       color: "gold",
-      popular: true,
+      popular: false,
       subPackages: [
         { records: "עד 50", price: "₪69" },
         { records: "עד 100", price: "₪109" },
@@ -251,8 +251,7 @@ export default function Pricing() {
       ],
       features: [
         { text: "יצירת הזמנה דיגיטלית מותאמת לכל אירוע", included: true },
-        { text: "שליחה אוטומטית ב־WhatsApp", included: true },
-        { text: "3 סבבי שיחות טלפוניות", included: true },
+        { text: "שליחה אוטומטית ב־WhatsApp - 3 סבבים", included: true },
         { text: "תזכורת ביום האירוע (SMS)", included: true },
         { text: "הודעת תודה אחרי האירוע (אופציונלי)", included: true },
         { text: "ניהול מוזמנים + דוחות", included: true },
@@ -266,7 +265,7 @@ export default function Pricing() {
       tagline: "דואגים לכם להכל – אפס התעסקות מצידכם",
       price: null,
       priceUnit: "",
-      color: "rose",
+      color: "purple",
       popular: false,
       subPackages: [
         { records: "עד 100", price: "₪239" },
@@ -280,12 +279,11 @@ export default function Pricing() {
       ],
       features: [
         { text: "יצירת הזמנה דיגיטלית מותאמת לכל אירוע", included: true },
-        { text: "שליחת הזמנות אוטומטית ב־WhatsApp", included: true },
+        { text: "שליחת הזמנות אוטומטית ב־WhatsApp - 3 סבבים", included: true },
         {
-          text: "מוקד אנושי לשיחות טלפון עם מספר סבבי התקשרות",
+          text: "מוקד אנושי עם שלוש סבבי שיחות טלפוניות",
           included: true,
         },
-        { text: "טיפול מלא במוזמנים שלא ענו", included: true },
         { text: "תזכורות ביום האירוע ב־WhatsApp וב־SMS", included: true },
         { text: "כפתור ניווט חכם לאולם", included: true },
         { text: "הושבה דיגיטלית מלאה", included: true },

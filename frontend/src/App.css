@@ -526,20 +526,16 @@ body {
 }
 
 .features-grid {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 2.5rem;
   margin-top: 4rem;
 }
 
-.features-grid > .feature-card:nth-child(5) {
-  grid-column: 2 / 3;
-  grid-row: 2;
-}
-
-.features-grid > .feature-card:nth-child(6) {
-  grid-column: 3 / 4;
-  grid-row: 2;
+.features-grid > .feature-card {
+  flex: 0 0 calc(25% - 1.875rem);
+  max-width: calc(25% - 1.875rem);
 }
 
 .feature-card {
@@ -609,8 +605,9 @@ body {
 }
 
 .event-types-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
   gap: 2rem;
   width: 100%;
   margin-top: 4rem;
@@ -620,8 +617,12 @@ body {
   padding: 0 2rem;
 }
 
+.event-types-grid > .event-card {
+  flex: 0 0 calc(33.333% - 1.334rem);
+  max-width: calc(33.333% - 1.334rem);
+}
+
 .event-card-wedding {
-  grid-column: 1 / 2;
   max-width: 100%;
   margin: 0 auto;
 }
@@ -1195,15 +1196,13 @@ body {
   }
 
   .features-grid {
-    grid-template-columns: 1fr;
     gap: 1.5rem;
     margin-top: 2.5rem;
   }
 
-  .features-grid > .feature-card:nth-child(5),
-  .features-grid > .feature-card:nth-child(6) {
-    grid-column: auto;
-    grid-row: auto;
+  .features-grid > .feature-card {
+    flex: 0 0 100%;
+    max-width: 100%;
   }
 
   .feature-card {
@@ -1226,10 +1225,14 @@ body {
   }
 
   .event-types-grid {
-    grid-template-columns: 1fr;
     gap: 1.5rem;
     padding: 0;
     margin-top: 2.5rem;
+  }
+
+  .event-types-grid > .event-card {
+    flex: 0 0 100%;
+    max-width: 100%;
   }
 
   .event-card {
