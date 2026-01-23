@@ -223,12 +223,14 @@
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  min-width: 0;
 }
 
 .right-column {
   display: flex;
   flex-direction: column;
   gap: 2rem;
+  min-width: 0;
 }
 
 /* Event Sections */
@@ -313,6 +315,7 @@
   box-shadow: 0 10px 40px rgba(0, 0, 0, 0.25);
   transition: transform 0.3s ease;
   display: block;
+  object-fit: contain;
 }
 
 .invitation-canvas-preview:hover {
@@ -725,8 +728,13 @@
     gap: 1.5rem;
   }
 
+  .right-column {
+    order: -1;
+  }
+
   .event-main-content {
     padding: 1.5rem 0.8rem;
+    overflow-x: hidden;
   }
 
   .event-section {
