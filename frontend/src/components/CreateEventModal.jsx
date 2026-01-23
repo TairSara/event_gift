@@ -37,8 +37,7 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
     { value: "bat-mitzvah", label: "בת מצווה", icon: "fa-star", image: "/images/F.webp" },
     { value: "bar-mitzvah", label: "בר מצווה", icon: "fa-star-of-david", image: "/images/G.webp" },
     { value: "birthday", label: "יום הולדת", icon: "fa-birthday-cake", image: "/images/H.webp" },
-    { value: "knasim", label: "כנסים ואירועי חברה", icon: "fa-building", image: "/images/I.webp" },
-    { value: "other", label: "אירועים נוספים", icon: "fa-calendar", image: "/images/M.webp" }
+    { value: "knasim", label: "כנסים ואירועי חברה", icon: "fa-building", image: "/images/I.webp" }
   ];
 
   const handleCreateEvent = async () => {

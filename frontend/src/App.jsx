@@ -320,14 +320,6 @@ export default function App() {
               <h3>כנסים ואירועי חברה</h3>
             </div>
 
-            {/* אירועים נוספים */}
-            <div
-              className="event-card"
-              onClick={() => handleEventClick('other', 'אירועים נוספים')}
-              style={{ backgroundImage: 'url(/images/M.webp)' }}
-            >
-              <h3>אירועים נוספים</h3>
-            </div>
           </div>
         </div>
       </section>
