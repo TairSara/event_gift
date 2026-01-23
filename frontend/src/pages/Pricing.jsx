@@ -198,7 +198,6 @@ export default function Pricing() {
       features: [
         { text: "הזמנה דיגיטלית מעוצבת", included: true },
         { text: "מערכת אישורי הגעה ללא הגבלה", included: true },
-        { text: "ניהול מוזמנים (ידני / אקסל)", included: true },
         { text: "שליחה ידנית ב־WhatsApp", included: true },
         { text: "סטטוס אישורים בזמן אמת", included: true },
       ],

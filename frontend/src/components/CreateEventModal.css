@@ -329,10 +329,16 @@
 
 /* Responsive */
 @media (max-width: 768px) {
+  .create-event-modal-overlay {
+    align-items: flex-start;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+
   .create-event-modal {
     max-width: 95%;
-    max-height: 80vh;
-    margin: 0.5rem auto;
+    max-height: none;
+    margin: 1rem auto;
   }
 
   .modal-title {

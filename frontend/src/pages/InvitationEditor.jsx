@@ -392,7 +392,6 @@ export default function InvitationEditor() {
           </div>
 
           <ul className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
-            <li><a href="/#events" onClick={() => setMobileMenuOpen(false)}>מתנות באשראי</a></li>
             <li><a href="/pricing" onClick={() => setMobileMenuOpen(false)}>מחירים וחבילות</a></li>
             <li><a href="/#login" onClick={() => setMobileMenuOpen(false)}>אזור אישי</a></li>
           </ul>
