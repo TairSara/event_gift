@@ -585,10 +585,10 @@ body {
   font-size: 1rem;
 }
 
-/* Event Types Section - White Background */
+/* Event Types Section */
 .event-types {
   padding: 8rem 3rem;
-  background: #FFFFFF;
+  background: linear-gradient(135deg, #F8F8F8 0%, #EAEAEA 100%);
   position: relative;
   overflow: hidden;
 }
