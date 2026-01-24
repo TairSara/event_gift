@@ -345,24 +345,20 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
             <div className="upgrade-modal-body">
               <div className="upgrade-features">
                 <div className="upgrade-feature">
-                  <i className="fas fa-infinity"></i>
-                  <span>ללא הגבלת אורחים</span>
+                  <i className="fab fa-whatsapp"></i>
+                  <span>שליחת הזמנות אוטומטית ב־WhatsApp - 3 סבבים</span>
                 </div>
                 <div className="upgrade-feature">
                   <i className="fas fa-phone"></i>
-                  <span>שלושה סבבי שיחות טלפוניות</span>
-                </div>
-                <div className="upgrade-feature">
-                  <i className="fas fa-credit-card"></i>
-                  <span>מערכת מתנות פרימיום באשראי</span>
+                  <span>מוקד אנושי עם שלוש סבבי שיחות טלפוניות</span>
                 </div>
                 <div className="upgrade-feature">
                   <i className="fas fa-heart"></i>
                   <span>הודעות תודה מעוצבות</span>
                 </div>
                 <div className="upgrade-feature">
-                  <i className="fas fa-table"></i>
-                  <span>שיבוץ שולחנות חכם</span>
+                  <i className="fas fa-chart-line"></i>
+                  <span>סטטוס אישורים בזמן אמת</span>
                 </div>
                 <div className="upgrade-feature">
                   <i className="fas fa-star"></i>

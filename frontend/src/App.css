@@ -296,7 +296,7 @@ body {
 /* Hero Section - White Background */
 .hero {
   background: #FFFFFF;
-  padding: 6rem 3rem 8rem;
+  padding: 3rem 3rem 4rem;
   position: relative;
   overflow: hidden;
   width: 100%;
@@ -738,6 +738,237 @@ body {
 
 .event-icon i {
   color: var(--brown-darker);
+}
+
+/* Dashboard Demo Section */
+.dashboard-demo {
+  padding: 8rem 3rem;
+  background: linear-gradient(135deg, #F8F8F8 0%, #EAEAEA 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.dashboard-mockup {
+  max-width: 1000px;
+  margin: 0 auto;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 20px 60px rgba(107, 86, 56, 0.2);
+  background: #fff;
+}
+
+.mockup-header {
+  background: linear-gradient(135deg, #2d2d2d 0%, #1a1a1a 100%);
+  padding: 0.8rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mockup-dots {
+  display: flex;
+  gap: 6px;
+}
+
+.mockup-dots span {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #ff5f57;
+}
+
+.mockup-dots span:nth-child(2) {
+  background: #ffbd2e;
+}
+
+.mockup-dots span:nth-child(3) {
+  background: #28c840;
+}
+
+.mockup-title {
+  color: #ccc;
+  font-size: 0.85rem;
+  margin-right: auto;
+}
+
+.mockup-content {
+  padding: 2rem;
+}
+
+.mockup-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 2rem;
+}
+
+.mockup-stat-card {
+  background: linear-gradient(135deg, #f0f7ff 0%, #e8f4fd 100%);
+  border-radius: 12px;
+  padding: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  border: 1px solid rgba(107, 86, 56, 0.08);
+}
+
+.mockup-stat-card i {
+  font-size: 1.5rem;
+  color: #4a90d9;
+}
+
+.mockup-stat-success {
+  background: linear-gradient(135deg, #f0faf0 0%, #e8f5e8 100%);
+}
+
+.mockup-stat-success i {
+  color: #28a745;
+}
+
+.mockup-stat-pending {
+  background: linear-gradient(135deg, #fff9f0 0%, #fff3e0 100%);
+}
+
+.mockup-stat-pending i {
+  color: #f5a623;
+}
+
+.mockup-stat-declined {
+  background: linear-gradient(135deg, #fff0f0 0%, #ffe8e8 100%);
+}
+
+.mockup-stat-declined i {
+  color: #dc3545;
+}
+
+.mockup-stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.mockup-stat-number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #333;
+}
+
+.mockup-stat-label {
+  font-size: 0.75rem;
+  color: #888;
+}
+
+.mockup-details {
+  display: grid;
+  grid-template-columns: 1.5fr 1fr;
+  gap: 1.5rem;
+}
+
+.mockup-guest-list {
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 1.2rem;
+  border: 1px solid #eee;
+}
+
+.mockup-guest-list h4 {
+  margin: 0 0 1rem;
+  color: #555;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mockup-guest-list h4 i {
+  color: #BE793E;
+}
+
+.mockup-guest-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.6rem 0.8rem;
+  border-radius: 8px;
+  margin-bottom: 0.4rem;
+  background: #fff;
+  border: 1px solid #f0f0f0;
+}
+
+.guest-name {
+  font-size: 0.85rem;
+  color: #444;
+  font-weight: 500;
+}
+
+.guest-status {
+  font-size: 0.75rem;
+  padding: 0.25rem 0.6rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.guest-status.confirmed {
+  background: #e8f5e9;
+  color: #2e7d32;
+}
+
+.guest-status.pending {
+  background: #fff3e0;
+  color: #e65100;
+}
+
+.mockup-invitation-preview {
+  background: #fafafa;
+  border-radius: 12px;
+  padding: 1.2rem;
+  border: 1px solid #eee;
+}
+
+.mockup-invitation-preview h4 {
+  margin: 0 0 1rem;
+  color: #555;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.mockup-invitation-preview h4 i {
+  color: #BE793E;
+}
+
+.mockup-invitation-card {
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.mockup-invitation-card img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 768px) {
+  .dashboard-demo {
+    padding: 3.5rem 1.5rem;
+  }
+
+  .mockup-stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .mockup-details {
+    grid-template-columns: 1fr;
+  }
+
+  .mockup-content {
+    padding: 1rem;
+  }
+
+  .mockup-stat-number {
+    font-size: 1.2rem;
+  }
 }
 
 /* How It Works Section - Light Brown Background */

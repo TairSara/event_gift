@@ -517,3 +517,52 @@
     font-size: 0.9rem;
   }
 }
+
+/* Upload Own Invitation Card */
+.upload-own-card {
+  border: 3px dashed #BE793E;
+  background: linear-gradient(135deg, #fff9f0 0%, #faf7f2 100%);
+}
+
+.upload-own-card:hover {
+  border-color: #8B6F47;
+  background: linear-gradient(135deg, #faf7f2 0%, #f5f0e8 100%);
+}
+
+.upload-thumbnail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.upload-icon-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.upload-icon-wrapper i {
+  font-size: 3.5rem;
+  color: #BE793E;
+  transition: transform 0.3s ease;
+}
+
+.upload-own-card:hover .upload-icon-wrapper i {
+  transform: scale(1.1) translateY(-5px);
+}
+
+.upload-icon-wrapper span {
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: #8B6F47;
+}
+
+.upload-hint {
+  font-size: 0.9rem;
+  color: #a89070;
+  margin: 0;
+}

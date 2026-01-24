@@ -1,5 +1,5 @@
 import { useParams, useNavigate, useSearchParams } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import weddingManifest from '../data/wedding.manifest.json';
 import hinaManifest from '../data/hina.manifest.json';
 import barMitzvahManifest from '../data/bar-mitzvah.manifest.json';
@@ -18,6 +18,8 @@ export default function TemplateSelection() {
   const eventId = searchParams.get('event_id');
   const [templates, setTemplates] = useState([]);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [uploading, setUploading] = useState(false);
+  const fileInputRef = useRef(null);
 
   useEffect(() => {
     // Load templates based on event type
@@ -45,6 +47,55 @@ export default function TemplateSelection() {
   const handleTemplateSelect = (templateId) => {
     const editorUrl = `/create-invitation/${eventType}/editor?id=${templateId}${eventId ? `&event_id=${eventId}` : ''}`;
     navigate(editorUrl);
+  };
+
+  const handleUploadOwn = () => {
+    fileInputRef.current?.click();
+  };
+
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    setUploading(true);
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
+    try {
+      const reader = new FileReader();
+      reader.onload = async () => {
+        const imageData = reader.result;
+        const invitationData = {
+          template_id: 'custom-upload',
+          event_type: eventType,
+          values: {},
+          front_approved: true,
+          back_approved: true,
+          custom_image: imageData
+        };
+
+        if (eventId) {
+          const response = await fetch(`${API_URL}/packages/events/${eventId}`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ invitation_data: invitationData })
+          });
+
+          if (response.ok) {
+            navigate(`/event/${eventId}`);
+          } else {
+            alert('שגיאה בשמירת ההזמנה');
+          }
+        } else {
+          navigate(`/create-invitation/${eventType}/editor?upload=true`);
+        }
+        setUploading(false);
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      console.error('Error uploading invitation:', error);
+      alert('שגיאה בהעלאת ההזמנה');
+      setUploading(false);
+    }
   };
 
   return (
@@ -82,6 +133,27 @@ export default function TemplateSelection() {
         </header>
 
         <div className="templates-grid">
+          {/* Upload own invitation card */}
+          <div className="template-card upload-own-card" onClick={handleUploadOwn}>
+            <div className="template-thumbnail upload-thumbnail">
+              <div className="upload-icon-wrapper">
+                <i className="fas fa-cloud-upload-alt"></i>
+                <span>{uploading ? 'מעלה...' : 'העלה הזמנה משלך'}</span>
+                <p className="upload-hint">כבר יש לך הזמנה מוכנה? העלה אותה כאן</p>
+              </div>
+            </div>
+            <div className="template-info">
+              <h3>הזמנה משלי</h3>
+              <p className="template-description">העלה תמונה של הזמנה שכבר יש לך</p>
+            </div>
+          </div>
+          <input
+            type="file"
+            ref={fileInputRef}
+            onChange={handleFileChange}
+            accept="image/*"
+            style={{ display: 'none' }}
+          />
           {templates.map((template) => (
             <div
               key={template.id}

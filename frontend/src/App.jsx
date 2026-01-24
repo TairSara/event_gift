@@ -323,6 +323,83 @@ export default function App() {
         </div>
       </section>
 
+      {/* Dashboard Demo Section */}
+      <section className="dashboard-demo">
+        <div className="features-container">
+          <div className="section-title">
+            <h2>לוח הניהול שלכם</h2>
+            <p className="section-subtitle">כל המידע על האירוע במקום אחד – פשוט, יפה ומסודר</p>
+          </div>
+          <div className="dashboard-mockup">
+            <div className="mockup-header">
+              <div className="mockup-dots">
+                <span></span><span></span><span></span>
+              </div>
+              <span className="mockup-title">Save The Day - לוח ניהול</span>
+            </div>
+            <div className="mockup-content">
+              <div className="mockup-stats">
+                <div className="mockup-stat-card">
+                  <i className="fas fa-users"></i>
+                  <div className="mockup-stat-info">
+                    <span className="mockup-stat-number">248</span>
+                    <span className="mockup-stat-label">סה״כ מוזמנים</span>
+                  </div>
+                </div>
+                <div className="mockup-stat-card mockup-stat-success">
+                  <i className="fas fa-check-circle"></i>
+                  <div className="mockup-stat-info">
+                    <span className="mockup-stat-number">186</span>
+                    <span className="mockup-stat-label">אישרו הגעה</span>
+                  </div>
+                </div>
+                <div className="mockup-stat-card mockup-stat-pending">
+                  <i className="fas fa-clock"></i>
+                  <div className="mockup-stat-info">
+                    <span className="mockup-stat-number">45</span>
+                    <span className="mockup-stat-label">ממתינים</span>
+                  </div>
+                </div>
+                <div className="mockup-stat-card mockup-stat-declined">
+                  <i className="fas fa-times-circle"></i>
+                  <div className="mockup-stat-info">
+                    <span className="mockup-stat-number">17</span>
+                    <span className="mockup-stat-label">לא מגיעים</span>
+                  </div>
+                </div>
+              </div>
+              <div className="mockup-details">
+                <div className="mockup-guest-list">
+                  <h4><i className="fas fa-list"></i> רשימת אורחים</h4>
+                  <div className="mockup-guest-row">
+                    <span className="guest-name">שרה כהן</span>
+                    <span className="guest-status confirmed">אישרה +2</span>
+                  </div>
+                  <div className="mockup-guest-row">
+                    <span className="guest-name">דוד לוי</span>
+                    <span className="guest-status confirmed">אישר +4</span>
+                  </div>
+                  <div className="mockup-guest-row">
+                    <span className="guest-name">רחל מזרחי</span>
+                    <span className="guest-status pending">ממתין</span>
+                  </div>
+                  <div className="mockup-guest-row">
+                    <span className="guest-name">יוסי אברהם</span>
+                    <span className="guest-status confirmed">אישר +1</span>
+                  </div>
+                </div>
+                <div className="mockup-invitation-preview">
+                  <h4><i className="fas fa-envelope-open-text"></i> ההזמנה שלכם</h4>
+                  <div className="mockup-invitation-card">
+                    <img src="/images/1.webp" alt="דוגמה להזמנה" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* How It Works Section */}
       <section id="how-it-works" className="how-it-works">
         <div className="features-container">
