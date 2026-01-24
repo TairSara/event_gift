@@ -9,6 +9,7 @@ import britaManifest from '../data/brita.manifest.json';
 import knasimManifest from '../data/knasim.manifest.json';
 import birthdayManifest from '../data/birthday.manifest.json';
 import otherManifest from '../data/other.manifest.json';
+import Navbar from '../components/Navbar';
 import './TemplateSelection.css';
 
 export default function TemplateSelection() {
@@ -17,7 +18,6 @@ export default function TemplateSelection() {
   const [searchParams] = useSearchParams();
   const eventId = searchParams.get('event_id');
   const [templates, setTemplates] = useState([]);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -100,31 +100,7 @@ export default function TemplateSelection() {
 
   return (
     <div className="template-selection">
-      {/* Navigation Bar */}
-      <nav className="navbar">
-        <div className="navbar-container">
-          <button
-            className="mobile-menu-btn"
-            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            aria-label="תפריט"
-          >
-            <span className={`hamburger ${mobileMenuOpen ? 'open' : ''}`}>
-              <span></span>
-              <span></span>
-              <span></span>
-            </span>
-          </button>
-
-          <div className="logo" onClick={() => navigate('/')} style={{ cursor: 'pointer' }}>
-            <img src="/images/logo.webp" alt="Save the Day" className="logo-image" />
-          </div>
-
-          <ul className={`nav-links ${mobileMenuOpen ? 'mobile-open' : ''}`}>
-            <li><a href="/pricing" onClick={() => setMobileMenuOpen(false)}>מחירים וחבילות</a></li>
-            <li><a href="/#login" onClick={() => setMobileMenuOpen(false)}>אזור אישי</a></li>
-          </ul>
-        </div>
-      </nav>
+      <Navbar />
 
       <div className="template-selection-container">
         <header className="template-selection-header">
