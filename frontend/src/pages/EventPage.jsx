@@ -735,20 +735,6 @@ export default function EventPage() {
               <GuestManagement eventId={eventId} onUpdate={fetchEventData} packageId={event.package_id} />
             </div>
 
-            {/* מתנות */}
-            <div className="event-section gifts-section">
-              <div className="section-header">
-                <h2>
-                  <i className="fas fa-gift"></i>
-                  ניהול מתנות
-                </h2>
-              </div>
-
-              <div className="gifts-placeholder">
-                <i className="fas fa-hand-holding-heart"></i>
-                <p>ניהול מתנות יתווסף בקרוב</p>
-              </div>
-            </div>
           </div>
 
         </div>

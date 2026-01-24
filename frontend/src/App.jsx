@@ -330,72 +330,16 @@ export default function App() {
             <h2>לוח הניהול שלכם</h2>
             <p className="section-subtitle">כל המידע על האירוע במקום אחד – פשוט, יפה ומסודר</p>
           </div>
-          <div className="dashboard-mockup">
-            <div className="mockup-header">
-              <div className="mockup-dots">
-                <span></span><span></span><span></span>
-              </div>
-              <span className="mockup-title">Save The Day - לוח ניהול</span>
-            </div>
-            <div className="mockup-content">
-              <div className="mockup-stats">
-                <div className="mockup-stat-card">
-                  <i className="fas fa-users"></i>
-                  <div className="mockup-stat-info">
-                    <span className="mockup-stat-number">248</span>
-                    <span className="mockup-stat-label">סה״כ מוזמנים</span>
-                  </div>
-                </div>
-                <div className="mockup-stat-card mockup-stat-success">
-                  <i className="fas fa-check-circle"></i>
-                  <div className="mockup-stat-info">
-                    <span className="mockup-stat-number">186</span>
-                    <span className="mockup-stat-label">אישרו הגעה</span>
-                  </div>
-                </div>
-                <div className="mockup-stat-card mockup-stat-pending">
-                  <i className="fas fa-clock"></i>
-                  <div className="mockup-stat-info">
-                    <span className="mockup-stat-number">45</span>
-                    <span className="mockup-stat-label">ממתינים</span>
-                  </div>
-                </div>
-                <div className="mockup-stat-card mockup-stat-declined">
-                  <i className="fas fa-times-circle"></i>
-                  <div className="mockup-stat-info">
-                    <span className="mockup-stat-number">17</span>
-                    <span className="mockup-stat-label">לא מגיעים</span>
-                  </div>
-                </div>
-              </div>
-              <div className="mockup-details">
-                <div className="mockup-guest-list">
-                  <h4><i className="fas fa-list"></i> רשימת אורחים</h4>
-                  <div className="mockup-guest-row">
-                    <span className="guest-name">שרה כהן</span>
-                    <span className="guest-status confirmed">אישרה +2</span>
-                  </div>
-                  <div className="mockup-guest-row">
-                    <span className="guest-name">דוד לוי</span>
-                    <span className="guest-status confirmed">אישר +4</span>
-                  </div>
-                  <div className="mockup-guest-row">
-                    <span className="guest-name">רחל מזרחי</span>
-                    <span className="guest-status pending">ממתין</span>
-                  </div>
-                  <div className="mockup-guest-row">
-                    <span className="guest-name">יוסי אברהם</span>
-                    <span className="guest-status confirmed">אישר +1</span>
-                  </div>
-                </div>
-                <div className="mockup-invitation-preview">
-                  <h4><i className="fas fa-envelope-open-text"></i> ההזמנה שלכם</h4>
-                  <div className="mockup-invitation-card">
-                    <img src="/images/1.webp" alt="דוגמה להזמנה" />
-                  </div>
-                </div>
-              </div>
-            </div>
+          <div className="dashboard-video-wrapper">
+            <video
+              autoPlay
+              loop
+              muted
+              playsInline
+              className="dashboard-video"
+            >
+              <source src="/images/new.mp4" type="video/mp4" />
+            </video>
           </div>
         </div>
       </section>
@@ -483,68 +427,64 @@ export default function App() {
       {/* Footer */}
       <footer className="footer">
         <div className="footer-container">
-          <div className="footer-grid">
-            <div className="footer-section">
-              <h3>Save the Day</h3>
-              <p>הזמנה אחת. חוויה שלמה. הפלטפורמה המובילה להזמנות דיגיטליות וניהול אירועים בישראל</p>
-            </div>
-            <div className="footer-section">
-              <h3>קישורים</h3>
-              <ul className="footer-links">
-                <li><a href="#features">היכולות</a></li>
-                <li><a href="#events">סוגי אירועים</a></li>
-                <li><a href="#how-it-works">איך זה עובד</a></li>
-                <li><a href="#pricing">מחירים</a></li>
-              </ul>
-            </div>
-            <div className="footer-section">
-              <h3>תמיכה</h3>
-              <ul className="footer-links">
-                <li><a href="#contact">צור קשר</a></li>
-                <li>
-                  <a
-                    href="#"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      setTermsModalOpen(true);
-                    }}
-                  >
-                    תקנון
-                  </a>
-                </li>
-                <li><a href="#faq">שאלות נפוצות</a></li>
-                <li><a href="#terms">תנאי שימוש</a></li>
-                <li><a href="#privacy">מדיניות פרטיות</a></li>
-              </ul>
-            </div>
-            <div className="footer-section">
-              <h3>הצטרף אלינו</h3>
-              <ul className="footer-links">
-                <li>
-                  <a
-                    href="/login"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      navigate('/login');
-                    }}
-                  >
-                    התחברות
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="/register"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      navigate('/register');
-                    }}
-                  >
-                    הרשמה
-                  </a>
-                </li>
-                <li><a href="#dashboard">הדשבורד שלי</a></li>
-              </ul>
-            </div>
+          <div className="footer-simple">
+            <ul className="footer-links-row">
+              <li>
+                <a
+                  href="/contact"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigate('/contact');
+                  }}
+                >
+                  צור קשר
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setTermsModalOpen(true);
+                  }}
+                >
+                  תקנון
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setTermsModalOpen(true);
+                  }}
+                >
+                  שאלות נפוצות
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setTermsModalOpen(true);
+                  }}
+                >
+                  תנאי שימוש
+                </a>
+              </li>
+              <li>
+                <a
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setTermsModalOpen(true);
+                  }}
+                >
+                  מדיניות פרטיות
+                </a>
+              </li>
+            </ul>
           </div>
           <div className="footer-bottom">
             <p>&copy; 2025 Save the Day. כל הזכויות שמורות.</p>
