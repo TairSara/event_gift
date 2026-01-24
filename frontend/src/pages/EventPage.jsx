@@ -48,6 +48,21 @@ export default function EventPage() {
     if (event && event.invitation_data && invitationCanvasRef.current) {
       const invitationData = event.invitation_data;
 
+      // Handle custom upload - draw the uploaded image onto the canvas
+      if (invitationData.template_id === 'custom-upload' && invitationData.custom_image) {
+        const img = new Image();
+        img.onload = () => {
+          const canvas = invitationCanvasRef.current;
+          if (!canvas) return;
+          canvas.width = img.width;
+          canvas.height = img.height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0);
+        };
+        img.src = invitationData.custom_image;
+        return;
+      }
+
       // Find the template
       let template = null;
       const manifests = {
