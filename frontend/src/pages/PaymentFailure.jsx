@@ -8,18 +8,40 @@ export default function PaymentFailure() {
   const [searchParams] = useSearchParams();
   const [paymentDetails, setPaymentDetails] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isInIframe, setIsInIframe] = useState(false);
 
   const orderId = searchParams.get('order_id');
   const purchaseId = searchParams.get('purchase_id');
 
+  // בדיקה אם אנחנו בתוך iframe ושליחת הודעה ל-parent
   useEffect(() => {
+    const inIframe = window.self !== window.top;
+    setIsInIframe(inIframe);
+
+    if (inIframe) {
+      // שליחת הודעה לחלון האב שהתשלום נכשל
+      window.parent.postMessage({
+        type: 'PAYMENT_FAILURE',
+        orderId: orderId,
+        purchaseId: purchaseId
+      }, '*');
+
+      // הפניה לדף הכישלון בחלון הראשי
+      window.top.location.href = `/payment/failure?order_id=${orderId}&purchase_id=${purchaseId}`;
+    }
+  }, [orderId, purchaseId]);
+
+  useEffect(() => {
+    // אם אנחנו בתוך iframe, לא צריך להמשיך
+    if (isInIframe) return;
+
     // שליפת פרטי התשלום
     if (orderId) {
       fetchPaymentDetails();
     } else {
       setLoading(false);
     }
-  }, [orderId]);
+  }, [orderId, isInIframe]);
 
   const fetchPaymentDetails = async () => {
     try {

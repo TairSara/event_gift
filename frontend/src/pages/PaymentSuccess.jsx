@@ -12,6 +12,7 @@ export default function PaymentSuccess() {
   const [attempts, setAttempts] = useState(0);
   const intervalRef = useRef(null);
   const confettiStarted = useRef(false);
+  const [isInIframe, setIsInIframe] = useState(false);
 
   const orderId = searchParams.get('order_id');
   const purchaseId = searchParams.get('purchase_id');
@@ -19,7 +20,28 @@ export default function PaymentSuccess() {
   const MAX_ATTEMPTS = 15; // 15 ניסיונות = 30 שניות (כל 2 שניות)
   const POLL_INTERVAL = 2000; // 2 שניות
 
+  // בדיקה אם אנחנו בתוך iframe ושליחת הודעה ל-parent
   useEffect(() => {
+    const inIframe = window.self !== window.top;
+    setIsInIframe(inIframe);
+
+    if (inIframe && orderId) {
+      // שליחת הודעה לחלון האב שהתשלום הצליח
+      window.parent.postMessage({
+        type: 'PAYMENT_SUCCESS',
+        orderId: orderId,
+        purchaseId: purchaseId
+      }, '*');
+
+      // הפניה לדף ההצלחה בחלון הראשי
+      window.top.location.href = `/payment/success?order_id=${orderId}&purchase_id=${purchaseId}`;
+    }
+  }, [orderId, purchaseId]);
+
+  useEffect(() => {
+    // אם אנחנו בתוך iframe, לא צריך להמשיך
+    if (isInIframe) return;
+
     if (!orderId) {
       setLoading(false);
       return;
@@ -34,7 +56,7 @@ export default function PaymentSuccess() {
         clearInterval(intervalRef.current);
       }
     };
-  }, [orderId]);
+  }, [orderId, isInIframe]);
 
   const startPolling = () => {
     // ניסיון ראשון מיידי

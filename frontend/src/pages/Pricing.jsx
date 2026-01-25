@@ -1,8 +1,9 @@
-import { useState, useEffect } from "react"; // הוספנו useEffect כאן
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useNotification } from "../hooks/useNotification";
 import Navbar from "../components/Navbar";
+import PaymentModal from "../components/PaymentModal";
 import "./Pricing.css";
 
 export default function Pricing() {
@@ -11,6 +12,15 @@ export default function Pricing() {
   const [openFaq, setOpenFaq] = useState(null);
   const [selectedGuestCounts, setSelectedGuestCounts] = useState({});
   const { showSuccess, showInfo, NotificationComponent } = useNotification();
+
+  // State for payment modal
+  const [paymentModalOpen, setPaymentModalOpen] = useState(false);
+  const [paymentData, setPaymentData] = useState({
+    paymentUrl: "",
+    formData: null,
+    packageName: "",
+    amount: 0
+  });
 
   // --- תוספת עבור Apple Pay ---
   useEffect(() => {
@@ -117,20 +127,14 @@ export default function Pricing() {
       const data = await response.json();
 
       if (response.ok && data.payment_url && data.form_data) {
-        const form = document.createElement("form");
-        form.method = "POST";
-        form.action = data.payment_url;
-
-        Object.keys(data.form_data).forEach((key) => {
-          const input = document.createElement("input");
-          input.type = "hidden";
-          input.name = key;
-          input.value = data.form_data[key];
-          form.appendChild(input);
+        // פתיחת המודל עם ה-iframe במקום redirect
+        setPaymentData({
+          paymentUrl: data.payment_url,
+          formData: data.form_data,
+          packageName: packageName,
+          amount: data.form_data.sum || 0
         });
-
-        document.body.appendChild(form);
-        form.submit();
+        setPaymentModalOpen(true);
       } else {
         showInfo(data.detail || "שגיאה ביצירת התשלום");
       }
@@ -293,10 +297,30 @@ export default function Pricing() {
     },
   ];
 
+  const handleClosePaymentModal = () => {
+    setPaymentModalOpen(false);
+    setPaymentData({
+      paymentUrl: "",
+      formData: null,
+      packageName: "",
+      amount: 0
+    });
+  };
+
   return (
     <div className="pricing-page">
       {NotificationComponent}
       <Navbar />
+
+      {/* Payment Modal with iframe */}
+      <PaymentModal
+        isOpen={paymentModalOpen}
+        onClose={handleClosePaymentModal}
+        paymentUrl={paymentData.paymentUrl}
+        formData={paymentData.formData}
+        packageName={paymentData.packageName}
+        amount={paymentData.amount}
+      />
 
       <section className="pricing-hero">
         <div className="pricing-hero-content">
