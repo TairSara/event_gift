@@ -284,6 +284,29 @@ export const guestAPI = {
     }
   },
 
+  // Send WhatsApp reminder to guest
+  sendWhatsAppReminder: async (guestId) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/whatsapp/send-template-reminder/${guestId}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || 'שגיאה בשליחת התזכורת');
+      }
+
+      return data;
+    } catch (error) {
+      console.error('Send WhatsApp reminder error:', error);
+      throw error;
+    }
+  },
+
   // Send SMS invitation to guest
   sendSMSInvitation: async (guestId) => {
     try {

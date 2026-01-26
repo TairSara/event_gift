@@ -313,24 +313,6 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
             </div>
           )}
 
-          {/* הצעת שדרוג */}
-          {selectedPackage && !isPremiumPackage() && (
-            <div className="upgrade-suggestion">
-              <i className="fas fa-star"></i>
-              <div className="upgrade-text">
-                <strong>רוצה עוד יתרונות?</strong>
-                <p>שדרגי לחבילה המלאה ותקבלי גישה בלתי מוגבלת עם כל הפיצ'רים!</p>
-              </div>
-              <button
-                type="button"
-                className="btn-upgrade"
-                onClick={() => setShowUpgradeModal(true)}
-              >
-                <i className="fas fa-arrow-up"></i>
-                שדרג חבילה
-              </button>
-            </div>
-          )}
 
           {availablePackages.length === 0 && (
             <div className="no-packages-warning">

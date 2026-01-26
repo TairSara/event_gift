@@ -17,6 +17,8 @@ WHATSAPP_TEMPLATE_NAME = os.getenv('WHATSAPP_TEMPLATE_NAME', 'event_invitation_n
 DEFAULT_INVITATION_IMAGE = os.getenv('DEFAULT_INVITATION_IMAGE', 'https://i.ibb.co/pKDqkh5/default-invitation.jpg')
 WHATSAPP_TEMPLATE_ID = os.getenv('WHATSAPP_TEMPLATE_ID', '99198662-73ee-43f2-bc1b-fe48e4a33656')
 WHATSAPP_TEMPLATE_IS_MEDIA = os.getenv('WHATSAPP_TEMPLATE_IS_MEDIA', 'true').lower() == 'true'
+WHATSAPP_REMINDER_TEMPLATE_NAME = os.getenv('WHATSAPP_REMINDER_TEMPLATE_NAME', 'event_invation_new')
+WHATSAPP_REMINDER_TEMPLATE_ID = os.getenv('WHATSAPP_REMINDER_TEMPLATE_ID', '461dba61-3508-4ddc-aa93-19a7a50b80c5')
 GUPSHUP_API_URL = 'https://api.gupshup.io/wa/api/v1/msg'
 GUPSHUP_TEMPLATE_URL = 'https://api.gupshup.io/wa/api/v1/template/msg'
 
@@ -339,7 +341,8 @@ class WhatsAppInteractiveService:
         destination: str,
         template_name: str,
         template_params: List[str],
-        image_url: Optional[str] = None
+        image_url: Optional[str] = None,
+        template_id_override: Optional[str] = None
     ) -> Dict:
         """
         Send a WhatsApp template message with optional image attachment
@@ -349,6 +352,7 @@ class WhatsAppInteractiveService:
             template_name: Name of the approved template
             template_params: List of parameters to fill in the template (text params ONLY)
             image_url: Optional URL to an image for Media templates (sent separately in attachments)
+            template_id_override: Optional template UUID to use instead of the default WHATSAPP_TEMPLATE_ID
 
         Example:
             send_template_message(
@@ -372,9 +376,9 @@ class WhatsAppInteractiveService:
 
         # Build template payload - Gupshup specific format
         # Template object MUST use template UUID (not name) and text params ONLY
-        template_id = WHATSAPP_TEMPLATE_ID if WHATSAPP_TEMPLATE_ID else template_name
+        template_id = template_id_override or WHATSAPP_TEMPLATE_ID or template_name
 
-        if not WHATSAPP_TEMPLATE_ID:
+        if not template_id_override and not WHATSAPP_TEMPLATE_ID:
             print(f"⚠️ WARNING: WHATSAPP_TEMPLATE_ID not set! Using template name '{template_name}' as fallback.")
             print(f"⚠️ This may cause error 4003 'template did not match'.")
             print(f"⚠️ Set WHATSAPP_TEMPLATE_ID env variable to your template UUID from Gupshup.")
@@ -539,6 +543,50 @@ class WhatsAppInteractiveService:
             template_name=WHATSAPP_TEMPLATE_NAME,
             template_params=template_params,
             image_url=image_url
+        )
+
+
+    def send_event_reminder_template(
+        self,
+        destination: str,
+        event_name: str,
+        image_url: Optional[str] = None
+    ) -> Dict:
+        """
+        Send event reminder using the event_invation_new template with optional image
+
+        Template format from Gupshup:
+        היי 😊
+        רצינו להזכיר שעדיין לא קיבלנו ממך אישור הגעה
+        לאירוע {{1}} 🎉
+
+        האישור שלכם חשוב לנו מאוד
+        כדי שנוכל להיערך כמו שצריך
+        ולדאוג שהאירוע יהיה מושלם 🙏
+
+        לאישור הגעה – לחצו על הכפתורים כאן למטה 👇
+
+        Buttons: מגיע / לא מגיע
+
+        Args:
+            destination: Guest phone number
+            event_name: Name of the event ({{1}})
+            image_url: Optional URL to invitation image for Media templates
+        """
+        template_params = [
+            str(event_name).strip(),  # {{1}} - event name
+        ]
+
+        print(f"🔍 Reminder Template Params Verification:")
+        print(f"   Count: {len(template_params)} (must be 1)")
+        print(f"   {{1}}: '{template_params[0]}' (len={len(template_params[0])})")
+
+        return self.send_template_message(
+            destination=destination,
+            template_name=WHATSAPP_REMINDER_TEMPLATE_NAME,
+            template_params=template_params,
+            image_url=image_url,
+            template_id_override=WHATSAPP_REMINDER_TEMPLATE_ID
         )
 
 

@@ -285,6 +285,87 @@ async def send_template_invitation(guest_id: int):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+@router.post("/send-template-reminder/{guest_id}")
+async def send_template_reminder(guest_id: int):
+    """Send reminder template message to a guest who hasn't RSVP'd"""
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # Get guest and event details, including invitation_data which may contain image URL
+        cur.execute("""
+            SELECT g.name, g.phone, e.event_name, e.event_date, e.event_time, e.event_location, e.invitation_data
+            FROM guests g
+            JOIN events e ON g.event_id = e.id
+            WHERE g.id = %s
+        """, (guest_id,))
+
+        guest_data = cur.fetchone()
+        if not guest_data:
+            raise HTTPException(status_code=404, detail="Guest not found")
+
+        guest_name, phone, event_name, event_date, event_time, event_location, invitation_data = guest_data
+
+        if not phone:
+            raise HTTPException(status_code=400, detail="Guest has no phone number")
+
+        # Format phone number for Israeli numbers (050... -> 97250...)
+        formatted_phone = format_israeli_phone(phone)
+
+        # Extract image URL from invitation_data
+        image_url = None
+        if invitation_data and isinstance(invitation_data, dict):
+            image_url = (
+                invitation_data.get('generated_image_url') or
+                invitation_data.get('image_url') or
+                invitation_data.get('imageUrl')
+            )
+            if image_url:
+                print(f"🖼️ Found custom image in invitation_data: {image_url}")
+
+        # Fallback to default if no image found
+        if not image_url:
+            image_url = DEFAULT_INVITATION_IMAGE
+            print(f"⚠️ No custom image found, using default: {image_url}")
+
+        # Send reminder template message
+        print(f"📱 Sending WhatsApp reminder to: {formatted_phone}")
+        print(f"👤 Guest: {guest_name}")
+        print(f"🎉 Event: {event_name}")
+        print(f"🖼️ Image URL: {image_url}")
+
+        result = whatsapp_service.send_event_reminder_template(
+            destination=formatted_phone,
+            event_name=event_name,
+            image_url=image_url
+        )
+
+        print(f"✉️ Gupshup Response: {result}")
+
+        cur.close()
+        conn.close()
+
+        if not result['success']:
+            error_detail = result.get('error', 'Failed to send reminder')
+            if result.get('response_text'):
+                error_detail += f" - Response: {result['response_text']}"
+            print(f"❌ Send failed: {error_detail}")
+            raise HTTPException(status_code=400, detail=error_detail)
+
+        return {
+            'success': True,
+            'guest_name': guest_name,
+            'phone': formatted_phone,
+            'message': 'Reminder sent successfully',
+            'message_data': result.get('data')
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
+
 @router.post("/send-event-rsvp")
 async def send_event_rsvp(request: SendEventRSVPRequest):
     """Send RSVP buttons to a guest for an event"""
@@ -426,10 +507,12 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                 print(f"📩 Received quick_reply: '{button_text}' from {sender_phone}")
 
                 # Map Hebrew button text to our internal button IDs
+                # Includes buttons from both invitation and reminder templates
                 button_mapping = {
                     'מאשר הגעה': 'rsvp_yes',
                     'לא יודע כרגע': 'rsvp_maybe',
-                    'לא מגיע': 'rsvp_no'
+                    'לא מגיע': 'rsvp_no',
+                    'מגיע': 'rsvp_yes',
                 }
                 button_id = button_mapping.get(button_text, None)
 

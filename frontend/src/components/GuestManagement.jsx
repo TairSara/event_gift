@@ -181,6 +181,80 @@ export default function GuestManagement({ eventId, onUpdate, packageId }) {
     }
   };
 
+  const handleSendWhatsAppReminder = async (guest) => {
+    if (!guest.phone) {
+      showNotification('למוזמן אין מספר טלפון', 'error');
+      return;
+    }
+
+    const phoneRegex = /^\+?[0-9]{10,15}$/;
+    if (!phoneRegex.test(guest.phone)) {
+      showNotification('מספר הטלפון אינו תקין. יש להזין עם קידומת מדינה (לדוגמה: +972501234567)', 'error');
+      return;
+    }
+
+    try {
+      setLoading(true);
+      const result = await guestAPI.sendWhatsAppReminder(guest.id);
+      const guestName = result.guest_name || guest.name || 'האורח';
+      showNotification(`התזכורת נשלחה בהצלחה ל-${guestName}! ✅`);
+      console.log('WhatsApp reminder sent:', result);
+    } catch (error) {
+      showNotification(error.message || 'שגיאה בשליחת התזכורת', 'error');
+      console.error('WhatsApp reminder error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSendReminderToAll = async () => {
+    const guestsWithPhone = guests.filter(g => {
+      if (!g.phone) return false;
+      const phoneRegex = /^\+?[0-9]{10,15}$/;
+      return phoneRegex.test(g.phone);
+    });
+
+    if (guestsWithPhone.length === 0) {
+      showNotification('אין מוזמנים עם מספר טלפון תקין ברשימה', 'error');
+      return;
+    }
+
+    const confirmMessage = `האם אתה בטוח שברצונך לשלוח תזכורות ל-${guestsWithPhone.length} מוזמנים?`;
+    if (!window.confirm(confirmMessage)) {
+      return;
+    }
+
+    try {
+      setLoading(true);
+      let successCount = 0;
+      let failCount = 0;
+
+      showNotification(`שולח תזכורות ל-${guestsWithPhone.length} מוזמנים...`, 'info');
+
+      for (const guest of guestsWithPhone) {
+        try {
+          await guestAPI.sendWhatsAppReminder(guest.id);
+          successCount++;
+          await new Promise(resolve => setTimeout(resolve, 500));
+        } catch (error) {
+          console.error(`Failed to send reminder to ${guest.name}:`, error);
+          failCount++;
+        }
+      }
+
+      if (failCount === 0) {
+        showNotification(`✅ התזכורות נשלחו בהצלחה ל-${successCount} מוזמנים!`);
+      } else {
+        showNotification(`נשלחו ${successCount} תזכורות. ${failCount} נכשלו.`, 'warning');
+      }
+    } catch (error) {
+      showNotification('שגיאה בשליחת התזכורות', 'error');
+      console.error('Bulk reminder error:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleSendSMSInvitation = async (guest) => {
     if (!guest.phone) {
       showNotification('למוזמן אין מספר טלפון', 'error');
@@ -516,6 +590,27 @@ export default function GuestManagement({ eventId, onUpdate, packageId }) {
               שלח הזמנות לכולם
             </button>
           )}
+          {showWhatsApp && (
+            <button
+              className="btn-whatsapp-all"
+              onClick={handleSendReminderToAll}
+              disabled={guests.length === 0 || loading}
+              style={{
+                backgroundColor: '#FF9800',
+                color: 'white',
+                border: 'none',
+                padding: '10px 20px',
+                borderRadius: '5px',
+                cursor: guests.length === 0 || loading ? 'not-allowed' : 'pointer',
+                opacity: guests.length === 0 || loading ? 0.5 : 1,
+                fontWeight: 'bold',
+                marginLeft: '10px'
+              }}
+            >
+              <i className="fab fa-whatsapp" style={{ marginLeft: '8px' }}></i>
+              שלח תזכורת לכולם
+            </button>
+          )}
           {showSms && (
             <button
               className="btn-sms-all"
@@ -594,6 +689,22 @@ export default function GuestManagement({ eventId, onUpdate, packageId }) {
                         }}
                       >
                         <i className="fab fa-whatsapp"></i>
+                      </button>
+                    )}
+                    {showWhatsApp && (
+                      <button
+                        className="btn-icon btn-reminder"
+                        onClick={() => handleSendWhatsAppReminder(guest)}
+                        title="שלח תזכורת ב-WhatsApp"
+                        disabled={!guest.phone || loading}
+                        style={{
+                          backgroundColor: '#FF9800',
+                          color: 'white',
+                          opacity: !guest.phone ? 0.5 : 1,
+                          cursor: !guest.phone || loading ? 'not-allowed' : 'pointer'
+                        }}
+                      >
+                        <i className="fas fa-bell"></i>
                       </button>
                     )}
                     {showSms && (
