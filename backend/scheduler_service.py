@@ -162,8 +162,15 @@ def get_messages_to_send_today() -> List[dict]:
             conn.close()
 
 
-def get_guests_for_event(event_id: int) -> List[dict]:
-    """Get all guests with phone numbers for an event"""
+def get_guests_for_event(event_id: int, exclude_responded: bool = False) -> List[dict]:
+    """
+    Get all guests with phone numbers for an event.
+
+    Args:
+        event_id: The event ID
+        exclude_responded: If True, exclude guests who already confirmed or declined
+                          (status in 'confirmed', 'declined')
+    """
     conn = None
     cur = None
 
@@ -171,13 +178,23 @@ def get_guests_for_event(event_id: int) -> List[dict]:
         conn = get_db_connection()
         cur = conn.cursor()
 
-        cur.execute("""
-            SELECT id, name, phone, contact_method
-            FROM guests
-            WHERE event_id = %s
-              AND phone IS NOT NULL
-              AND phone != ''
-        """, (event_id,))
+        if exclude_responded:
+            cur.execute("""
+                SELECT id, name, phone, contact_method
+                FROM guests
+                WHERE event_id = %s
+                  AND phone IS NOT NULL
+                  AND phone != ''
+                  AND (status IS NULL OR status NOT IN ('confirmed', 'declined'))
+            """, (event_id,))
+        else:
+            cur.execute("""
+                SELECT id, name, phone, contact_method
+                FROM guests
+                WHERE event_id = %s
+                  AND phone IS NOT NULL
+                  AND phone != ''
+            """, (event_id,))
 
         guests = []
         for row in cur.fetchall():
@@ -261,6 +278,47 @@ def send_whatsapp_invitation(guest: dict, event_data: dict) -> dict:
         }
 
 
+def send_whatsapp_reminder(guest: dict, event_data: dict) -> dict:
+    """Send WhatsApp reminder to a guest (uses reminder template)"""
+    try:
+        formatted_phone = format_israeli_phone(guest['phone'])
+
+        # Get image URL from invitation_data
+        invitation_data = event_data.get('invitation_data')
+        image_url = None
+        if invitation_data and isinstance(invitation_data, dict):
+            image_url = (
+                invitation_data.get('generated_image_url') or
+                invitation_data.get('image_url') or
+                invitation_data.get('imageUrl')
+            )
+        if not image_url:
+            image_url = DEFAULT_INVITATION_IMAGE
+
+        result = whatsapp_service.send_event_reminder_template(
+            destination=formatted_phone,
+            event_name=event_data['event_title'],
+            image_url=image_url
+        )
+
+        return {
+            'success': result.get('success', False),
+            'guest_id': guest['id'],
+            'guest_name': guest['name'],
+            'phone': formatted_phone,
+            'error': result.get('error') if not result.get('success') else None
+        }
+
+    except Exception as e:
+        return {
+            'success': False,
+            'guest_id': guest['id'],
+            'guest_name': guest['name'],
+            'phone': guest['phone'],
+            'error': str(e)
+        }
+
+
 def send_sms_invitation(guest: dict, event_data: dict) -> dict:
     """Send SMS invitation to a guest"""
     try:
@@ -307,28 +365,35 @@ def process_scheduled_message(scheduled_msg: dict) -> dict:
     event_id = scheduled_msg['event_id']
     scheduled_message_id = scheduled_msg['scheduled_message_id']
     package_id = scheduled_msg.get('package_id')
+    message_number = scheduled_msg['message_number']
 
     # Determine send method based on package
     use_sms = package_id == 2
 
+    # For message_number >= 2, use reminder template and skip guests who already responded
+    is_reminder = message_number >= 2
+
     print(f"\n{'='*50}")
     print(f"Processing scheduled message {scheduled_message_id}")
     print(f"Event: {scheduled_msg['event_title']} (ID: {event_id})")
-    print(f"Message #{scheduled_msg['message_number']}")
+    print(f"Message #{message_number} ({'REMINDER' if is_reminder else 'INVITATION'})")
     print(f"Package ID: {package_id} -> Using {'SMS' if use_sms else 'WhatsApp'}")
+    if is_reminder:
+        print(f"Skipping guests who already confirmed/declined")
     print(f"{'='*50}")
 
-    # Get guests
-    guests = get_guests_for_event(event_id)
+    # Get guests - for rounds 2+, exclude guests who already responded
+    guests = get_guests_for_event(event_id, exclude_responded=is_reminder)
     if not guests:
-        print(f"No guests with phone numbers found for event {event_id}")
-        update_scheduled_message_status(scheduled_message_id, 'completed', 0, 0, "No guests to send to")
+        no_guests_msg = "No guests to send to" if not is_reminder else "No pending guests to remind (all already responded)"
+        print(f"{no_guests_msg} for event {event_id}")
+        update_scheduled_message_status(scheduled_message_id, 'completed', 0, 0, no_guests_msg)
         return {
             'scheduled_message_id': scheduled_message_id,
             'status': 'completed',
             'sent': 0,
             'failed': 0,
-            'message': 'No guests to send to'
+            'message': no_guests_msg
         }
 
     print(f"Found {len(guests)} guests to notify")
@@ -341,6 +406,8 @@ def process_scheduled_message(scheduled_msg: dict) -> dict:
     for guest in guests:
         if use_sms:
             result = send_sms_invitation(guest, scheduled_msg)
+        elif is_reminder:
+            result = send_whatsapp_reminder(guest, scheduled_msg)
         else:
             result = send_whatsapp_invitation(guest, scheduled_msg)
 
