@@ -230,8 +230,20 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
                           max="30"
                           value={customSchedule.message1}
                           onChange={(e) => {
-                            const val = Math.min(30, Math.max(7, parseInt(e.target.value) || 7));
-                            setCustomSchedule({ ...customSchedule, message1: val });
+                            const raw = e.target.value;
+                            if (raw === '') {
+                              setCustomSchedule({ ...customSchedule, message1: '' });
+                              return;
+                            }
+                            const val = parseInt(raw);
+                            if (!isNaN(val)) {
+                              setCustomSchedule({ ...customSchedule, message1: val });
+                            }
+                          }}
+                          onBlur={(e) => {
+                            const val = parseInt(e.target.value);
+                            const clamped = isNaN(val) ? 21 : Math.min(30, Math.max(7, val));
+                            setCustomSchedule({ ...customSchedule, message1: clamped });
                           }}
                         />
                         <span>ימים לפני</span>
@@ -247,8 +259,20 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
                           max="30"
                           value={customSchedule.message2}
                           onChange={(e) => {
-                            const val = Math.min(30, Math.max(7, parseInt(e.target.value) || 7));
-                            setCustomSchedule({ ...customSchedule, message2: val });
+                            const raw = e.target.value;
+                            if (raw === '') {
+                              setCustomSchedule({ ...customSchedule, message2: '' });
+                              return;
+                            }
+                            const val = parseInt(raw);
+                            if (!isNaN(val)) {
+                              setCustomSchedule({ ...customSchedule, message2: val });
+                            }
+                          }}
+                          onBlur={(e) => {
+                            const val = parseInt(e.target.value);
+                            const clamped = isNaN(val) ? 14 : Math.min(30, Math.max(7, val));
+                            setCustomSchedule({ ...customSchedule, message2: clamped });
                           }}
                         />
                         <span>ימים לפני</span>
@@ -264,8 +288,20 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
                           max="30"
                           value={customSchedule.message3}
                           onChange={(e) => {
-                            const val = Math.min(30, Math.max(7, parseInt(e.target.value) || 7));
-                            setCustomSchedule({ ...customSchedule, message3: val });
+                            const raw = e.target.value;
+                            if (raw === '') {
+                              setCustomSchedule({ ...customSchedule, message3: '' });
+                              return;
+                            }
+                            const val = parseInt(raw);
+                            if (!isNaN(val)) {
+                              setCustomSchedule({ ...customSchedule, message3: val });
+                            }
+                          }}
+                          onBlur={(e) => {
+                            const val = parseInt(e.target.value);
+                            const clamped = isNaN(val) ? 7 : Math.min(30, Math.max(7, val));
+                            setCustomSchedule({ ...customSchedule, message3: clamped });
                           }}
                         />
                         <span>ימים לפני</span>

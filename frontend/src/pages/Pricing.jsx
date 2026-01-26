@@ -38,7 +38,7 @@ export default function Pricing() {
     const initializeTranzila = async () => {
       try {
         // טעינת JQuery מהמקור של טרנזילה
-        await loadScript("https://code.jquery.com/jquery-3.6.0.min.js");
+        await loadScript("https://direct.tranzila.com/Tranzila_files/jquery.js");
 
         // טעינת הסקריפט של אפל פיי
         await loadScript(
