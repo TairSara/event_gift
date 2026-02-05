@@ -85,13 +85,13 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
     }
   };
 
-  // Generate WhatsApp preview - Note: template labels are misleading but we show correct values
+  // Generate WhatsApp preview with correct labels
   const getWhatsAppPreview = () => {
     return `שלום [שם האורח] 💙
 אנא לחצו על אחד מהקישורים להזמינים ${eventName || '[שם האירוע]'}!
-אירוח: ${eventDate || '[תאריך]'}
-תאריך: ${eventTime || '[שעה]'}
-שעה: ${eventLocation || '[מיקום]'}!
+תאריך: ${eventDate || '[תאריך]'}
+שעה: ${eventTime || '[שעה]'}
+מיקום: ${eventLocation || '[מיקום]'}!
 💙 משפחת אירועי היום, SaveDay Events ⭐`;
   };
 
