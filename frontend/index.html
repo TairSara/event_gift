@@ -153,18 +153,19 @@
 
     <meta name="theme-color" content="#4ECDC4" />
     <meta name="msapplication-TileColor" content="#4ECDC4" />
-
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://direct.tranzila.com/js/tranzilanapple_v3.js"></script>
-    <script>
-      // Prevent jQuery conflicts with other libraries in React
-      if (window.jQuery) {
-        window.$n = jQuery.noConflict(true);
-      }
-    </script>
   </head>
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+
+    <!-- Tranzila Apple Pay Scripts - Must be at end of body (footer), loaded once only -->
+    <script src="https://direct.tranzila.com/Tranzila_files/jquery.js"></script>
+    <script src="https://direct.tranzila.com/js/tranzilanapple_v3.js"></script>
+    <script>
+      // Prevent jQuery conflicts with React
+      if (window.jQuery) {
+        window.$n = jQuery.noConflict(true);
+      }
+    </script>
   </body>
 </html>
