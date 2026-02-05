@@ -339,7 +339,7 @@ async def get_payment_status(order_id: str):
             SELECT
                 id, payment_status, payment_amount, payment_currency,
                 payment_date, tranzila_reference, package_name,
-                user_id, package_id
+                user_id, package_id, status
             FROM package_purchases
             WHERE tranzila_transaction_id = %s
         """, (order_id,))
@@ -362,7 +362,8 @@ async def get_payment_status(order_id: str):
             "package_name": row[6],
             "user_id": row[7],
             "package_id": row[8],
-            "order_id": order_id
+            "order_id": order_id,
+            "status": row[9]  # Adding the status field for frontend check
         }
 
     except HTTPException:
@@ -372,6 +373,79 @@ async def get_payment_status(order_id: str):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="שגיאה בשליפת סטטוס התשלום"
+        )
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
+
+
+@router.post("/confirm-success/{order_id}")
+async def confirm_payment_success(order_id: str):
+    """
+    אישור תשלום מוצלח - נקרא מדף ההצלחה
+
+    כשהמשתמש מגיע לדף success_url, זה אומר שטרנזילה אישרה את התשלום.
+    במקרים מסוימים (כמו Apple Pay) ה-callback לא מגיע, אז נעדכן ישירות.
+    """
+    conn = None
+    cur = None
+
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # בדיקה שההזמנה קיימת ובסטטוס pending
+        cur.execute("""
+            SELECT id, payment_status, status
+            FROM package_purchases
+            WHERE tranzila_transaction_id = %s
+        """, (order_id,))
+
+        row = cur.fetchone()
+
+        if not row:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="ההזמנה לא נמצאה"
+            )
+
+        purchase_id, payment_status, current_status = row
+
+        # אם כבר מאושר, פשוט מחזירים הצלחה
+        if payment_status == 'completed' and current_status == 'active':
+            return {"status": "already_confirmed", "message": "התשלום כבר אושר"}
+
+        # עדכון לסטטוס מאושר
+        cur.execute("""
+            UPDATE package_purchases
+            SET
+                payment_status = 'completed',
+                payment_date = NOW(),
+                status = 'active'
+            WHERE tranzila_transaction_id = %s AND payment_status = 'pending'
+            RETURNING id;
+        """, (order_id,))
+
+        result = cur.fetchone()
+        conn.commit()
+
+        if result:
+            print(f"[Payment Confirmed] Order {order_id} confirmed via success page")
+            return {"status": "confirmed", "message": "התשלום אושר בהצלחה"}
+        else:
+            return {"status": "no_change", "message": "לא בוצע שינוי"}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        print(f"Confirm payment error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="שגיאה באישור התשלום"
         )
     finally:
         if cur:

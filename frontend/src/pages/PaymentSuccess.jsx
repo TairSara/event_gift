@@ -47,8 +47,8 @@ export default function PaymentSuccess() {
       return;
     }
 
-    // התחלת Polling
-    startPolling();
+    // קודם כל, נאשר את התשלום (במקרה שה-callback לא הגיע, כמו באפל פיי)
+    confirmPaymentSuccess();
 
     // ניקוי ה-interval כשיוצאים מהדף
     return () => {
@@ -57,6 +57,24 @@ export default function PaymentSuccess() {
       }
     };
   }, [orderId, isInIframe]);
+
+  const confirmPaymentSuccess = async () => {
+    try {
+      const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+
+      // קריאה ל-endpoint שמאשר את התשלום (אם עוד לא אושר)
+      await fetch(`${API_URL}/payments/confirm-success/${orderId}`, {
+        method: 'POST'
+      });
+
+      // אחרי האישור, מתחילים polling לקבל את הפרטים
+      startPolling();
+    } catch (error) {
+      console.error('Error confirming payment:', error);
+      // גם אם נכשל, ממשיכים ל-polling
+      startPolling();
+    }
+  };
 
   const startPolling = () => {
     // ניסיון ראשון מיידי
