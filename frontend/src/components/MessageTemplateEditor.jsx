@@ -3,95 +3,94 @@ import './MessageTemplateEditor.css';
 
 const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
 
-// WhatsApp Template format:
+// WhatsApp Template format (from Gupshup):
 // שלום {{1}} 💙 אנא לחצו על אחד מהקישורים להזמינים {{2}}! אירוח: {{3}} תאריך: {{4}} שעה: {{5}}! 💙 משפחת אירועי היום, {{6}} ⭐
+//
+// Dynamic fields:
+// {{1}} = Guest name (automatic from guest list)
+// {{2}} = Event name (event_title)
+// {{3}} = Event date (displayed as "אירוח")
+// {{4}} = Event time (displayed as "תאריך")
+// {{5}} = Event location (displayed as "שעה")
+// {{6}} = Host name (SaveDay Events - fixed)
 
 // SMS Template format:
 // הנכם מוזמנים ל{event_name}, נשמח שתאשרו הגעתכם בלינק הבא: {rsvp_link}
 
 export default function MessageTemplateEditor({ event, onUpdate, showSuccess, showInfo }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState('whatsapp'); // 'whatsapp' or 'sms'
+  const [activeTab, setActiveTab] = useState('whatsapp');
   const [isSaving, setIsSaving] = useState(false);
 
-  // WhatsApp template fields
-  const [whatsappFields, setWhatsappFields] = useState({
-    greeting: 'שלום',
-    eventName: '',
-    eventDate: '',
-    eventTime: '',
-    eventLocation: '',
-    hostName: 'SaveDay Events'
-  });
-
-  // SMS template fields
-  const [smsFields, setSmsFields] = useState({
-    eventName: '',
-    customMessage: ''
-  });
+  // Editable fields - these update the actual event fields in DB
+  const [eventName, setEventName] = useState('');
+  const [eventDate, setEventDate] = useState('');
+  const [eventTime, setEventTime] = useState('');
+  const [eventLocation, setEventLocation] = useState('');
 
   // Initialize fields from event data
   useEffect(() => {
     if (event) {
-      const eventDate = event.event_date ? new Date(event.event_date) : null;
-      const formattedDate = eventDate ? eventDate.toLocaleDateString('he-IL', {
-        day: '2-digit',
-        month: '2-digit',
-        year: 'numeric'
-      }) : '';
-      const formattedTime = eventDate ? eventDate.toLocaleTimeString('he-IL', {
-        hour: '2-digit',
-        minute: '2-digit'
-      }) : '';
+      setEventName(event.event_title || '');
+      setEventLocation(event.event_location || '');
 
-      // Get custom message settings if they exist
-      const messageSettings = event.message_settings || {};
-
-      setWhatsappFields({
-        greeting: messageSettings.whatsapp_greeting || 'שלום',
-        eventName: messageSettings.whatsapp_event_name || event.event_title || '',
-        eventDate: messageSettings.whatsapp_event_date || formattedDate,
-        eventTime: messageSettings.whatsapp_event_time || formattedTime,
-        eventLocation: messageSettings.whatsapp_event_location || event.event_location || '',
-        hostName: messageSettings.whatsapp_host_name || 'SaveDay Events'
-      });
-
-      setSmsFields({
-        eventName: messageSettings.sms_event_name || event.event_title || '',
-        customMessage: messageSettings.sms_custom_message || ''
-      });
+      // Parse date and time from event_date
+      if (event.event_date) {
+        const dateObj = new Date(event.event_date);
+        setEventDate(dateObj.toLocaleDateString('he-IL', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric'
+        }));
+        setEventTime(dateObj.toLocaleTimeString('he-IL', {
+          hour: '2-digit',
+          minute: '2-digit'
+        }));
+      } else {
+        setEventDate('');
+        setEventTime('');
+      }
     }
   }, [event]);
 
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      const response = await fetch(`${API_URL}/packages/events/${event.id}/message-settings`, {
+      // Parse the date and time back to ISO format
+      let eventDateISO = null;
+      if (eventDate && eventTime) {
+        // Parse DD/MM/YYYY format
+        const dateParts = eventDate.split('/');
+        if (dateParts.length === 3) {
+          const [day, month, year] = dateParts;
+          const timeParts = eventTime.split(':');
+          const [hours, minutes] = timeParts;
+          eventDateISO = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+        }
+      }
+
+      // Update the actual event fields
+      const response = await fetch(`${API_URL}/packages/events/${event.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          whatsapp_greeting: whatsappFields.greeting,
-          whatsapp_event_name: whatsappFields.eventName,
-          whatsapp_event_date: whatsappFields.eventDate,
-          whatsapp_event_time: whatsappFields.eventTime,
-          whatsapp_event_location: whatsappFields.eventLocation,
-          whatsapp_host_name: whatsappFields.hostName,
-          sms_event_name: smsFields.eventName,
-          sms_custom_message: smsFields.customMessage
+          event_title: eventName,
+          event_location: eventLocation,
+          ...(eventDateISO && { event_date: eventDateISO })
         })
       });
 
       if (response.ok) {
-        showSuccess('הגדרות ההודעה נשמרו בהצלחה');
+        showSuccess('פרטי ההודעה נשמרו בהצלחה');
         if (onUpdate) onUpdate();
       } else {
-        showInfo('שגיאה בשמירת ההגדרות');
+        showInfo('שגיאה בשמירת הפרטים');
       }
     } catch (error) {
       console.error('Error saving message settings:', error);
-      showInfo('שגיאה בשמירת ההגדרות');
+      showInfo('שגיאה בשמירת הפרטים');
     } finally {
       setIsSaving(false);
     }
@@ -99,27 +98,25 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
 
   // Generate WhatsApp preview
   const getWhatsAppPreview = () => {
-    return `${whatsappFields.greeting} [שם האורח] 💙
-אנא לחצו על אחד מהקישורים להזמינים ${whatsappFields.eventName}!
-אירוח: ${whatsappFields.eventDate}
-תאריך: ${whatsappFields.eventTime}
-שעה: ${whatsappFields.eventLocation}!
-💙 משפחת אירועי היום, ${whatsappFields.hostName} ⭐`;
+    return `שלום [שם האורח] 💙
+אנא לחצו על אחד מהקישורים להזמינים ${eventName || '[שם האירוע]'}!
+אירוח: ${eventDate || '[תאריך]'}
+תאריך: ${eventTime || '[שעה]'}
+שעה: ${eventLocation || '[מיקום]'}!
+💙 משפחת אירועי היום, SaveDay Events ⭐`;
   };
 
   // Generate SMS preview
   const getSmsPreview = () => {
-    const baseMessage = `הנכם מוזמנים ל${smsFields.eventName}`;
-    const customPart = smsFields.customMessage ? `, ${smsFields.customMessage}` : '';
-    return `${baseMessage}${customPart}, נשמח שתאשרו הגעתכם בלינק הבא: [קישור לאישור]`;
+    return `הנכם מוזמנים ל${eventName || '[שם האירוע]'}, נשמח שתאשרו הגעתכם בלינק הבא: [קישור לאישור]`;
   };
 
   // Determine which channel is available based on package
   const getAvailableChannels = () => {
     const packageId = event?.package_id;
-    if (packageId === 2) return ['sms']; // SMS only
-    if (packageId === 3 || packageId === 4) return ['whatsapp']; // WhatsApp only
-    return ['whatsapp', 'sms']; // Default: both
+    if (packageId === 2) return ['sms'];
+    if (packageId === 3 || packageId === 4) return ['whatsapp'];
+    return ['whatsapp', 'sms'];
   };
 
   const availableChannels = getAvailableChannels();
@@ -132,7 +129,7 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
       >
         <div className="editor-header-content">
           <i className="fab fa-whatsapp"></i>
-          <span>עריכת הודעות WhatsApp / SMS</span>
+          <span>עריכת הודעת WhatsApp / SMS</span>
         </div>
         <i className={`fas fa-chevron-${isOpen ? 'up' : 'down'}`}></i>
       </div>
@@ -164,28 +161,18 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
           {/* WhatsApp Editor */}
           {activeTab === 'whatsapp' && availableChannels.includes('whatsapp') && (
             <div className="template-editor-section">
-              <h4>עריכת טמפלייט WhatsApp</h4>
+              <h4>עריכת שדות דינמיים - WhatsApp</h4>
               <p className="template-description">
-                ערוך את השדות הדינמיים בהודעה. שם האורח יוחלף אוטומטית בשליחה.
+                ערוך את השדות שיופיעו בהודעה. שם האורח יוחלף אוטומטית לפי רשימת המוזמנים.
               </p>
 
               <div className="template-fields">
                 <div className="field-group">
-                  <label>ברכת פתיחה</label>
-                  <input
-                    type="text"
-                    value={whatsappFields.greeting}
-                    onChange={(e) => setWhatsappFields({...whatsappFields, greeting: e.target.value})}
-                    placeholder="שלום"
-                  />
-                </div>
-
-                <div className="field-group">
                   <label>שם האירוע</label>
                   <input
                     type="text"
-                    value={whatsappFields.eventName}
-                    onChange={(e) => setWhatsappFields({...whatsappFields, eventName: e.target.value})}
+                    value={eventName}
+                    onChange={(e) => setEventName(e.target.value)}
                     placeholder="החתונה של דנה ויוסי"
                   />
                 </div>
@@ -195,8 +182,8 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
                     <label>תאריך</label>
                     <input
                       type="text"
-                      value={whatsappFields.eventDate}
-                      onChange={(e) => setWhatsappFields({...whatsappFields, eventDate: e.target.value})}
+                      value={eventDate}
+                      onChange={(e) => setEventDate(e.target.value)}
                       placeholder="25/12/2025"
                     />
                   </div>
@@ -204,8 +191,8 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
                     <label>שעה</label>
                     <input
                       type="text"
-                      value={whatsappFields.eventTime}
-                      onChange={(e) => setWhatsappFields({...whatsappFields, eventTime: e.target.value})}
+                      value={eventTime}
+                      onChange={(e) => setEventTime(e.target.value)}
                       placeholder="20:00"
                     />
                   </div>
@@ -215,20 +202,15 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
                   <label>מיקום</label>
                   <input
                     type="text"
-                    value={whatsappFields.eventLocation}
-                    onChange={(e) => setWhatsappFields({...whatsappFields, eventLocation: e.target.value})}
+                    value={eventLocation}
+                    onChange={(e) => setEventLocation(e.target.value)}
                     placeholder="אולמי הגן, תל אביב"
                   />
                 </div>
 
-                <div className="field-group">
-                  <label>שם המארחים</label>
-                  <input
-                    type="text"
-                    value={whatsappFields.hostName}
-                    onChange={(e) => setWhatsappFields({...whatsappFields, hostName: e.target.value})}
-                    placeholder="SaveDay Events"
-                  />
+                <div className="field-info">
+                  <i className="fas fa-info-circle"></i>
+                  <span>שם האורח ושם המארחים מתעדכנים אוטומטית</span>
                 </div>
               </div>
 
@@ -249,9 +231,9 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
           {/* SMS Editor */}
           {activeTab === 'sms' && availableChannels.includes('sms') && (
             <div className="template-editor-section">
-              <h4>עריכת טמפלייט SMS</h4>
+              <h4>עריכת שדות דינמיים - SMS</h4>
               <p className="template-description">
-                ערוך את השדות הדינמיים בהודעה. קישור האישור יתווסף אוטומטית.
+                ההודעה תכלול את שם האירוע וקישור לאישור הגעה.
               </p>
 
               <div className="template-fields">
@@ -259,21 +241,15 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
                   <label>שם האירוע</label>
                   <input
                     type="text"
-                    value={smsFields.eventName}
-                    onChange={(e) => setSmsFields({...smsFields, eventName: e.target.value})}
+                    value={eventName}
+                    onChange={(e) => setEventName(e.target.value)}
                     placeholder="החתונה של דנה ויוסי"
                   />
                 </div>
 
-                <div className="field-group">
-                  <label>הודעה מותאמת אישית (אופציונלי)</label>
-                  <textarea
-                    value={smsFields.customMessage}
-                    onChange={(e) => setSmsFields({...smsFields, customMessage: e.target.value})}
-                    placeholder="נשמח לראותכם!"
-                    rows={2}
-                  />
-                  <span className="field-hint">הודעה זו תוצג לפני קישור האישור</span>
+                <div className="field-info">
+                  <i className="fas fa-info-circle"></i>
+                  <span>קישור האישור מתווסף אוטומטית לכל אורח</span>
                 </div>
               </div>
 
