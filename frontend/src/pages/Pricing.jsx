@@ -22,41 +22,8 @@ export default function Pricing() {
     amount: 0
   });
 
-  // --- תוספת עבור Apple Pay ---
-  useEffect(() => {
-    const loadScript = (src) => {
-      return new Promise((resolve, reject) => {
-        const script = document.createElement("script");
-        script.src = src;
-        script.async = true;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-      });
-    };
-
-    const initializeTranzila = async () => {
-      try {
-        // טעינת JQuery מהמקור של טרנזילה
-        await loadScript("https://direct.tranzila.com/Tranzila_files/jquery.js");
-
-        // טעינת הסקריפט של אפל פיי
-        await loadScript(
-          `https://direct.tranzila.com/js/tranzilanapple_v3.js?v=${Date.now()}`,
-        );
-
-        if (window.jQuery) {
-          window.$n = window.jQuery.noConflict(true);
-          console.log("Tranzila Apple Pay initialized");
-        }
-      } catch (err) {
-        console.error("Failed to load Tranzila scripts:", err);
-      }
-    };
-
-    initializeTranzila();
-  }, []);
-  // ---------------------------
+  // Tranzila Apple Pay scripts are loaded once in index.html (footer)
+  // No dynamic loading needed here
 
   const handlePackageSelect = async (packageId, packageName, packageData) => {
     if (packageData.subPackages && packageData.subPackages.length > 0) {

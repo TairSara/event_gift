@@ -15,58 +15,11 @@ export default function PaymentModal({
   const iframeRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [formSubmitted, setFormSubmitted] = useState(false);
-  const [scriptsLoaded, setScriptsLoaded] = useState(false);
 
-  // טעינת סקריפטים של טרנזילה (jQuery + Apple Pay)
+  // שליחת הטופס ל-iframe כשנפתח המודל
+  // הסקריפטים של Tranzila נטענים פעם אחת ב-index.html (בסוף ה-body)
   useEffect(() => {
-    if (!isOpen || scriptsLoaded) return;
-
-    const loadScript = (src) => {
-      return new Promise((resolve, reject) => {
-        // בדיקה אם הסקריפט כבר קיים
-        const existingScript = document.querySelector(`script[src="${src}"]`);
-        if (existingScript) {
-          resolve();
-          return;
-        }
-
-        const script = document.createElement('script');
-        script.src = src;
-        script.async = true;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-      });
-    };
-
-    const loadTranzilaScripts = async () => {
-      try {
-        // טעינת jQuery של טרנזילה (לא הגרסה הרגילה)
-        await loadScript('https://direct.tranzila.com/Tranzila_files/jquery.js');
-
-        // טעינת סקריפט Apple Pay
-        await loadScript(`https://direct.tranzila.com/js/tranzilanapple_v3.js?v=${Date.now()}`);
-
-        // הגדרת noConflict למניעת התנגשויות
-        if (window.jQuery) {
-          window.$n = window.jQuery.noConflict(true);
-        }
-
-        console.log('Tranzila scripts loaded for PaymentModal');
-        setScriptsLoaded(true);
-      } catch (err) {
-        console.error('Failed to load Tranzila scripts:', err);
-        // ממשיכים גם אם נכשל - התשלום הרגיל עדיין יעבוד
-        setScriptsLoaded(true);
-      }
-    };
-
-    loadTranzilaScripts();
-  }, [isOpen, scriptsLoaded]);
-
-  // שליחת הטופס ל-iframe כשנפתח המודל והסקריפטים נטענו
-  useEffect(() => {
-    if (isOpen && formData && paymentUrl && !formSubmitted && scriptsLoaded) {
+    if (isOpen && formData && paymentUrl && !formSubmitted) {
       // נותן זמן ל-iframe להיטען
       const timer = setTimeout(() => {
         if (formRef.current) {
@@ -77,7 +30,7 @@ export default function PaymentModal({
 
       return () => clearTimeout(timer);
     }
-  }, [isOpen, formData, paymentUrl, formSubmitted, scriptsLoaded]);
+  }, [isOpen, formData, paymentUrl, formSubmitted]);
 
   // האזנה לניווט בתוך ה-iframe (success/failure)
   useEffect(() => {
