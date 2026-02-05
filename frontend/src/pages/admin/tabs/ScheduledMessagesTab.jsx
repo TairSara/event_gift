@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
 
 export default function ScheduledMessagesTab() {
   const [messages, setMessages] = useState([]);
@@ -16,18 +17,22 @@ export default function ScheduledMessagesTab() {
     try {
       setLoading(true);
       const token = localStorage.getItem('adminToken');
-      const response = await axios.get('/api/admin/scheduled-messages', {
-        headers: { Authorization: `Bearer ${token}` },
-        params: {
-          page: pagination.page,
-          limit: pagination.limit,
-          status: statusFilter || undefined,
-          type: typeFilter || undefined
-        }
+      const params = new URLSearchParams({
+        page: pagination.page,
+        limit: pagination.limit,
+        ...(statusFilter && { status: statusFilter }),
+        ...(typeFilter && { type: typeFilter })
       });
 
-      setMessages(response.data.messages || []);
-      setPagination(prev => ({ ...prev, ...response.data.pagination }));
+      const response = await fetch(`${API_BASE_URL}/admin/scheduled-messages?${params}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setMessages(data.messages || []);
+        setPagination(prev => ({ ...prev, ...data.pagination }));
+      }
     } catch (err) {
       console.error('Failed to fetch scheduled messages:', err);
       setMessages([]);

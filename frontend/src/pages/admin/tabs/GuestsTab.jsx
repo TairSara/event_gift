@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
 
 export default function GuestsTab() {
   const [guests, setGuests] = useState([]);
@@ -16,18 +17,22 @@ export default function GuestsTab() {
     try {
       setLoading(true);
       const token = localStorage.getItem('adminToken');
-      const response = await axios.get('/api/admin/guests', {
-        headers: { Authorization: `Bearer ${token}` },
-        params: {
-          page: pagination.page,
-          limit: pagination.limit,
-          search: search || undefined,
-          status: statusFilter || undefined
-        }
+      const params = new URLSearchParams({
+        page: pagination.page,
+        limit: pagination.limit,
+        ...(search && { search }),
+        ...(statusFilter && { status: statusFilter })
       });
 
-      setGuests(response.data.guests || []);
-      setPagination(prev => ({ ...prev, ...response.data.pagination }));
+      const response = await fetch(`${API_BASE_URL}/admin/guests?${params}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setGuests(data.guests || []);
+        setPagination(prev => ({ ...prev, ...data.pagination }));
+      }
     } catch (err) {
       console.error('Failed to fetch guests:', err);
       setGuests([]);

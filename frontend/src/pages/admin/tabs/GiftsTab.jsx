@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
 
 export default function GiftsTab() {
   const [gifts, setGifts] = useState([]);
@@ -17,17 +18,21 @@ export default function GiftsTab() {
     try {
       setLoading(true);
       const token = localStorage.getItem('adminToken');
-      const response = await axios.get('/api/admin/gifts', {
-        headers: { Authorization: `Bearer ${token}` },
-        params: {
-          page: pagination.page,
-          limit: pagination.limit,
-          search: search || undefined
-        }
+      const params = new URLSearchParams({
+        page: pagination.page,
+        limit: pagination.limit,
+        ...(search && { search })
       });
 
-      setGifts(response.data.gifts || []);
-      setPagination(prev => ({ ...prev, ...response.data.pagination }));
+      const response = await fetch(`${API_BASE_URL}/admin/gifts?${params}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setGifts(data.gifts || []);
+        setPagination(prev => ({ ...prev, ...data.pagination }));
+      }
     } catch (err) {
       console.error('Failed to fetch gifts:', err);
       setGifts([]);
@@ -39,10 +44,13 @@ export default function GiftsTab() {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await axios.get('/api/admin/dashboard/stats', {
+      const response = await fetch(`${API_BASE_URL}/admin/dashboard/stats`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setStats(response.data.gifts);
+      if (response.ok) {
+        const data = await response.json();
+        setStats(data.gifts);
+      }
     } catch (err) {
       console.error('Failed to fetch stats:', err);
     }

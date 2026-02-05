@@ -1,6 +1,7 @@
 import { Navigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import axios from "axios";
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
 
 /**
  * Protected Route for admin pages
@@ -25,14 +26,23 @@ export default function ProtectedAdminRoute({ children }) {
 
       try {
         // בדיקת ה-token בצד השרת
-        const response = await axios.get('/api/admin/check-session', {
+        const response = await fetch(`${API_BASE_URL}/admin/check-session`, {
           headers: {
             'Authorization': `Bearer ${adminToken}`
           }
         });
 
-        if (response.data.is_admin) {
-          setIsAuthenticated(true);
+        if (response.ok) {
+          const data = await response.json();
+          if (data.is_admin) {
+            setIsAuthenticated(true);
+          } else {
+            // Token לא תקין, נקה הכל
+            localStorage.removeItem('adminToken');
+            localStorage.removeItem('adminUser');
+            localStorage.removeItem('isAdmin');
+            setIsAuthenticated(false);
+          }
         } else {
           // Token לא תקין, נקה הכל
           localStorage.removeItem('adminToken');

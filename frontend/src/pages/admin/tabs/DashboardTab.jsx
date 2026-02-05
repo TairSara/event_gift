@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
 
 export default function DashboardTab() {
   const [stats, setStats] = useState(null);
@@ -16,12 +17,18 @@ export default function DashboardTab() {
       const headers = { Authorization: `Bearer ${token}` };
 
       const [statsRes, activityRes] = await Promise.all([
-        axios.get('/api/admin/dashboard/stats', { headers }),
-        axios.get('/api/admin/activity/recent?limit=10', { headers })
+        fetch(`${API_BASE_URL}/admin/dashboard/stats`, { headers }),
+        fetch(`${API_BASE_URL}/admin/activity/recent?limit=10`, { headers })
       ]);
 
-      setStats(statsRes.data);
-      setRecentActivity(activityRes.data.activities || []);
+      if (statsRes.ok) {
+        const statsData = await statsRes.json();
+        setStats(statsData);
+      }
+      if (activityRes.ok) {
+        const activityData = await activityRes.json();
+        setRecentActivity(activityData.activities || []);
+      }
     } catch (err) {
       console.error('Failed to fetch dashboard data:', err);
     } finally {

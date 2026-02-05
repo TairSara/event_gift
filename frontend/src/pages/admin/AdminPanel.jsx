@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { Routes, Route, NavLink, useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import './AdminStyles.css';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
 
 // Tab Components
 import DashboardTab from './tabs/DashboardTab';
@@ -30,10 +31,13 @@ export default function AdminPanel() {
   const fetchStats = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      const response = await axios.get('/api/admin/dashboard/stats', {
+      const response = await fetch(`${API_BASE_URL}/admin/dashboard/stats`, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      setStats(response.data);
+      if (response.ok) {
+        const data = await response.json();
+        setStats(data);
+      }
     } catch (err) {
       console.error('Failed to fetch stats:', err);
     }

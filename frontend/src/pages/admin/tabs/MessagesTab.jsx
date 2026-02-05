@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import axios from 'axios';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
 
 export default function MessagesTab() {
   const [messages, setMessages] = useState([]);
@@ -17,17 +18,21 @@ export default function MessagesTab() {
     try {
       setLoading(true);
       const token = localStorage.getItem('adminToken');
-      const response = await axios.get('/api/admin/contacts', {
-        headers: { Authorization: `Bearer ${token}` },
-        params: {
-          page: pagination.page,
-          limit: pagination.limit,
-          status: statusFilter || undefined
-        }
+      const params = new URLSearchParams({
+        page: pagination.page,
+        limit: pagination.limit,
+        ...(statusFilter && { status: statusFilter })
       });
 
-      setMessages(response.data.messages || []);
-      setPagination(prev => ({ ...prev, ...response.data.pagination }));
+      const response = await fetch(`${API_BASE_URL}/admin/contacts?${params}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        setMessages(data.messages || []);
+        setPagination(prev => ({ ...prev, ...data.pagination }));
+      }
     } catch (err) {
       console.error('Failed to fetch messages:', err);
       setMessages([]);
@@ -39,10 +44,10 @@ export default function MessagesTab() {
   const updateMessageStatus = async (messageId, status) => {
     try {
       const token = localStorage.getItem('adminToken');
-      await axios.patch(`/api/admin/contacts/${messageId}`,
-        { status },
-        { headers: { Authorization: `Bearer ${token}` }}
-      );
+      await fetch(`${API_BASE_URL}/admin/contacts/${messageId}?status=${status}`, {
+        method: 'PATCH',
+        headers: { Authorization: `Bearer ${token}` }
+      });
       fetchMessages();
       if (selectedMessage?.id === messageId) {
         setSelectedMessage(prev => ({ ...prev, status }));

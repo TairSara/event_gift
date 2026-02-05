@@ -1,7 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
 import './AdminStyles.css';
+
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
 
 export default function AdminLogin() {
   const navigate = useNavigate();
@@ -18,16 +19,23 @@ export default function AdminLogin() {
     setLoading(true);
 
     try {
-      const response = await axios.post('/api/admin/login', {
-        email,
-        password
+      const response = await fetch(`${API_BASE_URL}/admin/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
       });
 
-      if (response.data.requires_verification) {
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || 'שגיאה בהתחברות');
+      }
+
+      if (data.requires_verification) {
         setStep(2);
       }
     } catch (err) {
-      setError(err.response?.data?.detail || 'שגיאה בהתחברות');
+      setError(err.message || 'שגיאה בהתחברות');
     } finally {
       setLoading(false);
     }
@@ -39,19 +47,26 @@ export default function AdminLogin() {
     setLoading(true);
 
     try {
-      const response = await axios.post('/api/admin/verify-code', {
-        email,
-        code: verificationCode
+      const response = await fetch(`${API_BASE_URL}/admin/verify-code`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, code: verificationCode })
       });
 
-      if (response.data.access_token) {
-        localStorage.setItem('adminToken', response.data.access_token);
-        localStorage.setItem('adminUser', JSON.stringify(response.data.user));
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || 'קוד אימות שגוי');
+      }
+
+      if (data.access_token) {
+        localStorage.setItem('adminToken', data.access_token);
+        localStorage.setItem('adminUser', JSON.stringify(data.user));
         localStorage.setItem('isAdmin', 'true');
         navigate('/admin/dashboard');
       }
     } catch (err) {
-      setError(err.response?.data?.detail || 'קוד אימות שגוי');
+      setError(err.message || 'קוד אימות שגוי');
     } finally {
       setLoading(false);
     }
@@ -61,10 +76,21 @@ export default function AdminLogin() {
     setError('');
     setLoading(true);
     try {
-      await axios.post('/api/admin/login', { email, password });
+      const response = await fetch(`${API_BASE_URL}/admin/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.detail || 'שגיאה בשליחת קוד');
+      }
+
       setError('קוד חדש נשלח למייל');
     } catch (err) {
-      setError(err.response?.data?.detail || 'שגיאה בשליחת קוד');
+      setError(err.message || 'שגיאה בשליחת קוד');
     } finally {
       setLoading(false);
     }
