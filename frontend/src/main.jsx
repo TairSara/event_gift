@@ -20,12 +20,8 @@ import ScrollToTop from './components/ScrollToTop.jsx'
 import ProtectedAuthRoute from './components/ProtectedAuthRoute.jsx'
 import ProtectedAdminRoute from './components/ProtectedAdminRoute.jsx'
 import WhatsAppFloat from './components/WhatsAppFloat.jsx'
-import AdminLogin from './pages/AdminLogin.jsx'
-import AdminDashboard from './pages/AdminDashboard.jsx'
-import AdminUsers from './pages/AdminUsers.jsx'
-import AdminEvents from './pages/AdminEvents.jsx'
-import AdminPackages from './pages/AdminPackages.jsx'
-import AdminContacts from './pages/AdminContacts.jsx'
+import AdminLogin from './pages/admin/AdminLogin.jsx'
+import AdminPanel from './pages/admin/AdminPanel.jsx'
 import RSVPPage from './pages/RSVPPage.jsx'
 import PaymentSuccess from './pages/PaymentSuccess.jsx'
 import PaymentFailure from './pages/PaymentFailure.jsx'
@@ -61,11 +57,7 @@ createRoot(document.getElementById('root')).render(
 
           {/* Admin Routes */}
           <Route path="/admin/login" element={<AdminLogin />} />
-          <Route path="/admin/dashboard" element={<ProtectedAdminRoute><AdminDashboard /></ProtectedAdminRoute>} />
-          <Route path="/admin/users" element={<ProtectedAdminRoute><AdminUsers /></ProtectedAdminRoute>} />
-          <Route path="/admin/events" element={<ProtectedAdminRoute><AdminEvents /></ProtectedAdminRoute>} />
-          <Route path="/admin/packages" element={<ProtectedAdminRoute><AdminPackages /></ProtectedAdminRoute>} />
-          <Route path="/admin/contacts" element={<ProtectedAdminRoute><AdminContacts /></ProtectedAdminRoute>} />
+          <Route path="/admin/*" element={<ProtectedAdminRoute><AdminPanel /></ProtectedAdminRoute>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

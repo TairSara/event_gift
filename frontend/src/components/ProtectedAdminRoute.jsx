@@ -55,7 +55,7 @@ export default function ProtectedAdminRoute({ children }) {
     verifyAdminToken();
   }, []);
 
-  // בזמן בדיקה, הצג טעינה
+  // בזמן בדיקה, הצג טעינה בסגנון דארק
   if (isVerifying) {
     return (
       <div style={{
@@ -64,10 +64,24 @@ export default function ProtectedAdminRoute({ children }) {
         alignItems: 'center',
         height: '100vh',
         flexDirection: 'column',
-        gap: '1rem'
+        gap: '1rem',
+        background: '#0a0a0f',
+        color: '#e4e4e7'
       }}>
-        <div style={{ fontSize: '2rem' }}>🔐</div>
+        <div style={{
+          width: '50px',
+          height: '50px',
+          border: '3px solid #2a2a3a',
+          borderTopColor: '#6366f1',
+          borderRadius: '50%',
+          animation: 'spin 0.8s linear infinite'
+        }}></div>
         <div>מאמת גישה...</div>
+        <style>{`
+          @keyframes spin {
+            to { transform: rotate(360deg); }
+          }
+        `}</style>
       </div>
     );
   }

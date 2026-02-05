@@ -881,6 +881,357 @@ async def get_contact_messages(
 
 
 # ============================================================================
+# GUESTS MANAGEMENT
+# ============================================================================
+
+@router.get("/api/admin/guests")
+async def get_all_guests(
+    page: int = Query(1, ge=1),
+    limit: int = Query(20, ge=1, le=100),
+    status: Optional[str] = None,
+    search: Optional[str] = None
+):
+    """
+    קבלת כל האורחים במערכת
+    """
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Build WHERE clause
+        where_parts = []
+        params = []
+
+        if status:
+            where_parts.append("g.attendance_status = %s")
+            params.append(status)
+
+        if search:
+            where_parts.append("(LOWER(g.full_name) LIKE %s OR g.phone LIKE %s)")
+            search_pattern = f"%{search.lower()}%"
+            params.extend([search_pattern, search_pattern])
+
+        where_clause = "WHERE " + " AND ".join(where_parts) if where_parts else ""
+
+        # Count total
+        cursor.execute(f"""
+            SELECT COUNT(*) FROM guests g
+            {where_clause}
+        """, params)
+        total = cursor.fetchone()[0]
+
+        # Get paginated results
+        offset = (page - 1) * limit
+
+        query = f"""
+            SELECT
+                g.id, g.full_name, g.phone, g.email, g.guests_count,
+                g.attendance_status, g.group_name, g.invitation_sent, g.created_at,
+                e.event_title
+            FROM guests g
+            LEFT JOIN events e ON g.event_id = e.id
+            {where_clause}
+            ORDER BY g.created_at DESC
+            LIMIT %s OFFSET %s
+        """
+        params.extend([limit, offset])
+
+        cursor.execute(query, params)
+        guests = cursor.fetchall()
+
+        guests_list = []
+        for guest in guests:
+            guests_list.append({
+                "id": guest[0],
+                "full_name": guest[1],
+                "phone": guest[2],
+                "email": guest[3],
+                "guests_count": guest[4],
+                "attendance_status": guest[5],
+                "group_name": guest[6],
+                "invitation_sent": guest[7],
+                "created_at": guest[8].isoformat() if guest[8] else None,
+                "event_title": guest[9]
+            })
+
+        cursor.close()
+
+        return {
+            "guests": guests_list,
+            "pagination": {
+                "page": page,
+                "limit": limit,
+                "total": total,
+                "pages": (total + limit - 1) // limit
+            }
+        }
+
+    except Exception as e:
+        print(f"Error fetching guests: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if conn:
+            conn.close()
+
+
+# ============================================================================
+# GIFTS MANAGEMENT
+# ============================================================================
+
+@router.get("/api/admin/gifts")
+async def get_all_gifts(
+    page: int = Query(1, ge=1),
+    limit: int = Query(20, ge=1, le=100),
+    search: Optional[str] = None
+):
+    """
+    קבלת כל המתנות במערכת
+    """
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Build WHERE clause
+        where_parts = []
+        params = []
+
+        if search:
+            where_parts.append("(LOWER(g.full_name) LIKE %s OR LOWER(e.event_title) LIKE %s)")
+            search_pattern = f"%{search.lower()}%"
+            params.extend([search_pattern, search_pattern])
+
+        where_clause = "WHERE " + " AND ".join(where_parts) if where_parts else ""
+
+        # Count total
+        cursor.execute(f"""
+            SELECT COUNT(*) FROM gifts gf
+            LEFT JOIN guests g ON gf.guest_id = g.id
+            LEFT JOIN events e ON gf.event_id = e.id
+            {where_clause}
+        """, params)
+        total = cursor.fetchone()[0]
+
+        # Get paginated results
+        offset = (page - 1) * limit
+
+        query = f"""
+            SELECT
+                gf.id, gf.amount, gf.currency, gf.gift_date, gf.payment_method, gf.notes, gf.created_at,
+                g.full_name as guest_name,
+                e.event_title
+            FROM gifts gf
+            LEFT JOIN guests g ON gf.guest_id = g.id
+            LEFT JOIN events e ON gf.event_id = e.id
+            {where_clause}
+            ORDER BY gf.created_at DESC
+            LIMIT %s OFFSET %s
+        """
+        params.extend([limit, offset])
+
+        cursor.execute(query, params)
+        gifts = cursor.fetchall()
+
+        gifts_list = []
+        for gift in gifts:
+            gifts_list.append({
+                "id": gift[0],
+                "amount": float(gift[1]) if gift[1] else 0,
+                "currency": gift[2] or "ILS",
+                "gift_date": gift[3].isoformat() if gift[3] else None,
+                "payment_method": gift[4],
+                "notes": gift[5],
+                "created_at": gift[6].isoformat() if gift[6] else None,
+                "guest_name": gift[7],
+                "event_title": gift[8]
+            })
+
+        cursor.close()
+
+        return {
+            "gifts": gifts_list,
+            "pagination": {
+                "page": page,
+                "limit": limit,
+                "total": total,
+                "pages": (total + limit - 1) // limit
+            }
+        }
+
+    except Exception as e:
+        print(f"Error fetching gifts: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if conn:
+            conn.close()
+
+
+# ============================================================================
+# SCHEDULED MESSAGES
+# ============================================================================
+
+@router.get("/api/admin/scheduled-messages")
+async def get_scheduled_messages(
+    page: int = Query(1, ge=1),
+    limit: int = Query(20, ge=1, le=100),
+    status: Optional[str] = None,
+    type: Optional[str] = None
+):
+    """
+    קבלת כל ההודעות המתוזמנות במערכת
+    """
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # Check if scheduled_messages table exists
+        cursor.execute("""
+            SELECT EXISTS (
+                SELECT FROM information_schema.tables
+                WHERE table_name = 'scheduled_messages'
+            )
+        """)
+        table_exists = cursor.fetchone()[0]
+
+        if not table_exists:
+            return {
+                "messages": [],
+                "pagination": {"page": 1, "limit": limit, "total": 0, "pages": 0}
+            }
+
+        # Build WHERE clause
+        where_parts = []
+        params = []
+
+        if status:
+            where_parts.append("sm.status = %s")
+            params.append(status)
+
+        if type:
+            where_parts.append("sm.type = %s")
+            params.append(type)
+
+        where_clause = "WHERE " + " AND ".join(where_parts) if where_parts else ""
+
+        # Count total
+        cursor.execute(f"""
+            SELECT COUNT(*) FROM scheduled_messages sm
+            {where_clause}
+        """, params)
+        total = cursor.fetchone()[0]
+
+        # Get paginated results
+        offset = (page - 1) * limit
+
+        query = f"""
+            SELECT
+                sm.id, sm.type, sm.content, sm.scheduled_at, sm.sent_at, sm.status,
+                sm.recipient_name, sm.recipient_phone, sm.recipient_email,
+                e.event_title
+            FROM scheduled_messages sm
+            LEFT JOIN events e ON sm.event_id = e.id
+            {where_clause}
+            ORDER BY sm.scheduled_at DESC
+            LIMIT %s OFFSET %s
+        """
+        params.extend([limit, offset])
+
+        cursor.execute(query, params)
+        messages = cursor.fetchall()
+
+        messages_list = []
+        for msg in messages:
+            messages_list.append({
+                "id": msg[0],
+                "type": msg[1],
+                "content": msg[2],
+                "scheduled_at": msg[3].isoformat() if msg[3] else None,
+                "sent_at": msg[4].isoformat() if msg[4] else None,
+                "status": msg[5],
+                "recipient_name": msg[6],
+                "recipient_phone": msg[7],
+                "recipient_email": msg[8],
+                "event_title": msg[9]
+            })
+
+        cursor.close()
+
+        return {
+            "messages": messages_list,
+            "pagination": {
+                "page": page,
+                "limit": limit,
+                "total": total,
+                "pages": (total + limit - 1) // limit
+            }
+        }
+
+    except Exception as e:
+        print(f"Error fetching scheduled messages: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if conn:
+            conn.close()
+
+
+# ============================================================================
+# CONTACT MESSAGE UPDATE
+# ============================================================================
+
+@router.patch("/api/admin/contacts/{message_id}")
+async def update_contact_message(message_id: int, status: str = None):
+    """
+    עדכון סטטוס של פנייה
+    """
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        updates = []
+        params = []
+
+        if status:
+            updates.append("status = %s")
+            params.append(status)
+            if status == 'responded':
+                updates.append("responded_at = NOW()")
+
+        if not updates:
+            raise HTTPException(status_code=400, detail="No updates provided")
+
+        params.append(message_id)
+        query = f"""
+            UPDATE contact_messages
+            SET {", ".join(updates)}
+            WHERE id = %s
+            RETURNING id
+        """
+
+        cursor.execute(query, params)
+        result = cursor.fetchone()
+
+        if not result:
+            raise HTTPException(status_code=404, detail="Message not found")
+
+        conn.commit()
+        cursor.close()
+
+        return {"success": True, "message": "Contact updated successfully"}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        print(f"Error updating contact message: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if conn:
+            conn.close()
+
+
+# ============================================================================
 # RECENT ACTIVITY
 # ============================================================================
 
