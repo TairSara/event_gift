@@ -495,6 +495,9 @@ def update_event(event_id: int, event: EventUpdate):
         if event.event_title is not None:
             updates.append("event_title = %s")
             params.append(event.event_title)
+            # Also update event_name for consistency
+            updates.append("event_name = %s")
+            params.append(event.event_title)
 
         if event.event_date is not None:
             updates.append("event_date = %s")

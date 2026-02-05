@@ -9,9 +9,9 @@ const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com
 // Dynamic fields:
 // {{1}} = Guest name (automatic from guest list)
 // {{2}} = Event name (event_title)
-// {{3}} = Event date (displayed as "אירוח")
-// {{4}} = Event time (displayed as "תאריך")
-// {{5}} = Event location (displayed as "שעה")
+// {{3}} = Event date (labeled "אירוח" in template)
+// {{4}} = Event time (labeled "תאריך" in template)
+// {{5}} = Event location (labeled "שעה" in template)
 // {{6}} = Host name (SaveDay Events - fixed)
 
 // SMS Template format:
@@ -22,8 +22,10 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
   const [activeTab, setActiveTab] = useState('whatsapp');
   const [isSaving, setIsSaving] = useState(false);
 
-  // Editable fields - these update the actual event fields in DB
+  // Editable field - only event name can be edited here
   const [eventName, setEventName] = useState('');
+
+  // Read-only fields - displayed but not editable (can be edited elsewhere on the page)
   const [eventDate, setEventDate] = useState('');
   const [eventTime, setEventTime] = useState('');
   const [eventLocation, setEventLocation] = useState('');
@@ -56,47 +58,34 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      // Parse the date and time back to ISO format
-      let eventDateISO = null;
-      if (eventDate && eventTime) {
-        // Parse DD/MM/YYYY format
-        const dateParts = eventDate.split('/');
-        if (dateParts.length === 3) {
-          const [day, month, year] = dateParts;
-          const timeParts = eventTime.split(':');
-          const [hours, minutes] = timeParts;
-          eventDateISO = `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}T${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
-        }
-      }
-
-      // Update the actual event fields
+      // Only update event_title (event name)
       const response = await fetch(`${API_URL}/packages/events/${event.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          event_title: eventName,
-          event_location: eventLocation,
-          ...(eventDateISO && { event_date: eventDateISO })
+          event_title: eventName
         })
       });
 
       if (response.ok) {
-        showSuccess('פרטי ההודעה נשמרו בהצלחה');
+        showSuccess('שם האירוע נשמר בהצלחה');
         if (onUpdate) onUpdate();
       } else {
-        showInfo('שגיאה בשמירת הפרטים');
+        const errorData = await response.json().catch(() => ({}));
+        console.error('Save error:', errorData);
+        showInfo('שגיאה בשמירת שם האירוע');
       }
     } catch (error) {
-      console.error('Error saving message settings:', error);
-      showInfo('שגיאה בשמירת הפרטים');
+      console.error('Error saving event name:', error);
+      showInfo('שגיאה בשמירת שם האירוע');
     } finally {
       setIsSaving(false);
     }
   };
 
-  // Generate WhatsApp preview
+  // Generate WhatsApp preview - Note: template labels are misleading but we show correct values
   const getWhatsAppPreview = () => {
     return `שלום [שם האורח] 💙
 אנא לחצו על אחד מהקישורים להזמינים ${eventName || '[שם האירוע]'}!
@@ -175,6 +164,7 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
                     onChange={(e) => setEventName(e.target.value)}
                     placeholder="החתונה של דנה ויוסי"
                   />
+                  <span className="field-hint">ניתן לעריכה - זה השם שיופיע בהודעה</span>
                 </div>
 
                 <div className="field-row">
@@ -182,18 +172,18 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
                     <label>תאריך</label>
                     <input
                       type="text"
-                      value={eventDate}
-                      onChange={(e) => setEventDate(e.target.value)}
-                      placeholder="25/12/2025"
+                      value={eventDate || 'לא הוגדר'}
+                      disabled
+                      className="field-readonly"
                     />
                   </div>
                   <div className="field-group">
                     <label>שעה</label>
                     <input
                       type="text"
-                      value={eventTime}
-                      onChange={(e) => setEventTime(e.target.value)}
-                      placeholder="20:00"
+                      value={eventTime || 'לא הוגדרה'}
+                      disabled
+                      className="field-readonly"
                     />
                   </div>
                 </div>
@@ -202,15 +192,15 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
                   <label>מיקום</label>
                   <input
                     type="text"
-                    value={eventLocation}
-                    onChange={(e) => setEventLocation(e.target.value)}
-                    placeholder="אולמי הגן, תל אביב"
+                    value={eventLocation || 'לא הוגדר'}
+                    disabled
+                    className="field-readonly"
                   />
                 </div>
 
                 <div className="field-info">
                   <i className="fas fa-info-circle"></i>
-                  <span>שם האורח ושם המארחים מתעדכנים אוטומטית</span>
+                  <span>תאריך, שעה ומיקום ניתנים לעריכה בפרטי האירוע למעלה</span>
                 </div>
               </div>
 
@@ -245,6 +235,7 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
                     onChange={(e) => setEventName(e.target.value)}
                     placeholder="החתונה של דנה ויוסי"
                   />
+                  <span className="field-hint">ניתן לעריכה - זה השם שיופיע בהודעה</span>
                 </div>
 
                 <div className="field-info">
