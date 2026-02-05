@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNotification } from "../hooks/useNotification";
 import Navbar from "../components/Navbar";
 import GuestManagement from "../components/GuestManagement";
+import MessageTemplateEditor from "../components/MessageTemplateEditor";
 import { renderSide } from "../lib/canvasRender";
 import weddingManifest from '../data/wedding.manifest.json';
 import hinaManifest from '../data/hina.manifest.json';
@@ -737,6 +738,22 @@ export default function EventPage() {
                   </div>
                 </div>
               </div>
+            </div>
+
+            {/* עריכת הודעות WhatsApp/SMS */}
+            <div className="event-section message-section">
+              <div className="section-header">
+                <h2>
+                  <i className="fas fa-comment-dots"></i>
+                  עריכת הודעות
+                </h2>
+              </div>
+              <MessageTemplateEditor
+                event={event}
+                onUpdate={fetchEventData}
+                showSuccess={showSuccess}
+                showInfo={showInfo}
+              />
             </div>
 
             {/* מוזמנים */}

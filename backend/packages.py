@@ -40,6 +40,20 @@ class EventUpdate(BaseModel):
     status: Optional[str] = None
     bit_payment_link: Optional[str] = None
 
+
+class MessageSettingsUpdate(BaseModel):
+    """הגדרות הודעה מותאמות אישית"""
+    # WhatsApp fields
+    whatsapp_greeting: Optional[str] = None
+    whatsapp_event_name: Optional[str] = None
+    whatsapp_event_date: Optional[str] = None
+    whatsapp_event_time: Optional[str] = None
+    whatsapp_event_location: Optional[str] = None
+    whatsapp_host_name: Optional[str] = None
+    # SMS fields
+    sms_event_name: Optional[str] = None
+    sms_custom_message: Optional[str] = None
+
 class GuestCreate(BaseModel):
     event_id: int
     name: str
@@ -417,7 +431,7 @@ def get_event(event_id: int):
             SELECT
                 e.id, e.user_id, e.package_purchase_id, e.event_type, e.event_title,
                 e.event_date, e.event_location, e.invitation_data, e.status, e.created_at,
-                e.bit_payment_link, pp.package_name, pp.package_id
+                e.bit_payment_link, pp.package_name, pp.package_id, e.message_settings
             FROM events e
             LEFT JOIN package_purchases pp ON e.package_purchase_id = pp.id
             WHERE e.id = %s;
@@ -443,7 +457,8 @@ def get_event(event_id: int):
             "created_at": row[9].isoformat() if row[9] else None,
             "bit_payment_link": row[10],
             "package_name": row[11],
-            "package_id": row[12]
+            "package_id": row[12],
+            "message_settings": row[13] if row[13] else {}
         }
 
     except HTTPException:
@@ -573,6 +588,71 @@ def update_event(event_id: int, event: EventUpdate):
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="שגיאה בעדכון האירוע"
+        )
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
+
+
+@router.put("/events/{event_id}/message-settings")
+def update_message_settings(event_id: int, settings: MessageSettingsUpdate):
+    """
+    עדכון הגדרות הודעה מותאמות אישית לאירוע
+    """
+    conn = None
+    cur = None
+
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # קריאה לנתונים הקיימים
+        cur.execute("""
+            SELECT message_settings FROM events WHERE id = %s
+        """, (event_id,))
+
+        row = cur.fetchone()
+        if not row:
+            raise HTTPException(
+                status_code=status.HTTP_404_NOT_FOUND,
+                detail="האירוע לא נמצא"
+            )
+
+        # מיזוג ההגדרות החדשות עם הקיימות
+        current_settings = row[0] if row[0] else {}
+        new_settings = {k: v for k, v in settings.dict().items() if v is not None}
+        merged_settings = {**current_settings, **new_settings}
+
+        # עדכון הנתונים
+        cur.execute("""
+            UPDATE events
+            SET message_settings = %s, updated_at = NOW()
+            WHERE id = %s
+            RETURNING id;
+        """, (json.dumps(merged_settings), event_id))
+
+        result = cur.fetchone()
+        conn.commit()
+
+        return {
+            "message": "הגדרות ההודעה נשמרו בהצלחה",
+            "event_id": result[0],
+            "settings": merged_settings
+        }
+
+    except HTTPException:
+        if conn:
+            conn.rollback()
+        raise
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        print(f"Update message settings error: {e}")
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail="שגיאה בעדכון הגדרות ההודעה"
         )
     finally:
         if cur:

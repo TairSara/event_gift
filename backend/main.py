@@ -39,6 +39,12 @@ async def startup_migrations():
     except Exception as e:
         print(f"⚠️ Migration warning (scheduler): {str(e)}")
 
+    try:
+        from add_message_settings_column import add_message_settings_column
+        add_message_settings_column()
+    except Exception as e:
+        print(f"⚠️ Migration warning (message_settings): {str(e)}")
+
 # CORS Configuration - נאפשר לפרונט לגשת ל-API
 origins = [
     "http://localhost:5173",
