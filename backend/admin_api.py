@@ -1273,8 +1273,7 @@ async def get_all_gifts(
 async def get_scheduled_messages(
     page: int = Query(1, ge=1),
     limit: int = Query(20, ge=1, le=100),
-    status: Optional[str] = None,
-    type: Optional[str] = None
+    status: Optional[str] = None
 ):
     """
     קבלת כל ההודעות המתוזמנות במערכת
@@ -1307,10 +1306,6 @@ async def get_scheduled_messages(
             where_parts.append("sm.status = %s")
             params.append(status)
 
-        if type:
-            where_parts.append("sm.type = %s")
-            params.append(type)
-
         where_clause = "WHERE " + " AND ".join(where_parts) if where_parts else ""
 
         # Count total
@@ -1325,13 +1320,14 @@ async def get_scheduled_messages(
 
         query = f"""
             SELECT
-                sm.id, sm.type, sm.content, sm.scheduled_at, sm.sent_at, sm.status,
-                sm.recipient_name, sm.recipient_phone, sm.recipient_email,
-                e.event_title
+                sm.id, sm.event_id, sm.message_number, sm.scheduled_date,
+                sm.status, sm.sent_at, sm.guests_sent_count, sm.guests_failed_count,
+                sm.error_message, sm.created_at,
+                e.event_title, e.send_method
             FROM scheduled_messages sm
             LEFT JOIN events e ON sm.event_id = e.id
             {where_clause}
-            ORDER BY sm.scheduled_at DESC
+            ORDER BY sm.scheduled_date DESC
             LIMIT %s OFFSET %s
         """
         params.extend([limit, offset])
@@ -1343,15 +1339,17 @@ async def get_scheduled_messages(
         for msg in messages:
             messages_list.append({
                 "id": msg[0],
-                "type": msg[1],
-                "content": msg[2],
-                "scheduled_at": msg[3].isoformat() if msg[3] else None,
-                "sent_at": msg[4].isoformat() if msg[4] else None,
-                "status": msg[5],
-                "recipient_name": msg[6],
-                "recipient_phone": msg[7],
-                "recipient_email": msg[8],
-                "event_title": msg[9]
+                "event_id": msg[1],
+                "message_number": msg[2],
+                "scheduled_date": msg[3].isoformat() if msg[3] else None,
+                "status": msg[4],
+                "sent_at": msg[5].isoformat() if msg[5] else None,
+                "guests_sent_count": msg[6] or 0,
+                "guests_failed_count": msg[7] or 0,
+                "error_message": msg[8],
+                "created_at": msg[9].isoformat() if msg[9] else None,
+                "event_title": msg[10],
+                "send_method": msg[11]
             })
 
         cursor.close()

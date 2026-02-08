@@ -6,12 +6,11 @@ export default function ScheduledMessagesTab() {
   const [messages, setMessages] = useState([]);
   const [loading, setLoading] = useState(true);
   const [statusFilter, setStatusFilter] = useState('');
-  const [typeFilter, setTypeFilter] = useState('');
   const [pagination, setPagination] = useState({ page: 1, limit: 20, total: 0, pages: 0 });
 
   useEffect(() => {
     fetchMessages();
-  }, [pagination.page, statusFilter, typeFilter]);
+  }, [pagination.page, statusFilter]);
 
   const fetchMessages = async () => {
     try {
@@ -20,8 +19,7 @@ export default function ScheduledMessagesTab() {
       const params = new URLSearchParams({
         page: pagination.page,
         limit: pagination.limit,
-        ...(statusFilter && { status: statusFilter }),
-        ...(typeFilter && { type: typeFilter })
+        ...(statusFilter && { status: statusFilter })
       });
 
       const response = await fetch(`${API_BASE_URL}/admin/scheduled-messages?${params}`, {
@@ -52,14 +50,13 @@ export default function ScheduledMessagesTab() {
     });
   };
 
-  const getTypeLabel = (type) => {
-    const types = {
-      sms: 'SMS',
-      whatsapp: 'וואטסאפ',
-      email: 'אימייל',
-      reminder: 'תזכורת'
-    };
-    return types[type] || type || '-';
+  const formatDateOnly = (dateStr) => {
+    if (!dateStr) return '-';
+    return new Date(dateStr).toLocaleDateString('he-IL', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    });
   };
 
   const getStatusLabel = (status) => {
@@ -67,7 +64,8 @@ export default function ScheduledMessagesTab() {
       pending: 'ממתין',
       sent: 'נשלח',
       failed: 'נכשל',
-      cancelled: 'בוטל'
+      cancelled: 'בוטל',
+      partially_sent: 'נשלח חלקית'
     };
     return statuses[status] || status || '-';
   };
@@ -77,9 +75,20 @@ export default function ScheduledMessagesTab() {
       pending: 'pending',
       sent: 'active',
       failed: 'cancelled',
-      cancelled: 'expired'
+      cancelled: 'expired',
+      partially_sent: 'pending'
     };
     return classes[status] || 'pending';
+  };
+
+  const getMessageLabel = (num) => {
+    const labels = { 1: 'הודעה ראשונה', 2: 'הודעה שנייה', 3: 'הודעה שלישית' };
+    return labels[num] || `הודעה ${num}`;
+  };
+
+  const getSendMethodLabel = (method) => {
+    const methods = { WhatsApp: 'וואטסאפ', SMS: 'SMS', sms: 'SMS', whatsapp: 'וואטסאפ' };
+    return methods[method] || method || '-';
   };
 
   return (
@@ -93,20 +102,6 @@ export default function ScheduledMessagesTab() {
         <div className="admin-card-header">
           <h2>הודעות מתוזמנות ({pagination.total})</h2>
           <div className="admin-card-actions">
-            <select
-              className="filter-select"
-              value={typeFilter}
-              onChange={(e) => {
-                setTypeFilter(e.target.value);
-                setPagination(prev => ({ ...prev, page: 1 }));
-              }}
-            >
-              <option value="">כל הסוגים</option>
-              <option value="sms">SMS</option>
-              <option value="whatsapp">וואטסאפ</option>
-              <option value="email">אימייל</option>
-              <option value="reminder">תזכורת</option>
-            </select>
             <select
               className="filter-select"
               value={statusFilter}
@@ -136,44 +131,47 @@ export default function ScheduledMessagesTab() {
                 <thead>
                   <tr>
                     <th>אירוע</th>
-                    <th>נמען</th>
-                    <th>סוג</th>
-                    <th>תוכן</th>
-                    <th>מתוזמן ל</th>
+                    <th>מספר הודעה</th>
+                    <th>שיטת שליחה</th>
+                    <th>תאריך מתוזמן</th>
                     <th>נשלח ב</th>
+                    <th>נשלחו</th>
+                    <th>נכשלו</th>
                     <th>סטטוס</th>
+                    <th>שגיאה</th>
                   </tr>
                 </thead>
                 <tbody>
                   {messages.map(message => (
                     <tr key={message.id}>
-                      <td>{message.event_title || '-'}</td>
+                      <td><strong>{message.event_title || '-'}</strong></td>
+                      <td>{getMessageLabel(message.message_number)}</td>
                       <td>
-                        <div>
-                          <div style={{ fontSize: '0.85rem' }}>{message.recipient_name || '-'}</div>
-                          <div style={{ fontSize: '0.75rem', color: 'var(--admin-text-muted)', direction: 'ltr', textAlign: 'right' }}>
-                            {message.recipient_phone || message.recipient_email || '-'}
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <span className={`status-badge ${message.type === 'sms' ? 'info' : message.type === 'whatsapp' ? 'active' : 'primary'}`}>
-                          {getTypeLabel(message.type)}
+                        <span className={`status-badge ${message.send_method === 'WhatsApp' || message.send_method === 'whatsapp' ? 'active' : 'new'}`}>
+                          {getSendMethodLabel(message.send_method)}
                         </span>
                       </td>
-                      <td style={{ maxWidth: '250px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {message.content || message.message || '-'}
-                      </td>
                       <td style={{ color: 'var(--admin-text-muted)', fontSize: '0.85rem' }}>
-                        {formatDate(message.scheduled_at)}
+                        {formatDateOnly(message.scheduled_date)}
                       </td>
                       <td style={{ color: 'var(--admin-text-muted)', fontSize: '0.85rem' }}>
                         {message.sent_at ? formatDate(message.sent_at) : '-'}
                       </td>
                       <td>
+                        <span className="guest-count-badge confirmed">{message.guests_sent_count}</span>
+                      </td>
+                      <td>
+                        <span className={`guest-count-badge ${message.guests_failed_count > 0 ? 'declined' : 'total'}`}>
+                          {message.guests_failed_count}
+                        </span>
+                      </td>
+                      <td>
                         <span className={`status-badge ${getStatusClass(message.status)}`}>
                           {getStatusLabel(message.status)}
                         </span>
+                      </td>
+                      <td style={{ maxWidth: '200px', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', fontSize: '0.8rem', color: 'var(--admin-danger)' }}>
+                        {message.error_message || '-'}
                       </td>
                     </tr>
                   ))}
@@ -181,39 +179,41 @@ export default function ScheduledMessagesTab() {
               </table>
             </div>
 
-            <div className="admin-pagination">
-              <div className="pagination-info">
-                מציג {((pagination.page - 1) * pagination.limit) + 1} - {Math.min(pagination.page * pagination.limit, pagination.total)} מתוך {pagination.total}
+            {pagination.pages > 1 && (
+              <div className="admin-pagination">
+                <div className="pagination-info">
+                  מציג {((pagination.page - 1) * pagination.limit) + 1} - {Math.min(pagination.page * pagination.limit, pagination.total)} מתוך {pagination.total}
+                </div>
+                <div className="pagination-buttons">
+                  <button
+                    className="pagination-btn"
+                    onClick={() => setPagination(p => ({ ...p, page: p.page - 1 }))}
+                    disabled={pagination.page === 1}
+                  >
+                    הקודם
+                  </button>
+                  {[...Array(Math.min(5, pagination.pages))].map((_, i) => {
+                    const pageNum = i + 1;
+                    return (
+                      <button
+                        key={pageNum}
+                        className={`pagination-btn ${pagination.page === pageNum ? 'active' : ''}`}
+                        onClick={() => setPagination(p => ({ ...p, page: pageNum }))}
+                      >
+                        {pageNum}
+                      </button>
+                    );
+                  })}
+                  <button
+                    className="pagination-btn"
+                    onClick={() => setPagination(p => ({ ...p, page: p.page + 1 }))}
+                    disabled={pagination.page === pagination.pages}
+                  >
+                    הבא
+                  </button>
+                </div>
               </div>
-              <div className="pagination-buttons">
-                <button
-                  className="pagination-btn"
-                  onClick={() => setPagination(p => ({ ...p, page: p.page - 1 }))}
-                  disabled={pagination.page === 1}
-                >
-                  הקודם
-                </button>
-                {[...Array(Math.min(5, pagination.pages))].map((_, i) => {
-                  const pageNum = i + 1;
-                  return (
-                    <button
-                      key={pageNum}
-                      className={`pagination-btn ${pagination.page === pageNum ? 'active' : ''}`}
-                      onClick={() => setPagination(p => ({ ...p, page: pageNum }))}
-                    >
-                      {pageNum}
-                    </button>
-                  );
-                })}
-                <button
-                  className="pagination-btn"
-                  onClick={() => setPagination(p => ({ ...p, page: p.page + 1 }))}
-                  disabled={pagination.page === pagination.pages}
-                >
-                  הבא
-                </button>
-              </div>
-            </div>
+            )}
           </>
         ) : (
           <div className="admin-empty">
