@@ -975,6 +975,204 @@ async def get_all_guests(
             conn.close()
 
 
+@router.get("/api/admin/events-with-guests")
+async def get_events_with_guest_counts(
+    page: int = Query(1, ge=1),
+    limit: int = Query(50, ge=1, le=100),
+    search: Optional[str] = None
+):
+    """
+    קבלת רשימת אירועים עם ספירת אורחים לפי סטטוס
+    """
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        where_parts = []
+        params = []
+
+        if search:
+            where_parts.append("(LOWER(e.event_title) LIKE %s OR LOWER(u.full_name) LIKE %s)")
+            search_pattern = f"%{search.lower()}%"
+            params.extend([search_pattern, search_pattern])
+
+        where_clause = "WHERE " + " AND ".join(where_parts) if where_parts else ""
+
+        cursor.execute(f"""
+            SELECT COUNT(DISTINCT e.id) FROM events e
+            LEFT JOIN users u ON e.user_id = u.id
+            {where_clause}
+        """, params)
+        total = cursor.fetchone()[0]
+
+        offset = (page - 1) * limit
+
+        query = f"""
+            SELECT
+                e.id, e.event_title, e.event_type, e.event_date, e.event_location, e.status,
+                u.full_name as user_name,
+                COUNT(DISTINCT g.id) as total_guests,
+                COUNT(DISTINCT CASE WHEN g.status = 'confirmed' THEN g.id END) as confirmed,
+                COUNT(DISTINCT CASE WHEN g.status = 'pending' OR g.status IS NULL THEN g.id END) as pending,
+                COUNT(DISTINCT CASE WHEN g.status = 'declined' THEN g.id END) as declined
+            FROM events e
+            LEFT JOIN users u ON e.user_id = u.id
+            LEFT JOIN guests g ON e.id = g.event_id
+            {where_clause}
+            GROUP BY e.id, e.event_title, e.event_type, e.event_date, e.event_location, e.status, u.full_name
+            ORDER BY e.created_at DESC
+            LIMIT %s OFFSET %s
+        """
+        params.extend([limit, offset])
+
+        cursor.execute(query, params)
+        events = cursor.fetchall()
+
+        events_list = []
+        for ev in events:
+            events_list.append({
+                "id": ev[0],
+                "event_title": ev[1],
+                "event_type": ev[2],
+                "event_date": ev[3].isoformat() if ev[3] else None,
+                "event_location": ev[4],
+                "status": ev[5],
+                "user_name": ev[6],
+                "total_guests": ev[7],
+                "confirmed": ev[8],
+                "pending": ev[9],
+                "declined": ev[10]
+            })
+
+        cursor.close()
+
+        return {
+            "events": events_list,
+            "pagination": {
+                "page": page,
+                "limit": limit,
+                "total": total,
+                "pages": (total + limit - 1) // limit
+            }
+        }
+
+    except Exception as e:
+        print(f"Error fetching events with guests: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if conn:
+            conn.close()
+
+
+@router.get("/api/admin/events/{event_id}/guests")
+async def get_event_guests_admin(
+    event_id: int,
+    search: Optional[str] = None
+):
+    """
+    קבלת כל האורחים של אירוע ספציפי
+    """
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        where_parts = ["g.event_id = %s"]
+        params = [event_id]
+
+        if search:
+            where_parts.append("(LOWER(g.full_name) LIKE %s OR g.phone LIKE %s)")
+            search_pattern = f"%{search.lower()}%"
+            params.extend([search_pattern, search_pattern])
+
+        where_clause = "WHERE " + " AND ".join(where_parts)
+
+        cursor.execute(f"""
+            SELECT
+                g.id, g.full_name, g.phone, g.email, g.guests_count,
+                g.status, g.attendance_status, g.invitation_sent, g.created_at,
+                g.attending_count
+            FROM guests g
+            {where_clause}
+            ORDER BY g.created_at DESC
+        """, params)
+        guests = cursor.fetchall()
+
+        guests_list = []
+        for guest in guests:
+            current_status = guest[5] if guest[5] else (guest[6] or 'pending')
+            guests_list.append({
+                "id": guest[0],
+                "full_name": guest[1],
+                "phone": guest[2],
+                "email": guest[3],
+                "guests_count": guest[4] or 1,
+                "status": current_status,
+                "invitation_sent": guest[7],
+                "created_at": guest[8].isoformat() if guest[8] else None,
+                "attending_count": guest[9]
+            })
+
+        cursor.close()
+
+        return {"guests": guests_list}
+
+    except Exception as e:
+        print(f"Error fetching event guests: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if conn:
+            conn.close()
+
+
+@router.put("/api/admin/guests/{guest_id}/status")
+async def update_guest_status_admin(guest_id: int, body: dict):
+    """
+    עדכון סטטוס אורח על ידי מנהל
+    """
+    conn = None
+    try:
+        new_status = body.get("status")
+        if new_status not in ("confirmed", "pending", "declined"):
+            raise HTTPException(status_code=400, detail="Invalid status. Must be: confirmed, pending, declined")
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            UPDATE guests
+            SET status = %s, attendance_status = %s, updated_at = NOW()
+            WHERE id = %s
+            RETURNING id, full_name, status
+        """, (new_status, new_status, guest_id))
+
+        result = cursor.fetchone()
+        if not result:
+            raise HTTPException(status_code=404, detail="Guest not found")
+
+        conn.commit()
+        cursor.close()
+
+        return {
+            "message": "סטטוס האורח עודכן בהצלחה",
+            "guest_id": result[0],
+            "full_name": result[1],
+            "status": result[2]
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        print(f"Error updating guest status: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if conn:
+            conn.close()
+
+
 # ============================================================================
 # GIFTS MANAGEMENT
 # ============================================================================

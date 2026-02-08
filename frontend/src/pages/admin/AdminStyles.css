@@ -1106,3 +1106,101 @@
 .admin-table-wrapper::-webkit-scrollbar-thumb:hover {
   background: var(--admin-text-dim);
 }
+
+/* ============================================
+   Guests Tab - Events List & Drill-down
+   ============================================ */
+
+.guests-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: transparent;
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius-sm);
+  padding: 0.5rem 1rem;
+  color: var(--admin-primary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--admin-transition);
+  margin-bottom: 1rem;
+}
+
+.guests-back-btn:hover {
+  background: var(--admin-primary-dim);
+  border-color: var(--admin-primary);
+}
+
+.guests-event-row {
+  cursor: pointer;
+  transition: var(--admin-transition);
+}
+
+.guests-event-row:hover {
+  background: var(--admin-primary-dim) !important;
+}
+
+.guests-view-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--admin-primary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.guest-count-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  padding: 0.2rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.guest-count-badge.total {
+  background: var(--admin-primary-dim);
+  color: var(--admin-primary);
+}
+
+.guest-count-badge.confirmed {
+  background: var(--admin-success-dim);
+  color: var(--admin-success);
+}
+
+.guest-count-badge.pending {
+  background: var(--admin-warning-dim);
+  color: var(--admin-warning);
+}
+
+.guest-count-badge.declined {
+  background: var(--admin-danger-dim);
+  color: var(--admin-danger);
+}
+
+.guest-status-select {
+  background: var(--admin-surface-2);
+  border: 1px solid var(--admin-border);
+  border-radius: var(--admin-radius-sm);
+  padding: 0.4rem 0.75rem;
+  color: var(--admin-text);
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: var(--admin-transition);
+  direction: rtl;
+}
+
+.guest-status-select:focus {
+  outline: none;
+  border-color: var(--admin-primary);
+  box-shadow: 0 0 0 3px var(--admin-primary-dim);
+}
+
+.guest-status-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
