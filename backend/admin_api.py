@@ -1270,13 +1270,13 @@ async def get_all_gifts(
 # ============================================================================
 
 @router.get("/api/admin/scheduled-messages")
-async def get_scheduled_messages(
+async def get_events_with_scheduled_messages(
     page: int = Query(1, ge=1),
-    limit: int = Query(20, ge=1, le=100),
-    status: Optional[str] = None
+    limit: int = Query(50, ge=1, le=100),
+    search: Optional[str] = None
 ):
     """
-    קבלת כל ההודעות המתוזמנות במערכת
+    קבלת רשימת אירועים עם ספירת הודעות מתוזמנות
     """
     conn = None
     try:
@@ -1294,68 +1294,74 @@ async def get_scheduled_messages(
 
         if not table_exists:
             return {
-                "messages": [],
+                "events": [],
                 "pagination": {"page": 1, "limit": limit, "total": 0, "pages": 0}
             }
 
-        # Build WHERE clause
         where_parts = []
         params = []
 
-        if status:
-            where_parts.append("sm.status = %s")
-            params.append(status)
+        if search:
+            where_parts.append("LOWER(e.event_title) LIKE %s")
+            search_pattern = f"%{search.lower()}%"
+            params.append(search_pattern)
 
         where_clause = "WHERE " + " AND ".join(where_parts) if where_parts else ""
 
-        # Count total
+        # Count distinct events that have scheduled messages
         cursor.execute(f"""
-            SELECT COUNT(*) FROM scheduled_messages sm
+            SELECT COUNT(DISTINCT sm.event_id)
+            FROM scheduled_messages sm
+            LEFT JOIN events e ON sm.event_id = e.id
             {where_clause}
         """, params)
         total = cursor.fetchone()[0]
 
-        # Get paginated results
         offset = (page - 1) * limit
 
         query = f"""
             SELECT
-                sm.id, sm.event_id, sm.message_number, sm.scheduled_date,
-                sm.status, sm.sent_at, sm.guests_sent_count, sm.guests_failed_count,
-                sm.error_message, sm.created_at,
-                e.event_title, e.send_method
+                e.id, e.event_title, e.event_type, e.event_date, e.event_location,
+                e.send_method,
+                COUNT(sm.id) as total_messages,
+                COUNT(CASE WHEN sm.status = 'pending' THEN 1 END) as pending_count,
+                COUNT(CASE WHEN sm.status = 'sent' THEN 1 END) as sent_count,
+                COUNT(CASE WHEN sm.status = 'failed' THEN 1 END) as failed_count,
+                COALESCE(SUM(sm.guests_sent_count), 0) as total_sent,
+                COALESCE(SUM(sm.guests_failed_count), 0) as total_failed
             FROM scheduled_messages sm
             LEFT JOIN events e ON sm.event_id = e.id
             {where_clause}
-            ORDER BY sm.scheduled_date DESC
+            GROUP BY e.id, e.event_title, e.event_type, e.event_date, e.event_location, e.send_method
+            ORDER BY MAX(sm.scheduled_date) DESC
             LIMIT %s OFFSET %s
         """
         params.extend([limit, offset])
 
         cursor.execute(query, params)
-        messages = cursor.fetchall()
+        events = cursor.fetchall()
 
-        messages_list = []
-        for msg in messages:
-            messages_list.append({
-                "id": msg[0],
-                "event_id": msg[1],
-                "message_number": msg[2],
-                "scheduled_date": msg[3].isoformat() if msg[3] else None,
-                "status": msg[4],
-                "sent_at": msg[5].isoformat() if msg[5] else None,
-                "guests_sent_count": msg[6] or 0,
-                "guests_failed_count": msg[7] or 0,
-                "error_message": msg[8],
-                "created_at": msg[9].isoformat() if msg[9] else None,
-                "event_title": msg[10],
-                "send_method": msg[11]
+        events_list = []
+        for ev in events:
+            events_list.append({
+                "id": ev[0],
+                "event_title": ev[1],
+                "event_type": ev[2],
+                "event_date": ev[3].isoformat() if ev[3] else None,
+                "event_location": ev[4],
+                "send_method": ev[5],
+                "total_messages": ev[6],
+                "pending_count": ev[7],
+                "sent_count": ev[8],
+                "failed_count": ev[9],
+                "total_sent": ev[10],
+                "total_failed": ev[11]
             })
 
         cursor.close()
 
         return {
-            "messages": messages_list,
+            "events": events_list,
             "pagination": {
                 "page": page,
                 "limit": limit,
@@ -1365,7 +1371,58 @@ async def get_scheduled_messages(
         }
 
     except Exception as e:
-        print(f"Error fetching scheduled messages: {e}")
+        print(f"Error fetching events with scheduled messages: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if conn:
+            conn.close()
+
+
+@router.get("/api/admin/scheduled-messages/event/{event_id}")
+async def get_event_scheduled_messages(event_id: int):
+    """
+    קבלת כל ההודעות המתוזמנות לאירוע ספציפי
+    """
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT
+                sm.id, sm.message_number, sm.scheduled_date,
+                sm.status, sm.sent_at, sm.guests_sent_count, sm.guests_failed_count,
+                sm.error_message, sm.created_at,
+                e.event_title, e.send_method
+            FROM scheduled_messages sm
+            LEFT JOIN events e ON sm.event_id = e.id
+            WHERE sm.event_id = %s
+            ORDER BY sm.message_number ASC
+        """, (event_id,))
+        messages = cursor.fetchall()
+
+        messages_list = []
+        for msg in messages:
+            messages_list.append({
+                "id": msg[0],
+                "message_number": msg[1],
+                "scheduled_date": msg[2].isoformat() if msg[2] else None,
+                "status": msg[3],
+                "sent_at": msg[4].isoformat() if msg[4] else None,
+                "guests_sent_count": msg[5] or 0,
+                "guests_failed_count": msg[6] or 0,
+                "error_message": msg[7],
+                "created_at": msg[8].isoformat() if msg[8] else None,
+                "event_title": msg[9],
+                "send_method": msg[10]
+            })
+
+        cursor.close()
+
+        return {"messages": messages_list}
+
+    except Exception as e:
+        print(f"Error fetching event scheduled messages: {e}")
         raise HTTPException(status_code=500, detail=str(e))
     finally:
         if conn:
