@@ -10,8 +10,6 @@ import UsersTab from './tabs/UsersTab';
 import EventsTab from './tabs/EventsTab';
 import PackagesTab from './tabs/PackagesTab';
 import GuestsTab from './tabs/GuestsTab';
-import GiftsTab from './tabs/GiftsTab';
-import MessagesTab from './tabs/MessagesTab';
 import ScheduledMessagesTab from './tabs/ScheduledMessagesTab';
 
 export default function AdminPanel() {
@@ -56,8 +54,6 @@ export default function AdminPanel() {
     { path: 'events', icon: 'calendar', label: 'אירועים', badge: stats?.events?.active },
     { path: 'packages', icon: 'package', label: 'חבילות', badge: stats?.packages?.active },
     { path: 'guests', icon: 'people', label: 'אורחים', badge: stats?.guests?.total },
-    { path: 'gifts', icon: 'gift', label: 'מתנות', badge: stats?.gifts?.count },
-    { path: 'messages', icon: 'mail', label: 'פניות', badge: null },
     { path: 'scheduled', icon: 'clock', label: 'הודעות מתוזמנות', badge: null },
   ];
 
@@ -212,8 +208,6 @@ export default function AdminPanel() {
           <Route path="events" element={<EventsTab />} />
           <Route path="packages" element={<PackagesTab />} />
           <Route path="guests" element={<GuestsTab />} />
-          <Route path="gifts" element={<GiftsTab />} />
-          <Route path="messages" element={<MessagesTab />} />
           <Route path="scheduled" element={<ScheduledMessagesTab />} />
           <Route path="*" element={<DashboardTab />} />
         </Routes>
