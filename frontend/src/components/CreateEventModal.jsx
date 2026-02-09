@@ -112,7 +112,7 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
           צור אירוע חדש
         </h2>
 
-        <div className="modal-content">
+        <div className="create-event-modal-body">
           {/* שם האירוע */}
           <div className="form-group">
             <label>

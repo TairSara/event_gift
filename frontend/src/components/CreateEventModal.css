@@ -83,7 +83,7 @@
   font-size: 2.2rem;
 }
 
-.modal-content {
+.create-event-modal-body {
   padding: 1.5rem 2.5rem;
   display: flex;
   flex-direction: column;
@@ -344,7 +344,7 @@
     font-size: 1.3rem;
   }
 
-  .modal-content {
+  .create-event-modal-body {
     padding: 0.8rem 1rem;
   }
 
