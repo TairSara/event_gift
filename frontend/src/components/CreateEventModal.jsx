@@ -107,7 +107,7 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
   return (
     <div className="create-event-modal-overlay" onClick={onClose}>
       <div className="create-event-modal" onClick={(e) => e.stopPropagation()}>
-        <h2 className="modal-title">
+        <h2 className="create-event-modal-title">
           <i className="fas fa-plus-circle"></i>
           צור אירוע חדש
         </h2>
@@ -322,7 +322,7 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
           )}
         </div>
 
-        <div className="modal-footer">
+        <div className="create-event-modal-footer">
           <button
             className="btn-create"
             onClick={handleCreateEvent}
