@@ -81,6 +81,16 @@ export default function TemplateSelection() {
           });
 
           if (response.ok) {
+            // Upload image to ImgBB so WhatsApp/SMS can use it
+            try {
+              await fetch(`${API_URL}/packages/events/${eventId}/upload-invitation-image`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image_data: imageData })
+              });
+            } catch (uploadErr) {
+              console.error('Failed to upload invitation image:', uploadErr);
+            }
             navigate(`/event/${eventId}`);
           } else {
             alert('שגיאה בשמירת ההזמנה');
