@@ -107,7 +107,7 @@ class SMS019Service:
         self,
         destination: str,
         message_text: str,
-        source: str = "invite2you"
+        source: str = "Save-TheDay"
     ) -> Dict:
         """
         Send SMS using 019SMS API
@@ -191,7 +191,7 @@ class SMS019Service:
         self,
         destination: str,
         message: str,
-        source: str = "invite2you"
+        source: str = "Save-TheDay"
     ) -> Dict:
         """
         Send a simple text SMS
@@ -213,7 +213,7 @@ class SMS019Service:
     def send_bulk_sms(
         self,
         messages: List[Dict[str, str]],
-        source: str = "invite2you"
+        source: str = "Save-TheDay"
     ) -> Dict:
         """
         Send multiple SMS messages in a single API call using 019SMS bulk API
