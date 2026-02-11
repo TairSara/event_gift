@@ -149,7 +149,6 @@ export default function PackagesTab() {
               <thead>
                 <tr>
                   <th>שם החבילה</th>
-                  <th>מחיר</th>
                   <th>סה"כ רכישות</th>
                   <th>פעילות כעת</th>
                 </tr>
@@ -158,7 +157,6 @@ export default function PackagesTab() {
                 {stats.package_breakdown.map((pkg, index) => (
                   <tr key={index}>
                     <td><strong>{pkg.name}</strong></td>
-                    <td>{formatCurrency(pkg.price)}</td>
                     <td>{pkg.total_purchases}</td>
                     <td>
                       <span className="status-badge active">{pkg.active_count}</span>
