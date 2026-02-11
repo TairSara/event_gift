@@ -53,13 +53,29 @@ export default function EventPage() {
       // Handle custom upload - draw the uploaded image onto the canvas
       if (invitationData.template_id === 'custom-upload' && invitationData.custom_image) {
         const img = new Image();
-        img.onload = () => {
+        img.onload = async () => {
           const canvas = invitationCanvasRef.current;
           if (!canvas) return;
           canvas.width = img.width;
           canvas.height = img.height;
           const ctx = canvas.getContext('2d');
           ctx.drawImage(img, 0, 0);
+
+          // Upload custom image to ImgBB if not already uploaded
+          if (!invitationData.generated_image_url) {
+            try {
+              const base64Image = canvas.toDataURL('image/png');
+              const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+              await fetch(`${API_URL}/packages/events/${event.id}/upload-invitation-image`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ image_data: base64Image })
+              });
+              console.log('✅ Custom invitation image uploaded successfully');
+            } catch (error) {
+              console.error('❌ Failed to upload custom invitation image:', error);
+            }
+          }
         };
         img.src = invitationData.custom_image;
         return;
