@@ -5,6 +5,7 @@ import ConfirmationModal from "./components/ConfirmationModal";
 import IntroModal from "./components/IntroModal";
 import TermsModal from "./components/TermsModal";
 import Navbar from "./components/Navbar";
+import Footer from "./components/Footer";
 import "./App.css";
 
 export default function App() {
@@ -424,73 +425,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="footer">
-        <div className="footer-container">
-          <div className="footer-simple">
-            <ul className="footer-links-row">
-              <li>
-                <a
-                  href="/contact"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    navigate('/contact');
-                  }}
-                >
-                  צור קשר
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setTermsModalOpen(true);
-                  }}
-                >
-                  תקנון
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setTermsModalOpen(true);
-                  }}
-                >
-                  שאלות נפוצות
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setTermsModalOpen(true);
-                  }}
-                >
-                  תנאי שימוש
-                </a>
-              </li>
-              <li>
-                <a
-                  href="#"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    setTermsModalOpen(true);
-                  }}
-                >
-                  מדיניות פרטיות
-                </a>
-              </li>
-            </ul>
-          </div>
-          <div className="footer-bottom">
-            <p>&copy; 2025 Save the Day. כל הזכויות שמורות.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

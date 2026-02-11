@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { authAPI } from "../services/api";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import "./LoginSuccess.css";
 
 export default function LoginSuccess() {
@@ -132,9 +133,7 @@ export default function LoginSuccess() {
         </div>
       </div>
 
-      <footer className="login-success-footer">
-        <p>&copy; 2025 Save the Day. כל הזכויות שמורות.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

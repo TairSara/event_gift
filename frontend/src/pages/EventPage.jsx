@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useNotification } from "../hooks/useNotification";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import GuestManagement from "../components/GuestManagement";
 import MessageTemplateEditor from "../components/MessageTemplateEditor";
 import { renderSide } from "../lib/canvasRender";
@@ -772,13 +773,7 @@ export default function EventPage() {
         </div>
       </section>
 
-      <footer className="footer">
-        <div className="footer-container">
-          <div className="footer-bottom">
-            <p>&copy; 2025 Save the Day. כל הזכויות שמורות.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

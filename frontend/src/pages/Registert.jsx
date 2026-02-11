@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { authAPI } from "../services/api";
 import { useNotification } from "../hooks/useNotification";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import GoogleLoginButton from "../components/GoogleLoginButton";
 import "./Registert.css";
 
@@ -338,10 +339,7 @@ export default function Registert() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="register-footer">
-        <p>&copy; 2025 Save the Day. כל הזכויות שמורות.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

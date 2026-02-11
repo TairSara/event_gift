@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useNotification } from "../hooks/useNotification";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import "./ForgotPassword.css";
 
 export default function VerifyEmail() {
@@ -200,10 +201,7 @@ export default function VerifyEmail() {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="forgot-footer">
-        <p>&copy; 2025 Save the Day. כל הזכויות שמורות.</p>
-      </footer>
+      <Footer />
     </div>
   );
 }

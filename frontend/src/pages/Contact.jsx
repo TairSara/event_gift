@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import "./Contact.css";
 
 export default function Contact() {
@@ -243,7 +244,7 @@ export default function Contact() {
       </section>
 
       {/* FAQ Section */}
-      <section className="contact-faq-section">
+      <section className="contact-faq-section" id="faq">
         <div className="contact-container">
           <h2>שאלות נפוצות</h2>
           <p className="section-subtitle">אולי התשובה שאתם מחפשים כבר כאן?</p>
@@ -269,43 +270,7 @@ export default function Contact() {
         </div>
       </section>
 
-      {/* Footer */}
-      <footer className="footer">
-        <div className="footer-container">
-          <div className="footer-grid">
-            <div className="footer-section">
-              <h3>Save the Day</h3>
-              <p>הזמנה אחת. חוויה שלמה. הפלטפורמה המובילה להזמנות דיגיטליות וניהול אירועים בישראל</p>
-            </div>
-            <div className="footer-section">
-              <h3>קישורים</h3>
-              <ul className="footer-links">
-                <li><a href="/">דף הבית</a></li>
-                <li><a href="/pricing">מחירים</a></li>
-                <li><a href="/contact">צור קשר</a></li>
-              </ul>
-            </div>
-            <div className="footer-section">
-              <h3>תמיכה</h3>
-              <ul className="footer-links">
-                <li><a href="#faq">שאלות נפוצות</a></li>
-                <li><a href="#terms">תנאי שימוש</a></li>
-                <li><a href="#privacy">מדיניות פרטיות</a></li>
-              </ul>
-            </div>
-            <div className="footer-section">
-              <h3>הצטרף אלינו</h3>
-              <ul className="footer-links">
-                <li><a href="/login">התחברות</a></li>
-                <li><a href="/register">הרשמה</a></li>
-              </ul>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <p>&copy; 2025 Save the Day. כל הזכויות שמורות.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }

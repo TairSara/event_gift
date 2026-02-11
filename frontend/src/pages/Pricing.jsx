@@ -4,6 +4,7 @@ import { useAuth } from "../context/AuthContext";
 import { useNotification } from "../hooks/useNotification";
 import Navbar from "../components/Navbar";
 import PaymentModal from "../components/PaymentModal";
+import Footer from "../components/Footer";
 import "./Pricing.css";
 
 export default function Pricing() {
@@ -487,70 +488,7 @@ export default function Pricing() {
         </div>
       </section>
 
-      <footer className="footer">
-        <div className="footer-container">
-          <div className="footer-grid">
-            <div className="footer-section">
-              <h3>Save the Day</h3>
-              <p>
-                הזמנה אחת. חוויה שלמה. הפלטפורמה המובילה להזמנות דיגיטליות
-                וניהול אירועים בישראל
-              </p>
-            </div>
-            <div className="footer-section">
-              <h3>קישורים</h3>
-              <ul className="footer-links">
-                <li>
-                  <a href="/#features">היכולות</a>
-                </li>
-                <li>
-                  <a href="/#events">סוגי אירועים</a>
-                </li>
-                <li>
-                  <a href="/#how-it-works">איך זה עובד</a>
-                </li>
-                <li>
-                  <a href="/pricing">מחירים</a>
-                </li>
-              </ul>
-            </div>
-            <div className="footer-section">
-              <h3>תמיכה</h3>
-              <ul className="footer-links">
-                <li>
-                  <a href="#contact">צור קשר</a>
-                </li>
-                <li>
-                  <a href="#faq">שאלות נפוצות</a>
-                </li>
-                <li>
-                  <a href="#terms">תנאי שימוש</a>
-                </li>
-                <li>
-                  <a href="#privacy">מדיניות פרטיות</a>
-                </li>
-              </ul>
-            </div>
-            <div className="footer-section">
-              <h3>הצטרף אלינו</h3>
-              <ul className="footer-links">
-                <li>
-                  <a href="#login">התחברות</a>
-                </li>
-                <li>
-                  <a href="#register">הרשמה</a>
-                </li>
-                <li>
-                  <a href="#dashboard">הדשבורד שלי</a>
-                </li>
-              </ul>
-            </div>
-          </div>
-          <div className="footer-bottom">
-            <p>&copy; 2025 Save the Day. כל הזכויות שמורות.</p>
-          </div>
-        </div>
-      </footer>
+      <Footer />
     </div>
   );
 }
