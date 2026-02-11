@@ -161,20 +161,33 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
                 className="form-select"
               >
                 <option value="">בחר חבילה...</option>
-                {availablePackages.map((pkg) => (
-                  <option key={pkg.id} value={pkg.id}>
-                    {pkg.package_name} - נרכש ב-{new Date(pkg.purchased_at).toLocaleDateString('he-IL')}
-                  </option>
-                ))}
+                {availablePackages.map((pkg) => {
+                  const details = [pkg.package_name];
+                  if (pkg.guest_count) details.push(pkg.guest_count);
+                  if (pkg.payment_amount) details.push(`₪${pkg.payment_amount}`);
+                  return (
+                    <option key={pkg.id} value={pkg.id}>
+                      {details.join(' | ')} - נרכש ב-{new Date(pkg.purchased_at).toLocaleDateString('he-IL')}
+                    </option>
+                  );
+                })}
               </select>
 
               {/* הצגת החבילה שנבחרה */}
-              {selectedPackage && (
-                <div className="selected-package-display">
-                  <i className="fas fa-check-circle"></i>
-                  <span>החבילה שנבחרה: {availablePackages.find(p => p.id === parseInt(selectedPackage))?.package_name}</span>
-                </div>
-              )}
+              {selectedPackage && (() => {
+                const pkg = availablePackages.find(p => p.id === parseInt(selectedPackage));
+                if (!pkg) return null;
+                return (
+                  <div className="selected-package-display">
+                    <i className="fas fa-check-circle"></i>
+                    <div>
+                      <span>החבילה שנבחרה: {pkg.package_name}</span>
+                      {pkg.guest_count && <span style={{ marginRight: '0.5rem', opacity: 0.8 }}>({pkg.guest_count})</span>}
+                      {pkg.payment_amount && <span style={{ marginRight: '0.5rem', fontWeight: 700 }}>₪{pkg.payment_amount}</span>}
+                    </div>
+                  </div>
+                );
+              })()}
             </div>
           )}
 

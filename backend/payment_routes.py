@@ -140,19 +140,20 @@ async def initiate_payment(payment: PaymentInitRequest):
             INSERT INTO package_purchases (
                 user_id, package_id, package_name,
                 payment_status, payment_amount, payment_currency,
-                tranzila_transaction_id, status
+                tranzila_transaction_id, status, guest_count
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
             RETURNING id;
         """, (
             payment.user_id,
             payment.package_id,
             payment.package_name,
             'pending',
-            amount,  # משתמשים ב-amount שחישבנו למעלה
+            amount,
             'ILS',
             order_id,
-            'pending'
+            'pending',
+            payment.guest_count
         ))
 
         purchase_id = cur.fetchone()[0]

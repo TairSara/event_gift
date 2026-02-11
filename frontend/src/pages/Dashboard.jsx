@@ -346,7 +346,12 @@ export default function Dashboard() {
                       <h3>{purchase.package_name}</h3>
                       {purchase.guest_count && (
                         <span className="guest-count-badge">
-                          {purchase.guest_count} אורחים
+                          {purchase.guest_count}
+                        </span>
+                      )}
+                      {purchase.payment_amount && (
+                        <span className="guest-count-badge" style={{ background: 'rgba(99,102,241,0.1)', color: '#6366f1' }}>
+                          ₪{purchase.payment_amount}
                         </span>
                       )}
                       <span className="purchase-date">

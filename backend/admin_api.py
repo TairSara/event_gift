@@ -577,7 +577,7 @@ async def get_package_purchases(
             SELECT
                 pp.id, p.name, p.price, pp.purchase_date, pp.expiry_date,
                 pp.status, u.email, u.full_name,
-                e.event_title
+                e.event_title, pp.guest_count, pp.payment_amount, pp.package_name
             FROM package_purchases pp
             JOIN packages p ON pp.package_id = p.id
             JOIN users u ON pp.user_id = u.id
@@ -595,14 +595,16 @@ async def get_package_purchases(
         for purchase in purchases:
             purchases_list.append({
                 "id": purchase[0],
-                "package_name": purchase[1],
+                "package_name": purchase[11] or purchase[1],
                 "price": float(str(purchase[2]).replace('₪', '').replace(' ', '').strip()) if purchase[2] else 0,
                 "purchase_date": purchase[3].isoformat() if purchase[3] else None,
                 "expiry_date": purchase[4].isoformat() if purchase[4] else None,
                 "status": purchase[5],
                 "user_email": purchase[6],
                 "user_name": purchase[7],
-                "event_title": purchase[8]
+                "event_title": purchase[8],
+                "guest_count": purchase[9],
+                "payment_amount": float(purchase[10]) if purchase[10] else None
             })
 
         cursor.close()
@@ -1593,10 +1595,10 @@ async def admin_assign_package(data: AdminAssignPackage):
 
         # יצירת רכישה עם סטטוס פעיל
         cursor.execute("""
-            INSERT INTO package_purchases (user_id, package_id, package_name, status)
-            VALUES (%s, %s, %s, 'active')
+            INSERT INTO package_purchases (user_id, package_id, package_name, status, guest_count)
+            VALUES (%s, %s, %s, 'active', %s)
             RETURNING id, purchased_at;
-        """, (data.user_id, data.package_id, data.package_name))
+        """, (data.user_id, data.package_id, data.package_name, data.guest_count))
 
         purchase_id, purchased_at = cursor.fetchone()
         conn.commit()

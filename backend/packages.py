@@ -187,7 +187,8 @@ def get_user_purchases(user_id: int):
         cur = conn.cursor()
 
         cur.execute("""
-            SELECT id, package_id, package_name, purchased_at, status
+            SELECT id, package_id, package_name, purchased_at, status,
+                   guest_count, payment_amount
             FROM package_purchases
             WHERE user_id = %s AND status = 'active'
             ORDER BY purchased_at DESC;
@@ -200,7 +201,9 @@ def get_user_purchases(user_id: int):
                 "package_id": row[1],
                 "package_name": row[2],
                 "purchased_at": row[3].isoformat() if row[3] else None,
-                "status": row[4]
+                "status": row[4],
+                "guest_count": row[5],
+                "payment_amount": float(row[6]) if row[6] else None
             })
 
         return {"purchases": purchases}

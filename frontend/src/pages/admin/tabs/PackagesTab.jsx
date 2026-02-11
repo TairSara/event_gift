@@ -203,6 +203,7 @@ export default function PackagesTab() {
                 <thead>
                   <tr>
                     <th>חבילה</th>
+                    <th>כמות</th>
                     <th>מחיר</th>
                     <th>משתמש</th>
                     <th>תאריך רכישה</th>
@@ -215,7 +216,8 @@ export default function PackagesTab() {
                   {purchases.map(purchase => (
                     <tr key={purchase.id}>
                       <td><strong>{purchase.package_name}</strong></td>
-                      <td>{formatCurrency(purchase.price)}</td>
+                      <td>{purchase.guest_count || '-'}</td>
+                      <td>{purchase.payment_amount ? `₪${purchase.payment_amount}` : formatCurrency(purchase.price)}</td>
                       <td>
                         <div>
                           <div style={{ fontSize: '0.85rem' }}>{purchase.user_name || '-'}</div>
