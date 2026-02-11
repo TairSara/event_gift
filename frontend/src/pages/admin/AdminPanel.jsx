@@ -11,6 +11,7 @@ import EventsTab from './tabs/EventsTab';
 import PackagesTab from './tabs/PackagesTab';
 import GuestsTab from './tabs/GuestsTab';
 import ScheduledMessagesTab from './tabs/ScheduledMessagesTab';
+import CreateEventTab from './tabs/CreateEventTab';
 
 export default function AdminPanel() {
   const navigate = useNavigate();
@@ -55,6 +56,7 @@ export default function AdminPanel() {
     { path: 'packages', icon: 'package', label: 'חבילות', badge: stats?.packages?.active },
     { path: 'guests', icon: 'people', label: 'אורחים', badge: stats?.guests?.total },
     { path: 'scheduled', icon: 'clock', label: 'הודעות מתוזמנות', badge: null },
+    { path: 'create-event', icon: 'plus', label: 'הקצאת חבילה', badge: null },
   ];
 
   const getIcon = (name) => {
@@ -125,6 +127,13 @@ export default function AdminPanel() {
           <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
           <polyline points="16 17 21 12 16 7"/>
           <line x1="21" y1="12" x2="9" y2="12"/>
+        </svg>
+      ),
+      plus: (
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <circle cx="12" cy="12" r="10"/>
+          <line x1="12" y1="8" x2="12" y2="16"/>
+          <line x1="8" y1="12" x2="16" y2="12"/>
         </svg>
       ),
       menu: (
@@ -209,6 +218,7 @@ export default function AdminPanel() {
           <Route path="packages" element={<PackagesTab />} />
           <Route path="guests" element={<GuestsTab />} />
           <Route path="scheduled" element={<ScheduledMessagesTab />} />
+          <Route path="create-event" element={<CreateEventTab />} />
           <Route path="*" element={<DashboardTab />} />
         </Routes>
       </main>

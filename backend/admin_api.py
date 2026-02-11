@@ -1550,3 +1550,76 @@ async def get_recent_activity(limit: int = Query(20, ge=1, le=100)):
     finally:
         if conn:
             conn.close()
+
+
+# ============================================================================
+# ADMIN - ASSIGN PACKAGE TO USER
+# ============================================================================
+
+class AdminAssignPackage(BaseModel):
+    user_id: int
+    package_id: int
+    package_name: str
+    guest_count: Optional[str] = None
+
+
+@router.post("/api/admin/assign-package")
+async def admin_assign_package(data: AdminAssignPackage):
+    """
+    הקצאת חבילה למשתמש על ידי מנהל (ללא תשלום)
+    """
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        # בדיקה שהמשתמש קיים ואינו מנהל
+        cursor.execute(
+            "SELECT id, full_name, email FROM users WHERE id = %s AND is_admin = FALSE",
+            (data.user_id,)
+        )
+        user = cursor.fetchone()
+        if not user:
+            raise HTTPException(status_code=404, detail="המשתמש לא נמצא")
+
+        # בדיקה שהחבילה קיימת
+        cursor.execute(
+            "SELECT id, name FROM packages WHERE id = %s",
+            (data.package_id,)
+        )
+        package = cursor.fetchone()
+        if not package:
+            raise HTTPException(status_code=404, detail="החבילה לא נמצאה")
+
+        # יצירת רכישה עם סטטוס פעיל
+        cursor.execute("""
+            INSERT INTO package_purchases (user_id, package_id, package_name, status)
+            VALUES (%s, %s, %s, 'active')
+            RETURNING id, purchased_at;
+        """, (data.user_id, data.package_id, data.package_name))
+
+        purchase_id, purchased_at = cursor.fetchone()
+        conn.commit()
+
+        cursor.close()
+
+        return {
+            "message": "החבילה הוקצתה בהצלחה",
+            "purchase_id": purchase_id,
+            "user_id": data.user_id,
+            "user_name": user[1],
+            "user_email": user[2],
+            "package_name": data.package_name,
+            "purchased_at": purchased_at.isoformat() if purchased_at else None
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        print(f"Error assigning package: {e}")
+        raise HTTPException(status_code=500, detail="שגיאה בהקצאת החבילה")
+    finally:
+        if conn:
+            conn.close()
