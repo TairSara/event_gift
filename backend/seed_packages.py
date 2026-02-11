@@ -27,10 +27,10 @@ def seed_packages():
 
     packages = [
         {
-            "name": "חבילה בסיסית",
-            "tagline": "מושלם לאירועים קטנים ואינטימיים",
-            "price": "1 ₪",
-            "price_unit": "לרשומה",
+            "name": "חבילת בסיס – ידני",
+            "tagline": "אתם שולחים לבד – המערכת עושה לכם סדר",
+            "price": "39 ₪",
+            "price_unit": "",
             "color": "turquoise",
             "popular": False,
             "features": json.dumps([
@@ -46,11 +46,11 @@ def seed_packages():
             "note": "ללא הגבלת מוזמנים - כמה שתרצו!"
         },
         {
-            "name": "חבילה בינונית",
-            "tagline": "שילוב מושלם של איכות ומחיר הוגן!",
-            "price": "180 ₪",
-            "price_unit": "עד 300 איש",
-            "color": "sage",
+            "name": "אוטומטי SMS",
+            "tagline": "שליחה ואישורי הגעה ב־SMS",
+            "price": "59 ₪",
+            "price_unit": "מ-150 רשומות",
+            "color": "rose",
             "popular": False,
             "features": json.dumps([
                 {"text": "שני סיבובי וואטסאפ ו-SMS אוטומטיים", "included": True},
@@ -67,10 +67,10 @@ def seed_packages():
             "note": "החבילה המומלצת - כולל הכל מה שצריך!"
         },
         {
-            "name": "חבילה כלכלית",
-            "tagline": "הפתרון החכם - מקסימום ערך במינימום עלות!",
-            "price": "1.6 ₪",
-            "price_unit": "לרשומה",
+            "name": "אוטומטי WhatsApp",
+            "tagline": "שליחה ואישורים אוטומטיים ב־WhatsApp",
+            "price": "69 ₪",
+            "price_unit": "מ-50 אורחים",
             "color": "gold",
             "popular": False,
             "features": json.dumps([
@@ -88,12 +88,12 @@ def seed_packages():
             "note": "הכי הרבה תמורה לכסף - כל הפיצ'רים ללא מתנות באשראי"
         },
         {
-            "name": "חבילה מלאה",
-            "tagline": "שגר ושכח - אנחנו דואגים לכל הפרטים!",
-            "price": "250 ₪",
-            "price_unit": "ללא הגבלת אורחים",
-            "color": "rose",
-            "popular": True,
+            "name": "אוטומטי הכל כלול",
+            "tagline": "דואגים לכם להכל – אפס התעסקות מצידכם",
+            "price": "239 ₪",
+            "price_unit": "מ-100 אורחים",
+            "color": "purple",
+            "popular": False,
             "features": json.dumps([
                 {"text": "שני סיבובי וואטסאפ ו-SMS מתוזמנים", "included": True},
                 {"text": "שלושה סבבי שיחות מקצועיות", "included": True},

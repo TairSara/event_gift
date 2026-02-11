@@ -30,6 +30,12 @@ def add_package_details_columns():
             END $$;
         """)
 
+        # Update package names to match current pricing page
+        cur.execute("UPDATE packages SET name = 'חבילת בסיס – ידני' WHERE id = 1 AND name != 'חבילת בסיס – ידני'")
+        cur.execute("UPDATE packages SET name = 'אוטומטי SMS' WHERE id = 2 AND name != 'אוטומטי SMS'")
+        cur.execute("UPDATE packages SET name = 'אוטומטי WhatsApp' WHERE id = 3 AND name != 'אוטומטי WhatsApp'")
+        cur.execute("UPDATE packages SET name = 'אוטומטי הכל כלול' WHERE id = 4 AND name != 'אוטומטי הכל כלול'")
+
         # Cleanup old pending/failed purchases (older than 1 hour)
         cur.execute("""
             DELETE FROM package_purchases
@@ -40,6 +46,7 @@ def add_package_details_columns():
 
         conn.commit()
         print("✅ guest_count and payment_amount columns added to package_purchases table")
+        print("✅ Package names updated to match pricing page")
         if deleted > 0:
             print(f"🧹 Cleaned up {deleted} old pending/failed purchases")
 
