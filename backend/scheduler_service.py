@@ -326,7 +326,7 @@ def send_sms_invitation(guest: dict, event_data: dict) -> dict:
         token = hashlib.sha256(
             f"{guest['id']}-{guest['phone']}-{event_data['event_title']}".encode()
         ).hexdigest()[:16]
-        rsvp_link = f"https://event-gift-frontend.onrender.com/rsvp/{guest['id']}?token={token}"
+        rsvp_link = f"https://savedayevents.com/rsvp/{guest['id']}?token={token}"
 
         result = sms_service.send_event_invitation_sms(
             destination=guest['phone'],

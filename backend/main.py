@@ -50,7 +50,8 @@ origins = [
     "http://localhost:5173",
     "http://localhost:5174",
     "https://event-gift-fronten.onrender.com",  # כתובת הפרונט הישנה ב-Render
-    "https://event-gift-frontend.onrender.com",  # כתובת הפרונט החדשה ב-Render
+    "https://event-gift-frontend.onrender.com",  # כתובת הפרונט ב-Render
+    "https://savedayevents.com",  # דומיין חדש
 ]
 app.add_middleware(
     CORSMiddleware,

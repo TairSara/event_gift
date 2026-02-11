@@ -55,7 +55,7 @@ async def send_sms_invitation(guest_id: int):
         # Generate RSVP link
         # Create unique token for this guest
         token = hashlib.sha256(f"{guest_id}-{phone}-{event_name}".encode()).hexdigest()[:16]
-        rsvp_link = f"https://event-gift-frontend.onrender.com/rsvp/{guest_id}?token={token}"
+        rsvp_link = f"https://savedayevents.com/rsvp/{guest_id}?token={token}"
 
         # Send SMS
         print(f"📱 Sending SMS to: {phone}")
@@ -140,7 +140,7 @@ async def send_bulk_sms_invitations(event_id: int):
 
             # Generate RSVP link for this guest
             token = hashlib.sha256(f"{guest_id}-{phone}-{event_name}".encode()).hexdigest()[:16]
-            rsvp_link = f"https://event-gift-frontend.onrender.com/rsvp/{guest_id}?token={token}"
+            rsvp_link = f"https://savedayevents.com/rsvp/{guest_id}?token={token}"
 
             # Build message text with RSVP link
             message_text = f"הנכם מוזמנים ל{event_name}, נשמח שתאשרו הגעתכם בלינק הבא: {rsvp_link}"

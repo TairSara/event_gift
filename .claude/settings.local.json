@@ -50,7 +50,8 @@
       "Bash(./ngrok.exe http:*)",
       "Bash(../.venv/Scripts/pip.exe freeze:*)",
       "Bash(npm run build:*)",
-      "Bash(npm install:*)"
+      "Bash(npm install:*)",
+      "Bash(dir:*)"
     ],
     "deny": [],
     "ask": []

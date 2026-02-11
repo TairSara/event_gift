@@ -159,7 +159,7 @@ async def initiate_payment(payment: PaymentInitRequest):
         conn.commit()
 
         # בניית URLs - הסרת לוכסן כפול
-        frontend_url = os.getenv("FRONTEND_URL", "https://event-gift-frontend.onrender.com").rstrip('/')
+        frontend_url = os.getenv("FRONTEND_URL", "https://savedayevents.com").rstrip('/')
         backend_url = os.getenv("BACKEND_URL", "https://event-gift.onrender.com").rstrip('/')
 
         success_url = f"{frontend_url}/payment/success?order_id={order_id}&purchase_id={purchase_id}"

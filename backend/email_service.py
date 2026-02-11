@@ -215,7 +215,7 @@ def send_welcome_email(to_email: str, full_name: Optional[str] = None):
         </ul>
         <div class="divider"></div>
         <p style="text-align: center; margin: 30px 0;">
-            <a href="http://localhost:5173" class="button">התחל לחוות את החוויה</a>
+            <a href="https://savedayevents.com" class="button">התחל לחוות את החוויה</a>
         </p>
         <p style="color: #888; font-size: 14px; margin-top: 35px; line-height: 1.8;">
             לשירותך בכל עת, אנו זמינים לכל שאלה או בקשה.
@@ -300,7 +300,7 @@ def send_password_reset_success_email(to_email: str, full_name: Optional[str] = 
             </p>
         </div>
         <p style="text-align: center; margin: 35px 0;">
-            <a href="http://localhost:5173" class="button">התחבר לחשבון</a>
+            <a href="https://savedayevents.com" class="button">התחבר לחשבון</a>
         </p>
         <div class="divider"></div>
         <p style="font-size: 14px; color: #888; line-height: 1.9;">
