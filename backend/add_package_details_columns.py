@@ -30,8 +30,18 @@ def add_package_details_columns():
             END $$;
         """)
 
+        # Cleanup old pending/failed purchases (older than 1 hour)
+        cur.execute("""
+            DELETE FROM package_purchases
+            WHERE status IN ('pending', 'failed')
+            AND purchased_at < NOW() - INTERVAL '1 hour'
+        """)
+        deleted = cur.rowcount
+
         conn.commit()
         print("✅ guest_count and payment_amount columns added to package_purchases table")
+        if deleted > 0:
+            print(f"🧹 Cleaned up {deleted} old pending/failed purchases")
 
     except Exception as e:
         conn.rollback()

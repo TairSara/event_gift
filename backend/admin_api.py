@@ -481,8 +481,8 @@ async def get_packages_stats():
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        # Total packages purchased
-        cursor.execute("SELECT COUNT(*) FROM package_purchases")
+        # Total packages purchased (exclude pending/failed)
+        cursor.execute("SELECT COUNT(*) FROM package_purchases WHERE status NOT IN ('pending', 'failed')")
         total_purchases = cursor.fetchone()[0]
 
         # Active packages
@@ -497,12 +497,12 @@ async def get_packages_stats():
         cursor.execute("SELECT COUNT(*) FROM package_purchases WHERE status = 'expired'")
         expired_packages = cursor.fetchone()[0]
 
-        # Packages by type
+        # Packages by type (exclude pending/failed)
         cursor.execute("""
             SELECT p.name, p.price, COUNT(pp.id) as purchase_count,
                    COUNT(CASE WHEN pp.status = 'active' THEN 1 END) as active_count
             FROM packages p
-            LEFT JOIN package_purchases pp ON p.id = pp.package_id
+            LEFT JOIN package_purchases pp ON p.id = pp.package_id AND pp.status NOT IN ('pending', 'failed')
             GROUP BY p.id, p.name, p.price
             ORDER BY purchase_count DESC
         """)
@@ -548,13 +548,13 @@ async def get_package_purchases(
         conn = get_db_connection()
         cursor = conn.cursor()
 
-        # Build WHERE clause
-        where_parts = []
+        # Build WHERE clause - exclude pending/failed by default
+        where_parts = ["pp.status NOT IN ('pending', 'failed')"]
         params = []
 
         if status:
-            where_parts.append("pp.status = %s")
-            params.append(status)
+            where_parts = ["pp.status = %s"]
+            params = [status]
 
         if package_name:
             where_parts.append("p.name = %s")
