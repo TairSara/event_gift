@@ -1,60 +1,65 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import TermsModal from "./TermsModal";
 import "./Footer.css";
 
-export default function Footer() {
+export default function Footer({ onTermsClick }) {
   const navigate = useNavigate();
+  const [termsOpen, setTermsOpen] = useState(false);
+
+  const handleTermsClick = (e) => {
+    e.preventDefault();
+    if (onTermsClick) {
+      onTermsClick();
+    } else {
+      setTermsOpen(true);
+    }
+  };
 
   return (
-    <footer className="site-footer">
-      <div className="site-footer-container">
-        <div className="site-footer-simple">
-          <ul className="site-footer-links-row">
-            <li>
-              <a
-                href="/contact"
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate('/contact');
-                }}
-              >
-                צור קשר
-              </a>
-            </li>
-            <li>
-              <a
-                href="/contact#faq"
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate('/contact#faq');
-                  setTimeout(() => {
-                    const el = document.getElementById('faq');
-                    if (el) el.scrollIntoView({ behavior: 'smooth' });
-                  }, 100);
-                }}
-              >
-                שאלות נפוצות
-              </a>
-            </li>
-            <li>
-              <a
-                href="/pricing"
-                onClick={(e) => {
-                  e.preventDefault();
-                  navigate('/pricing');
-                }}
-              >
-                מחירים
-              </a>
-            </li>
-          </ul>
+    <>
+      <footer className="site-footer">
+        <div className="site-footer-inner">
+          <div className="site-footer-links">
+            <a
+              href="/contact"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/contact');
+              }}
+            >
+              צור קשר
+            </a>
+            <span className="site-footer-dot">·</span>
+            <a
+              href="/contact#faq"
+              onClick={(e) => {
+                e.preventDefault();
+                navigate('/contact');
+                setTimeout(() => {
+                  const el = document.getElementById('faq');
+                  if (el) el.scrollIntoView({ behavior: 'smooth' });
+                }, 300);
+              }}
+            >
+              שאלות נפוצות
+            </a>
+            <span className="site-footer-dot">·</span>
+            <a href="#" onClick={handleTermsClick}>תקנון</a>
+            <span className="site-footer-dot">·</span>
+            <a href="#" onClick={handleTermsClick}>מדיניות פרטיות</a>
+            <span className="site-footer-dot">·</span>
+            <a href="#" onClick={handleTermsClick}>הצהרת נגישות</a>
+          </div>
+          <div className="site-footer-bottom">
+            <p>&copy; 2025 Save the Day. כל הזכויות שמורות.</p>
+            <p className="site-footer-credit">
+              נבנה על-ידי <a href="https://www.mtcores.com/" target="_blank" rel="noopener noreferrer">MTCORE</a> פתרונות דיגיטליים.
+            </p>
+          </div>
         </div>
-        <div className="site-footer-bottom">
-          <p>&copy; 2025 Save the Day. כל הזכויות שמורות.</p>
-          <p className="site-footer-credit">
-            נבנה על-ידי <a href="https://www.mtcores.com/" target="_blank" rel="noopener noreferrer">MTCORE</a> פתרונות דיגיטליים.
-          </p>
-        </div>
-      </div>
-    </footer>
+      </footer>
+      {!onTermsClick && <TermsModal isOpen={termsOpen} onClose={() => setTermsOpen(false)} />}
+    </>
   );
 }
