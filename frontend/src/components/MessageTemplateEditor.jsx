@@ -4,14 +4,14 @@ import './MessageTemplateEditor.css';
 const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
 
 // WhatsApp Template format (from Gupshup):
-// שלום {{1}} 💙 אנא לחצו על אחד מהקישורים להזמינים {{2}}! אירוח: {{3}} תאריך: {{4}} שעה: {{5}}! 💙 משפחת אירועי היום, {{6}} ⭐
+// שלום {{1}} 💙 אנחנו שמחים להזמינכם {{2}}! תאריך: {{3}} שעה: {{4}} מיקום: {{5}} 💙 בברכה, {{6}} ⭐
 //
 // Dynamic fields:
 // {{1}} = Guest name (automatic from guest list)
 // {{2}} = Event name (event_title)
-// {{3}} = Event date (labeled "אירוח" in template)
-// {{4}} = Event time (labeled "תאריך" in template)
-// {{5}} = Event location (labeled "שעה" in template)
+// {{3}} = Event date
+// {{4}} = Event time
+// {{5}} = Event location
 // {{6}} = Host name (SaveDay Events - fixed)
 
 // SMS Template format:
@@ -85,14 +85,14 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
     }
   };
 
-  // Generate WhatsApp preview with correct labels
+  // Generate WhatsApp preview matching the actual Gupshup template
   const getWhatsAppPreview = () => {
     return `שלום [שם האורח] 💙
-אנא לחצו על אחד מהקישורים להזמינים ${eventName || '[שם האירוע]'}!
+אנחנו שמחים להזמינכם ${eventName || '[שם האירוע]'}!
 תאריך: ${eventDate || '[תאריך]'}
 שעה: ${eventTime || '[שעה]'}
-מיקום: ${eventLocation || '[מיקום]'}!
-💙 משפחת אירועי היום, SaveDay Events ⭐`;
+מיקום: ${eventLocation || '[מיקום]'}
+💙 בברכה, SaveDay Events ⭐`;
   };
 
   // Generate SMS preview
