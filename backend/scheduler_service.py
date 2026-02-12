@@ -17,6 +17,93 @@ from sms_service import sms_service
 import hashlib
 
 
+# Israeli holidays (fixed dates in Hebrew calendar, mapped to Gregorian for relevant years)
+# We check dynamically using a helper function
+def get_israeli_holidays(year: int) -> set:
+    """
+    Get set of Israeli holiday dates for a given year.
+    Includes Shabbat (Friday sunset to Saturday sunset) and major Jewish holidays.
+    This uses fixed Gregorian dates that need to be updated yearly,
+    or we calculate Shabbat dynamically.
+    """
+    # Major Israeli holidays - Gregorian dates for 2025-2027
+    # These shift each year based on Hebrew calendar
+    holidays = set()
+
+    if year == 2025:
+        holidays.update([
+            date(2025, 3, 14),   # פורים
+            date(2025, 4, 13), date(2025, 4, 14),  # פסח - ליל הסדר + יום א
+            date(2025, 4, 19), date(2025, 4, 20),  # פסח - שביעי + אחרון
+            date(2025, 5, 1), date(2025, 5, 2),    # יום הזיכרון + יום העצמאות
+            date(2025, 6, 2),    # שבועות
+            date(2025, 9, 23), date(2025, 9, 24),  # ראש השנה
+            date(2025, 10, 2),   # יום כיפור
+            date(2025, 10, 7), date(2025, 10, 8),  # סוכות
+            date(2025, 10, 14), date(2025, 10, 15),# שמחת תורה
+        ])
+    elif year == 2026:
+        holidays.update([
+            date(2026, 3, 3),    # פורים
+            date(2026, 4, 2), date(2026, 4, 3),    # פסח
+            date(2026, 4, 8), date(2026, 4, 9),    # פסח - שביעי + אחרון
+            date(2026, 5, 22),   # שבועות
+            date(2026, 9, 12), date(2026, 9, 13),  # ראש השנה
+            date(2026, 9, 21),   # יום כיפור
+            date(2026, 9, 26), date(2026, 9, 27),  # סוכות
+            date(2026, 10, 3), date(2026, 10, 4),  # שמחת תורה
+        ])
+    elif year == 2027:
+        holidays.update([
+            date(2027, 3, 23),   # פורים
+            date(2027, 4, 22), date(2027, 4, 23),  # פסח
+            date(2027, 4, 28), date(2027, 4, 29),  # פסח - שביעי + אחרון
+            date(2027, 6, 11),   # שבועות
+            date(2027, 10, 2), date(2027, 10, 3),  # ראש השנה
+            date(2027, 10, 11),  # יום כיפור
+            date(2027, 10, 16), date(2027, 10, 17),# סוכות
+            date(2027, 10, 23), date(2027, 10, 24),# שמחת תורה
+        ])
+
+    return holidays
+
+
+def is_shabbat_or_holiday(check_date: date) -> bool:
+    """
+    Check if a date falls on Shabbat (Saturday) or Israeli holiday.
+    Friday is also avoided since Shabbat starts Friday evening.
+    """
+    # Friday (4) or Saturday (5) - Shabbat
+    if check_date.weekday() in (4, 5):
+        return True
+
+    # Check Israeli holidays
+    holidays = get_israeli_holidays(check_date.year)
+    if check_date in holidays:
+        return True
+
+    # Also check eve of holidays (day before, from evening)
+    next_day = check_date + timedelta(days=1)
+    if next_day in holidays:
+        return True
+
+    return False
+
+
+def get_next_valid_send_date(original_date: date) -> date:
+    """
+    If original_date falls on Shabbat or holiday, push to next valid day (Sunday or after holiday).
+    """
+    send_date = original_date
+    # Keep pushing forward until we find a valid day (max 7 days to avoid infinite loop)
+    for _ in range(7):
+        if not is_shabbat_or_holiday(send_date):
+            return send_date
+        send_date += timedelta(days=1)
+    # Fallback: return the date after the loop
+    return send_date
+
+
 def format_israeli_phone(phone: str) -> str:
     """Format Israeli phone number to international format"""
     digits_only = ''.join(filter(str.isdigit, phone))
@@ -54,6 +141,9 @@ def create_scheduled_messages_for_event(event_id: int, event_date: date, message
 
         for idx, days in enumerate(days_before, start=1):
             scheduled_date = event_date - timedelta(days=days)
+
+            # If falls on Shabbat/holiday, push to next valid day
+            scheduled_date = get_next_valid_send_date(scheduled_date)
 
             # Skip if scheduled date is in the past
             if scheduled_date < date.today():
@@ -488,6 +578,16 @@ def process_all_scheduled_messages() -> dict:
     print("\n" + "="*60)
     print(f"SCHEDULED MESSAGE PROCESSING - {datetime.now().isoformat()}")
     print("="*60)
+
+    # Don't send on Shabbat or holidays - messages will be picked up next valid day
+    today = date.today()
+    if is_shabbat_or_holiday(today):
+        print(f"Today ({today}) is Shabbat or holiday - skipping message processing")
+        return {
+            'status': 'skipped',
+            'processed': 0,
+            'message': f'Skipped - Shabbat/holiday ({today})'
+        }
 
     messages = get_messages_to_send_today()
 
