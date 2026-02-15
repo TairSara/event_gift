@@ -32,6 +32,17 @@ app.post('/payment/failure', (req, res) => {
 // Serve static files from dist folder
 app.use(express.static(path.join(__dirname, 'dist')));
 
+// Explicit routes for SEO files to ensure correct Content-Type
+app.get('/sitemap.xml', (req, res) => {
+  res.set('Content-Type', 'application/xml');
+  res.sendFile(path.join(__dirname, 'dist', 'sitemap.xml'));
+});
+
+app.get('/robots.txt', (req, res) => {
+  res.set('Content-Type', 'text/plain');
+  res.sendFile(path.join(__dirname, 'dist', 'robots.txt'));
+});
+
 // SPA fallback - serve index.html for all other routes
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
