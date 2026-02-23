@@ -7,8 +7,10 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
   const [selectedEventType, setSelectedEventType] = useState("");
   const [selectedPackage, setSelectedPackage] = useState("");
   const [eventTitle, setEventTitle] = useState("");
+  const [eventDate, setEventDate] = useState("");
   const [loading, setLoading] = useState(false);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [scheduleError, setScheduleError] = useState("");
 
   // מצב לתזמון הודעות
   const [messageScheduleType, setMessageScheduleType] = useState("default"); // "default" או "custom"
@@ -17,6 +19,20 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
     message2: 14, // ימים לפני האירוע (שבועיים)
     message3: 7   // ימים לפני האירוע (שבוע)
   });
+
+  // חישוב ימים עד האירוע
+  const getDaysUntilEvent = () => {
+    if (!eventDate) return null;
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const event = new Date(eventDate);
+    event.setHours(0, 0, 0, 0);
+    const diff = Math.floor((event - today) / (1000 * 60 * 60 * 24));
+    return diff;
+  };
+
+  const daysUntilEvent = getDaysUntilEvent();
+  const isEventSoon = daysUntilEvent !== null && daysUntilEvent < 21;
 
   if (!isOpen) return null;
 
@@ -40,14 +56,66 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
     { value: "knasim", label: "כנסים ואירועי חברה", icon: "fa-building", image: "/images/I.webp" }
   ];
 
+  // ולידציה של תזמון הודעות ביחס לתאריך האירוע
+  const validateScheduleAgainstDate = () => {
+    if (!eventDate) return true; // אם אין תאריך, לא בודקים
+    const days = getDaysUntilEvent();
+    if (days === null) return true;
+
+    if (messageScheduleType === 'default') {
+      // ברירת מחדל: 21, 14, 7 ימים - כל אחד חייב להיות < days
+      if (days < 7) {
+        setScheduleError("האירוע קרוב מדי (פחות משבוע). לא ניתן לתזמן הודעות.");
+        return false;
+      }
+      if (days < 21) {
+        // זה כבר טופל - אם הגענו לכאן עם default ו-days<21 זה שגיאה
+        setScheduleError("תזמון ברירת המחדל (21 ימים) לא מתאים לתאריך שבחרת. יש לבחור תזמון מותאם אישית.");
+        return false;
+      }
+      return true;
+    }
+
+    // custom
+    const daysBefore = [customSchedule.message1, customSchedule.message2, customSchedule.message3]
+      .map(Number)
+      .sort((a, b) => b - a);
+
+    for (const d of daysBefore) {
+      if (d >= days) {
+        setScheduleError(`הודעה המתוזמנת ${d} ימים לפני האירוע לא מתאפשרת - האירוע הוא רק בעוד ${days} ימים. יש להוריד את מספר הימים.`);
+        return false;
+      }
+    }
+    setScheduleError("");
+    return true;
+  };
+
   const handleCreateEvent = async () => {
     if (!selectedEventType || !eventTitle) {
       alert("יש למלא את כל השדות");
       return;
     }
 
+    if (!eventDate) {
+      alert("יש לבחור תאריך לאירוע");
+      return;
+    }
+
+    // וידוא שהתאריך הוא בעתיד
+    const daysLeft = getDaysUntilEvent();
+    if (daysLeft !== null && daysLeft < 0) {
+      alert("תאריך האירוע חייב להיות בעתיד");
+      return;
+    }
+
     if (userPackages.length > 0 && !selectedPackage) {
       alert("יש לבחור חבילה");
+      return;
+    }
+
+    // ולידציית תזמון ביחס לתאריך
+    if (!validateScheduleAgainstDate()) {
       return;
     }
 
@@ -67,6 +135,7 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
           package_purchase_id: selectedPackage ? parseInt(selectedPackage) : null,
           event_type: selectedEventType,
           event_title: eventTitle,
+          event_date: eventDate,
           status: 'pending',
           message_schedule: {
             schedule_type: messageScheduleType,
@@ -126,6 +195,48 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
               onChange={(e) => setEventTitle(e.target.value)}
               className="form-input"
             />
+          </div>
+
+          {/* תאריך האירוע - חובה */}
+          <div className="form-group">
+            <label>
+              <i className="fas fa-calendar-day"></i>
+              תאריך האירוע <span className="field-required">*</span>
+            </label>
+            <input
+              type="date"
+              value={eventDate}
+              min={new Date().toISOString().split('T')[0]}
+              onChange={(e) => {
+                setEventDate(e.target.value);
+                setScheduleError("");
+                // אם האירוע פחות מ-21 ימים ובחרו ברירת מחדל - מחזירים לcustom
+                if (e.target.value) {
+                  const today = new Date();
+                  today.setHours(0, 0, 0, 0);
+                  const ev = new Date(e.target.value);
+                  ev.setHours(0, 0, 0, 0);
+                  const diff = Math.floor((ev - today) / (1000 * 60 * 60 * 24));
+                  if (diff < 21 && messageScheduleType === 'default') {
+                    setMessageScheduleType('custom');
+                  }
+                }
+              }}
+              className="form-input event-date-input"
+            />
+            {eventDate && daysUntilEvent !== null && (
+              <div className={`date-status-badge ${daysUntilEvent < 7 ? 'urgent' : daysUntilEvent < 21 ? 'warning' : 'ok'}`}>
+                <i className={`fas ${daysUntilEvent < 7 ? 'fa-exclamation-circle' : daysUntilEvent < 21 ? 'fa-exclamation-triangle' : 'fa-check-circle'}`}></i>
+                {daysUntilEvent < 0
+                  ? "תאריך האירוע עבר"
+                  : daysUntilEvent === 0
+                  ? "האירוע היום!"
+                  : `${daysUntilEvent} ימים עד האירוע`}
+                {isEventSoon && daysUntilEvent >= 0 && (
+                  <span> · תזמון ברירת מחדל אינו זמין</span>
+                )}
+              </div>
+            )}
           </div>
 
           {/* סוג האירוע */}
@@ -199,127 +310,111 @@ export default function CreateEventModal({ isOpen, onClose, userPackages, userId
                 תזמון שליחת הודעות
               </label>
 
+              {isEventSoon && daysUntilEvent >= 0 && (
+                <div className="schedule-soon-warning">
+                  <i className="fas fa-exclamation-triangle"></i>
+                  <span>האירוע פחות מ-21 ימים מהיום – תזמון ברירת המחדל אינו זמין. יש לבחור תזמון מותאם אישית.</span>
+                </div>
+              )}
+
               <div className="schedule-type-selector">
                 <div
-                  className={`schedule-type-option ${messageScheduleType === 'default' ? 'selected' : ''}`}
-                  onClick={() => setMessageScheduleType('default')}
+                  className={`schedule-type-option ${messageScheduleType === 'default' ? 'selected' : ''} ${isEventSoon && daysUntilEvent >= 0 ? 'disabled' : ''}`}
+                  onClick={() => {
+                    if (isEventSoon && daysUntilEvent >= 0) return;
+                    setMessageScheduleType('default');
+                    setScheduleError("");
+                  }}
                 >
                   <i className="fas fa-magic"></i>
                   <div className="schedule-type-content">
-                    <strong>ברירת מחדל (מומלץ)</strong>
-                    <p>הודעות יישלחו 3 שבועות, שבועיים, שבוע ויומיים לפני האירוע</p>
+                    <strong>ברירת מחדל {!isEventSoon && '(מומלץ)'}</strong>
+                    <p>הודעות יישלחו 3 שבועות, שבועיים ושבוע לפני האירוע</p>
                   </div>
-                  {messageScheduleType === 'default' && <i className="fas fa-check-circle check-icon"></i>}
+                  {isEventSoon && daysUntilEvent >= 0 && <i className="fas fa-lock lock-icon"></i>}
+                  {messageScheduleType === 'default' && (!isEventSoon || daysUntilEvent < 0) && <i className="fas fa-check-circle check-icon"></i>}
                 </div>
 
                 <div
                   className={`schedule-type-option ${messageScheduleType === 'custom' ? 'selected' : ''}`}
-                  onClick={() => setMessageScheduleType('custom')}
+                  onClick={() => { setMessageScheduleType('custom'); setScheduleError(""); }}
                 >
                   <i className="fas fa-sliders-h"></i>
                   <div className="schedule-type-content">
-                    <strong>התאמה אישית</strong>
+                    <strong>התאמה אישית {isEventSoon && daysUntilEvent >= 0 && '(נדרש)'}</strong>
                     <p>בחר בעצמך מתי לשלוח כל הודעה</p>
                   </div>
                   {messageScheduleType === 'custom' && <i className="fas fa-check-circle check-icon"></i>}
                 </div>
               </div>
 
+              {/* הצגת שגיאת תזמון */}
+              {scheduleError && (
+                <div className="schedule-error-box">
+                  <i className="fas fa-times-circle"></i>
+                  <span>{scheduleError}</span>
+                </div>
+              )}
+
               {/* הגדרות מותאמות אישית */}
               {messageScheduleType === 'custom' && (
                 <div className="custom-schedule-settings">
                   <div className="schedule-info-box">
                     <i className="fas fa-info-circle"></i>
-                    <span>ההודעה הראשונה עד חודש לפני האירוע, האחרונה לפחות שבוע לפני</span>
+                    <span>
+                      {eventDate && daysUntilEvent !== null
+                        ? `הגדר כמה ימים לפני האירוע לשלוח כל הודעה (האירוע בעוד ${daysUntilEvent} ימים)`
+                        : 'ההודעה הראשונה עד חודש לפני האירוע, האחרונה לפחות שבוע לפני'}
+                    </span>
                   </div>
 
                   <div className="custom-schedule-grid">
-                    <div className="schedule-item">
-                      <label>הודעה ראשונה</label>
-                      <div className="schedule-input-wrapper">
-                        <input
-                          type="number"
-                          min="7"
-                          max="30"
-                          value={customSchedule.message1}
-                          onChange={(e) => {
-                            const raw = e.target.value;
-                            if (raw === '') {
-                              setCustomSchedule({ ...customSchedule, message1: '' });
-                              return;
-                            }
-                            const val = parseInt(raw);
-                            if (!isNaN(val)) {
-                              setCustomSchedule({ ...customSchedule, message1: val });
-                            }
-                          }}
-                          onBlur={(e) => {
-                            const val = parseInt(e.target.value);
-                            const clamped = isNaN(val) ? 21 : Math.min(30, Math.max(7, val));
-                            setCustomSchedule({ ...customSchedule, message1: clamped });
-                          }}
-                        />
-                        <span>ימים לפני</span>
-                      </div>
-                    </div>
-
-                    <div className="schedule-item">
-                      <label>הודעה שנייה</label>
-                      <div className="schedule-input-wrapper">
-                        <input
-                          type="number"
-                          min="7"
-                          max="30"
-                          value={customSchedule.message2}
-                          onChange={(e) => {
-                            const raw = e.target.value;
-                            if (raw === '') {
-                              setCustomSchedule({ ...customSchedule, message2: '' });
-                              return;
-                            }
-                            const val = parseInt(raw);
-                            if (!isNaN(val)) {
-                              setCustomSchedule({ ...customSchedule, message2: val });
-                            }
-                          }}
-                          onBlur={(e) => {
-                            const val = parseInt(e.target.value);
-                            const clamped = isNaN(val) ? 14 : Math.min(30, Math.max(7, val));
-                            setCustomSchedule({ ...customSchedule, message2: clamped });
-                          }}
-                        />
-                        <span>ימים לפני</span>
-                      </div>
-                    </div>
-
-                    <div className="schedule-item">
-                      <label>הודעה שלישית</label>
-                      <div className="schedule-input-wrapper">
-                        <input
-                          type="number"
-                          min="7"
-                          max="30"
-                          value={customSchedule.message3}
-                          onChange={(e) => {
-                            const raw = e.target.value;
-                            if (raw === '') {
-                              setCustomSchedule({ ...customSchedule, message3: '' });
-                              return;
-                            }
-                            const val = parseInt(raw);
-                            if (!isNaN(val)) {
-                              setCustomSchedule({ ...customSchedule, message3: val });
-                            }
-                          }}
-                          onBlur={(e) => {
-                            const val = parseInt(e.target.value);
-                            const clamped = isNaN(val) ? 7 : Math.min(30, Math.max(7, val));
-                            setCustomSchedule({ ...customSchedule, message3: clamped });
-                          }}
-                        />
-                        <span>ימים לפני</span>
-                      </div>
-                    </div>
+                    {[
+                      { key: 'message1', label: 'הודעה ראשונה', defaultVal: 21 },
+                      { key: 'message2', label: 'הודעה שנייה', defaultVal: 14 },
+                      { key: 'message3', label: 'הודעה שלישית', defaultVal: 7 },
+                    ].map(({ key, label, defaultVal }) => {
+                      // max דינמי: לא יותר מ-(daysUntilEvent - 1) ולא יותר מ-30
+                      const maxDays = daysUntilEvent !== null && daysUntilEvent > 0
+                        ? Math.min(30, daysUntilEvent - 1)
+                        : 30;
+                      const isOver = daysUntilEvent !== null && daysUntilEvent > 0 && customSchedule[key] >= daysUntilEvent;
+                      return (
+                        <div className="schedule-item" key={key}>
+                          <label>{label}</label>
+                          <div className={`schedule-input-wrapper ${isOver ? 'input-error' : ''}`}>
+                            <input
+                              type="number"
+                              min="1"
+                              max={maxDays}
+                              value={customSchedule[key]}
+                              onChange={(e) => {
+                                const raw = e.target.value;
+                                if (raw === '') {
+                                  setCustomSchedule({ ...customSchedule, [key]: '' });
+                                  setScheduleError("");
+                                  return;
+                                }
+                                const val = parseInt(raw);
+                                if (!isNaN(val)) {
+                                  setCustomSchedule({ ...customSchedule, [key]: val });
+                                  setScheduleError("");
+                                }
+                              }}
+                              onBlur={(e) => {
+                                const val = parseInt(e.target.value);
+                                const clamped = isNaN(val) ? defaultVal : Math.min(maxDays, Math.max(1, val));
+                                setCustomSchedule({ ...customSchedule, [key]: clamped });
+                              }}
+                            />
+                            <span>ימים לפני</span>
+                          </div>
+                          {isOver && (
+                            <span className="field-error-hint">חייב להיות פחות מ-{daysUntilEvent} ימים</span>
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
