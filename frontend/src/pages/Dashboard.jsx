@@ -4,7 +4,6 @@ import { useAuth } from "../context/AuthContext";
 import { useNotification } from "../hooks/useNotification";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import CreateEventModal from "../components/CreateEventModal";
 import "./Dashboard.css";
 
 export default function Dashboard() {
@@ -16,7 +15,6 @@ export default function Dashboard() {
   const [purchases, setPurchases] = useState([]);
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [showCreateEventModal, setShowCreateEventModal] = useState(false);
   const [showActivatePackageModal, setShowActivatePackageModal] = useState(false);
   const [selectedPackageForActivation, setSelectedPackageForActivation] = useState(null);
   const [expandedEvents, setExpandedEvents] = useState({});
@@ -159,15 +157,6 @@ export default function Dashboard() {
       {NotificationComponent}
       <Navbar />
 
-      <CreateEventModal
-        isOpen={showCreateEventModal}
-        onClose={() => {
-          setShowCreateEventModal(false);
-          fetchUserData(); // רענון נתונים
-        }}
-        userPackages={purchases}
-        userId={user?.id}
-      />
 
       <section className="dashboard-hero">
         <div className="dashboard-hero-content">
@@ -185,7 +174,7 @@ export default function Dashboard() {
               <h2>האירועים שלי</h2>
               <button
                 className="btn-primary-small"
-                onClick={() => setShowCreateEventModal(true)}
+                onClick={() => navigate("/create-event", { state: { userPackages: purchases, userId: user?.id } })}
               >
                 צור אירוע חדש
               </button>
@@ -197,7 +186,7 @@ export default function Dashboard() {
                 <p>צור את האירוע הראשון שלך והתחל לשלוח הזמנות</p>
                 <button
                   className="btn-primary"
-                  onClick={() => setShowCreateEventModal(true)}
+                  onClick={() => navigate("/create-event", { state: { userPackages: purchases, userId: user?.id } })}
                 >
                   צור אירוע
                 </button>

@@ -25,6 +25,7 @@ import AdminPanel from './pages/admin/AdminPanel.jsx'
 import RSVPPage from './pages/RSVPPage.jsx'
 import PaymentSuccess from './pages/PaymentSuccess.jsx'
 import PaymentFailure from './pages/PaymentFailure.jsx'
+import CreateEventPage from './pages/CreateEventPage.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
@@ -45,6 +46,7 @@ createRoot(document.getElementById('root')).render(
           <Route path="/reset-password" element={<ProtectedAuthRoute><ResetPassword /></ProtectedAuthRoute>} />
           <Route path="/verify-email" element={<ProtectedAuthRoute><VerifyEmail /></ProtectedAuthRoute>} />
           <Route path="/login-success" element={<LoginSuccess />} />
+          <Route path="/create-event" element={<CreateEventPage />} />
           <Route path="/create-invitation/:eventType" element={<TemplateSelection />} />
           <Route path="/create-invitation/:eventType/editor" element={<InvitationEditor />} />
 
