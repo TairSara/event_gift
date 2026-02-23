@@ -78,10 +78,21 @@ export function drawTextField(ctx, text, field, colorOverride = null) {
   const lines = displayText.split('\n');
   const lineHeight = field.fontSize * 1.2;
 
-  lines.forEach((line, index) => {
-    const yOffset = index * lineHeight;
-    ctx.fillText(line, field.x, field.y + yOffset);
-  });
+  if (field.rotation) {
+    ctx.save();
+    ctx.translate(field.x, field.y);
+    ctx.rotate((field.rotation * Math.PI) / 180);
+    lines.forEach((line, index) => {
+      const yOffset = index * lineHeight;
+      ctx.fillText(line, 0, yOffset);
+    });
+    ctx.restore();
+  } else {
+    lines.forEach((line, index) => {
+      const yOffset = index * lineHeight;
+      ctx.fillText(line, field.x, field.y + yOffset);
+    });
+  }
 }
 
 /**

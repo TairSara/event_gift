@@ -116,6 +116,7 @@
   height: fit-content;
   order: 1;
   animation: slideInRight 0.6s ease-out;
+  direction: rtl;
 }
 
 @keyframes slideInRight {
@@ -184,16 +185,14 @@
   color: #8B6F47;
   margin-bottom: 0.75rem;
   font-size: 1.05rem;
-  position: relative;
-  padding-right: 1.5rem;
+  text-align: right;
 }
 
 .form-group label::before {
   content: '✦';
-  position: absolute;
-  right: 0;
   color: #4ECDC4;
   font-size: 0.9rem;
+  margin-left: 0.3rem;
 }
 
 .form-group input {
@@ -478,13 +477,13 @@ button:disabled {
 }
 
 .combined-content-wrapper {
-  display: grid;
-  grid-template-columns: auto auto;
-  gap: 0.75rem;
-  align-items: start;
+  display: flex;
+  flex-direction: row;
+  gap: 2.5rem;
+  align-items: flex-start;
   justify-content: center;
   width: 100%;
-  max-width: 1100px;
+  max-width: 900px;
   margin: 0 auto 1.5rem;
   animation: scaleIn 0.6s ease-out 0.2s backwards;
 }
@@ -500,12 +499,12 @@ button:disabled {
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 450px;
-  aspect-ratio: 3/4;
+  flex: 0 0 500px;
+  width: 500px;
 }
 
-/* Wedding invitations have landscape canvas wrapper */
-[data-event-type="wedding"] .combined-canvas-wrapper {
+/* Wedding invitations (double-sided with mockup) have landscape canvas wrapper */
+[data-event-type="wedding"][data-single-sided="false"] .combined-canvas-wrapper {
   max-width: 900px;
   aspect-ratio: 16/9;
 }
@@ -522,8 +521,7 @@ button:disabled {
 }
 
 .combined-canvas {
-  max-width: 100%;
-  max-height: 60vh;
+  width: 100%;
   height: auto;
   border-radius: 12px;
   display: block;
@@ -539,10 +537,10 @@ button:disabled {
   padding: 2rem;
   box-shadow: 0 8px 32px rgba(139, 111, 71, 0.12);
   border: 3px solid #e8dfd0;
-  min-width: 260px;
-  max-width: 300px;
+  flex: 0 0 280px;
+  width: 280px;
   position: sticky;
-  top: 2rem;
+  top: 100px;
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
@@ -701,26 +699,31 @@ button:disabled {
   }
 
   .combined-content-wrapper {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: center;
     gap: 1.5rem;
     max-width: 500px;
   }
 
   .combined-canvas-wrapper {
+    flex: none;
+    width: 100%;
     max-width: 100%;
     padding: 1.5rem 1rem;
     border-radius: 16px;
   }
 
   .combined-canvas {
-    max-height: 50vh;
+    width: 100%;
+    height: auto;
     border-radius: 10px;
   }
 
   .download-actions-panel {
+    flex: none;
     position: static;
+    width: 100%;
     max-width: 100%;
-    min-width: auto;
     padding: 1.5rem;
     border-radius: 16px;
   }
@@ -775,7 +778,8 @@ button:disabled {
   }
 
   .combined-canvas {
-    max-height: 45vh;
+    width: 100%;
+    height: auto;
     border-radius: 8px;
   }
 
@@ -879,7 +883,8 @@ button:disabled {
   }
 
   .combined-canvas {
-    max-height: 65vh;
+    width: 100%;
+    height: auto;
   }
 }
 
@@ -995,7 +1000,8 @@ button:disabled {
   }
 
   .combined-content-wrapper {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: center;
     gap: 1.2rem;
   }
 
@@ -1004,7 +1010,8 @@ button:disabled {
   }
 
   .combined-canvas {
-    max-height: 50vh;
+    width: 100%;
+    height: auto;
   }
 
   .download-actions-panel {
@@ -1135,8 +1142,8 @@ button:disabled {
   }
 
   .combined-canvas {
-    max-width: 100%;
-    max-height: 45vh;
+    width: 100%;
+    height: auto;
   }
 
   .download-actions-panel {
@@ -1521,32 +1528,35 @@ button:disabled {
   }
 }
 
-/* Wedding invitations - landscape orientation for final combined view */
-.invitation-editor[data-event-type="wedding"] .combined-canvas {
-  max-width: 70%;
-  max-height: none;
+/* Wedding invitations (double-sided with mockup) - landscape, stacked layout */
+.invitation-editor[data-event-type="wedding"][data-single-sided="false"] .combined-canvas {
+  max-width: 100%;
   width: auto;
+  height: auto;
 }
 
-.invitation-editor[data-event-type="wedding"] .combined-canvas-wrapper {
-  grid-column: 1 / -1;
-  justify-content: center;
+.invitation-editor[data-event-type="wedding"][data-single-sided="false"] .combined-canvas-wrapper {
+  flex: none;
+  width: auto;
+  max-width: 900px;
 }
 
-.invitation-editor[data-event-type="wedding"] .combined-content-wrapper {
-  grid-template-columns: 1fr;
+.invitation-editor[data-event-type="wedding"][data-single-sided="false"] .combined-content-wrapper {
+  flex-direction: column;
+  align-items: center;
   gap: 2rem;
+  max-width: 950px;
 }
 
-.invitation-editor[data-event-type="wedding"] .download-actions-panel {
+.invitation-editor[data-event-type="wedding"][data-single-sided="false"] .download-actions-panel {
+  flex: none;
   position: static;
+  width: 100%;
   max-width: 600px;
-  margin: 0 auto;
-  grid-row: 2;
 }
 
 @media (max-width: 1024px) {
-  .invitation-editor[data-event-type="wedding"] .combined-canvas {
+  .invitation-editor[data-event-type="wedding"][data-single-sided="false"] .combined-canvas {
     max-width: 100%;
   }
 }
@@ -1639,12 +1649,12 @@ button:disabled {
 }
 
 @media (max-width: 768px) {
-  .invitation-editor[data-event-type="wedding"] .combined-canvas {
+  .invitation-editor[data-event-type="wedding"][data-single-sided="false"] .combined-canvas {
     max-width: 100%;
     max-height: 50vh;
   }
 
-  .invitation-editor[data-event-type="wedding"] .download-actions-panel {
+  .invitation-editor[data-event-type="wedding"][data-single-sided="false"] .download-actions-panel {
     max-width: 100%;
   }
 }

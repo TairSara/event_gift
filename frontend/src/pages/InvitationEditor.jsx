@@ -33,7 +33,9 @@ export default function InvitationEditor() {
 
   // Check if this is a single-sided invitation (all except wedding are single-sided)
   const singleSidedEvents = ['hina', 'bar-mitzvah', 'bat-mitzvah', 'brit', 'brita', 'knasim', 'birthday', 'other'];
-  const isSingleSided = singleSidedEvents.includes(eventType);
+  const isSingleSidedBase = singleSidedEvents.includes(eventType);
+  // Also single-sided if the template itself has singleSided:true (e.g. T1-T7 wedding templates)
+  const isSingleSided = isSingleSidedBase || template?.singleSided === true;
   const isWedding = eventType === 'wedding';
 
   const frontCanvasRef = useRef(null);
@@ -96,8 +98,8 @@ export default function InvitationEditor() {
         setValues(prev => ({ ...prev, ...defaultValues }));
       }
 
-      // For single-sided invitations, auto-approve back side
-      if (isSingleSided) {
+      // For single-sided invitations (or singleSided wedding templates), auto-approve back side
+      if (isSingleSidedBase || found.singleSided) {
         setBackApproved(true);
       }
     } else {
@@ -371,7 +373,7 @@ export default function InvitationEditor() {
   const currentSlots = currentSide === 'front' ? template.frontSlots : (template.backSlots || []);
 
   return (
-    <div className="invitation-editor" data-event-type={eventType}>
+    <div className="invitation-editor" data-event-type={eventType} data-single-sided={isSingleSided ? 'true' : 'false'}>
       {/* Navigation Bar */}
       <nav className="navbar">
         <div className="navbar-container">

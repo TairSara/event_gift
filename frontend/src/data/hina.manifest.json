@@ -549,6 +549,799 @@
         }
       ],
       "frontSlots": []
+    },
+    {
+      "id": "hina-t8",
+      "name": "חינה בגווני ברונזה וזהב",
+      "description": "הזמנה מרהיבה לערב חינה בגווני ברונזה חמים וזהב נוצץ, המשלבים יחד אווירה מסורתית חגיגית עם נגיעות מודרניות ויוקרתיות. העיצוב העשיר משדר חמימות ושמחה, ומזמין את האורחים לחגיגה בלתי נשכחת.",
+      "cover": "/images/Hina/t8.cover.webp",
+      "frontBg": "/images/Hina/t8.webp",
+         "size": {
+        "w": 1024,
+        "h": 1536
+      },
+      "frontFields": [
+        {
+          "key": "monogramB",
+          "label": "אות ראשונה (B)",
+          "x": 700,
+          "y": 880,
+          "align": "center",
+          "fontFamily": "serif",
+          "fontWeight": 400,
+          "fontSize": 160,
+"color": "#D4AF37"        },
+        {
+          "key": "monogramG",
+          "label": "אות שנייה (G)",
+          "x": 745,
+          "y": 940,
+          "align": "center",
+          "fontFamily": "serif",
+          "fontWeight": 350,
+          "fontSize": 140,
+"color": "#D4AF37"        },
+        {
+          "key": "groomNameDetails",
+          "label": "שם החתן (באנגלית)",
+          "x": 240,
+          "y": 620,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 42,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "andDetailsText",
+          "x": 290,
+          "y": 625,
+          "align": "center",
+"fontFamily": "'Pinyon Script', cursive",          "fontWeight": 400,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "staticText": "&"
+        },
+        {
+          "key": "brideNameDetails",
+          "label": "שם הכלה (באנגלית)",
+          "x": 345,
+          "y": 620,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 42,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "subtitleDetails",
+          "x": 290,
+                   "y": 650,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 19,
+          "color": "#2C2C2C",
+          "staticText": "THE HEENA PARTY"
+        },
+        {
+          "key": "invitationText",
+          "x": 290,
+          "y": 680,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 24,
+          "color": "#2C2C2C",
+          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את טקס החינה שלנו"
+       },
+          {
+          "key": "eventDate",
+          "label": "בחר תאריך מהלוח",
+          "isInput": true,
+          "type": "date",
+          "display": false
+        },
+        {
+          "key": "dateHebrewCombined",
+          "x": 290,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 24,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew"
+          ],
+          "prefix": "יום ",
+          "combineSeparator": ", ",
+          "isInput": false
+        },
+        {
+          "key": "dateEnglishDisplay",
+          "x": 300,
+          "y": 750,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 36,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dateEnglish"
+          ],
+          "isInput": false
+        },
+        {
+          "key": "venue",
+          "label": "שם האולם",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "locationDisplay",
+          "x": 300,
+          "y": 790,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "venue"
+          ],
+          "prefix": "\"",
+          "suffix": "\""
+        },
+        {
+          "key": "cityDisplay",
+          "x": 300,
+          "y": 810,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "city"
+          ]
+        },
+        {
+          "key": "kabbalatPanimTime",
+          "label": "שעת קבלת פנים",
+          "isInput": true,
+          "type": "time",
+          "display": false,
+          "defaultValue": "19:30"
+        },
+        {
+          "key": "scheduleCombined",
+          "x": 300,
+          "y": 840,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "kabbalatPanimTime",
+            "chuppahTime"
+          ],
+          "prefix": "קבלת פנים - "        },
+        {
+          "key": "closingText",
+          "x": 295,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "defaultValue": "נשמח לראותכם"
+        },
+        {
+          "key": "groomParents",
+          "label": "שמות הורי החתן",
+          "x": 390,
+          "y": 970,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 9,
+          "color": "#2C2C2C",
+          "prefix": "הורי החתן\n\n"
+        },
+        {
+          "key": "brideParents",
+          "label": "שמות הורי הכלה",
+          "x": 200,
+          "y": 970,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 9,
+          "color": "#2C2C2C",
+          "prefix": "הורי הכלה\n\n"
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [],
+      "backSlots": []
+    },
+    {
+      "id": "hina-t9",
+      "name": "חינה מרוקאית - ריח המזרח",
+      "description": "הזמנה קסומה לערב חינה בהשראת המסורת המרוקאית האותנטית, עם פרטי עיצוב עשירים ומעוטרים המזכירים את ריחות ושמחת האירועים המסורתיים. שילוב ייחודי של צבעים חמים, תבניות ומוטיבים מזרחיים לאירוע מרגש.",
+      "cover": "/images/Hina/t9.cover.webp",
+      "frontBg": "/images/Hina/t9.webp",
+             "size": {
+        "w": 1024,
+        "h": 1536
+      },
+      "frontFields": 
+       [
+  {
+    "key": "monogramB",
+    "label": "אות ראשונה (B) - מיקום 1",
+    "x": 250,
+    "y": 700,
+    "align": "center",
+    "fontFamily": "'Pinyon Script', cursive",
+    "fontWeight": 400,
+    "fontSize": 90,
+    "color": "#800020",
+    "angle": -5
+  },
+  {
+    "key": "monogramG",
+    "label": "אות שנייה (G) - מיקום 1",
+    "x": 270,
+    "y": 740,
+    "align": "center",
+    "fontFamily": "'Pinyon Script', cursive",
+    "fontWeight": 350,
+    "fontSize": 90,
+    "color": "#800020",
+    "angle": -5
+  },
+  {
+    "key": "monogramB1",
+    "label": "אות ראשונה (B) - מיקום 2",
+    "x": 270,
+    "y": 1310,
+    "align": "center",
+    "fontFamily": "'Pinyon Script', cursive",
+    "fontWeight": 400,
+    "fontSize": 70,
+    "color": "#800020",
+    "angle": -5
+  },
+  {
+    "key": "monogramG1",
+    "label": "אות שנייה (G) - מיקום 2",
+    "x": 290,
+    "y": 1335,
+    "align": "center",
+    "fontFamily": "'Pinyon Script', cursive",
+    "fontWeight": 350,
+    "fontSize": 70,
+    "color": "#800020",
+    "angle": -5
+  }
+,
+        {
+          "key": "groomNameDetails1",
+          "label": "שם החתן לעטיפה (באנגלית)",
+          "x": 520,
+          "y": 1310,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 35,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "andDetailsText1",
+          "x": 580,
+          "y": 1310,
+          "align": "center",
+          "fontFamily": "'Great Vibes', cursive",
+          "fontWeight": 400,
+          "fontSize": 25,
+          "color": "#2C2C2C",
+          "staticText": "and"
+        },
+        {
+          "key": "brideNameDetails1",
+          "label": "שם הכלה לעטיפה (באנגלית)",
+          "x": 642,
+          "y": 1310,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 35,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "subtitleCover",
+          "x": 580,
+          "y": 1350,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 15,
+          "color": "#2C2C2C",
+          "staticText": "THE HEENA PARTY"
+        },
+      
+          {
+          "key": "groomNameDetails",
+          "label": "שם החתן (באנגלית)",
+          "x": 690,
+          "y": 715,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 42,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "andDetailsText",
+          "x": 750,
+          "y": 720,
+          "align": "center",
+"fontFamily": "'Pinyon Script', cursive",          "fontWeight": 400,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "staticText": "&"
+        },
+        {
+          "key": "brideNameDetails",
+          "label": "שם הכלה (באנגלית)",
+          "x": 810,
+          "y": 715,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 42,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "subtitleDetails",
+          "x": 745,
+                   "y": 750,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 19,
+          "color": "#2C2C2C",
+          "staticText": "THE HEENA PARTY"
+        },
+        {
+          "key": "invitationText",
+          "x": 745,
+          "y": 790,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 24,
+          "color": "#2C2C2C",
+          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את טקס החינה שלנו"
+       },
+          {
+          "key": "eventDate",
+          "label": "בחר תאריך מהלוח",
+          "isInput": true,
+          "type": "date",
+          "display": false
+        },
+        {
+          "key": "dateHebrewCombined",
+          "x": 740,
+          "y": 830,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 24,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew"
+          ],
+          "prefix": "יום ",
+          "combineSeparator": ", ",
+          "isInput": false
+        },
+        {
+          "key": "dateEnglishDisplay",
+          "x": 740,
+          "y": 850,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 36,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dateEnglish"
+          ],
+          "isInput": false
+        },
+        {
+          "key": "venue",
+          "label": "שם האולם",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "locationDisplay",
+          "x": 740,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "venue"
+          ],
+          "prefix": "\"",
+          "suffix": "\""
+        },
+        {
+          "key": "cityDisplay",
+          "x": 740,
+          "y": 920,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "city"
+          ]
+        },
+        {
+          "key": "kabbalatPanimTime",
+          "label": "שעת קבלת פנים",
+          "isInput": true,
+          "type": "time",
+          "display": false,
+          "defaultValue": "19:30"
+        },
+        {
+          "key": "scheduleCombined",
+          "x": 740,
+          "y": 980,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "kabbalatPanimTime",
+            "chuppahTime"
+          ],
+          "prefix": "קבלת פנים - "        },
+        {
+          "key": "closingText",
+          "x": 740,
+          "y": 1050,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "defaultValue": "נשמח לראותכם"
+        },
+        {
+          "key": "groomParents",
+          "label": "שמות הורי החתן",
+          "x": 860,
+          "y": 1100,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 9,
+          "color": "#2C2C2C",
+          "prefix": "הורי החתן\n\n"
+        },
+        {
+          "key": "brideParents",
+          "label": "שמות הורי הכלה",
+          "x": 630,
+          "y": 1100,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 9,
+          "color": "#2C2C2C",
+          "prefix": "הורי הכלה\n\n"
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [],
+      "backSlots": []
+    },
+    {
+      "id": "hina-t10",
+      "name": "חינה בוהמיינית - פרחים ועדינות",
+      "description": "הזמנה פרחונית ועדינה לערב חינה בסגנון בוהמייני רומנטי, עם פרחים עדינים ואלמנטים טבעיים היוצרים אווירה חלומית ומרגשת. עיצוב חופשי, אמנותי ובלתי פורמלי המתאים לזוגות שאוהבים טבעיות ואותנטיות.",
+      "cover": "/images/Hina/t10.cover.webp",
+      "frontBg": "/images/Hina/t10.webp",
+           "size": {
+        "w": 1024,
+        "h": 1536
+      },
+      "frontFields": [
+        {
+          "key": "monogramB",
+          "label": "אות ראשונה (B)",
+          "x": 700,
+          "y": 700,
+          "align": "center",
+          "fontFamily": "serif",
+          "fontWeight": 400,
+          "fontSize": 160,
+"color": "#2C2C2C"        },
+        {
+          "key": "monogramG",
+          "label": "אות שנייה (G)",
+          "x": 745,
+          "y": 750,
+          "align": "center",
+          "fontFamily": "serif",
+          "fontWeight": 350,
+          "fontSize": 140,
+"color": "#2C2C2C"        },
+
+        {
+          "key": "groomNameDetails1",
+          "label": "שם החתן לעטיפה (באנגלית)",
+          "x": 670,
+          "y": 850,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 35,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "andDetailsText1",
+          "x": 730,
+          "y": 850,
+          "align": "center",
+          "fontFamily": "'Great Vibes', cursive",
+          "fontWeight": 400,
+          "fontSize": 25,
+          "color": "#2C2C2C",
+          "staticText": "and"
+        },
+        {
+          "key": "brideNameDetails1",
+          "label": "שם הכלה לעטיפה (באנגלית)",
+          "x": 790,
+          "y": 850,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 35,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "subtitleCover",
+          "x": 730,
+          "y": 880,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 15,
+          "color": "#2C2C2C",
+          "staticText": "THE HEENA PARTY"
+        },
+      
+        {
+          "key": "groomNameDetails",
+          "label": "שם החתן (באנגלית)",
+          "x": 240,
+          "y": 500,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 42,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "andDetailsText",
+          "x": 290,
+          "y": 500,
+          "align": "center",
+"fontFamily": "'Pinyon Script', cursive",          "fontWeight": 400,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "staticText": "&"
+        },
+        {
+          "key": "brideNameDetails",
+          "label": "שם הכלה (באנגלית)",
+          "x": 345,
+          "y": 500,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 42,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "subtitleDetails",
+          "x": 290,
+                   "y": 540,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 19,
+          "color": "#2C2C2C",
+          "staticText": "THE HEENA PARTY"
+        },
+        {
+          "key": "invitationText",
+          "x": 300,
+          "y": 590,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 15,
+          "color": "#2C2C2C",
+          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את טקס החינה שלנו"
+       },
+          {
+          "key": "eventDate",
+          "label": "בחר תאריך מהלוח",
+          "isInput": true,
+          "type": "date",
+          "display": false
+        },
+        {
+          "key": "dateHebrewCombined",
+          "x": 290,
+          "y": 620,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 24,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew"
+          ],
+          "prefix": "יום ",
+          "combineSeparator": ", ",
+          "isInput": false
+        },
+        {
+          "key": "dateEnglishDisplay",
+          "x": 300,
+          "y": 650,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 36,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dateEnglish"
+          ],
+          "isInput": false
+        },
+        {
+          "key": "venue",
+          "label": "שם האולם",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "locationDisplay",
+          "x": 300,
+          "y": 680,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "venue"
+          ],
+          "prefix": "\"",
+          "suffix": "\""
+        },
+        {
+          "key": "cityDisplay",
+          "x": 300,
+          "y": 700,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "city"
+          ]
+        },
+        {
+          "key": "kabbalatPanimTime",
+          "label": "שעת קבלת פנים",
+          "isInput": true,
+          "type": "time",
+          "display": false,
+          "defaultValue": "19:30"
+        },
+        {
+          "key": "scheduleCombined",
+          "x": 300,
+          "y": 725,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "kabbalatPanimTime",
+            "chuppahTime"
+          ],
+          "prefix": "קבלת פנים - "        },
+        {
+          "key": "closingText",
+          "x": 295,
+          "y": 750,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "defaultValue": "נשמח לראותכם"
+        },
+        {
+          "key": "groomParents",
+          "label": "שמות הורי החתן",
+          "x": 370,
+          "y": 770,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 9,
+          "color": "#2C2C2C",
+          "prefix": "הורי החתן\n\n"
+        },
+        {
+          "key": "brideParents",
+          "label": "שמות הורי הכלה",
+          "x": 240,
+          "y": 770,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 9,
+          "color": "#2C2C2C",
+          "prefix": "הורי הכלה\n\n"
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [],
+      "backSlots": []
     }
   ]
 }
