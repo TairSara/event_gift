@@ -144,8 +144,14 @@
   background: white;
   text-align: right;
   direction: rtl;
+  unicode-bidi: plaintext;
   transition: border-color 0.2s, box-shadow 0.2s;
   color: #333;
+}
+
+.cep-input::placeholder {
+  text-align: right;
+  direction: rtl;
 }
 
 .cep-input:focus,

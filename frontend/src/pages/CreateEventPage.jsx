@@ -99,10 +99,22 @@ export default function CreateEventPage() {
       return true;
     }
 
-    const daysBefore = [customSchedule.message1, customSchedule.message2, customSchedule.message3]
-      .map(Number)
-      .sort((a, b) => b - a);
-    for (const d of daysBefore) {
+    const m1 = Number(customSchedule.message1);
+    const m2 = Number(customSchedule.message2);
+    const m3 = Number(customSchedule.message3);
+
+    // סדר: הודעה 1 חייבת להיות יותר ימים מ-2, ו-2 יותר מ-3
+    if (m1 <= m2) {
+      setScheduleError("הודעה ראשונה חייבת להישלח יותר ימים לפני האירוע מהודעה שנייה.");
+      return false;
+    }
+    if (m2 <= m3) {
+      setScheduleError("הודעה שנייה חייבת להישלח יותר ימים לפני האירוע מהודעה שלישית.");
+      return false;
+    }
+
+    // בדיקה מול תאריך האירוע
+    for (const d of [m1, m2, m3]) {
       if (d >= days) {
         setScheduleError(`הודעה המתוזמנת ${d} ימים לפני האירוע לא מתאפשרת - האירוע בעוד ${days} ימים בלבד.`);
         return false;
@@ -409,45 +421,82 @@ export default function CreateEventPage() {
                     <i className="fas fa-info-circle" />
                     <span>
                       {daysUntilEvent !== null
-                        ? `הגדר כמה ימים לפני האירוע לשלוח כל הודעה (האירוע בעוד ${daysUntilEvent} ימים)`
-                        : "הגדר כמה ימים לפני האירוע לשלוח כל הודעה"}
+                        ? `הודעה ראשונה חייבת להיות הכי מוקדמת, ושלישית הכי מאוחרת. האירוע בעוד ${daysUntilEvent} ימים.`
+                        : "הודעה ראשונה חייבת להיות הכי מוקדמת (יותר ימים לפני), ושלישית הכי מאוחרת (פחות ימים לפני)."}
                     </span>
                   </div>
                   <div className="cep-custom-grid">
-                    {[
-                      { key: "message1", label: "הודעה ראשונה", defaultVal: 21 },
-                      { key: "message2", label: "הודעה שנייה", defaultVal: 14 },
-                      { key: "message3", label: "הודעה שלישית", defaultVal: 7 },
-                    ].map(({ key, label, defaultVal }) => {
-                      const maxDays = daysUntilEvent !== null && daysUntilEvent > 0 ? Math.min(30, daysUntilEvent - 1) : 30;
-                      const isOver = daysUntilEvent !== null && daysUntilEvent > 0 && customSchedule[key] >= daysUntilEvent;
-                      return (
-                        <div className="cep-custom-item" key={key}>
-                          <label>{label}</label>
-                          <div className={`cep-num-wrapper ${isOver ? "error" : ""}`}>
-                            <input
-                              type="number"
-                              min="1"
-                              max={maxDays}
-                              value={customSchedule[key]}
-                              onChange={(e) => {
-                                const raw = e.target.value;
-                                if (raw === "") { setCustomSchedule({ ...customSchedule, [key]: "" }); setScheduleError(""); return; }
-                                const val = parseInt(raw);
-                                if (!isNaN(val)) { setCustomSchedule({ ...customSchedule, [key]: val }); setScheduleError(""); }
-                              }}
-                              onBlur={(e) => {
-                                const val = parseInt(e.target.value);
-                                const clamped = isNaN(val) ? defaultVal : Math.min(maxDays, Math.max(1, val));
-                                setCustomSchedule({ ...customSchedule, [key]: clamped });
-                              }}
-                            />
-                            <span>ימים לפני</span>
+                    {(() => {
+                      const m1 = Number(customSchedule.message1) || 0;
+                      const m2 = Number(customSchedule.message2) || 0;
+                      const m3 = Number(customSchedule.message3) || 0;
+                      const maxFromDate = daysUntilEvent !== null && daysUntilEvent > 0 ? Math.min(30, daysUntilEvent - 1) : 30;
+
+                      // הגדרות לכל שדה: max ו-min דינמיים + הודעת שגיאה
+                      const fields = [
+                        {
+                          key: "message1",
+                          label: "הודעה ראשונה",
+                          defaultVal: 21,
+                          // חייב להיות יותר מ-m2
+                          min: m2 + 1,
+                          max: maxFromDate,
+                          orderError: m1 <= m2 && m2 > 0 ? `חייב להיות יותר מ-${m2} ימים (יותר מהודעה שנייה)` : null,
+                        },
+                        {
+                          key: "message2",
+                          label: "הודעה שנייה",
+                          defaultVal: 14,
+                          // חייב להיות בין m3+1 ל-m1-1
+                          min: m3 + 1,
+                          max: Math.min(maxFromDate, m1 - 1 > 0 ? m1 - 1 : maxFromDate),
+                          orderError: (m2 >= m1 && m1 > 0 ? `חייב להיות פחות מ-${m1} ימים (פחות מהודעה ראשונה)` : null)
+                                   || (m2 <= m3 && m3 > 0 ? `חייב להיות יותר מ-${m3} ימים (יותר מהודעה שלישית)` : null),
+                        },
+                        {
+                          key: "message3",
+                          label: "הודעה שלישית",
+                          defaultVal: 7,
+                          // חייב להיות פחות מ-m2
+                          min: 1,
+                          max: Math.min(maxFromDate, m2 - 1 > 0 ? m2 - 1 : maxFromDate),
+                          orderError: m3 >= m2 && m2 > 0 ? `חייב להיות פחות מ-${m2} ימים (פחות מהודעה שנייה)` : null,
+                        },
+                      ];
+
+                      return fields.map(({ key, label, defaultVal, min, max, orderError }) => {
+                        const val = Number(customSchedule[key]) || 0;
+                        const isOverDate = daysUntilEvent !== null && daysUntilEvent > 0 && val >= daysUntilEvent;
+                        const hasError = !!orderError || isOverDate;
+                        return (
+                          <div className="cep-custom-item" key={key}>
+                            <label>{label}</label>
+                            <div className={`cep-num-wrapper ${hasError ? "error" : ""}`}>
+                              <input
+                                type="number"
+                                min={Math.max(1, min)}
+                                max={max}
+                                value={customSchedule[key]}
+                                onChange={(e) => {
+                                  const raw = e.target.value;
+                                  if (raw === "") { setCustomSchedule({ ...customSchedule, [key]: "" }); setScheduleError(""); return; }
+                                  const v = parseInt(raw);
+                                  if (!isNaN(v)) { setCustomSchedule({ ...customSchedule, [key]: v }); setScheduleError(""); }
+                                }}
+                                onBlur={(e) => {
+                                  const v = parseInt(e.target.value);
+                                  const clamped = isNaN(v) ? defaultVal : Math.min(max, Math.max(Math.max(1, min), v));
+                                  setCustomSchedule({ ...customSchedule, [key]: clamped });
+                                }}
+                              />
+                              <span>ימים לפני</span>
+                            </div>
+                            {orderError && <span className="cep-field-hint">{orderError}</span>}
+                            {!orderError && isOverDate && <span className="cep-field-hint">חייב להיות פחות מ-{daysUntilEvent} ימים</span>}
                           </div>
-                          {isOver && <span className="cep-field-hint">חייב להיות פחות מ-{daysUntilEvent} ימים</span>}
-                        </div>
-                      );
-                    })}
+                        );
+                      });
+                    })()}
                   </div>
                 </div>
               )}
