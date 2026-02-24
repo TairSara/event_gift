@@ -208,8 +208,8 @@ export default function CreateEventPage() {
               {/* תאריך */}
               <div className="cep-form-group">
                 <label>
-                  תאריך האירוע <span className="cep-required">*</span>
                   <i className="fas fa-calendar-day" />
+                  תאריך האירוע <span className="cep-required">*</span>
                 </label>
                 <input
                   type="date"
@@ -247,8 +247,8 @@ export default function CreateEventPage() {
               {/* שם */}
               <div className="cep-form-group">
                 <label>
-                  שם האירוע <span className="cep-required">*</span>
                   <i className="fas fa-heading" />
+                  שם האירוע <span className="cep-required">*</span>
                 </label>
                 <input
                   type="text"
@@ -262,8 +262,8 @@ export default function CreateEventPage() {
               {/* סוג אירוע */}
               <div className="cep-form-group">
                 <label>
-                  סוג האירוע <span className="cep-required">*</span>
                   <i className="fas fa-calendar-alt" />
+                  סוג האירוע <span className="cep-required">*</span>
                 </label>
                 <div className="cep-event-types-grid">
                   {eventTypes.map((type) => (
@@ -283,8 +283,8 @@ export default function CreateEventPage() {
               {availablePackages.length > 0 && (
                 <div className="cep-form-group">
                   <label>
-                    בחר חבילה
                     <i className="fas fa-box-open" />
+                    בחר חבילה
                   </label>
                   <select
                     className="cep-select"
