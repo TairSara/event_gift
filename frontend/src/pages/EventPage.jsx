@@ -585,58 +585,26 @@ export default function EventPage() {
                   <i className="fas fa-calendar"></i>
                   <div className="detail-content">
                     <span className="detail-label">תאריך</span>
-                    {isEditingDate ? (
-                      <div className="edit-detail-container">
-                        <input
-                          type="datetime-local"
-                          className="edit-detail-input"
-                          value={editedDate}
-                          onChange={(e) => setEditedDate(e.target.value)}
-                          onKeyDown={(e) => {
-                            if (e.key === 'Enter') handleSaveDate();
-                            if (e.key === 'Escape') handleCancelDateEdit();
-                          }}
-                          autoFocus
-                        />
-                        <div className="edit-detail-buttons">
-                          <button className="save-detail-btn" onClick={handleSaveDate}>
-                            <i className="fas fa-check"></i>
-                          </button>
-                          <button className="cancel-detail-btn" onClick={handleCancelDateEdit}>
-                            <i className="fas fa-times"></i>
-                          </button>
-                        </div>
-                      </div>
-                    ) : (
-                      <div className="detail-value-container">
-                        <span className="detail-value">
-                          {(() => {
-                            // Try event_date first, then invitation date
-                            const dateSource = event.event_date ||
-                              (event.invitation_data?.values?.date);
+                    <span className="detail-value">
+                      {(() => {
+                        const dateSource = event.event_date ||
+                          (event.invitation_data?.values?.date);
 
-                            if (!dateSource) return 'לא הוגדר';
+                        if (!dateSource) return 'לא הוגדר';
 
-                            // If it's from invitation, just display it as is (it's already formatted)
-                            if (!event.event_date && event.invitation_data?.values?.date) {
-                              return event.invitation_data.values.date;
-                            }
+                        if (!event.event_date && event.invitation_data?.values?.date) {
+                          return event.invitation_data.values.date;
+                        }
 
-                            // Otherwise format the event_date
-                            return new Date(event.event_date).toLocaleDateString('he-IL', {
-                              year: 'numeric',
-                              month: 'long',
-                              day: 'numeric',
-                              hour: '2-digit',
-                              minute: '2-digit'
-                            });
-                          })()}
-                        </span>
-                        <button className="edit-detail-icon-btn" onClick={handleEditDate} title="ערוך תאריך">
-                          <i className="fas fa-pencil-alt"></i>
-                        </button>
-                      </div>
-                    )}
+                        return new Date(event.event_date).toLocaleDateString('he-IL', {
+                          year: 'numeric',
+                          month: 'long',
+                          day: 'numeric',
+                          hour: '2-digit',
+                          minute: '2-digit'
+                        });
+                      })()}
+                    </span>
                   </div>
                 </div>
 

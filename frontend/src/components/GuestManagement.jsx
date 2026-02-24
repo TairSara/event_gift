@@ -569,69 +569,6 @@ export default function GuestManagement({ eventId, onUpdate, packageId }) {
           </button>
         </div>
         <div className="actions-right">
-          {showWhatsApp && (
-            <button
-              className="btn-whatsapp-all"
-              onClick={handleSendWhatsAppToAll}
-              disabled={guests.length === 0 || loading}
-              style={{
-                backgroundColor: '#25D366',
-                color: 'white',
-                border: 'none',
-                padding: '10px 20px',
-                borderRadius: '5px',
-                cursor: guests.length === 0 || loading ? 'not-allowed' : 'pointer',
-                opacity: guests.length === 0 || loading ? 0.5 : 1,
-                fontWeight: 'bold',
-                marginLeft: '10px'
-              }}
-            >
-              <i className="fab fa-whatsapp" style={{ marginLeft: '8px' }}></i>
-              שלח הזמנות לכולם
-            </button>
-          )}
-          {showWhatsApp && (
-            <button
-              className="btn-whatsapp-all"
-              onClick={handleSendReminderToAll}
-              disabled={guests.length === 0 || loading}
-              style={{
-                backgroundColor: '#FF9800',
-                color: 'white',
-                border: 'none',
-                padding: '10px 20px',
-                borderRadius: '5px',
-                cursor: guests.length === 0 || loading ? 'not-allowed' : 'pointer',
-                opacity: guests.length === 0 || loading ? 0.5 : 1,
-                fontWeight: 'bold',
-                marginLeft: '10px'
-              }}
-            >
-              <i className="fab fa-whatsapp" style={{ marginLeft: '8px' }}></i>
-              שלח תזכורת לכולם
-            </button>
-          )}
-          {showSms && (
-            <button
-              className="btn-sms-all"
-              onClick={handleSendSMSToAll}
-              disabled={guests.length === 0 || loading}
-              style={{
-                backgroundColor: '#4285F4',
-                color: 'white',
-                border: 'none',
-                padding: '10px 20px',
-                borderRadius: '5px',
-                cursor: guests.length === 0 || loading ? 'not-allowed' : 'pointer',
-                opacity: guests.length === 0 || loading ? 0.5 : 1,
-                fontWeight: 'bold',
-                marginLeft: '10px'
-              }}
-            >
-              <i className="fas fa-sms" style={{ marginLeft: '8px' }}></i>
-              שלח SMS לכולם
-            </button>
-          )}
           <button className="btn-download btn-excel" onClick={downloadExcel} disabled={guests.length === 0}>
             <i className="fas fa-file-excel"></i>
             הורד Excel

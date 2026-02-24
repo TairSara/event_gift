@@ -353,7 +353,10 @@ def get_user_events(user_id: int):
                 COUNT(DISTINCT g.id) as total_guests,
                 COUNT(DISTINCT CASE WHEN g.attendance_status = 'confirmed' THEN g.id END) as confirmed_guests,
                 COUNT(DISTINCT CASE WHEN gift.id IS NOT NULL THEN gift.id END) as total_gifts,
-                COALESCE(SUM(gift.amount), 0) as total_gift_amount
+                COALESCE(SUM(gift.amount), 0) as total_gift_amount,
+                COALESCE(SUM(g.guests_count), 0) as total_people,
+                COUNT(DISTINCT CASE WHEN g.attendance_status = 'pending' THEN g.id END) as pending_guests,
+                COALESCE(SUM(CASE WHEN g.attendance_status = 'confirmed' THEN g.guests_count ELSE 0 END), 0) as confirmed_quantity
             FROM events e
             LEFT JOIN guests g ON e.id = g.event_id
             LEFT JOIN gifts gift ON e.id = gift.event_id
@@ -384,6 +387,9 @@ def get_user_events(user_id: int):
             total_guests = row[8] or 0
             confirmed_guests = row[9] or 0
             confirmation_rate = (confirmed_guests / total_guests * 100) if total_guests > 0 else 0
+            total_people = row[12] or 0
+            pending_guests = row[13] or 0
+            confirmed_quantity = row[14] or 0
 
             events.append({
                 "id": row[0],
@@ -399,7 +405,10 @@ def get_user_events(user_id: int):
                     "confirmed_guests": confirmed_guests,
                     "confirmation_rate": round(confirmation_rate, 1),
                     "total_gifts": row[10] or 0,
-                    "total_gift_amount": float(row[11]) if row[11] else 0.0
+                    "total_gift_amount": float(row[11]) if row[11] else 0.0,
+                    "total_people": total_people,
+                    "pending_guests": pending_guests,
+                    "confirmed_quantity": confirmed_quantity
                 }
             })
 

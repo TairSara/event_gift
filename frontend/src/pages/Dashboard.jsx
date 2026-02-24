@@ -245,20 +245,20 @@ export default function Dashboard() {
                             </div>
                             <div className="stat-item">
                               <div className="stat-info">
-                                <span className="stat-value">{event.statistics.confirmed_guests}</span>
+                                <span className="stat-value">{event.statistics.total_people}</span>
+                                <span className="stat-label">סה"כ אנשים</span>
+                              </div>
+                            </div>
+                            <div className="stat-item">
+                              <div className="stat-info">
+                                <span className="stat-value">{event.statistics.confirmed_quantity}</span>
                                 <span className="stat-label">אישרו הגעה</span>
                               </div>
                             </div>
                             <div className="stat-item">
                               <div className="stat-info">
-                                <span className="stat-value">{event.statistics.confirmation_rate}%</span>
-                                <span className="stat-label">אחוז אישורים</span>
-                              </div>
-                            </div>
-                            <div className="stat-item">
-                              <div className="stat-info">
-                                <span className="stat-value">{event.statistics.total_gifts}</span>
-                                <span className="stat-label">מתנות</span>
+                                <span className="stat-value">{event.statistics.pending_guests}</span>
+                                <span className="stat-label">ממתינים</span>
                               </div>
                             </div>
                           </div>
