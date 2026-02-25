@@ -1324,17 +1324,19 @@ async def get_events_with_scheduled_messages(
         query = f"""
             SELECT
                 e.id, e.event_title, e.event_type, e.event_date, e.event_location,
-                e.send_method,
                 COUNT(sm.id) as total_messages,
                 COUNT(CASE WHEN sm.status = 'pending' THEN 1 END) as pending_count,
                 COUNT(CASE WHEN sm.status = 'sent' THEN 1 END) as sent_count,
                 COUNT(CASE WHEN sm.status = 'failed' THEN 1 END) as failed_count,
                 COALESCE(SUM(sm.guests_sent_count), 0) as total_sent,
-                COALESCE(SUM(sm.guests_failed_count), 0) as total_failed
+                COALESCE(SUM(sm.guests_failed_count), 0) as total_failed,
+                COUNT(DISTINCT CASE WHEN g.contact_method = 'WhatsApp' OR g.contact_method IS NULL THEN g.id END) as whatsapp_guests,
+                COUNT(DISTINCT CASE WHEN g.contact_method = 'SMS' THEN g.id END) as sms_guests
             FROM scheduled_messages sm
             LEFT JOIN events e ON sm.event_id = e.id
+            LEFT JOIN guests g ON g.event_id = e.id
             {where_clause}
-            GROUP BY e.id, e.event_title, e.event_type, e.event_date, e.event_location, e.send_method
+            GROUP BY e.id, e.event_title, e.event_type, e.event_date, e.event_location
             ORDER BY MAX(sm.scheduled_date) DESC
             LIMIT %s OFFSET %s
         """
@@ -1345,19 +1347,30 @@ async def get_events_with_scheduled_messages(
 
         events_list = []
         for ev in events:
+            whatsapp_guests = ev[11] or 0
+            sms_guests = ev[12] or 0
+            if whatsapp_guests > 0 and sms_guests > 0:
+                send_method = f"וואטסאפ ({whatsapp_guests}) + SMS ({sms_guests})"
+            elif sms_guests > 0:
+                send_method = "SMS"
+            else:
+                send_method = "WhatsApp"
+
             events_list.append({
                 "id": ev[0],
                 "event_title": ev[1],
                 "event_type": ev[2],
                 "event_date": ev[3].isoformat() if ev[3] else None,
                 "event_location": ev[4],
-                "send_method": ev[5],
-                "total_messages": ev[6],
-                "pending_count": ev[7],
-                "sent_count": ev[8],
-                "failed_count": ev[9],
-                "total_sent": ev[10],
-                "total_failed": ev[11]
+                "send_method": send_method,
+                "whatsapp_guests": whatsapp_guests,
+                "sms_guests": sms_guests,
+                "total_messages": ev[5],
+                "pending_count": ev[6],
+                "sent_count": ev[7],
+                "failed_count": ev[8],
+                "total_sent": ev[9],
+                "total_failed": ev[10]
             })
 
         cursor.close()
@@ -1395,16 +1408,30 @@ async def get_event_scheduled_messages(event_id: int):
                 sm.id, sm.message_number, sm.scheduled_date,
                 sm.status, sm.sent_at, sm.guests_sent_count, sm.guests_failed_count,
                 sm.error_message, sm.created_at,
-                e.event_title, e.send_method
+                e.event_title,
+                COUNT(DISTINCT CASE WHEN g.contact_method = 'WhatsApp' OR g.contact_method IS NULL THEN g.id END) as whatsapp_guests,
+                COUNT(DISTINCT CASE WHEN g.contact_method = 'SMS' THEN g.id END) as sms_guests
             FROM scheduled_messages sm
             LEFT JOIN events e ON sm.event_id = e.id
+            LEFT JOIN guests g ON g.event_id = sm.event_id
             WHERE sm.event_id = %s
+            GROUP BY sm.id, sm.message_number, sm.scheduled_date, sm.status, sm.sent_at,
+                     sm.guests_sent_count, sm.guests_failed_count, sm.error_message, sm.created_at, e.event_title
             ORDER BY sm.message_number ASC
         """, (event_id,))
         messages = cursor.fetchall()
 
         messages_list = []
         for msg in messages:
+            whatsapp_guests = msg[10] or 0
+            sms_guests = msg[11] or 0
+            if whatsapp_guests > 0 and sms_guests > 0:
+                send_method = f"וואטסאפ + SMS"
+            elif sms_guests > 0:
+                send_method = "SMS"
+            else:
+                send_method = "WhatsApp"
+
             messages_list.append({
                 "id": msg[0],
                 "message_number": msg[1],
@@ -1416,7 +1443,7 @@ async def get_event_scheduled_messages(event_id: int):
                 "error_message": msg[7],
                 "created_at": msg[8].isoformat() if msg[8] else None,
                 "event_title": msg[9],
-                "send_method": msg[10]
+                "send_method": send_method
             })
 
         cursor.close()
