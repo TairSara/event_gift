@@ -1,5 +1,7 @@
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from db import get_db_connection
 from auth import router as auth_router
@@ -16,6 +18,11 @@ from payment_routes import router as payment_router
 from scheduler_router import router as scheduler_router
 
 app = FastAPI(title="giftWeb-api")
+
+# Serve uploaded invitation images as static files
+_uploads_dir = os.path.join(os.path.dirname(__file__), "uploads", "invitations")
+os.makedirs(_uploads_dir, exist_ok=True)
+app.mount("/uploads", StaticFiles(directory=os.path.join(os.path.dirname(__file__), "uploads")), name="uploads")
 
 # Run database migrations on startup
 @app.on_event("startup")
