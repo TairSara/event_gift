@@ -2020,7 +2020,7 @@
         {
           "key": "groomNameDetails",
           "label": "שם החתן (באנגלית)",
-          "x": 720,
+          "x": 680,
           "y": 650,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
@@ -2033,7 +2033,7 @@
         {
           "key": "andDetailsText",
           "x": 780,
-          "y": 656,
+          "y": 660,
           "align": "center",
           "fontFamily": "'Great Vibes', cursive",
           "fontWeight": 400,
@@ -2046,8 +2046,8 @@
         {
           "key": "brideNameDetails",
           "label": "שם הכלה (באנגלית)",
-          "x": 845,
-          "y": 660,
+          "x": 850,
+          "y": 670,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
           "fontWeight": 300,
@@ -2058,7 +2058,7 @@
         },
         {
           "key": "subtitleDetails",
-          "x": 780,
+          "x": 760,
           "y": 690,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
@@ -2075,7 +2075,7 @@
           "y": 730,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 24,
+          "fontSize": 20,
           "color": "#2C2C2C",
           "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו"
                   ,"rotation": 6.5
@@ -2219,13 +2219,13 @@
         {
           "key": "groomParents",
           "label": "שמות הורי החתן",
-          "x": 800,
+          "x": 820,
           "y": 1040,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 18,
           "color": "#2C2C2C",
-          "prefix": "הורי החתן\n\n"
+          "prefix": "הורי החתן\n"
                               ,"rotation": 6.5
 
         },
@@ -2236,9 +2236,9 @@
           "y": 1020,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 18,
           "color": "#2C2C2C",
-          "prefix": "הורי הכלה\n\n"
+          "prefix": "הורי הכלה\n"
                               ,"rotation": 6.5
 
         }
@@ -2294,8 +2294,8 @@
         },
         {
           "key": "andDetailsText1",
-          "x": 265,
-          "y": 819,
+          "x": 270,
+          "y": 825,
           "align": "center",
           "fontFamily": "'Great Vibes', cursive",
           "fontWeight": 400,
@@ -2351,7 +2351,7 @@
         {
           "key": "groomNameDetails",
           "label": "שם החתן (באנגלית)",
-          "x": 670,
+          "x": 640,
           "y": 760,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
@@ -2376,7 +2376,7 @@
         {
           "key": "brideNameDetails",
           "label": "שם הכלה (באנגלית)",
-          "x": 792,
+          "x": 800,
           "y": 762,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
@@ -2388,7 +2388,7 @@
         },
         {
           "key": "subtitleDetails",
-          "x": 730,
+          "x": 710,
           "y": 787,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
@@ -2405,7 +2405,7 @@
           "y": 830,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 24,
+          "fontSize": 20,
           "color": "#2C2C2C",
           "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו"
                   ,"rotation": 0
@@ -2550,12 +2550,12 @@
           "key": "groomParents",
           "label": "שמות הורי החתן",
           "x": 780,
-          "y": 1100,
+          "y": 1098,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 18,
           "color": "#2C2C2C",
-          "prefix": "הורי החתן\n\n"
+          "prefix": "הורי החתן\n"
                               ,"rotation": 0
 
         },
@@ -2566,9 +2566,9 @@
           "y": 1097,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 18,
           "color": "#2C2C2C",
-          "prefix": "הורי הכלה\n\n"
+          "prefix": "הורי הכלה\n"
                               ,"rotation": 0
 
         }
@@ -2624,8 +2624,8 @@
         },
         {
           "key": "andDetailsText1",
-          "x": 610,
-          "y": 1200,
+          "x": 620,
+          "y": 1205,
           "align": "center",
           "fontFamily": "'Great Vibes', cursive",
           "fontWeight": 400,
@@ -2636,7 +2636,7 @@
         {
           "key": "brideNameDetails1",
           "label": "שם הכלה לעטיפה (באנגלית)",
-          "x": 670,
+          "x": 680,
           "y": 1200,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
@@ -2681,7 +2681,7 @@
         {
           "key": "groomNameDetails",
           "label": "שם החתן (באנגלית)",
-          "x": 720,
+          "x": 700,
           "y": 740,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
@@ -2692,8 +2692,8 @@
         },
         {
           "key": "andDetailsText",
-          "x": 770,
-          "y": 740,
+          "x": 780,
+          "y": 742,
           "align": "center",
           "fontFamily": "'Great Vibes', cursive",
           "fontWeight": 400,
@@ -2706,7 +2706,7 @@
         {
           "key": "brideNameDetails",
           "label": "שם הכלה (באנגלית)",
-          "x": 827,
+          "x": 835,
           "y": 740,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
@@ -2735,7 +2735,7 @@
           "y": 800,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 26,
+          "fontSize": 16,
           "color": "#2C2C2C",
           "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו"
                   ,"rotation": 0
@@ -2852,7 +2852,7 @@
           "y": 940,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 6,
+          "fontSize":20,
           "color": "#2C2C2C",
           "isCombined": true,
           "combineFields": [
@@ -2883,9 +2883,9 @@
           "y": 1030,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 16,
           "color": "#2C2C2C",
-          "prefix": "הורי החתן\n\n"
+          "prefix": "הורי החתן\n"
                               ,"rotation": 0
 
         },
@@ -2896,9 +2896,9 @@
           "y": 1030,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 16,
           "color": "#2C2C2C",
-          "prefix": "הורי הכלה\n\n"
+          "prefix": "הורי הכלה\n"
                               ,"rotation": 0
 
         }
@@ -3012,7 +3012,7 @@
         {
           "key": "groomNameDetails",
           "label": "שם החתן (באנגלית)",
-          "x": 670,
+          "x": 650,
           "y": 660,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
@@ -3049,7 +3049,7 @@
         },
         {
           "key": "subtitleDetails",
-          "x": 730,
+          "x": 720,
           "y": 687,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
@@ -3066,7 +3066,7 @@
           "y": 730,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 24,
+          "fontSize": 20,
           "color": "#2C2C2C",
           "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו"
                   ,"rotation": 0
@@ -3214,9 +3214,9 @@
           "y": 998,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 20,
           "color": "#2C2C2C",
-          "prefix": "הורי החתן\n\n"
+          "prefix": "הורי החתן\n"
                               ,"rotation": 0
 
         },
@@ -3227,9 +3227,9 @@
           "y": 997,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 20,
           "color": "#2C2C2C",
-          "prefix": "הורי הכלה\n\n"
+          "prefix": "הורי הכלה\n"
                               ,"rotation": 0
 
         }
@@ -3349,8 +3349,8 @@
         {
           "key": "groomNameDetails",
           "label": "שם החתן (באנגלית)",
-          "x": 650,
-          "y": 520,
+          "x": 620,
+          "y": 510,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
           "fontWeight": 300,
@@ -3387,7 +3387,7 @@
         },
         {
           "key": "subtitleDetails",
-          "x": 710,
+          "x": 700,
           "y": 555,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
@@ -3404,7 +3404,7 @@
           "y": 600,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 24,
+          "fontSize": 18,
           "color": "#2C2C2C",
           "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו"
                   ,"rotation": 8.5
@@ -3552,9 +3552,9 @@
           "y": 1020,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 18,
           "color": "#2C2C2C",
-          "prefix": "הורי החתן\n\n"
+          "prefix": "הורי החתן\n"
                               ,"rotation": 8
 
         },
@@ -3565,9 +3565,9 @@
           "y": 980,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 18,
           "color": "#2C2C2C",
-          "prefix": "הורי הכלה\n\n"
+          "prefix": "הורי הכלה\n"
                               ,"rotation": 8
 
         }
@@ -3623,7 +3623,7 @@
         },
         {
           "key": "subtitleCover",
-          "x": 800,
+          "x": 785,
           "y": 925,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
@@ -3704,7 +3704,7 @@
           "y": 600,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 24,
+          "fontSize": 20,
           "color": "#2C2C2C",
           "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו"
         },
@@ -3838,9 +3838,9 @@
           "y": 940,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 18,
           "color": "#2C2C2C",
-          "prefix": "הורי החתן\n\n"
+          "prefix": "הורי החתן\n"
         },
         {
           "key": "brideParents",
@@ -3849,9 +3849,9 @@
           "y": 940,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 18,
           "color": "#2C2C2C",
-          "prefix": "הורי הכלה\n\n"
+          "prefix": "הורי הכלה\n"
         }
       ],
       "frontSlots": [],
