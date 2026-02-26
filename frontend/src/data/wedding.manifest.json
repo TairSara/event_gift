@@ -1705,7 +1705,7 @@
         {
           "key": "groomNameDetails",
           "label": "שם החתן (באנגלית)",
-          "x": 290,
+          "x": 270,
           "y": 515,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
@@ -1727,7 +1727,7 @@
         {
           "key": "brideNameDetails",
           "label": "שם הכלה (באנגלית)",
-          "x": 420,
+          "x": 440,
           "y": 515,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
@@ -1752,7 +1752,7 @@
           "y": 600,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 24,
+          "fontSize": 18,
           "color": "#2C2C2C",
           "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו"
         },
