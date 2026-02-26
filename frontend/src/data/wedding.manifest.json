@@ -1882,24 +1882,24 @@
         {
           "key": "groomParents",
           "label": "שמות הורי החתן",
-          "x": 490,
+          "x": 450,
           "y": 890,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 20,
           "color": "#2C2C2C",
-          "prefix": "הורי החתן\n\n"
+          "prefix": "הורי החתן\n"
         },
         {
           "key": "brideParents",
           "label": "שמות הורי הכלה",
-          "x": 240,
+          "x": 280,
           "y": 890,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 20,
           "color": "#2C2C2C",
-          "prefix": "הורי הכלה\n\n"
+          "prefix": "הורי הכלה\n"
         }
       ],
       "frontSlots": [],
