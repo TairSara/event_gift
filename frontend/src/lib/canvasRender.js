@@ -69,7 +69,7 @@ export function drawTextField(ctx, text, field, colorOverride = null) {
     displayText = `${displayText}${field.suffix}`;
   }
 
-  ctx.font = `${field.fontWeight} ${field.fontSize}px ${field.fontFamily}`;
+  ctx.font = `${field.fontWeight || 'normal'} ${field.fontSize}px ${field.fontFamily}`;
   ctx.fillStyle = colorOverride || field.color;
   ctx.textAlign = field.align || 'center';
   ctx.textBaseline = 'middle';

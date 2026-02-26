@@ -1715,8 +1715,8 @@
         },
         {
           "key": "andDetailsText",
-          "x": 350,
-          "y": 515,
+          "x": 360,
+          "y": 520,
           "align": "center",
           "fontFamily": "'Great Vibes', cursive",
           "fontWeight": 400,
@@ -3210,8 +3210,8 @@
         {
           "key": "groomParents",
           "label": "שמות הורי החתן",
-          "x": 780,
-          "y": 1000,
+          "x": 810,
+          "y": 998,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
           "fontSize": 9,

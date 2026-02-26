@@ -373,7 +373,7 @@ export default function InvitationEditor() {
   const currentSlots = currentSide === 'front' ? template.frontSlots : (template.backSlots || []);
 
   return (
-    <div className="invitation-editor" data-event-type={eventType} data-single-sided={isSingleSided ? 'true' : 'false'}>
+    <div className="invitation-editor" data-event-type={eventType} data-single-sided={isSingleSided ? 'true' : 'false'} data-template-id={templateId}>
       {/* Navigation Bar */}
       <nav className="navbar">
         <div className="navbar-container">
