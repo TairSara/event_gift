@@ -590,7 +590,7 @@
         {
           "key": "groomNameDetails",
           "label": "שם החתן (באנגלית)",
-          "x": 230,
+          "x": 220,
           "y": 620,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
@@ -636,7 +636,7 @@
           "y": 680,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 24,
+          "fontSize": 20,
           "color": "#2C2C2C",
           "defaultValue": "נרגשים להזמינכם לחגוג עימנו את טקס החינה שלנו"
        },
@@ -760,9 +760,9 @@
           "y": 970,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 18,
           "color": "#2C2C2C",
-          "prefix": "הורי החתן\n\n"
+          "prefix": "הורי החתן\n"
         },
         {
           "key": "brideParents",
@@ -771,9 +771,9 @@
           "y": 968,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 18,
           "color": "#2C2C2C",
-          "prefix": "הורי הכלה\n\n"
+          "prefix": "הורי הכלה\n"
         }
       ],
       "frontSlots": [],
@@ -889,7 +889,7 @@
           {
           "key": "groomNameDetails",
           "label": "שם החתן (באנגלית)",
-          "x": 690,
+          "x": 680,
           "y": 715,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
@@ -935,7 +935,7 @@
           "y": 790,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 20,
+          "fontSize": 18,
           "color": "#2C2C2C",
           "defaultValue": "נרגשים להזמינכם לחגוג עימנו את טקס החינה שלנו"
        },
@@ -1059,9 +1059,9 @@
           "y": 1100,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 18,
           "color": "#2C2C2C",
-          "prefix": "הורי החתן\n\n"
+          "prefix": "הורי החתן\n"
         },
         {
           "key": "brideParents",
@@ -1070,9 +1070,9 @@
           "y": 1100,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 18,
           "color": "#2C2C2C",
-          "prefix": "הורי הכלה\n\n"
+          "prefix": "הורי הכלה\n"
         }
       ],
       "frontSlots": [],
@@ -1329,9 +1329,9 @@
           "y": 770,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 18,
           "color": "#2C2C2C",
-          "prefix": "הורי החתן\n\n"
+          "prefix": "הורי החתן\n"
         },
         {
           "key": "brideParents",
@@ -1340,9 +1340,9 @@
           "y": 770,
           "align": "center",
           "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 9,
+          "fontSize": 18,
           "color": "#2C2C2C",
-          "prefix": "הורי הכלה\n\n"
+          "prefix": "הורי הכלה\n"
         }
       ],
       "frontSlots": [],
