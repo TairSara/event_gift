@@ -2,567 +2,12 @@
   "category": "hina",
   "templates": [
     {
-      "id": "hina-001",
-      "name": "חוויית חינה בגווני כחול",
-      "description": "הזמנה יוקרתית ומיוחדת במינה בעיצוב אלגנטי וייחודי, המשלבת בהרמוניה מושלמת גווני כחול אצילי ולבן טהור עם שילוב חום עדין ומחמם. העיצוב המתוחכם משדר אלגנטיות מודרנית תוך שמירה על אווירה מסורתית ומרגשת. ההזמנה מציגה טיפוגרפיה בולטת ומודגשת בכחול עמוק, המעניקה לה מראה מלכותי ומרשים. בחירה מושלמת לזוגות המחפשים עיצוב יוקרתי ומעודן המשקף את ייחודיות האירוע.",
-      "cover": "/images/Hina/001.cover.webp",
-      "frontBg": "/images/Hina/001.webp",
-      "size": { "w": 1080, "h": 1350 },
-      "frontFields": [
-        {
-          "key": "templateNumber",
-          "x": 540,
-          "y": 150,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 700,
-          "fontSize": 60,
-          "color": "#0066CC",
-          "staticText": "001"
-        },
-        {
-          "key": "names",
-          "label": "שמות הזוג",
-          "x": 540,
-          "y": 580,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 700,
-          "fontSize": 80,
-          "color": "#0066CC"
-        },
-        {
-          "key": "dateCombined",
-          "x": 540,
-          "y": 670,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 40,
-          "color": "#8B4513",
-          "prefix": "שיתקיים ביום ",
-          "isCombined": true,
-          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
-          "combineSeparator": " ",
-          "isInput": false
-        },
-        {
-          "key": "eventDate",
-          "label": "תאריך האירוע",
-          "isInput": true,
-          "type": "date"
-        },
-        {
-          "key": "venueCombined",
-          "x": 540,
-          "y": 740,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 40,
-          "color": "#8B4513",
-          "prefix": "באולמי ",
-          "isCombined": true,
-          "combineFields": ["venue", "city"],
-          "combineSeparator": " "
-        },
-        {
-          "key": "venue",
-          "label": "מקום",
-          "isInput": true,
-          "wrapper": "quotes",
-          "suffix": ","
-        },
-        {
-          "key": "city",
-          "label": "עיר",
-          "isInput": true
-        },
-        {
-          "key": "timeDisplay",
-          "x": 540,
-          "y": 810,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 40,
-          "color": "#8B4513",
-          "prefix": "בשעה ",
-          "isCombined": true,
-          "combineFields": ["eventTime"],
-          "combineSeparator": ""
-        },
-        {
-          "key": "eventTime",
-          "label": "שעת האירוע",
-          "isInput": true,
-          "type": "time",
-          "defaultValue": "20:00"
-        },
-        {
-          "key": "invitationText",
-          "x": 540,
-          "y": 900,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 40,
-          "color": "#8B4513",
-          "staticText": "נשמח לראותכם בשמחתנו"
-        },
-        {
-          "key": "brideParents",
-          "label": "שם הורי הכלה",
-          "x": 720,
-          "y": 1200,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 35,
-          "color": "#003366"
-        },
-        {
-          "key": "groomParents",
-          "label": "שם הורי החתן",
-          "x": 365,
-          "y": 1200,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 35,
-          "color": "#003366"
-        }
-      ],
-      "frontSlots": []
-    },
-    {
-      "id": "hina-002",
-      "name": "חוויית חינה בגווני זהב",
-      "description": "הזמנה מרהיבה ואלגנטית בגווני חום חם וזהב מנצנץ, המשלבת יוקרה ומסורת בעיצוב מתוחכם. הפלטה העשירה של גוני חום עמוקים עם שילוב של זהב מלכותי יוצרת אווירה חמה ומזמינה תוך שמירה על אלגנטיות מושלמת. העיצוב המרשים משדר אצילות ויוקרה, ומתאים לזוגות המחפשים הזמנה ייחודית עם אופי מסורתי ומחמם.",
-      "cover": "/images/Hina/002.cover.webp",
-      "frontBg": "/images/Hina/002.webp",
-      "size": { "w": 1080, "h": 1350 },
-      "frontFields": [
-        {
-          "key": "templateNumber",
-          "x": 540,
-          "y": 150,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 700,
-          "fontSize": 60,
-          "color": "#B8860B",
-          "staticText": "002"
-        },
-        {
-          "key": "names",
-          "label": "שמות הזוג",
-          "x": 540,
-          "y": 640,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 700,
-          "fontSize": 100,
-          "color": "#8B4513"
-        },
-        {
-          "key": "dateCombined",
-          "x": 540,
-          "y": 800,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 40,
-          "color": "#8B4513",
-          "prefix": "שיתקיים ביום ",
-          "isCombined": true,
-          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
-          "combineSeparator": " ",
-          "isInput": false
-        },
-        {
-          "key": "eventDate",
-          "label": "תאריך האירוע",
-          "isInput": true,
-          "type": "date"
-        },
-        {
-          "key": "venueCombined",
-          "x": 540,
-          "y": 860,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 40,
-          "color": "#8B4513",
-          "prefix": "באולמי ",
-          "isCombined": true,
-          "combineFields": ["venue", "city"],
-          "combineSeparator": " "
-        },
-        {
-          "key": "venue",
-          "label": "מקום",
-          "isInput": true,
-          "wrapper": "quotes",
-          "suffix": ","
-        },
-        {
-          "key": "city",
-          "label": "עיר",
-          "isInput": true
-        },
-        {
-          "key": "timeDisplay",
-          "x": 540,
-          "y": 920,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 40,
-          "color": "#8B4513",
-          "prefix": "בשעה ",
-          "isCombined": true,
-          "combineFields": ["eventTime"],
-          "combineSeparator": ""
-        },
-        {
-          "key": "eventTime",
-          "label": "שעת האירוע",
-          "isInput": true,
-          "type": "time",
-          "defaultValue": "20:00"
-        },
-        {
-          "key": "invitationText",
-          "x": 540,
-          "y": 900,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 40,
-          "color": "#8B4513"
-        }
-      ],
-      "frontSlots": []
-    },
-    {
-      "id": "hina-003",
-      "name": "חוויית חינה בגווני זהב ושמנת",
-      "description": "הזמנה מיוחדת ומרהיבה המשלבת גווני זהב מלכותי עם שמנת עדין ואלמנטים מסורתיים של חינה. העיצוב המתוחכם משלב בהרמוניה צבעים חמים ורכים היוצרים אווירה חגיגית ומרגשת. ההזמנה מציגה את שמות הזוג באנגלית בטיפוגרפיה אלגנטית, תוך שמירה על קסם מסורתי ומרשים. השילוב של זהב ושמנת עם אלמנטים עדינים של חינה יוצר מראה יוקרתי וייחודי המתאים במיוחד לזוגות המחפשים עיצוב מיוחד ובלתי נשכח.",
-      "cover": "/images/Hina/003.cover.webp",
-      "frontBg": "/images/Hina/003.webp",
-      "size": { "w": 1080, "h": 1350 },
-      "frontFields": [
-        {
-          "key": "templateNumber",
-          "x": 540,
-          "y": 150,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 700,
-          "fontSize": 60,
-          "color": "#B8860B"        },
-        {
-          "key": "brideName",
-          "label": "שם הכלה (באנגלית)",
-          "x": 540,
-          "y": 400,
-          "align": "center",
-          "fontFamily": "'Great Vibes', 'Dancing Script', cursive",
-          "fontWeight": 700,
-          "fontSize": 90,
-          "color": "#F5DEB3"
-        },
-        {
-          "key": "ampersand",
-          "x": 540,
-          "y": 500,
-          "align": "center",
-          "fontFamily": "'Great Vibes', 'Dancing Script', cursive",
-          "fontWeight": 400,
-          "fontSize": 65,
-          "color": "#B8860B",
-          "staticText": "&"
-        },
-        {
-          "key": "groomName",
-          "label": "שם החתן (באנגלית)",
-          "x": 540,
-          "y": 600,
-          "align": "center",
-          "fontFamily": "'Great Vibes', 'Dancing Script', cursive",
-          "fontWeight": 700,
-          "fontSize": 90,
-          "color": "#F5DEB3"
-        },
-        {
-          "key": "dateCombined",
-          "x": 540,
-          "y": 720,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 40,
-          "color": "#B8860B",
-          "prefix": "שיתקיים ביום ",
-          "isCombined": true,
-          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
-          "combineSeparator": " ",
-          "isInput": false
-        },
-        {
-          "key": "eventDate",
-          "label": "תאריך האירוע",
-          "isInput": true,
-          "type": "date"
-        },
-        {
-          "key": "venueCombined",
-          "x": 540,
-          "y": 790,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 40,
-          "color": "#B8860B",
-          "prefix": "באולמי ",
-          "isCombined": true,
-          "combineFields": ["venue", "city"],
-          "combineSeparator": " "
-        },
-        {
-          "key": "venue",
-          "label": "מקום",
-          "isInput": true,
-          "wrapper": "quotes",
-          "suffix": ","
-        },
-        {
-          "key": "city",
-          "label": "עיר",
-          "isInput": true
-        },
-        {
-          "key": "timeDisplay",
-          "x": 540,
-          "y": 860,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 40,
-          "color": "#B8860B",
-          "prefix": "בשעה ",
-          "isCombined": true,
-          "combineFields": ["eventTime"],
-          "combineSeparator": ""
-        },
-        {
-          "key": "eventTime",
-          "label": "שעת האירוע",
-          "isInput": true,
-          "type": "time",
-          "defaultValue": "20:00"
-        },
-        {
-          "key": "invitationText",
-          "x": 540,
-          "y": 668,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 35,
-          "color": "#B8860B",
-          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את טקס החינה שלנו"
-        },
-        {
-          "key": "brideParents",
-          "label": "שם הורי הכלה",
-          "x": 750,
-          "y": 1100,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 35,
-          "color": "#B8860B"
-        },
-        {
-          "key": "groomParents",
-          "label": "שם הורי החתן",
-          "x": 350,
-          "y": 1100,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 35,
-          "color": "#B8860B"
-        }
-      ],
-      "frontSlots": []
-    },
-    {
-      "id": "hina-004",
-      "name": "חוויית חינה פרחונית בגווני שמנת ולבן",
-      "description": "הזמנה פרחונית רומנטית ומרהיבה המשלבת פרחים עדינים בגווני ורוד ולבן עם רקע שמנת חמים ושילוב כחול עדין. העיצוב הפרחוני המתוחכם יוצר אווירה רומנטית ומרגשת, עם טיפוגרפיה אלגנטית באנגלית המדגישה את יופי האירוע. הפלטה הרכה של גווני השמנת והלבן עם נגיעות ורוד וכחול פסטליים משדרת עדינות ויוקרה. הזמנה מושלמת לזוגות המחפשים עיצוב רומנטי ופרחוני עם אווירה חלומית ובלתי נשכחת.",
-      "cover": "/images/Hina/004.cover.webp",
-      "frontBg": "/images/Hina/004.webp",
-      "size": { "w": 1080, "h": 1350 },
-      "frontFields": [
-        {
-          "key": "templateNumber",
-          "x": 540,
-          "y": 150,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 700,
-          "fontSize": 60,
-          "color": "#F5F5DC"        },
-        {
-          "key": "brideName",
-          "label": "שם הכלה (באנגלית)",
-          "x": 540,
-          "y": 400,
-          "align": "center",
-          "fontFamily": "'Great Vibes', 'Dancing Script', cursive",
-          "fontWeight": 700,
-          "fontSize": 90,
-          "color": "#FFFFFF"
-        },
-        
-        {
-          "key": "ampersand",
-          "x": 540,
-          "y": 500,
-          "align": "center",
-          "fontFamily": "'Great Vibes', 'Dancing Script', cursive",
-          "fontWeight": 400,
-          "fontSize": 65,
-          "color": "#F5F5DC",
-          "staticText": "&"
-        },
-        {
-          "key": "groomName",
-          "label": "שם החתן (באנגלית)",
-          "x": 540,
-          "y": 600,
-          "align": "center",
-          "fontFamily": "'Great Vibes', 'Dancing Script', cursive",
-          "fontWeight": 700,
-          "fontSize": 90,
-          "color": "#FFFFFF"
-        },
-
-        {
-          "key": "dateCombined",
-          "x": 540,
-          "y": 720,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 40,
-          "color": "#F5F5DC",
-          "prefix": "שיתקיים ביום ",
-          "isCombined": true,
-          "combineFields": ["dayOfWeek", "dateHebrew", "dateEnglish"],
-          "combineSeparator": " ",
-          "isInput": false
-        },
-        {
-          "key": "eventDate",
-          "label": "תאריך האירוע",
-          "isInput": true,
-          "type": "date"
-        },
-        {
-          "key": "venueCombined",
-          "x": 540,
-          "y": 780,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 40,
-          "color": "#F5F5DC",
-          "prefix": "באולמי ",
-          "isCombined": true,
-          "combineFields": ["venue", "city"],
-          "combineSeparator": " "
-        },
-        {
-          "key": "venue",
-          "label": "מקום",
-          "isInput": true,
-          "wrapper": "quotes",
-          "suffix": ","
-        },
-        {
-          "key": "city",
-          "label": "עיר",
-          "isInput": true
-        },
-        {
-          "key": "timeDisplay",
-          "x": 540,
-          "y": 840,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 40,
-          "color": "#F5F5DC",
-          "prefix": "בשעה ",
-          "isCombined": true,
-          "combineFields": ["eventTime"],
-          "combineSeparator": ""
-        },
-        {
-          "key": "eventTime",
-          "label": "שעת האירוע",
-          "isInput": true,
-          "type": "time",
-          "defaultValue": "20:00"
-        },
-        {
-          "key": "invitationText",
-          "x": 540,
-          "y": 668,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 35,
-          "color": "#F5F5DC",
-          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את טקס החינה שלנו"
-        },
-        {
-          "key": "brideParents",
-          "label": "שם הורי הכלה",
-          "x": 700,
-          "y": 1050,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 25,
-          "color": "#F5F5DC"
-        },
-        {
-          "key": "groomParents",
-          "label": "שם הורי החתן",
-          "x": 400,
-          "y": 1050,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 25,
-          "color": "#F5F5DC"
-        }
-      ],
-      "frontSlots": []
-    },
-    {
       "id": "hina-t8",
       "name": "חינה בגווני ברונזה וזהב",
       "description": "הזמנה מרהיבה לערב חינה בגווני ברונזה חמים וזהב נוצץ, המשלבים יחד אווירה מסורתית חגיגית עם נגיעות מודרניות ויוקרתיות. העיצוב העשיר משדר חמימות ושמחה, ומזמין את האורחים לחגיגה בלתי נשכחת.",
       "cover": "/images/Hina/t8.cover.webp",
       "frontBg": "/images/Hina/t8.webp",
-         "size": {
+      "size": {
         "w": 1024,
         "h": 1536
       },
@@ -576,7 +21,8 @@
           "fontFamily": "serif",
           "fontWeight": 400,
           "fontSize": 160,
-"color": "#D4AF37"        },
+          "color": "#D4AF37"
+        },
         {
           "key": "monogramG",
           "label": "אות שנייה (G)",
@@ -586,7 +32,8 @@
           "fontFamily": "serif",
           "fontWeight": 350,
           "fontSize": 140,
-"color": "#D4AF37"        },
+          "color": "#D4AF37"
+        },
         {
           "key": "groomNameDetails",
           "label": "שם החתן (באנגלית)",
@@ -603,7 +50,8 @@
           "x": 300,
           "y": 625,
           "align": "center",
-"fontFamily": "'Pinyon Script', cursive",          "fontWeight": 400,
+          "fontFamily": "'Pinyon Script', cursive",
+          "fontWeight": 400,
           "fontSize": 22,
           "color": "#2C2C2C",
           "staticText": "&"
@@ -622,7 +70,7 @@
         {
           "key": "subtitleDetails",
           "x": 290,
-                   "y": 650,
+          "y": 650,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
           "fontWeight": 400,
@@ -639,8 +87,8 @@
           "fontSize": 20,
           "color": "#2C2C2C",
           "defaultValue": "נרגשים להזמינכם לחגוג עימנו את טקס החינה שלנו"
-       },
-          {
+        },
+        {
           "key": "eventDate",
           "label": "בחר תאריך מהלוח",
           "isInput": true,
@@ -742,7 +190,8 @@
             "kabbalatPanimTime",
             "chuppahTime"
           ],
-          "prefix": "קבלת פנים - "        },
+          "prefix": "קבלת פנים - "
+        },
         {
           "key": "closingText",
           "x": 295,
@@ -786,61 +235,59 @@
       "description": "הזמנה קסומה לערב חינה בהשראת המסורת המרוקאית האותנטית, עם פרטי עיצוב עשירים ומעוטרים המזכירים את ריחות ושמחת האירועים המסורתיים. שילוב ייחודי של צבעים חמים, תבניות ומוטיבים מזרחיים לאירוע מרגש.",
       "cover": "/images/Hina/t9.cover.webp",
       "frontBg": "/images/Hina/t9.webp",
-             "size": {
+      "size": {
         "w": 1024,
         "h": 1536
       },
-      "frontFields": 
-       [
-  {
-    "key": "monogramB",
-    "label": "אות ראשונה (B) - מיקום 1",
-    "x": 250,
-    "y": 700,
-    "align": "center",
-    "fontFamily": "'Pinyon Script', cursive",
-    "fontWeight": 400,
-    "fontSize": 90,
-    "color": "#800020",
-    "angle": -5
-  },
-  {
-    "key": "monogramG",
-    "label": "אות שנייה (G) - מיקום 1",
-    "x": 270,
-    "y": 740,
-    "align": "center",
-    "fontFamily": "'Pinyon Script', cursive",
-    "fontWeight": 350,
-    "fontSize": 90,
-    "color": "#800020",
-    "angle": -5
-  },
-  {
-    "key": "monogramB1",
-    "label": "אות ראשונה (B) - מיקום 2",
-    "x": 270,
-    "y": 1310,
-    "align": "center",
-    "fontFamily": "'Pinyon Script', cursive",
-    "fontWeight": 400,
-    "fontSize": 70,
-    "color": "#800020",
-    "angle": -5
-  },
-  {
-    "key": "monogramG1",
-    "label": "אות שנייה (G) - מיקום 2",
-    "x": 290,
-    "y": 1335,
-    "align": "center",
-    "fontFamily": "'Pinyon Script', cursive",
-    "fontWeight": 350,
-    "fontSize": 70,
-    "color": "#800020",
-    "angle": -5
-  }
-,
+      "frontFields": [
+        {
+          "key": "monogramB",
+          "label": "אות ראשונה (B) - מיקום 1",
+          "x": 250,
+          "y": 700,
+          "align": "center",
+          "fontFamily": "'Pinyon Script', cursive",
+          "fontWeight": 400,
+          "fontSize": 90,
+          "color": "#800020",
+          "angle": -5
+        },
+        {
+          "key": "monogramG",
+          "label": "אות שנייה (G) - מיקום 1",
+          "x": 270,
+          "y": 740,
+          "align": "center",
+          "fontFamily": "'Pinyon Script', cursive",
+          "fontWeight": 350,
+          "fontSize": 90,
+          "color": "#800020",
+          "angle": -5
+        },
+        {
+          "key": "monogramB1",
+          "label": "אות ראשונה (B) - מיקום 2",
+          "x": 270,
+          "y": 1310,
+          "align": "center",
+          "fontFamily": "'Pinyon Script', cursive",
+          "fontWeight": 400,
+          "fontSize": 70,
+          "color": "#800020",
+          "angle": -5
+        },
+        {
+          "key": "monogramG1",
+          "label": "אות שנייה (G) - מיקום 2",
+          "x": 290,
+          "y": 1335,
+          "align": "center",
+          "fontFamily": "'Pinyon Script', cursive",
+          "fontWeight": 350,
+          "fontSize": 70,
+          "color": "#800020",
+          "angle": -5
+        },
         {
           "key": "groomNameDetails1",
           "label": "שם החתן לעטיפה (באנגלית)",
@@ -885,8 +332,7 @@
           "color": "#2C2C2C",
           "staticText": "THE HEENA PARTY"
         },
-      
-          {
+        {
           "key": "groomNameDetails",
           "label": "שם החתן (באנגלית)",
           "x": 680,
@@ -902,7 +348,8 @@
           "x": 760,
           "y": 720,
           "align": "center",
-"fontFamily": "'Pinyon Script', cursive",          "fontWeight": 400,
+          "fontFamily": "'Pinyon Script', cursive",
+          "fontWeight": 400,
           "fontSize": 22,
           "color": "#2C2C2C",
           "staticText": "&"
@@ -921,7 +368,7 @@
         {
           "key": "subtitleDetails",
           "x": 745,
-                   "y": 750,
+          "y": 750,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
           "fontWeight": 400,
@@ -938,8 +385,8 @@
           "fontSize": 18,
           "color": "#2C2C2C",
           "defaultValue": "נרגשים להזמינכם לחגוג עימנו את טקס החינה שלנו"
-       },
-          {
+        },
+        {
           "key": "eventDate",
           "label": "בחר תאריך מהלוח",
           "isInput": true,
@@ -1041,7 +488,8 @@
             "kabbalatPanimTime",
             "chuppahTime"
           ],
-          "prefix": "קבלת פנים - "        },
+          "prefix": "קבלת פנים - "
+        },
         {
           "key": "closingText",
           "x": 740,
@@ -1085,7 +533,7 @@
       "description": "הזמנה פרחונית ועדינה לערב חינה בסגנון בוהמייני רומנטי, עם פרחים עדינים ואלמנטים טבעיים היוצרים אווירה חלומית ומרגשת. עיצוב חופשי, אמנותי ובלתי פורמלי המתאים לזוגות שאוהבים טבעיות ואותנטיות.",
       "cover": "/images/Hina/t10.cover.webp",
       "frontBg": "/images/Hina/t10.webp",
-           "size": {
+      "size": {
         "w": 1024,
         "h": 1536
       },
@@ -1099,7 +547,8 @@
           "fontFamily": "serif",
           "fontWeight": 400,
           "fontSize": 160,
-"color": "#2C2C2C"        },
+          "color": "#2C2C2C"
+        },
         {
           "key": "monogramG",
           "label": "אות שנייה (G)",
@@ -1109,8 +558,8 @@
           "fontFamily": "serif",
           "fontWeight": 350,
           "fontSize": 140,
-"color": "#2C2C2C"        },
-
+          "color": "#2C2C2C"
+        },
         {
           "key": "groomNameDetails1",
           "label": "שם החתן לעטיפה (באנגלית)",
@@ -1155,7 +604,6 @@
           "color": "#2C2C2C",
           "staticText": "THE HEENA PARTY"
         },
-      
         {
           "key": "groomNameDetails",
           "label": "שם החתן (באנגלית)",
@@ -1172,7 +620,8 @@
           "x": 310,
           "y": 505,
           "align": "center",
-"fontFamily": "'Pinyon Script', cursive",          "fontWeight": 400,
+          "fontFamily": "'Pinyon Script', cursive",
+          "fontWeight": 400,
           "fontSize": 22,
           "color": "#2C2C2C",
           "staticText": "&"
@@ -1191,7 +640,7 @@
         {
           "key": "subtitleDetails",
           "x": 290,
-                   "y": 540,
+          "y": 540,
           "align": "center",
           "fontFamily": "'Cormorant Garamond', Georgia, serif",
           "fontWeight": 400,
@@ -1208,8 +657,8 @@
           "fontSize": 17,
           "color": "#2C2C2C",
           "defaultValue": "נרגשים להזמינכם לחגוג עימנו את טקס החינה שלנו"
-       },
-          {
+        },
+        {
           "key": "eventDate",
           "label": "בחר תאריך מהלוח",
           "isInput": true,
@@ -1311,7 +760,8 @@
             "kabbalatPanimTime",
             "chuppahTime"
           ],
-          "prefix": "קבלת פנים - "        },
+          "prefix": "קבלת פנים - "
+        },
         {
           "key": "closingText",
           "x": 295,
@@ -1348,6 +798,609 @@
       "frontSlots": [],
       "backFields": [],
       "backSlots": []
+    },
+    {
+      "id": "hina-001",
+      "name": "חוויית חינה בגווני כחול",
+      "description": "הזמנה יוקרתית ומיוחדת במינה בעיצוב אלגנטי וייחודי, המשלבת בהרמוניה מושלמת גווני כחול אצילי ולבן טהור עם שילוב חום עדין ומחמם. העיצוב המתוחכם משדר אלגנטיות מודרנית תוך שמירה על אווירה מסורתית ומרגשת. ההזמנה מציגה טיפוגרפיה בולטת ומודגשת בכחול עמוק, המעניקה לה מראה מלכותי ומרשים. בחירה מושלמת לזוגות המחפשים עיצוב יוקרתי ומעודן המשקף את ייחודיות האירוע.",
+      "cover": "/images/Hina/001.cover.webp",
+      "frontBg": "/images/Hina/001.webp",
+      "size": {
+        "w": 1080,
+        "h": 1350
+      },
+      "frontFields": [
+        {
+          "key": "templateNumber",
+          "x": 540,
+          "y": 150,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 60,
+          "color": "#0066CC",
+          "staticText": "001"
+        },
+        {
+          "key": "names",
+          "label": "שמות הזוג",
+          "x": 540,
+          "y": 580,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 80,
+          "color": "#0066CC"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 670,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#8B4513",
+          "prefix": "שיתקיים ביום ",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew",
+            "dateEnglish"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 740,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#8B4513",
+          "prefix": "באולמי ",
+          "isCombined": true,
+          "combineFields": [
+            "venue",
+            "city"
+          ],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true,
+          "wrapper": "quotes",
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 810,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#8B4513",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": [
+            "eventTime"
+          ],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time",
+          "defaultValue": "20:00"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#8B4513",
+          "staticText": "נשמח לראותכם בשמחתנו"
+        },
+        {
+          "key": "brideParents",
+          "label": "שם הורי הכלה",
+          "x": 720,
+          "y": 1200,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#003366"
+        },
+        {
+          "key": "groomParents",
+          "label": "שם הורי החתן",
+          "x": 365,
+          "y": 1200,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#003366"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "hina-002",
+      "name": "חוויית חינה בגווני זהב",
+      "description": "הזמנה מרהיבה ואלגנטית בגווני חום חם וזהב מנצנץ, המשלבת יוקרה ומסורת בעיצוב מתוחכם. הפלטה העשירה של גוני חום עמוקים עם שילוב של זהב מלכותי יוצרת אווירה חמה ומזמינה תוך שמירה על אלגנטיות מושלמת. העיצוב המרשים משדר אצילות ויוקרה, ומתאים לזוגות המחפשים הזמנה ייחודית עם אופי מסורתי ומחמם.",
+      "cover": "/images/Hina/002.cover.webp",
+      "frontBg": "/images/Hina/002.webp",
+      "size": {
+        "w": 1080,
+        "h": 1350
+      },
+      "frontFields": [
+        {
+          "key": "templateNumber",
+          "x": 540,
+          "y": 150,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 60,
+          "color": "#B8860B",
+          "staticText": "002"
+        },
+        {
+          "key": "names",
+          "label": "שמות הזוג",
+          "x": 540,
+          "y": 640,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 100,
+          "color": "#8B4513"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 800,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#8B4513",
+          "prefix": "שיתקיים ביום ",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew",
+            "dateEnglish"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 860,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#8B4513",
+          "prefix": "באולמי ",
+          "isCombined": true,
+          "combineFields": [
+            "venue",
+            "city"
+          ],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true,
+          "wrapper": "quotes",
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 920,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#8B4513",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": [
+            "eventTime"
+          ],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time",
+          "defaultValue": "20:00"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#8B4513"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "hina-003",
+      "name": "חוויית חינה בגווני זהב ושמנת",
+      "description": "הזמנה מיוחדת ומרהיבה המשלבת גווני זהב מלכותי עם שמנת עדין ואלמנטים מסורתיים של חינה. העיצוב המתוחכם משלב בהרמוניה צבעים חמים ורכים היוצרים אווירה חגיגית ומרגשת. ההזמנה מציגה את שמות הזוג באנגלית בטיפוגרפיה אלגנטית, תוך שמירה על קסם מסורתי ומרשים. השילוב של זהב ושמנת עם אלמנטים עדינים של חינה יוצר מראה יוקרתי וייחודי המתאים במיוחד לזוגות המחפשים עיצוב מיוחד ובלתי נשכח.",
+      "cover": "/images/Hina/003.cover.webp",
+      "frontBg": "/images/Hina/003.webp",
+      "size": {
+        "w": 1080,
+        "h": 1350
+      },
+      "frontFields": [
+        {
+          "key": "templateNumber",
+          "x": 540,
+          "y": 150,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 60,
+          "color": "#B8860B"
+        },
+        {
+          "key": "brideName",
+          "label": "שם הכלה (באנגלית)",
+          "x": 540,
+          "y": 400,
+          "align": "center",
+          "fontFamily": "'Great Vibes', 'Dancing Script', cursive",
+          "fontWeight": 700,
+          "fontSize": 90,
+          "color": "#F5DEB3"
+        },
+        {
+          "key": "ampersand",
+          "x": 540,
+          "y": 500,
+          "align": "center",
+          "fontFamily": "'Great Vibes', 'Dancing Script', cursive",
+          "fontWeight": 400,
+          "fontSize": 65,
+          "color": "#B8860B",
+          "staticText": "&"
+        },
+        {
+          "key": "groomName",
+          "label": "שם החתן (באנגלית)",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Great Vibes', 'Dancing Script', cursive",
+          "fontWeight": 700,
+          "fontSize": 90,
+          "color": "#F5DEB3"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#B8860B",
+          "prefix": "שיתקיים ביום ",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew",
+            "dateEnglish"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 790,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#B8860B",
+          "prefix": "באולמי ",
+          "isCombined": true,
+          "combineFields": [
+            "venue",
+            "city"
+          ],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true,
+          "wrapper": "quotes",
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 860,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#B8860B",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": [
+            "eventTime"
+          ],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time",
+          "defaultValue": "20:00"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 668,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#B8860B",
+          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את טקס החינה שלנו"
+        },
+        {
+          "key": "brideParents",
+          "label": "שם הורי הכלה",
+          "x": 750,
+          "y": 1100,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#B8860B"
+        },
+        {
+          "key": "groomParents",
+          "label": "שם הורי החתן",
+          "x": 350,
+          "y": 1100,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#B8860B"
+        }
+      ],
+      "frontSlots": []
+    },
+    {
+      "id": "hina-004",
+      "name": "חוויית חינה פרחונית בגווני שמנת ולבן",
+      "description": "הזמנה פרחונית רומנטית ומרהיבה המשלבת פרחים עדינים בגווני ורוד ולבן עם רקע שמנת חמים ושילוב כחול עדין. העיצוב הפרחוני המתוחכם יוצר אווירה רומנטית ומרגשת, עם טיפוגרפיה אלגנטית באנגלית המדגישה את יופי האירוע. הפלטה הרכה של גווני השמנת והלבן עם נגיעות ורוד וכחול פסטליים משדרת עדינות ויוקרה. הזמנה מושלמת לזוגות המחפשים עיצוב רומנטי ופרחוני עם אווירה חלומית ובלתי נשכחת.",
+      "cover": "/images/Hina/004.cover.webp",
+      "frontBg": "/images/Hina/004.webp",
+      "size": {
+        "w": 1080,
+        "h": 1350
+      },
+      "frontFields": [
+        {
+          "key": "templateNumber",
+          "x": 540,
+          "y": 150,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 700,
+          "fontSize": 60,
+          "color": "#F5F5DC"
+        },
+        {
+          "key": "brideName",
+          "label": "שם הכלה (באנגלית)",
+          "x": 540,
+          "y": 400,
+          "align": "center",
+          "fontFamily": "'Great Vibes', 'Dancing Script', cursive",
+          "fontWeight": 700,
+          "fontSize": 90,
+          "color": "#FFFFFF"
+        },
+        {
+          "key": "ampersand",
+          "x": 540,
+          "y": 500,
+          "align": "center",
+          "fontFamily": "'Great Vibes', 'Dancing Script', cursive",
+          "fontWeight": 400,
+          "fontSize": 65,
+          "color": "#F5F5DC",
+          "staticText": "&"
+        },
+        {
+          "key": "groomName",
+          "label": "שם החתן (באנגלית)",
+          "x": 540,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Great Vibes', 'Dancing Script', cursive",
+          "fontWeight": 700,
+          "fontSize": 90,
+          "color": "#FFFFFF"
+        },
+        {
+          "key": "dateCombined",
+          "x": 540,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#F5F5DC",
+          "prefix": "שיתקיים ביום ",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew",
+            "dateEnglish"
+          ],
+          "combineSeparator": " ",
+          "isInput": false
+        },
+        {
+          "key": "eventDate",
+          "label": "תאריך האירוע",
+          "isInput": true,
+          "type": "date"
+        },
+        {
+          "key": "venueCombined",
+          "x": 540,
+          "y": 780,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#F5F5DC",
+          "prefix": "באולמי ",
+          "isCombined": true,
+          "combineFields": [
+            "venue",
+            "city"
+          ],
+          "combineSeparator": " "
+        },
+        {
+          "key": "venue",
+          "label": "מקום",
+          "isInput": true,
+          "wrapper": "quotes",
+          "suffix": ","
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true
+        },
+        {
+          "key": "timeDisplay",
+          "x": 540,
+          "y": 840,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 40,
+          "color": "#F5F5DC",
+          "prefix": "בשעה ",
+          "isCombined": true,
+          "combineFields": [
+            "eventTime"
+          ],
+          "combineSeparator": ""
+        },
+        {
+          "key": "eventTime",
+          "label": "שעת האירוע",
+          "isInput": true,
+          "type": "time",
+          "defaultValue": "20:00"
+        },
+        {
+          "key": "invitationText",
+          "x": 540,
+          "y": 668,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 35,
+          "color": "#F5F5DC",
+          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את טקס החינה שלנו"
+        },
+        {
+          "key": "brideParents",
+          "label": "שם הורי הכלה",
+          "x": 700,
+          "y": 1050,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 25,
+          "color": "#F5F5DC"
+        },
+        {
+          "key": "groomParents",
+          "label": "שם הורי החתן",
+          "x": 400,
+          "y": 1050,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 25,
+          "color": "#F5F5DC"
+        }
+      ],
+      "frontSlots": []
     }
   ]
 }

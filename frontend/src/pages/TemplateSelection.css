@@ -296,8 +296,8 @@
   }
 
   .templates-grid {
-    grid-template-columns: 1fr;
-    gap: 1.8rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
     padding: 0.5rem;
   }
 
@@ -306,16 +306,16 @@
   }
 
   .template-info {
-    padding: 1.8rem 1.3rem;
-    min-height: 160px;
+    padding: 1rem 0.8rem;
+    min-height: 120px;
   }
 
   .template-info h3 {
-    font-size: 1.25rem;
+    font-size: 1rem;
   }
 
   .template-info p {
-    font-size: 0.88rem;
+    font-size: 0.78rem;
   }
 
   .select-template-btn {
@@ -353,22 +353,23 @@
   }
 
   .templates-grid {
-    gap: 1.5rem;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.75rem;
     padding: 0.4rem;
   }
 
   .template-info {
-    padding: 1.5rem 1.1rem;
-    min-height: 140px;
+    padding: 0.75rem 0.6rem;
+    min-height: 100px;
   }
 
   .template-info h3 {
-    font-size: 1.15rem;
+    font-size: 0.9rem;
   }
 
   .template-info p {
-    font-size: 0.82rem;
-    line-height: 1.5;
+    font-size: 0.75rem;
+    line-height: 1.4;
   }
 
   .select-template-btn {

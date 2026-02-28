@@ -2,6 +2,2192 @@
   "category": "wedding",
   "templates": [
     {
+      "id": "wedding-t1",
+      "name": "יהלום קלאסי",
+      "description": "הזמנה אלגנטית בעיצוב עמוד כפול על צד אחד — חלק פרטים מימין וחלק עטיפה משמאל. עיצוב קלאסי ומעודן עם נגיעות זהב ופרטים עדינים.",
+      "singleSided": true,
+      "cover": "/images/wedding/t1.cover.webp",
+      "frontBg": "/images/wedding/t1.webp",
+      "size": {
+        "w": 1024,
+        "h": 1536
+      },
+      "frontFields": [
+        {
+          "key": "monogramB",
+          "label": "אות ראשונה (B)",
+          "x": 764,
+          "y": 780,
+          "align": "center",
+          "fontFamily": "serif",
+          "fontWeight": 400,
+          "fontSize": 90,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "monogramG",
+          "label": "אות שנייה (G)",
+          "x": 786,
+          "y": 810,
+          "align": "center",
+          "fontFamily": "serif",
+          "fontWeight": 350,
+          "fontSize": 80,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "groomNameDetails1",
+          "label": "שם החתן לעטיפה (באנגלית)",
+          "x": 724,
+          "y": 980,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 34,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "andDetailsText1",
+          "x": 780,
+          "y": 985,
+          "align": "center",
+          "fontFamily": "'Great Vibes', cursive",
+          "fontWeight": 400,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "staticText": "and"
+        },
+        {
+          "key": "brideNameDetails1",
+          "label": "שם הכלה לעטיפה (באנגלית)",
+          "x": 840,
+          "y": 980,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 34,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "subtitleCover",
+          "x": 782,
+          "y": 1010,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 21,
+          "color": "#2C2C2C",
+          "staticText": "THE WEDDING DAY"
+        },
+        {
+          "key": "bsd",
+          "x": 490,
+          "y": 440,
+          "align": "left",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 5,
+          "color": "#2C2C2C",
+          "defaultValue": "בס\"ד"
+        },
+        {
+          "key": "quote",
+          "label": "פסוק/ציטוט",
+          "x": 370,
+          "y": 470,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 17,
+          "color": "#2C2C2C",
+          "defaultValue": "\"עַד שֶׁמָּצָאתִי אֵת שֶׁאָהֲבָה נַפְשִׁי אֲחַזְתִּיו וְלֹא אַרְפֶּנּוּ\""
+        },
+        {
+          "key": "groomNameDetails",
+          "label": "שם החתן (באנגלית)",
+          "x": 270,
+          "y": 515,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 42,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "andDetailsText",
+          "x": 360,
+          "y": 520,
+          "align": "center",
+          "fontFamily": "'Great Vibes', cursive",
+          "fontWeight": 400,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "staticText": "and"
+        },
+        {
+          "key": "brideNameDetails",
+          "label": "שם הכלה (באנגלית)",
+          "x": 440,
+          "y": 515,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 42,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "subtitleDetails",
+          "x": 360,
+          "y": 543,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 19,
+          "color": "#2C2C2C",
+          "staticText": "THE WEDDING DAY"
+        },
+        {
+          "key": "invitationText",
+          "x": 360,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו"
+        },
+        {
+          "key": "eventDate",
+          "label": "בחר תאריך מהלוח",
+          "isInput": true,
+          "type": "date",
+          "display": false
+        },
+        {
+          "key": "dateHebrewCombined",
+          "x": 360,
+          "y": 650,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 24,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew"
+          ],
+          "prefix": "יום ",
+          "combineSeparator": ", ",
+          "isInput": false
+        },
+        {
+          "key": "dateEnglishDisplay",
+          "x": 360,
+          "y": 682,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 36,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dateEnglish"
+          ],
+          "isInput": false
+        },
+        {
+          "key": "venue",
+          "label": "שם האולם",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "locationDisplay",
+          "x": 364,
+          "y": 730,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "venue"
+          ],
+          "prefix": "\"",
+          "suffix": "\""
+        },
+        {
+          "key": "cityDisplay",
+          "x": 364,
+          "y": 760,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "city"
+          ]
+        },
+        {
+          "key": "kabbalatPanimTime",
+          "label": "שעת קבלת פנים",
+          "isInput": true,
+          "type": "time",
+          "display": false,
+          "defaultValue": "19:30"
+        },
+        {
+          "key": "chuppahTime",
+          "label": "שעת חופה",
+          "isInput": true,
+          "type": "time",
+          "display": false,
+          "defaultValue": "20:30"
+        },
+        {
+          "key": "scheduleCombined",
+          "x": 364,
+          "y": 800,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "kabbalatPanimTime",
+            "chuppahTime"
+          ],
+          "prefix": "קבלת פנים - ",
+          "combineSeparator": " | חופה וקידושין - "
+        },
+        {
+          "key": "closingText",
+          "x": 364,
+          "y": 855,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "defaultValue": "נשמח לראותכם"
+        },
+        {
+          "key": "groomParents",
+          "label": "שמות הורי החתן",
+          "x": 450,
+          "y": 890,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 20,
+          "color": "#2C2C2C",
+          "prefix": "הורי החתן\n"
+        },
+        {
+          "key": "brideParents",
+          "label": "שמות הורי הכלה",
+          "x": 280,
+          "y": 890,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 20,
+          "color": "#2C2C2C",
+          "prefix": "הורי הכלה\n"
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [],
+      "backSlots": []
+    },
+    {
+      "id": "wedding-t2",
+      "name": "יהלום רומנטי - ורוד ועדין",
+      "description": "הזמנה רומנטית וחלומית עם עיצוב יהלום בגווני ורוד עדינים ורכים. האווירה הנשית והמרגשת תוצר של שילוב פסטלי קסום, המזמין את האורחים לחגיגה מלאת אהבה ורגשות עמוקים.",
+      "singleSided": true,
+      "cover": "/images/wedding/t2.cover.webp",
+      "frontBg": "/images/wedding/t2.webp",
+      "size": {
+        "w": 1024,
+        "h": 1536
+      },
+      "frontFields": [
+        {
+          "key": "monogramB",
+          "label": "אות ראשונה (B)",
+          "x": 320,
+          "y": 620,
+          "align": "center",
+          "fontFamily": "serif",
+          "fontWeight": 400,
+          "fontSize": 90,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "monogramG",
+          "label": "אות שנייה (G)",
+          "x": 340,
+          "y": 660,
+          "align": "center",
+          "fontFamily": "serif",
+          "fontWeight": 350,
+          "fontSize": 80,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "groomNameDetails1",
+          "label": "שם החתן לעטיפה (באנגלית)",
+          "x": 310,
+          "y": 820,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 25,
+          "color": "#2C2C2C",
+          "rotation": -5
+        },
+        {
+          "key": "andDetailsText1",
+          "x": 355,
+          "y": 819,
+          "align": "center",
+          "fontFamily": "'Great Vibes', cursive",
+          "fontWeight": 400,
+          "fontSize": 20,
+          "color": "#2C2C2C",
+          "staticText": "and",
+          "rotation": -5
+        },
+        {
+          "key": "brideNameDetails1",
+          "label": "שם הכלה לעטיפה (באנגלית)",
+          "x": 400,
+          "y": 810,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 25,
+          "color": "#2C2C2C",
+          "rotation": -5
+        },
+        {
+          "key": "subtitleCover",
+          "x": 355,
+          "y": 840,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 12,
+          "color": "#2C2C2C",
+          "staticText": "THE WEDDING DAY",
+          "rotation": -6
+        },
+        {
+          "key": "bsd",
+          "x": 950,
+          "y": 590,
+          "align": "right",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 5,
+          "color": "#2C2C2C",
+          "defaultValue": "בס\"ד",
+          "rotation": 4
+        },
+        {
+          "key": "quote",
+          "label": "פסוק/ציטוט",
+          "x": 780,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 17,
+          "color": "#2C2C2C",
+          "defaultValue": "\"עַד שֶׁמָּצָאתִי אֵת שֶׁאָהֲבָה נַפְשִׁי אֲחַזְתִּיו וְלֹא אַרְפֶּנּוּ\"",
+          "rotation": 5.5
+        },
+        {
+          "key": "groomNameDetails",
+          "label": "שם החתן (באנגלית)",
+          "x": 680,
+          "y": 650,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 42,
+          "color": "#2C2C2C",
+          "rotation": 5.5
+        },
+        {
+          "key": "andDetailsText",
+          "x": 780,
+          "y": 660,
+          "align": "center",
+          "fontFamily": "'Great Vibes', cursive",
+          "fontWeight": 400,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "staticText": "and",
+          "rotation": 6.5
+        },
+        {
+          "key": "brideNameDetails",
+          "label": "שם הכלה (באנגלית)",
+          "x": 850,
+          "y": 670,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 42,
+          "color": "#2C2C2C",
+          "rotation": 6.5
+        },
+        {
+          "key": "subtitleDetails",
+          "x": 760,
+          "y": 690,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 19,
+          "color": "#2C2C2C",
+          "staticText": "THE WEDDING DAY",
+          "rotation": 6.5
+        },
+        {
+          "key": "invitationText",
+          "x": 760,
+          "y": 730,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 20,
+          "color": "#2C2C2C",
+          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו",
+          "rotation": 6.5
+        },
+        {
+          "key": "eventDate",
+          "label": "בחר תאריך מהלוח",
+          "isInput": true,
+          "type": "date",
+          "display": false
+        },
+        {
+          "key": "dateHebrewCombined",
+          "x": 750,
+          "y": 770,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 24,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew"
+          ],
+          "prefix": "יום ",
+          "combineSeparator": ", ",
+          "isInput": false,
+          "rotation": 6.5
+        },
+        {
+          "key": "dateEnglishDisplay",
+          "x": 740,
+          "y": 800,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 36,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dateEnglish"
+          ],
+          "isInput": false,
+          "rotation": 6.5
+        },
+        {
+          "key": "venue",
+          "label": "שם האולם",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "locationDisplay",
+          "x": 740,
+          "y": 850,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "venue"
+          ],
+          "prefix": "\"",
+          "suffix": "\"",
+          "rotation": 6.5
+        },
+        {
+          "key": "cityDisplay",
+          "x": 735,
+          "y": 880,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "city"
+          ],
+          "rotation": 6.5
+        },
+        {
+          "key": "kabbalatPanimTime",
+          "label": "שעת קבלת פנים",
+          "isInput": true,
+          "type": "time",
+          "display": false,
+          "defaultValue": "19:30"
+        },
+        {
+          "key": "chuppahTime",
+          "label": "שעת חופה",
+          "isInput": true,
+          "type": "time",
+          "display": false,
+          "defaultValue": "20:30"
+        },
+        {
+          "key": "scheduleCombined",
+          "x": 740,
+          "y": 930,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "kabbalatPanimTime",
+            "chuppahTime"
+          ],
+          "prefix": "קבלת פנים - ",
+          "combineSeparator": " | חופה וקידושין - ",
+          "rotation": 6.5
+        },
+        {
+          "key": "closingText",
+          "x": 720,
+          "y": 990,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "defaultValue": "נשמח לראותכם",
+          "rotation": 6.5
+        },
+        {
+          "key": "groomParents",
+          "label": "שמות הורי החתן",
+          "x": 820,
+          "y": 1040,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "prefix": "הורי החתן\n",
+          "rotation": 6.5
+        },
+        {
+          "key": "brideParents",
+          "label": "שמות הורי הכלה",
+          "x": 620,
+          "y": 1020,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "prefix": "הורי הכלה\n",
+          "rotation": 6.5
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [],
+      "backSlots": []
+    },
+    {
+      "id": "wedding-t3",
+      "name": "יהלום מלכותי - זהב ואלגנטי",
+      "description": "הזמנה מלכותית ומרשימה עם עיצוב יהלום בגווני זהב עשירים ומנצנצים. השילוב המתוחכם של זהב יוקרתי יוצר אווירה חגיגית ואצילית, מושלמת לזוגות המחפשים הזמנה שמשדרת גרנדיוזיות ויוקרה.",
+      "singleSided": true,
+      "cover": "/images/wedding/t3.cover.webp",
+      "frontBg": "/images/wedding/t3.webp",
+      "size": {
+        "w": 1024,
+        "h": 1536
+      },
+      "frontFields": [
+        {
+          "key": "monogramB",
+          "label": "אות ראשונה (B)",
+          "x": 250,
+          "y": 650,
+          "align": "center",
+          "fontFamily": "serif",
+          "fontWeight": 400,
+          "fontSize": 90,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "monogramG",
+          "label": "אות שנייה (G)",
+          "x": 270,
+          "y": 690,
+          "align": "center",
+          "fontFamily": "serif",
+          "fontWeight": 350,
+          "fontSize": 80,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "groomNameDetails1",
+          "label": "שם החתן לעטיפה (באנגלית)",
+          "x": 220,
+          "y": 820,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 25,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "andDetailsText1",
+          "x": 270,
+          "y": 825,
+          "align": "center",
+          "fontFamily": "'Great Vibes', cursive",
+          "fontWeight": 400,
+          "fontSize": 20,
+          "color": "#2C2C2C",
+          "staticText": "and"
+        },
+        {
+          "key": "brideNameDetails1",
+          "label": "שם הכלה לעטיפה (באנגלית)",
+          "x": 315,
+          "y": 820,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 25,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "subtitleCover",
+          "x": 270,
+          "y": 840,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 12,
+          "color": "#2C2C2C",
+          "staticText": "THE WEDDING DAY"
+        },
+        {
+          "key": "bsd",
+          "x": 900,
+          "y": 700,
+          "align": "right",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 5,
+          "color": "#2C2C2C",
+          "defaultValue": "בס\"ד"
+        },
+        {
+          "key": "quote",
+          "label": "פסוק/ציטוט",
+          "x": 720,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 17,
+          "color": "#2C2C2C",
+          "defaultValue": "\"עַד שֶׁמָּצָאתִי אֵת שֶׁאָהֲבָה נַפְשִׁי אֲחַזְתִּיו וְלֹא אַרְפֶּנּוּ\"",
+          "rotation": 0
+        },
+        {
+          "key": "groomNameDetails",
+          "label": "שם החתן (באנגלית)",
+          "x": 640,
+          "y": 760,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 35,
+          "color": "#2C2C2C",
+          "rotation": 0
+        },
+        {
+          "key": "andDetailsText",
+          "x": 730,
+          "y": 765,
+          "align": "center",
+          "fontFamily": "'Great Vibes', cursive",
+          "fontWeight": 400,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "staticText": "and",
+          "rotation": 0
+        },
+        {
+          "key": "brideNameDetails",
+          "label": "שם הכלה (באנגלית)",
+          "x": 800,
+          "y": 762,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 35,
+          "color": "#2C2C2C",
+          "rotation": 0
+        },
+        {
+          "key": "subtitleDetails",
+          "x": 710,
+          "y": 787,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 19,
+          "color": "#2C2C2C",
+          "staticText": "THE WEDDING DAY",
+          "rotation": 0
+        },
+        {
+          "key": "invitationText",
+          "x": 715,
+          "y": 830,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 20,
+          "color": "#2C2C2C",
+          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו",
+          "rotation": 0
+        },
+        {
+          "key": "eventDate",
+          "label": "בחר תאריך מהלוח",
+          "isInput": true,
+          "type": "date",
+          "display": false
+        },
+        {
+          "key": "dateHebrewCombined",
+          "x": 720,
+          "y": 860,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 24,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew"
+          ],
+          "prefix": "יום ",
+          "combineSeparator": ", ",
+          "isInput": false,
+          "rotation": 0
+        },
+        {
+          "key": "dateEnglishDisplay",
+          "x": 720,
+          "y": 885,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 36,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dateEnglish"
+          ],
+          "isInput": false,
+          "rotation": 0
+        },
+        {
+          "key": "venue",
+          "label": "שם האולם",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "locationDisplay",
+          "x": 720,
+          "y": 940,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "venue"
+          ],
+          "prefix": "\"",
+          "suffix": "\"",
+          "rotation": 0
+        },
+        {
+          "key": "cityDisplay",
+          "x": 720,
+          "y": 960,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "city"
+          ],
+          "rotation": 0
+        },
+        {
+          "key": "kabbalatPanimTime",
+          "label": "שעת קבלת פנים",
+          "isInput": true,
+          "type": "time",
+          "display": false,
+          "defaultValue": "19:30"
+        },
+        {
+          "key": "chuppahTime",
+          "label": "שעת חופה",
+          "isInput": true,
+          "type": "time",
+          "display": false,
+          "defaultValue": "20:30"
+        },
+        {
+          "key": "scheduleCombined",
+          "x": 720,
+          "y": 1000,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "kabbalatPanimTime",
+            "chuppahTime"
+          ],
+          "prefix": "קבלת פנים - ",
+          "combineSeparator": " | חופה וקידושין - ",
+          "rotation": 0
+        },
+        {
+          "key": "closingText",
+          "x": 710,
+          "y": 1050,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "defaultValue": "נשמח לראותכם",
+          "rotation": 0
+        },
+        {
+          "key": "groomParents",
+          "label": "שמות הורי החתן",
+          "x": 780,
+          "y": 1098,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "prefix": "הורי החתן\n",
+          "rotation": 0
+        },
+        {
+          "key": "brideParents",
+          "label": "שמות הורי הכלה",
+          "x": 630,
+          "y": 1097,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "prefix": "הורי הכלה\n",
+          "rotation": 0
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [],
+      "backSlots": []
+    },
+    {
+      "id": "wedding-t4",
+      "name": "יהלום כסוף - בלינג עכשווי",
+      "description": "הזמנה עכשווית ומודרנית עם עיצוב יהלום בגווני כסף נוצצים ומרהיבים. הסגנון הבלינג-שיק הייחודי מתאים לזוגות הטרנדיים המחפשים הזמנה שמשלבת בלט ויוקרה בגישה מודרנית ומרעננת.",
+      "singleSided": true,
+      "cover": "/images/wedding/t4.cover.webp",
+      "frontBg": "/images/wedding/t4.webp",
+      "size": {
+        "w": 1024,
+        "h": 1536
+      },
+      "frontFields": [
+        {
+          "key": "monogramB",
+          "label": "אות ראשונה (B)",
+          "x": 290,
+          "y": 690,
+          "align": "center",
+          "fontFamily": "serif",
+          "fontWeight": 400,
+          "fontSize": 70,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "monogramG",
+          "label": "אות שנייה (G)",
+          "x": 310,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "serif",
+          "fontWeight": 350,
+          "fontSize": 70,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "groomNameDetails1",
+          "label": "שם החתן לעטיפה (באנגלית)",
+          "x": 550,
+          "y": 1200,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 35,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "andDetailsText1",
+          "x": 620,
+          "y": 1205,
+          "align": "center",
+          "fontFamily": "'Great Vibes', cursive",
+          "fontWeight": 400,
+          "fontSize": 25,
+          "color": "#2C2C2C",
+          "staticText": "and"
+        },
+        {
+          "key": "brideNameDetails1",
+          "label": "שם הכלה לעטיפה (באנגלית)",
+          "x": 680,
+          "y": 1200,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 35,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "subtitleCover",
+          "x": 610,
+          "y": 1225,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 15,
+          "color": "#2C2C2C",
+          "staticText": "THE WEDDING DAY"
+        },
+        {
+          "key": "bsd",
+          "x": 910,
+          "y": 650,
+          "align": "right",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 5,
+          "color": "#2C2C2C",
+          "defaultValue": "בס\"ד"
+        },
+        {
+          "key": "quote",
+          "label": "פסוק/ציטוט",
+          "x": 760,
+          "y": 680,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 17,
+          "color": "#2C2C2C",
+          "defaultValue": "\"עַד שֶׁמָּצָאתִי אֵת שֶׁאָהֲבָה נַפְשִׁי אֲחַזְתִּיו וְלֹא אַרְפֶּנּוּ\"",
+          "rotation": 0
+        },
+        {
+          "key": "groomNameDetails",
+          "label": "שם החתן (באנגלית)",
+          "x": 700,
+          "y": 740,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 35,
+          "color": "#2C2C2C",
+          "rotation": 0
+        },
+        {
+          "key": "andDetailsText",
+          "x": 780,
+          "y": 742,
+          "align": "center",
+          "fontFamily": "'Great Vibes', cursive",
+          "fontWeight": 400,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "staticText": "and",
+          "rotation": 0
+        },
+        {
+          "key": "brideNameDetails",
+          "label": "שם הכלה (באנגלית)",
+          "x": 835,
+          "y": 740,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 35,
+          "color": "#2C2C2C",
+          "rotation": 0
+        },
+        {
+          "key": "subtitleDetails",
+          "x": 780,
+          "y": 765,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 14,
+          "color": "#2C2C2C",
+          "staticText": "THE WEDDING DAY",
+          "rotation": 0
+        },
+        {
+          "key": "invitationText",
+          "x": 760,
+          "y": 800,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 16,
+          "color": "#2C2C2C",
+          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו",
+          "rotation": 0
+        },
+        {
+          "key": "eventDate",
+          "label": "בחר תאריך מהלוח",
+          "isInput": true,
+          "type": "date",
+          "display": false
+        },
+        {
+          "key": "dateHebrewCombined",
+          "x": 770,
+          "y": 820,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 24,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew"
+          ],
+          "prefix": "יום ",
+          "combineSeparator": ", ",
+          "isInput": false,
+          "rotation": 0
+        },
+        {
+          "key": "dateEnglishDisplay",
+          "x": 770,
+          "y": 850,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 36,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dateEnglish"
+          ],
+          "isInput": false,
+          "rotation": 0
+        },
+        {
+          "key": "venue",
+          "label": "שם האולם",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "locationDisplay",
+          "x": 770,
+          "y": 890,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 20,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "venue"
+          ],
+          "prefix": "\"",
+          "suffix": "\"",
+          "rotation": 0
+        },
+        {
+          "key": "cityDisplay",
+          "x": 770,
+          "y": 910,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 20,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "city"
+          ],
+          "rotation": 0
+        },
+        {
+          "key": "kabbalatPanimTime",
+          "label": "שעת קבלת פנים",
+          "isInput": true,
+          "type": "time",
+          "display": false,
+          "defaultValue": "19:30"
+        },
+        {
+          "key": "chuppahTime",
+          "label": "שעת חופה",
+          "isInput": true,
+          "type": "time",
+          "display": false,
+          "defaultValue": "20:30"
+        },
+        {
+          "key": "scheduleCombined",
+          "x": 762,
+          "y": 940,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 20,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "kabbalatPanimTime",
+            "chuppahTime"
+          ],
+          "prefix": "קבלת פנים - ",
+          "combineSeparator": " | חופה וקידושין - ",
+          "rotation": 0
+        },
+        {
+          "key": "closingText",
+          "x": 765,
+          "y": 990,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "defaultValue": "נשמח לראותכם",
+          "rotation": 0
+        },
+        {
+          "key": "groomParents",
+          "label": "שמות הורי החתן",
+          "x": 860,
+          "y": 1030,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 16,
+          "color": "#2C2C2C",
+          "prefix": "הורי החתן\n",
+          "rotation": 0
+        },
+        {
+          "key": "brideParents",
+          "label": "שמות הורי הכלה",
+          "x": 670,
+          "y": 1030,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 16,
+          "color": "#2C2C2C",
+          "prefix": "הורי הכלה\n",
+          "rotation": 0
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [],
+      "backSlots": []
+    },
+    {
+      "id": "wedding-t5",
+      "name": "יהלום שחור - מסתורי ואלגנטי",
+      "description": "הזמנה דרמטית ומרשימה עם עיצוב יהלום בגווני שחור ועמוק. הניגוד החד בין השחור לבין אלמנטים בהירים יוצר אפקט ויזואלי מרהיב, מתאים לזוגות הנועזים המחפשים הזמנה שתמשוך תשומת לב.",
+      "singleSided": true,
+      "cover": "/images/wedding/t5.cover.webp",
+      "frontBg": "/images/wedding/t5.webp",
+      "size": {
+        "w": 1024,
+        "h": 1536
+      },
+      "frontFields": [
+        {
+          "key": "monogramB",
+          "label": "אות ראשונה (B)",
+          "x": 260,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "serif",
+          "fontWeight": 400,
+          "fontSize": 90,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "monogramG",
+          "label": "אות שנייה (G)",
+          "x": 280,
+          "y": 640,
+          "align": "center",
+          "fontFamily": "serif",
+          "fontWeight": 350,
+          "fontSize": 80,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "groomNameDetails1",
+          "label": "שם החתן לעטיפה (באנגלית)",
+          "x": 220,
+          "y": 820,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 25,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "andDetailsText1",
+          "x": 265,
+          "y": 819,
+          "align": "center",
+          "fontFamily": "'Great Vibes', cursive",
+          "fontWeight": 400,
+          "fontSize": 20,
+          "color": "#2C2C2C",
+          "staticText": "and"
+        },
+        {
+          "key": "brideNameDetails1",
+          "label": "שם הכלה לעטיפה (באנגלית)",
+          "x": 315,
+          "y": 820,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 25,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "subtitleCover",
+          "x": 270,
+          "y": 840,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 12,
+          "color": "#2C2C2C",
+          "staticText": "THE WEDDING DAY"
+        },
+        {
+          "key": "bsd",
+          "x": 900,
+          "y": 600,
+          "align": "right",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 5,
+          "color": "#2C2C2C",
+          "defaultValue": "בס\"ד"
+        },
+        {
+          "key": "quote",
+          "label": "פסוק/ציטוט",
+          "x": 720,
+          "y": 620,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 17,
+          "color": "#2C2C2C",
+          "defaultValue": "\"עַד שֶׁמָּצָאתִי אֵת שֶׁאָהֲבָה נַפְשִׁי אֲחַזְתִּיו וְלֹא אַרְפֶּנּוּ\"",
+          "rotation": 0
+        },
+        {
+          "key": "groomNameDetails",
+          "label": "שם החתן (באנגלית)",
+          "x": 650,
+          "y": 660,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 35,
+          "color": "#2C2C2C",
+          "rotation": 0
+        },
+        {
+          "key": "andDetailsText",
+          "x": 730,
+          "y": 665,
+          "align": "center",
+          "fontFamily": "'Great Vibes', cursive",
+          "fontWeight": 400,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "staticText": "and",
+          "rotation": 0
+        },
+        {
+          "key": "brideNameDetails",
+          "label": "שם הכלה (באנגלית)",
+          "x": 792,
+          "y": 662,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 35,
+          "color": "#2C2C2C",
+          "rotation": 0
+        },
+        {
+          "key": "subtitleDetails",
+          "x": 720,
+          "y": 687,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 19,
+          "color": "#2C2C2C",
+          "staticText": "THE WEDDING DAY",
+          "rotation": 0
+        },
+        {
+          "key": "invitationText",
+          "x": 715,
+          "y": 730,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 20,
+          "color": "#2C2C2C",
+          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו",
+          "rotation": 0
+        },
+        {
+          "key": "eventDate",
+          "label": "בחר תאריך מהלוח",
+          "isInput": true,
+          "type": "date",
+          "display": false
+        },
+        {
+          "key": "dateHebrewCombined",
+          "x": 720,
+          "y": 760,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 24,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew"
+          ],
+          "prefix": "יום ",
+          "combineSeparator": ", ",
+          "isInput": false,
+          "rotation": 0
+        },
+        {
+          "key": "dateEnglishDisplay",
+          "x": 720,
+          "y": 785,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 36,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dateEnglish"
+          ],
+          "isInput": false,
+          "rotation": 0
+        },
+        {
+          "key": "venue",
+          "label": "שם האולם",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "locationDisplay",
+          "x": 720,
+          "y": 840,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "venue"
+          ],
+          "prefix": "\"",
+          "suffix": "\"",
+          "rotation": 0
+        },
+        {
+          "key": "cityDisplay",
+          "x": 720,
+          "y": 860,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "city"
+          ],
+          "rotation": 0
+        },
+        {
+          "key": "kabbalatPanimTime",
+          "label": "שעת קבלת פנים",
+          "isInput": true,
+          "type": "time",
+          "display": false,
+          "defaultValue": "19:30"
+        },
+        {
+          "key": "chuppahTime",
+          "label": "שעת חופה",
+          "isInput": true,
+          "type": "time",
+          "display": false,
+          "defaultValue": "20:30"
+        },
+        {
+          "key": "scheduleCombined",
+          "x": 720,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "kabbalatPanimTime",
+            "chuppahTime"
+          ],
+          "prefix": "קבלת פנים - ",
+          "combineSeparator": " | חופה וקידושין - ",
+          "rotation": 0
+        },
+        {
+          "key": "closingText",
+          "x": 710,
+          "y": 950,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "defaultValue": "נשמח לראותכם",
+          "rotation": 0
+        },
+        {
+          "key": "groomParents",
+          "label": "שמות הורי החתן",
+          "x": 810,
+          "y": 998,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 20,
+          "color": "#2C2C2C",
+          "prefix": "הורי החתן\n",
+          "rotation": 0
+        },
+        {
+          "key": "brideParents",
+          "label": "שמות הורי הכלה",
+          "x": 630,
+          "y": 997,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 20,
+          "color": "#2C2C2C",
+          "prefix": "הורי הכלה\n",
+          "rotation": 0
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [],
+      "backSlots": []
+    },
+    {
+      "id": "wedding-t6",
+      "name": "יהלום מרובע - מינימל יוקרתי",
+      "description": "הזמנה מרובעת בעיצוב מינימליסטי יוקרתי עם אלמנט יהלום מרכזי מרשים. הפורמט הריבועי הייחודי מעניק מראה מודרני ומעודן, מושלם לזוגות המחפשים הזמנה שונה ובולטת עם מגע עיצובי מיוחד.",
+      "singleSided": true,
+      "cover": "/images/wedding/t6.cover.webp",
+      "frontBg": "/images/wedding/t6.webp",
+      "size": {
+        "w": 1024,
+        "h": 1536
+      },
+      "frontFields": [
+        {
+          "key": "monogramB",
+          "label": "אות ראשונה (B)",
+          "x": 300,
+          "y": 640,
+          "align": "center",
+          "fontFamily": "serif",
+          "fontWeight": 400,
+          "fontSize": 90,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "monogramG",
+          "label": "אות שנייה (G)",
+          "x": 320,
+          "y": 680,
+          "align": "center",
+          "fontFamily": "serif",
+          "fontWeight": 350,
+          "fontSize": 80,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "groomNameDetails1",
+          "label": "שם החתן לעטיפה (באנגלית)",
+          "x": 280,
+          "y": 880,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 25,
+          "color": "#2C2C2C",
+          "rotation": -9
+        },
+        {
+          "key": "andDetailsText1",
+          "x": 330,
+          "y": 872,
+          "align": "center",
+          "fontFamily": "'Great Vibes', cursive",
+          "fontWeight": 400,
+          "fontSize": 20,
+          "color": "#2C2C2C",
+          "staticText": "and",
+          "rotation": -9
+        },
+        {
+          "key": "brideNameDetails1",
+          "label": "שם הכלה לעטיפה (באנגלית)",
+          "x": 380,
+          "y": 860,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 25,
+          "color": "#2C2C2C",
+          "rotation": -9
+        },
+        {
+          "key": "subtitleCover",
+          "x": 340,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 12,
+          "color": "#2C2C2C",
+          "staticText": "THE WEDDING DAY",
+          "rotation": -9
+        },
+        {
+          "key": "bsd",
+          "x": 850,
+          "y": 450,
+          "align": "right",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 5,
+          "color": "#2C2C2C",
+          "defaultValue": "בס\"ד",
+          "rotation": 9
+        },
+        {
+          "key": "quote",
+          "label": "פסוק/ציטוט",
+          "x": 700,
+          "y": 470,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 17,
+          "color": "#2C2C2C",
+          "defaultValue": "\"עַד שֶׁמָּצָאתִי אֵת שֶׁאָהֲבָה נַפְשִׁי אֲחַזְתִּיו וְלֹא אַרְפֶּנּוּ\"",
+          "rotation": 10.5
+        },
+        {
+          "key": "groomNameDetails",
+          "label": "שם החתן (באנגלית)",
+          "x": 620,
+          "y": 510,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 42,
+          "color": "#2C2C2C",
+          "rotation": 10.5
+        },
+        {
+          "key": "andDetailsText",
+          "x": 705,
+          "y": 530,
+          "align": "center",
+          "fontFamily": "'Great Vibes', cursive",
+          "fontWeight": 400,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "staticText": "and",
+          "rotation": 10.5
+        },
+        {
+          "key": "brideNameDetails",
+          "label": "שם הכלה (באנגלית)",
+          "x": 770,
+          "y": 542,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 42,
+          "color": "#2C2C2C",
+          "rotation": 10.5
+        },
+        {
+          "key": "subtitleDetails",
+          "x": 700,
+          "y": 555,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 17,
+          "color": "#2C2C2C",
+          "staticText": "THE WEDDING DAY",
+          "rotation": 10.5
+        },
+        {
+          "key": "invitationText",
+          "x": 685,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו",
+          "rotation": 8.5
+        },
+        {
+          "key": "eventDate",
+          "label": "בחר תאריך מהלוח",
+          "isInput": true,
+          "type": "date",
+          "display": false
+        },
+        {
+          "key": "dateHebrewCombined",
+          "x": 690,
+          "y": 630,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 24,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew"
+          ],
+          "prefix": "יום ",
+          "combineSeparator": ", ",
+          "isInput": false,
+          "rotation": 8.5
+        },
+        {
+          "key": "dateEnglishDisplay",
+          "x": 690,
+          "y": 660,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 36,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dateEnglish"
+          ],
+          "isInput": false,
+          "rotation": 8.5
+        },
+        {
+          "key": "venue",
+          "label": "שם האולם",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "locationDisplay",
+          "x": 690,
+          "y": 720,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "venue"
+          ],
+          "prefix": "\"",
+          "suffix": "\"",
+          "rotation": 8.5
+        },
+        {
+          "key": "cityDisplay",
+          "x": 690,
+          "y": 750,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "city"
+          ],
+          "rotation": 8.5
+        },
+        {
+          "key": "kabbalatPanimTime",
+          "label": "שעת קבלת פנים",
+          "isInput": true,
+          "type": "time",
+          "display": false,
+          "defaultValue": "19:30"
+        },
+        {
+          "key": "chuppahTime",
+          "label": "שעת חופה",
+          "isInput": true,
+          "type": "time",
+          "display": false,
+          "defaultValue": "20:30"
+        },
+        {
+          "key": "scheduleCombined",
+          "x": 670,
+          "y": 780,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "kabbalatPanimTime",
+            "chuppahTime"
+          ],
+          "prefix": "קבלת פנים - ",
+          "combineSeparator": " | חופה וקידושין - ",
+          "rotation": 8.5
+        },
+        {
+          "key": "closingText",
+          "x": 670,
+          "y": 940,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "defaultValue": "נשמח לראותכם",
+          "rotation": 8
+        },
+        {
+          "key": "groomParents",
+          "label": "שמות הורי החתן",
+          "x": 800,
+          "y": 1020,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "prefix": "הורי החתן\n",
+          "rotation": 8
+        },
+        {
+          "key": "brideParents",
+          "label": "שמות הורי הכלה",
+          "x": 540,
+          "y": 980,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "prefix": "הורי הכלה\n",
+          "rotation": 8
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [],
+      "backSlots": []
+    },
+    {
+      "id": "wedding-t7",
+      "name": "יהלום מרובע - נועז ומרשים",
+      "description": "הזמנה מרובעת נועזת ומרשימה עם עיצוב יהלום דרמטי ואיכותי. הסגנון החזק והבולט משדר ביטחון ואופי, מתאים לזוגות שאוהבים לבלוט ולהתבדל עם הזמנה שתיזכר לאורך שנים.",
+      "singleSided": true,
+      "cover": "/images/wedding/t7.cover.webp",
+      "frontBg": "/images/wedding/t7.webp",
+      "size": {
+        "w": 1024,
+        "h": 1536
+      },
+      "frontFields": [
+        {
+          "key": "groomNameDetails1",
+          "label": "שם החתן לעטיפה (באנגלית)",
+          "x": 720,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 34,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "andDetailsText1",
+          "x": 780,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Great Vibes', cursive",
+          "fontWeight": 400,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "staticText": "and"
+        },
+        {
+          "key": "brideNameDetails1",
+          "label": "שם הכלה לעטיפה (באנגלית)",
+          "x": 850,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 34,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "subtitleCover",
+          "x": 785,
+          "y": 925,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "staticText": "THE WEDDING DAY"
+        },
+        {
+          "key": "bsd",
+          "x": 420,
+          "y": 380,
+          "align": "left",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 5,
+          "color": "#2C2C2C",
+          "defaultValue": "בס\"ד"
+        },
+        {
+          "key": "quote",
+          "label": "פסוק/ציטוט",
+          "x": 310,
+          "y": 420,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 400,
+          "fontSize": 17,
+          "color": "#2C2C2C",
+          "defaultValue": "\"עַד שֶׁמָּצָאתִי אֵת שֶׁאָהֲבָה נַפְשִׁי אֲחַזְתִּיו וְלֹא אַרְפֶּנּוּ\""
+        },
+        {
+          "key": "groomNameDetails",
+          "label": "שם החתן (באנגלית)",
+          "x": 240,
+          "y": 515,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 42,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "andDetailsText",
+          "x": 310,
+          "y": 515,
+          "align": "center",
+          "fontFamily": "'Great Vibes', cursive",
+          "fontWeight": 400,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "staticText": "and"
+        },
+        {
+          "key": "brideNameDetails",
+          "label": "שם הכלה (באנגלית)",
+          "x": 380,
+          "y": 515,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 42,
+          "color": "#2C2C2C"
+        },
+        {
+          "key": "subtitleDetails",
+          "x": 300,
+          "y": 543,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 400,
+          "fontSize": 19,
+          "color": "#2C2C2C",
+          "staticText": "THE WEDDING DAY"
+        },
+        {
+          "key": "invitationText",
+          "x": 304,
+          "y": 600,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 20,
+          "color": "#2C2C2C",
+          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו"
+        },
+        {
+          "key": "eventDate",
+          "label": "בחר תאריך מהלוח",
+          "isInput": true,
+          "type": "date",
+          "display": false
+        },
+        {
+          "key": "dateHebrewCombined",
+          "x": 304,
+          "y": 650,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 24,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dayOfWeek",
+            "dateHebrew"
+          ],
+          "prefix": "יום ",
+          "combineSeparator": ", ",
+          "isInput": false
+        },
+        {
+          "key": "dateEnglishDisplay",
+          "x": 304,
+          "y": 682,
+          "align": "center",
+          "fontFamily": "'Cormorant Garamond', Georgia, serif",
+          "fontWeight": 300,
+          "fontSize": 36,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "dateEnglish"
+          ],
+          "isInput": false
+        },
+        {
+          "key": "venue",
+          "label": "שם האולם",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "city",
+          "label": "עיר",
+          "isInput": true,
+          "display": false
+        },
+        {
+          "key": "locationDisplay",
+          "x": 304,
+          "y": 730,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "venue"
+          ],
+          "prefix": "\"",
+          "suffix": "\""
+        },
+        {
+          "key": "cityDisplay",
+          "x": 304,
+          "y": 760,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontWeight": 300,
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "city"
+          ]
+        },
+        {
+          "key": "kabbalatPanimTime",
+          "label": "שעת קבלת פנים",
+          "isInput": true,
+          "type": "time",
+          "display": false,
+          "defaultValue": "19:30"
+        },
+        {
+          "key": "chuppahTime",
+          "label": "שעת חופה",
+          "isInput": true,
+          "type": "time",
+          "display": false,
+          "defaultValue": "20:30"
+        },
+        {
+          "key": "scheduleCombined",
+          "x": 304,
+          "y": 800,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "isCombined": true,
+          "combineFields": [
+            "kabbalatPanimTime",
+            "chuppahTime"
+          ],
+          "prefix": "קבלת פנים - ",
+          "combineSeparator": " | חופה וקידושין - "
+        },
+        {
+          "key": "closingText",
+          "x": 304,
+          "y": 900,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 22,
+          "color": "#2C2C2C",
+          "defaultValue": "נשמח לראותכם"
+        },
+        {
+          "key": "groomParents",
+          "label": "שמות הורי החתן",
+          "x": 390,
+          "y": 940,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "prefix": "הורי החתן\n"
+        },
+        {
+          "key": "brideParents",
+          "label": "שמות הורי הכלה",
+          "x": 210,
+          "y": 940,
+          "align": "center",
+          "fontFamily": "'Hadasim CLM', serif",
+          "fontSize": 18,
+          "color": "#2C2C2C",
+          "prefix": "הורי הכלה\n"
+        }
+      ],
+      "frontSlots": [],
+      "backFields": [],
+      "backSlots": []
+    },
+    {
       "id": "wedding-flowers-001",
       "name": "פרחים חום וצהוב ",
       "description": "הזמנה מקסימה עם ריקוד של פרחי בר בגווני חום וצהוב חמים.\nמושלמת לחתונות באווירה כפרית-אלגנטית, משדרת חום ושמחה.\nמתאימה לזוגות המחפשים עיצוב טבעי, רומנטי ומזמין.",
@@ -1603,2259 +3789,6 @@
           "color": "#2C5F8D"
         }
       ],
-      "backSlots": []
-    },
-    {
-      "id": "wedding-t1",
-      "name": "יהלום קלאסי",
-      "description": "הזמנה אלגנטית בעיצוב עמוד כפול על צד אחד — חלק פרטים מימין וחלק עטיפה משמאל. עיצוב קלאסי ומעודן עם נגיעות זהב ופרטים עדינים.",
-      "singleSided": true,
-      "cover": "/images/wedding/t1.cover.webp",
-      "frontBg": "/images/wedding/t1.webp",
-      "size": {
-        "w": 1024,
-        "h": 1536
-      },
-      "frontFields": [
-        {
-          "key": "monogramB",
-          "label": "אות ראשונה (B)",
-          "x": 764,
-          "y": 780,
-          "align": "center",
-          "fontFamily": "serif",
-          "fontWeight": 400,
-          "fontSize": 90,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "monogramG",
-          "label": "אות שנייה (G)",
-          "x": 786,
-          "y": 810,
-          "align": "center",
-          "fontFamily": "serif",
-          "fontWeight": 350,
-          "fontSize": 80,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "groomNameDetails1",
-          "label": "שם החתן לעטיפה (באנגלית)",
-          "x": 724,
-          "y": 980,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 34,
-          "color": "#2C2C2C"        },
-        {
-          "key": "andDetailsText1",
-          "x": 780,
-          "y": 985,
-          "align": "center",
-          "fontFamily": "'Great Vibes', cursive",
-          "fontWeight": 400,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "staticText": "and"        },
-        {
-          "key": "brideNameDetails1",
-          "label": "שם הכלה לעטיפה (באנגלית)",
-          "x": 840,
-          "y": 980,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 34,
-          "color": "#2C2C2C"        },
-        {
-          "key": "subtitleCover",
-          "x": 782,
-          "y": 1010,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 400,
-          "fontSize": 21,
-          "color": "#2C2C2C",
-          "staticText": "THE WEDDING DAY"
-        },
-        {
-          "key": "bsd",
-          "x": 490,
-          "y": 440,
-          "align": "left",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 5,
-          "color": "#2C2C2C",
-          "defaultValue": "בס\"ד"
-        },
-        {
-          "key": "quote",
-          "label": "פסוק/ציטוט",
-          "x": 370,
-          "y": 470,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 17,
-          "color": "#2C2C2C",
-          "defaultValue": "\"עַד שֶׁמָּצָאתִי אֵת שֶׁאָהֲבָה נַפְשִׁי אֲחַזְתִּיו וְלֹא אַרְפֶּנּוּ\""
-        },
-        {
-          "key": "groomNameDetails",
-          "label": "שם החתן (באנגלית)",
-          "x": 270,
-          "y": 515,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 42,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "andDetailsText",
-          "x": 360,
-          "y": 520,
-          "align": "center",
-          "fontFamily": "'Great Vibes', cursive",
-          "fontWeight": 400,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "staticText": "and"
-        },
-        {
-          "key": "brideNameDetails",
-          "label": "שם הכלה (באנגלית)",
-          "x": 440,
-          "y": 515,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 42,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "subtitleDetails",
-          "x": 360,
-                   "y": 543,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 400,
-          "fontSize": 19,
-          "color": "#2C2C2C",
-          "staticText": "THE WEDDING DAY"
-        },
-        {
-          "key": "invitationText",
-          "x": 360,
-          "y": 600,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 18,
-          "color": "#2C2C2C",
-          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו"
-        },
-        {
-          "key": "eventDate",
-          "label": "בחר תאריך מהלוח",
-          "isInput": true,
-          "type": "date",
-          "display": false
-        },
-        {
-          "key": "dateHebrewCombined",
-          "x": 360,
-          "y": 650,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 24,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "dayOfWeek",
-            "dateHebrew"
-          ],
-          "prefix": "יום ",
-          "combineSeparator": ", ",
-          "isInput": false
-        },
-        {
-          "key": "dateEnglishDisplay",
-          "x": 360,
-          "y": 682,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 36,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "dateEnglish"
-          ],
-          "isInput": false
-        },
-        {
-          "key": "venue",
-          "label": "שם האולם",
-          "isInput": true,
-          "display": false
-        },
-        {
-          "key": "city",
-          "label": "עיר",
-          "isInput": true,
-          "display": false
-        },
-        {
-          "key": "locationDisplay",
-          "x": 364,
-          "y": 730,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 300,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "venue"
-          ],
-          "prefix": "\"",
-          "suffix": "\""
-        },
-        {
-          "key": "cityDisplay",
-          "x": 364,
-          "y": 760,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 300,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "city"
-          ]
-        },
-        {
-          "key": "kabbalatPanimTime",
-          "label": "שעת קבלת פנים",
-          "isInput": true,
-          "type": "time",
-          "display": false,
-          "defaultValue": "19:30"
-        },
-        {
-          "key": "chuppahTime",
-          "label": "שעת חופה",
-          "isInput": true,
-          "type": "time",
-          "display": false,
-          "defaultValue": "20:30"
-        },
-        {
-          "key": "scheduleCombined",
-          "x": 364,
-          "y": 800,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 18,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "kabbalatPanimTime",
-            "chuppahTime"
-          ],
-          "prefix": "קבלת פנים - ",
-          "combineSeparator": " | חופה וקידושין - "
-        },
-        {
-          "key": "closingText",
-          "x": 364,
-          "y": 855,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "defaultValue": "נשמח לראותכם"
-        },
-        {
-          "key": "groomParents",
-          "label": "שמות הורי החתן",
-          "x": 450,
-          "y": 890,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 20,
-          "color": "#2C2C2C",
-          "prefix": "הורי החתן\n"
-        },
-        {
-          "key": "brideParents",
-          "label": "שמות הורי הכלה",
-          "x": 280,
-          "y": 890,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 20,
-          "color": "#2C2C2C",
-          "prefix": "הורי הכלה\n"
-        }
-      ],
-      "frontSlots": [],
-      "backFields": [],
-      "backSlots": []
-    },
-    {
-      "id": "wedding-t2",
-      "name": "יהלום רומנטי - ורוד ועדין",
-      "description": "הזמנה רומנטית וחלומית עם עיצוב יהלום בגווני ורוד עדינים ורכים. האווירה הנשית והמרגשת תוצר של שילוב פסטלי קסום, המזמין את האורחים לחגיגה מלאת אהבה ורגשות עמוקים.",
-      "singleSided": true,
-      "cover": "/images/wedding/t2.cover.webp",
-      "frontBg": "/images/wedding/t2.webp",
-      "size": {
-        "w": 1024,
-        "h": 1536
-      },
-      "frontFields": [
-        {
-          "key": "monogramB",
-          "label": "אות ראשונה (B)",
-          "x": 320,
-          "y": 620,
-          "align": "center",
-          "fontFamily": "serif",
-          "fontWeight": 400,
-          "fontSize": 90,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "monogramG",
-          "label": "אות שנייה (G)",
-          "x": 340,
-          "y": 660,
-          "align": "center",
-          "fontFamily": "serif",
-          "fontWeight": 350,
-          "fontSize": 80,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "groomNameDetails1",
-          "label": "שם החתן לעטיפה (באנגלית)",
-          "x": 310,
-          "y": 820,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 25,
-          "color": "#2C2C2C"
-                                        ,"rotation": -5
-
-        },
-        {
-          "key": "andDetailsText1",
-          "x": 355,
-          "y": 819,
-          "align": "center",
-          "fontFamily": "'Great Vibes', cursive",
-          "fontWeight": 400,
-          "fontSize": 20,
-          "color": "#2C2C2C",
-          "staticText": "and"
-                                        ,"rotation": -5
-
-        },
-        {
-          "key": "brideNameDetails1",
-          "label": "שם הכלה לעטיפה (באנגלית)",
-          "x": 400,
-          "y": 810,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 25,
-          "color": "#2C2C2C"
-                              ,"rotation": -5
-
-        },
-        {
-          "key": "subtitleCover",
-          "x": 355,
-          "y": 840,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 400,
-          "fontSize": 12,
-          "color": "#2C2C2C",
-          "staticText": "THE WEDDING DAY"
-                                        ,"rotation": -6
-
-        },
-        {
-          "key": "bsd",
-          "x": 950,
-          "y": 590,
-          "align": "right",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 5,
-          "color": "#2C2C2C",
-          "defaultValue": "בס\"ד",
-          "rotation": 4
-        },
-        {
-          "key": "quote",
-          "label": "פסוק/ציטוט",
-          "x": 780,
-          "y": 600,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 17,
-          "color": "#2C2C2C",
-          "defaultValue": "\"עַד שֶׁמָּצָאתִי אֵת שֶׁאָהֲבָה נַפְשִׁי אֲחַזְתִּיו וְלֹא אַרְפֶּנּוּ\""
-          ,"rotation": 5.5
-
-        },
-        {
-          "key": "groomNameDetails",
-          "label": "שם החתן (באנגלית)",
-          "x": 680,
-          "y": 650,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 42,
-          "color": "#2C2C2C"
-                    ,"rotation": 5.5
-
-        },
-        {
-          "key": "andDetailsText",
-          "x": 780,
-          "y": 660,
-          "align": "center",
-          "fontFamily": "'Great Vibes', cursive",
-          "fontWeight": 400,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "staticText": "and"
-                    ,"rotation": 6.5
-
-        },
-        {
-          "key": "brideNameDetails",
-          "label": "שם הכלה (באנגלית)",
-          "x": 850,
-          "y": 670,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 42,
-          "color": "#2C2C2C"
-                    ,"rotation": 6.5
-
-        },
-        {
-          "key": "subtitleDetails",
-          "x": 760,
-          "y": 690,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 400,
-          "fontSize": 19,
-          "color": "#2C2C2C",
-          "staticText": "THE WEDDING DAY"
-                    ,"rotation": 6.5
-
-        },
-        {
-          "key": "invitationText",
-          "x": 760,
-          "y": 730,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 20,
-          "color": "#2C2C2C",
-          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו"
-                  ,"rotation": 6.5
-
-        },
-        {
-          "key": "eventDate",
-          "label": "בחר תאריך מהלוח",
-          "isInput": true,
-          "type": "date",
-          "display": false
-        },
-        {
-          "key": "dateHebrewCombined",
-          "x": 750,
-          "y": 770,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 24,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "dayOfWeek",
-            "dateHebrew"
-          ],
-          "prefix": "יום ",
-          "combineSeparator": ", ",
-          "isInput": false
-                    ,"rotation": 6.5
-
-        },
-        {
-          "key": "dateEnglishDisplay",
-          "x": 740,
-          "y": 800,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 36,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "dateEnglish"
-          ],
-          "isInput": false
-                    ,"rotation": 6.5
-
-        },
-        {
-          "key": "venue",
-          "label": "שם האולם",
-          "isInput": true,
-          "display": false
-        },
-        {
-          "key": "city",
-          "label": "עיר",
-          "isInput": true,
-          "display": false
-        },
-        {
-          "key": "locationDisplay",
-          "x": 740,
-          "y": 850,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 300,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "venue"
-          ],
-          "prefix": "\"",
-          "suffix": "\""
-                    ,"rotation": 6.5
-
-        },
-        {
-          "key": "cityDisplay",
-          "x": 735,
-          "y": 880,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 300,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "city"
-          ]
-                    ,"rotation": 6.5
-
-        },
-        {
-          "key": "kabbalatPanimTime",
-          "label": "שעת קבלת פנים",
-          "isInput": true,
-          "type": "time",
-          "display": false,
-          "defaultValue": "19:30"
-        },
-        {
-          "key": "chuppahTime",
-          "label": "שעת חופה",
-          "isInput": true,
-          "type": "time",
-          "display": false,
-          "defaultValue": "20:30"
-        },
-        {
-          "key": "scheduleCombined",
-          "x": 740,
-          "y": 930,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 18,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "kabbalatPanimTime",
-            "chuppahTime"
-          ],
-          "prefix": "קבלת פנים - ",
-          "combineSeparator": " | חופה וקידושין - "
-                    ,"rotation": 6.5
-
-        },
-        {
-          "key": "closingText",
-          "x": 720,
-          "y": 990,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "defaultValue": "נשמח לראותכם"
-                              ,"rotation": 6.5
-
-        },
-        {
-          "key": "groomParents",
-          "label": "שמות הורי החתן",
-          "x": 820,
-          "y": 1040,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 18,
-          "color": "#2C2C2C",
-          "prefix": "הורי החתן\n"
-                              ,"rotation": 6.5
-
-        },
-        {
-          "key": "brideParents",
-          "label": "שמות הורי הכלה",
-          "x": 620,
-          "y": 1020,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 18,
-          "color": "#2C2C2C",
-          "prefix": "הורי הכלה\n"
-                              ,"rotation": 6.5
-
-        }
-      ],
-      "frontSlots": [],
-      "backFields": [],
-      "backSlots": []
-    },
-    {
-      "id": "wedding-t3",
-      "name": "יהלום מלכותי - זהב ואלגנטי",
-      "description": "הזמנה מלכותית ומרשימה עם עיצוב יהלום בגווני זהב עשירים ומנצנצים. השילוב המתוחכם של זהב יוקרתי יוצר אווירה חגיגית ואצילית, מושלמת לזוגות המחפשים הזמנה שמשדרת גרנדיוזיות ויוקרה.",
-      "singleSided": true,
-      "cover": "/images/wedding/t3.cover.webp",
-      "frontBg": "/images/wedding/t3.webp",
-            "size": {
-        "w": 1024,
-        "h": 1536
-      },
-      "frontFields": [
-        {
-          "key": "monogramB",
-          "label": "אות ראשונה (B)",
-          "x": 250,
-          "y": 650,
-          "align": "center",
-          "fontFamily": "serif",
-          "fontWeight": 400,
-          "fontSize": 90,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "monogramG",
-          "label": "אות שנייה (G)",
-          "x": 270,
-          "y": 690,
-          "align": "center",
-          "fontFamily": "serif",
-          "fontWeight": 350,
-          "fontSize": 80,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "groomNameDetails1",
-          "label": "שם החתן לעטיפה (באנגלית)",
-          "x": 220,
-          "y": 820,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 25,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "andDetailsText1",
-          "x": 270,
-          "y": 825,
-          "align": "center",
-          "fontFamily": "'Great Vibes', cursive",
-          "fontWeight": 400,
-          "fontSize": 20,
-          "color": "#2C2C2C",
-          "staticText": "and"
-        },
-        {
-          "key": "brideNameDetails1",
-          "label": "שם הכלה לעטיפה (באנגלית)",
-          "x": 315,
-          "y": 820,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 25,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "subtitleCover",
-          "x": 270,
-          "y": 840,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 400,
-          "fontSize": 12,
-          "color": "#2C2C2C",
-          "staticText": "THE WEDDING DAY"
-        },
-        {
-          "key": "bsd",
-          "x": 900,
-          "y": 700,
-          "align": "right",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 5,
-          "color": "#2C2C2C",
-          "defaultValue": "בס\"ד"        },
-        {
-          "key": "quote",
-          "label": "פסוק/ציטוט",
-          "x": 720,
-          "y": 720,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 17,
-          "color": "#2C2C2C",
-          "defaultValue": "\"עַד שֶׁמָּצָאתִי אֵת שֶׁאָהֲבָה נַפְשִׁי אֲחַזְתִּיו וְלֹא אַרְפֶּנּוּ\""
-                           ,"rotation": 0
-
-        },
-        {
-          "key": "groomNameDetails",
-          "label": "שם החתן (באנגלית)",
-          "x": 640,
-          "y": 760,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 35,
-          "color": "#2C2C2C"
-                    ,"rotation": 0
-        },
-        {
-          "key": "andDetailsText",
-          "x": 730,
-          "y": 765,
-          "align": "center",
-          "fontFamily": "'Great Vibes', cursive",
-          "fontWeight": 400,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "staticText": "and"
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "brideNameDetails",
-          "label": "שם הכלה (באנגלית)",
-          "x": 800,
-          "y": 762,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 35,
-          "color": "#2C2C2C"
-                    ,"rotation":0
-
-        },
-        {
-          "key": "subtitleDetails",
-          "x": 710,
-          "y": 787,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 400,
-          "fontSize": 19,
-          "color": "#2C2C2C",
-          "staticText": "THE WEDDING DAY"
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "invitationText",
-          "x": 715,
-          "y": 830,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 20,
-          "color": "#2C2C2C",
-          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו"
-                  ,"rotation": 0
-
-        },
-        {
-          "key": "eventDate",
-          "label": "בחר תאריך מהלוח",
-          "isInput": true,
-          "type": "date",
-          "display": false
-        },
-        {
-          "key": "dateHebrewCombined",
-          "x": 720,
-          "y": 860,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 24,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "dayOfWeek",
-            "dateHebrew"
-          ],
-          "prefix": "יום ",
-          "combineSeparator": ", ",
-          "isInput": false
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "dateEnglishDisplay",
-          "x": 720,
-          "y": 885,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 36,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "dateEnglish"
-          ],
-          "isInput": false
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "venue",
-          "label": "שם האולם",
-          "isInput": true,
-          "display": false
-        },
-        {
-          "key": "city",
-          "label": "עיר",
-          "isInput": true,
-          "display": false
-        },
-        {
-          "key": "locationDisplay",
-          "x": 720,
-          "y": 940,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 300,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "venue"
-          ],
-          "prefix": "\"",
-          "suffix": "\""
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "cityDisplay",
-          "x": 720,
-          "y": 960,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 300,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "city"
-          ]
-                    ,"rotation":0
-
-        },
-        {
-          "key": "kabbalatPanimTime",
-          "label": "שעת קבלת פנים",
-          "isInput": true,
-          "type": "time",
-          "display": false,
-          "defaultValue": "19:30"
-        },
-        {
-          "key": "chuppahTime",
-          "label": "שעת חופה",
-          "isInput": true,
-          "type": "time",
-          "display": false,
-          "defaultValue": "20:30"
-        },
-        {
-          "key": "scheduleCombined",
-          "x": 720,
-          "y": 1000,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 18,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "kabbalatPanimTime",
-            "chuppahTime"
-          ],
-          "prefix": "קבלת פנים - ",
-          "combineSeparator": " | חופה וקידושין - "
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "closingText",
-          "x": 710,
-          "y": 1050,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "defaultValue": "נשמח לראותכם"
-                              ,"rotation": 0
-
-        },
-        {
-          "key": "groomParents",
-          "label": "שמות הורי החתן",
-          "x": 780,
-          "y": 1098,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 18,
-          "color": "#2C2C2C",
-          "prefix": "הורי החתן\n"
-                              ,"rotation": 0
-
-        },
-        {
-          "key": "brideParents",
-          "label": "שמות הורי הכלה",
-          "x": 630,
-          "y": 1097,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 18,
-          "color": "#2C2C2C",
-          "prefix": "הורי הכלה\n"
-                              ,"rotation": 0
-
-        }
-      ],
-      "frontSlots": [],
-      "backFields": [],
-      "backSlots": []
-    },
-    {
-      "id": "wedding-t4",
-      "name": "יהלום כסוף - בלינג עכשווי",
-      "description": "הזמנה עכשווית ומודרנית עם עיצוב יהלום בגווני כסף נוצצים ומרהיבים. הסגנון הבלינג-שיק הייחודי מתאים לזוגות הטרנדיים המחפשים הזמנה שמשלבת בלט ויוקרה בגישה מודרנית ומרעננת.",
-      "singleSided": true,
-      "cover": "/images/wedding/t4.cover.webp",
-      "frontBg": "/images/wedding/t4.webp",
-                "size": {
-        "w": 1024,
-        "h": 1536
-      },
-      "frontFields": [
-        {
-          "key": "monogramB",
-          "label": "אות ראשונה (B)",
-          "x": 290,
-          "y": 690,
-          "align": "center",
-          "fontFamily": "serif",
-          "fontWeight": 400,
-          "fontSize": 70,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "monogramG",
-          "label": "אות שנייה (G)",
-          "x": 310,
-          "y": 720,
-          "align": "center",
-          "fontFamily": "serif",
-          "fontWeight": 350,
-          "fontSize": 70,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "groomNameDetails1",
-          "label": "שם החתן לעטיפה (באנגלית)",
-          "x": 550,
-          "y": 1200,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 35,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "andDetailsText1",
-          "x": 620,
-          "y": 1205,
-          "align": "center",
-          "fontFamily": "'Great Vibes', cursive",
-          "fontWeight": 400,
-          "fontSize": 25,
-          "color": "#2C2C2C",
-          "staticText": "and"
-        },
-        {
-          "key": "brideNameDetails1",
-          "label": "שם הכלה לעטיפה (באנגלית)",
-          "x": 680,
-          "y": 1200,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 35,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "subtitleCover",
-          "x": 610,
-          "y": 1225,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 400,
-          "fontSize": 15,
-          "color": "#2C2C2C",
-          "staticText": "THE WEDDING DAY"
-        },
-        {
-          "key": "bsd",
-          "x": 910,
-          "y": 650,
-          "align": "right",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 5,
-          "color": "#2C2C2C",
-          "defaultValue": "בס\"ד"        },
-        {
-          "key": "quote",
-          "label": "פסוק/ציטוט",
-          "x": 760,
-          "y": 680,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 17,
-          "color": "#2C2C2C",
-          "defaultValue": "\"עַד שֶׁמָּצָאתִי אֵת שֶׁאָהֲבָה נַפְשִׁי אֲחַזְתִּיו וְלֹא אַרְפֶּנּוּ\""
-                           ,"rotation": 0
-
-        },
-        {
-          "key": "groomNameDetails",
-          "label": "שם החתן (באנגלית)",
-          "x": 700,
-          "y": 740,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 35,
-          "color": "#2C2C2C"
-                    ,"rotation": 0
-        },
-        {
-          "key": "andDetailsText",
-          "x": 780,
-          "y": 742,
-          "align": "center",
-          "fontFamily": "'Great Vibes', cursive",
-          "fontWeight": 400,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "staticText": "and"
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "brideNameDetails",
-          "label": "שם הכלה (באנגלית)",
-          "x": 835,
-          "y": 740,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 35,
-          "color": "#2C2C2C"
-                    ,"rotation":0
-
-        },
-        {
-          "key": "subtitleDetails",
-          "x": 780,
-          "y": 765,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 400,
-          "fontSize": 14,
-          "color": "#2C2C2C",
-          "staticText": "THE WEDDING DAY"
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "invitationText",
-          "x": 760,
-          "y": 800,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 16,
-          "color": "#2C2C2C",
-          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו"
-                  ,"rotation": 0
-
-        },
-        {
-          "key": "eventDate",
-          "label": "בחר תאריך מהלוח",
-          "isInput": true,
-          "type": "date",
-          "display": false
-        },
-        {
-          "key": "dateHebrewCombined",
-          "x": 770,
-          "y": 820,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 24,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "dayOfWeek",
-            "dateHebrew"
-          ],
-          "prefix": "יום ",
-          "combineSeparator": ", ",
-          "isInput": false
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "dateEnglishDisplay",
-          "x": 770,
-          "y": 850,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 36,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "dateEnglish"
-          ],
-          "isInput": false
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "venue",
-          "label": "שם האולם",
-          "isInput": true,
-          "display": false
-        },
-        {
-          "key": "city",
-          "label": "עיר",
-          "isInput": true,
-          "display": false
-        },
-        {
-          "key": "locationDisplay",
-          "x": 770,
-          "y": 890,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 300,
-          "fontSize": 20,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "venue"
-          ],
-          "prefix": "\"",
-          "suffix": "\""
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "cityDisplay",
-          "x": 770,
-          "y": 910,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 300,
-          "fontSize": 20,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "city"
-          ]
-                    ,"rotation":0
-
-        },
-        {
-          "key": "kabbalatPanimTime",
-          "label": "שעת קבלת פנים",
-          "isInput": true,
-          "type": "time",
-          "display": false,
-          "defaultValue": "19:30"
-        },
-        {
-          "key": "chuppahTime",
-          "label": "שעת חופה",
-          "isInput": true,
-          "type": "time",
-          "display": false,
-          "defaultValue": "20:30"
-        },
-        {
-          "key": "scheduleCombined",
-          "x": 762,
-          "y": 940,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize":20,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "kabbalatPanimTime",
-            "chuppahTime"
-          ],
-          "prefix": "קבלת פנים - ",
-          "combineSeparator": " | חופה וקידושין - "
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "closingText",
-          "x": 765,
-          "y": 990,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "defaultValue": "נשמח לראותכם"
-                              ,"rotation": 0
-
-        },
-        {
-          "key": "groomParents",
-          "label": "שמות הורי החתן",
-          "x": 860,
-          "y": 1030,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 16,
-          "color": "#2C2C2C",
-          "prefix": "הורי החתן\n"
-                              ,"rotation": 0
-
-        },
-        {
-          "key": "brideParents",
-          "label": "שמות הורי הכלה",
-          "x": 670,
-          "y": 1030,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 16,
-          "color": "#2C2C2C",
-          "prefix": "הורי הכלה\n"
-                              ,"rotation": 0
-
-        }
-      ],
-      "frontSlots": [],
-      "backFields": [],
-      "backSlots": []
-    },
-    
-    {
-      "id": "wedding-t5",
-      "name": "יהלום שחור - מסתורי ואלגנטי",
-      "description": "הזמנה דרמטית ומרשימה עם עיצוב יהלום בגווני שחור ועמוק. הניגוד החד בין השחור לבין אלמנטים בהירים יוצר אפקט ויזואלי מרהיב, מתאים לזוגות הנועזים המחפשים הזמנה שתמשוך תשומת לב.",
-      "singleSided": true,
-      "cover": "/images/wedding/t5.cover.webp",
-      "frontBg": "/images/wedding/t5.webp",
-     "size": {
-        "w": 1024,
-        "h": 1536
-      },
-      "frontFields": [
-        {
-          "key": "monogramB",
-          "label": "אות ראשונה (B)",
-          "x": 260,
-          "y": 600,
-          "align": "center",
-          "fontFamily": "serif",
-          "fontWeight": 400,
-          "fontSize": 90,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "monogramG",
-          "label": "אות שנייה (G)",
-          "x": 280,
-          "y": 640,
-          "align": "center",
-          "fontFamily": "serif",
-          "fontWeight": 350,
-          "fontSize": 80,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "groomNameDetails1",
-          "label": "שם החתן לעטיפה (באנגלית)",
-          "x": 220,
-          "y": 820,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 25,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "andDetailsText1",
-          "x": 265,
-          "y": 819,
-          "align": "center",
-          "fontFamily": "'Great Vibes', cursive",
-          "fontWeight": 400,
-          "fontSize": 20,
-          "color": "#2C2C2C",
-          "staticText": "and"
-        },
-        {
-          "key": "brideNameDetails1",
-          "label": "שם הכלה לעטיפה (באנגלית)",
-          "x": 315,
-          "y": 820,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 25,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "subtitleCover",
-          "x": 270,
-          "y": 840,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 400,
-          "fontSize": 12,
-          "color": "#2C2C2C",
-          "staticText": "THE WEDDING DAY"
-        },
-        {
-          "key": "bsd",
-          "x": 900,
-          "y": 600,
-          "align": "right",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 5,
-          "color": "#2C2C2C",
-          "defaultValue": "בס\"ד"        },
-        {
-          "key": "quote",
-          "label": "פסוק/ציטוט",
-          "x": 720,
-          "y": 620,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 17,
-          "color": "#2C2C2C",
-          "defaultValue": "\"עַד שֶׁמָּצָאתִי אֵת שֶׁאָהֲבָה נַפְשִׁי אֲחַזְתִּיו וְלֹא אַרְפֶּנּוּ\""
-                           ,"rotation": 0
-
-        },
-        {
-          "key": "groomNameDetails",
-          "label": "שם החתן (באנגלית)",
-          "x": 650,
-          "y": 660,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 35,
-          "color": "#2C2C2C"
-                    ,"rotation": 0
-        },
-        {
-          "key": "andDetailsText",
-          "x": 730,
-          "y": 665,
-          "align": "center",
-          "fontFamily": "'Great Vibes', cursive",
-          "fontWeight": 400,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "staticText": "and"
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "brideNameDetails",
-          "label": "שם הכלה (באנגלית)",
-          "x": 792,
-          "y": 662,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 35,
-          "color": "#2C2C2C"
-                    ,"rotation":0
-
-        },
-        {
-          "key": "subtitleDetails",
-          "x": 720,
-          "y": 687,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 400,
-          "fontSize": 19,
-          "color": "#2C2C2C",
-          "staticText": "THE WEDDING DAY"
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "invitationText",
-          "x": 715,
-          "y": 730,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 20,
-          "color": "#2C2C2C",
-          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו"
-                  ,"rotation": 0
-
-        },
-        {
-          "key": "eventDate",
-          "label": "בחר תאריך מהלוח",
-          "isInput": true,
-          "type": "date",
-          "display": false
-        },
-        {
-          "key": "dateHebrewCombined",
-          "x": 720,
-          "y": 760,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 24,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "dayOfWeek",
-            "dateHebrew"
-          ],
-          "prefix": "יום ",
-          "combineSeparator": ", ",
-          "isInput": false
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "dateEnglishDisplay",
-          "x": 720,
-          "y": 785,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 36,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "dateEnglish"
-          ],
-          "isInput": false
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "venue",
-          "label": "שם האולם",
-          "isInput": true,
-          "display": false
-        },
-        {
-          "key": "city",
-          "label": "עיר",
-          "isInput": true,
-          "display": false
-        },
-        {
-          "key": "locationDisplay",
-          "x": 720,
-          "y": 840,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 300,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "venue"
-          ],
-          "prefix": "\"",
-          "suffix": "\""
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "cityDisplay",
-          "x": 720,
-          "y": 860,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 300,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "city"
-          ]
-                    ,"rotation":0
-
-        },
-        {
-          "key": "kabbalatPanimTime",
-          "label": "שעת קבלת פנים",
-          "isInput": true,
-          "type": "time",
-          "display": false,
-          "defaultValue": "19:30"
-        },
-        {
-          "key": "chuppahTime",
-          "label": "שעת חופה",
-          "isInput": true,
-          "type": "time",
-          "display": false,
-          "defaultValue": "20:30"
-        },
-        {
-          "key": "scheduleCombined",
-          "x": 720,
-          "y": 900,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 18,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "kabbalatPanimTime",
-            "chuppahTime"
-          ],
-          "prefix": "קבלת פנים - ",
-          "combineSeparator": " | חופה וקידושין - "
-                    ,"rotation": 0
-
-        },
-        {
-          "key": "closingText",
-          "x": 710,
-          "y": 950,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "defaultValue": "נשמח לראותכם"
-                              ,"rotation": 0
-
-        },
-        {
-          "key": "groomParents",
-          "label": "שמות הורי החתן",
-          "x": 810,
-          "y": 998,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 20,
-          "color": "#2C2C2C",
-          "prefix": "הורי החתן\n"
-                              ,"rotation": 0
-
-        },
-        {
-          "key": "brideParents",
-          "label": "שמות הורי הכלה",
-          "x": 630,
-          "y": 997,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 20,
-          "color": "#2C2C2C",
-          "prefix": "הורי הכלה\n"
-                              ,"rotation": 0
-
-        }
-      ],
-      "frontSlots": [],
-      "backFields": [],
-      "backSlots": []
-    },
-    {
-      "id": "wedding-t6",
-      "name": "יהלום מרובע - מינימל יוקרתי",
-      "description": "הזמנה מרובעת בעיצוב מינימליסטי יוקרתי עם אלמנט יהלום מרכזי מרשים. הפורמט הריבועי הייחודי מעניק מראה מודרני ומעודן, מושלם לזוגות המחפשים הזמנה שונה ובולטת עם מגע עיצובי מיוחד.",
-      "singleSided": true,
-      "cover": "/images/wedding/t6.cover.webp",
-      "frontBg": "/images/wedding/t6.webp",
-        "size": {
-        "w": 1024,
-        "h": 1536
-      },
-      "frontFields": [
-        {
-          "key": "monogramB",
-          "label": "אות ראשונה (B)",
-          "x": 300,
-          "y": 640,
-          "align": "center",
-          "fontFamily": "serif",
-          "fontWeight": 400,
-          "fontSize": 90,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "monogramG",
-          "label": "אות שנייה (G)",
-          "x": 320,
-          "y": 680,
-          "align": "center",
-          "fontFamily": "serif",
-          "fontWeight": 350,
-          "fontSize": 80,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "groomNameDetails1",
-          "label": "שם החתן לעטיפה (באנגלית)",
-          "x": 280,
-          "y": 880,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 25,
-          "color": "#2C2C2C"
-                                        ,"rotation": -9
-        },
-        {
-          "key": "andDetailsText1",
-          "x": 330,
-          "y": 872,
-          "align": "center",
-          "fontFamily": "'Great Vibes', cursive",
-          "fontWeight": 400,
-          "fontSize": 20,
-          "color": "#2C2C2C",
-          "staticText": "and"
-                                        ,"rotation": -9
-
-        },
-        {
-          "key": "brideNameDetails1",
-          "label": "שם הכלה לעטיפה (באנגלית)",
-          "x": 380,
-          "y": 860,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 25,
-          "color": "#2C2C2C"
-                              ,"rotation": -9
-        },
-        {
-          "key": "subtitleCover",
-          "x": 340,
-          "y": 900,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 400,
-          "fontSize": 12,
-          "color": "#2C2C2C",
-          "staticText": "THE WEDDING DAY"
-                                        ,"rotation": -9
-        },
-        {
-          "key": "bsd",
-          "x": 850,
-          "y": 450,
-          "align": "right",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 5,
-          "color": "#2C2C2C",
-          "defaultValue": "בס\"ד",
-          "rotation": 9
-        },
-        {
-          "key": "quote",
-          "label": "פסוק/ציטוט",
-          "x": 700,
-          "y": 470,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 17,
-          "color": "#2C2C2C",
-          "defaultValue": "\"עַד שֶׁמָּצָאתִי אֵת שֶׁאָהֲבָה נַפְשִׁי אֲחַזְתִּיו וְלֹא אַרְפֶּנּוּ\""
-          ,"rotation": 10.5
-
-        },
-        {
-          "key": "groomNameDetails",
-          "label": "שם החתן (באנגלית)",
-          "x": 620,
-          "y": 510,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 42,
-          "color": "#2C2C2C"
-          ,"rotation": 10.5
-
-        },
-        {
-          "key": "andDetailsText",
-          "x": 705,
-          "y": 530,
-          "align": "center",
-          "fontFamily": "'Great Vibes', cursive",
-          "fontWeight": 400,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "staticText": "and"
-                    ,"rotation": 10.5
-
-        },
-        {
-          "key": "brideNameDetails",
-          "label": "שם הכלה (באנגלית)",
-          "x": 770,
-          "y": 542,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 42,
-          "color": "#2C2C2C"
-                    ,"rotation": 10.5
-
-        },
-        {
-          "key": "subtitleDetails",
-          "x": 700,
-          "y": 555,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 400,
-          "fontSize": 17,
-          "color": "#2C2C2C",
-          "staticText": "THE WEDDING DAY"
-                    ,"rotation": 10.5
-
-        },
-        {
-          "key": "invitationText",
-          "x": 685,
-          "y": 600,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 18,
-          "color": "#2C2C2C",
-          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו"
-                  ,"rotation": 8.5
-
-        },
-        {
-          "key": "eventDate",
-          "label": "בחר תאריך מהלוח",
-          "isInput": true,
-          "type": "date",
-          "display": false
-        },
-        {
-          "key": "dateHebrewCombined",
-          "x": 690,
-          "y": 630,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 24,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "dayOfWeek",
-            "dateHebrew"
-          ],
-          "prefix": "יום ",
-          "combineSeparator": ", ",
-          "isInput": false
-                    ,"rotation": 8.5
-
-        },
-        {
-          "key": "dateEnglishDisplay",
-          "x": 690,
-          "y": 660,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 36,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "dateEnglish"
-          ],
-          "isInput": false
-                    ,"rotation": 8.5
-
-        },
-        {
-          "key": "venue",
-          "label": "שם האולם",
-          "isInput": true,
-          "display": false
-        },
-        {
-          "key": "city",
-          "label": "עיר",
-          "isInput": true,
-          "display": false
-        },
-        {
-          "key": "locationDisplay",
-          "x": 690,
-          "y": 720,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 300,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "venue"
-          ],
-          "prefix": "\"",
-          "suffix": "\""
-                    ,"rotation": 8.5
-
-        },
-        {
-          "key": "cityDisplay",
-          "x": 690,
-          "y": 750,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 300,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "city"
-          ]
-                    ,"rotation": 8.5
-
-        },
-        {
-          "key": "kabbalatPanimTime",
-          "label": "שעת קבלת פנים",
-          "isInput": true,
-          "type": "time",
-          "display": false,
-          "defaultValue": "19:30"
-        },
-        {
-          "key": "chuppahTime",
-          "label": "שעת חופה",
-          "isInput": true,
-          "type": "time",
-          "display": false,
-          "defaultValue": "20:30"
-        },
-        {
-          "key": "scheduleCombined",
-          "x": 670,
-          "y": 780,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 18,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "kabbalatPanimTime",
-            "chuppahTime"
-          ],
-          "prefix": "קבלת פנים - ",
-          "combineSeparator": " | חופה וקידושין - "
-                    ,"rotation": 8.5
-
-        },
-        {
-          "key": "closingText",
-          "x": 670,
-          "y": 940,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "defaultValue": "נשמח לראותכם"
-                              ,"rotation": 8
-
-        },
-        {
-          "key": "groomParents",
-          "label": "שמות הורי החתן",
-          "x": 800,
-          "y": 1020,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 18,
-          "color": "#2C2C2C",
-          "prefix": "הורי החתן\n"
-                              ,"rotation": 8
-
-        },
-        {
-          "key": "brideParents",
-          "label": "שמות הורי הכלה",
-          "x": 540,
-          "y": 980,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 18,
-          "color": "#2C2C2C",
-          "prefix": "הורי הכלה\n"
-                              ,"rotation": 8
-
-        }
-      ],
-      "frontSlots": [],
-      "backFields": [],
-      "backSlots": []
-    },
-    {
-      "id": "wedding-t7",
-      "name": "יהלום מרובע - נועז ומרשים",
-      "description": "הזמנה מרובעת נועזת ומרשימה עם עיצוב יהלום דרמטי ואיכותי. הסגנון החזק והבולט משדר ביטחון ואופי, מתאים לזוגות שאוהבים לבלוט ולהתבדל עם הזמנה שתיזכר לאורך שנים.",
-      "singleSided": true,
-      "cover": "/images/wedding/t7.cover.webp",
-      "frontBg": "/images/wedding/t7.webp",
-"size": {
-        "w": 1024,
-        "h": 1536
-      },
-      "frontFields": [
-        {
-          "key": "groomNameDetails1",
-          "label": "שם החתן לעטיפה (באנגלית)",
-          "x": 720,
-          "y": 900,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 34,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "andDetailsText1",
-          "x": 780,
-          "y": 900,
-          "align": "center",
-          "fontFamily": "'Great Vibes', cursive",
-          "fontWeight": 400,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "staticText": "and"
-        },
-        {
-          "key": "brideNameDetails1",
-          "label": "שם הכלה לעטיפה (באנגלית)",
-          "x": 850,
-          "y": 900,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 34,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "subtitleCover",
-          "x": 785,
-          "y": 925,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 400,
-          "fontSize": 18,
-          "color": "#2C2C2C",
-          "staticText": "THE WEDDING DAY"
-        },
-        {
-          "key": "bsd",
-          "x": 420,
-          "y": 380,
-          "align": "left",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 5,
-          "color": "#2C2C2C",
-          "defaultValue": "בס\"ד"
-        },
-        {
-          "key": "quote",
-          "label": "פסוק/ציטוט",
-          "x": 310,
-          "y": 420,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 400,
-          "fontSize": 17,
-          "color": "#2C2C2C",
-          "defaultValue": "\"עַד שֶׁמָּצָאתִי אֵת שֶׁאָהֲבָה נַפְשִׁי אֲחַזְתִּיו וְלֹא אַרְפֶּנּוּ\""
-        },
-        {
-          "key": "groomNameDetails",
-          "label": "שם החתן (באנגלית)",
-          "x": 240,
-          "y": 515,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 42,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "andDetailsText",
-          "x": 310,
-          "y": 515,
-          "align": "center",
-          "fontFamily": "'Great Vibes', cursive",
-          "fontWeight": 400,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "staticText": "and"
-        },
-        {
-          "key": "brideNameDetails",
-          "label": "שם הכלה (באנגלית)",
-          "x": 380,
-          "y": 515,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 42,
-          "color": "#2C2C2C"
-        },
-        {
-          "key": "subtitleDetails",
-          "x": 300,
-          "y": 543,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 400,
-          "fontSize": 19,
-          "color": "#2C2C2C",
-          "staticText": "THE WEDDING DAY"
-        },
-        {
-          "key": "invitationText",
-          "x": 304,
-          "y": 600,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 20,
-          "color": "#2C2C2C",
-          "defaultValue": "נרגשים להזמינכם לחגוג עימנו את היום המאושר בחיינו"
-        },
-        {
-          "key": "eventDate",
-          "label": "בחר תאריך מהלוח",
-          "isInput": true,
-          "type": "date",
-          "display": false
-        },
-        {
-          "key": "dateHebrewCombined",
-          "x": 304,
-          "y": 650,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 24,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "dayOfWeek",
-            "dateHebrew"
-          ],
-          "prefix": "יום ",
-          "combineSeparator": ", ",
-          "isInput": false
-        },
-        {
-          "key": "dateEnglishDisplay",
-          "x": 304,
-          "y": 682,
-          "align": "center",
-          "fontFamily": "'Cormorant Garamond', Georgia, serif",
-          "fontWeight": 300,
-          "fontSize": 36,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "dateEnglish"
-          ],
-          "isInput": false
-        },
-        {
-          "key": "venue",
-          "label": "שם האולם",
-          "isInput": true,
-          "display": false
-        },
-        {
-          "key": "city",
-          "label": "עיר",
-          "isInput": true,
-          "display": false
-        },
-        {
-          "key": "locationDisplay",
-          "x": 304,
-          "y": 730,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 300,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "venue"
-          ],
-          "prefix": "\"",
-          "suffix": "\""
-        },
-        {
-          "key": "cityDisplay",
-          "x": 304,
-          "y": 760,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontWeight": 300,
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "city"
-          ]
-        },
-        {
-          "key": "kabbalatPanimTime",
-          "label": "שעת קבלת פנים",
-          "isInput": true,
-          "type": "time",
-          "display": false,
-          "defaultValue": "19:30"
-        },
-        {
-          "key": "chuppahTime",
-          "label": "שעת חופה",
-          "isInput": true,
-          "type": "time",
-          "display": false,
-          "defaultValue": "20:30"
-        },
-        {
-          "key": "scheduleCombined",
-          "x": 304,
-          "y": 800,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 18,
-          "color": "#2C2C2C",
-          "isCombined": true,
-          "combineFields": [
-            "kabbalatPanimTime",
-            "chuppahTime"
-          ],
-          "prefix": "קבלת פנים - ",
-          "combineSeparator": " | חופה וקידושין - "
-        },
-        {
-          "key": "closingText",
-          "x": 304,
-          "y": 900,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 22,
-          "color": "#2C2C2C",
-          "defaultValue": "נשמח לראותכם"
-        },
-        {
-          "key": "groomParents",
-          "label": "שמות הורי החתן",
-          "x": 390,
-          "y": 940,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 18,
-          "color": "#2C2C2C",
-          "prefix": "הורי החתן\n"
-        },
-        {
-          "key": "brideParents",
-          "label": "שמות הורי הכלה",
-          "x": 210,
-          "y": 940,
-          "align": "center",
-          "fontFamily": "'Hadasim CLM', serif",
-          "fontSize": 18,
-          "color": "#2C2C2C",
-          "prefix": "הורי הכלה\n"
-        }
-      ],
-      "frontSlots": [],
-      "backFields": [],
       "backSlots": []
     }
   ]
