@@ -206,7 +206,7 @@ export default function Pricing() {
       tagline: "שליחה ואישורים אוטומטיים ב־WhatsApp",
       price: null,
       priceUnit: "",
-      color: "gold",
+      color: "green",
       popular: false,
       subPackages: [
         { records: "עד 50", price: "₪69" },
@@ -222,7 +222,7 @@ export default function Pricing() {
       ],
       features: [
         { text: "יצירת הזמנה דיגיטלית מותאמת לכל אירוע", included: true },
-        { text: "שליחה אוטומטית ב־WhatsApp - 3 סבבים", included: true },
+        { text: "שליחת הזמנות אוטומטיות בוואצאפ ב-3 סבבים!", included: true },
         { text: "תזכורת ביום האירוע (SMS)", included: true },
         { text: "הודעת תודה אחרי האירוע (אופציונלי)", included: true },
         { text: "ניהול מוזמנים + דוחות", included: true },
@@ -250,7 +250,7 @@ export default function Pricing() {
       ],
       features: [
         { text: "יצירת הזמנה דיגיטלית מותאמת לכל אירוע", included: true },
-        { text: "שליחת הזמנות אוטומטיות בוואצאפ ב-3 סבבים!", included: true },
+        { text: "שליחת הזמנות אוטומטית ב־WhatsApp - 3 סבבים", included: true },
         {
           text: "מוקד אנושי עם שלוש סבבי שיחות טלפוניות",
           included: true,
