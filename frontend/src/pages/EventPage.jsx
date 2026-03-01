@@ -36,6 +36,11 @@ export default function EventPage() {
   const [editedBitLink, setEditedBitLink] = useState('');
   const invitationCanvasRef = useRef(null);
 
+  // RSVP קישור - עבור חבילת בסיס-ידני
+  const [rsvpLinkCopied, setRsvpLinkCopied] = useState(false);
+  const [isEditingRsvpText, setIsEditingRsvpText] = useState(false);
+  const [editedRsvpText, setEditedRsvpText] = useState('');
+
   useEffect(() => {
     if (!user) {
       navigate('/login');
@@ -454,6 +459,48 @@ export default function EventPage() {
     }
   }, [event, eventId]);
 
+  // ---- בדיקה אם זו חבילה ידנית ----
+  const isManualPackage = event
+    ? ((event.package_name || '').includes('ידני') || (event.package_name || '').includes('בסיס'))
+    : false;
+
+  const frontendBase = import.meta.env.VITE_FRONTEND_URL || window.location.origin;
+  const rsvpLink = event ? `${frontendBase}/event-rsvp/${event.id}` : '';
+
+  const handleCopyRsvpLink = () => {
+    navigator.clipboard.writeText(rsvpLink).then(() => {
+      setRsvpLinkCopied(true);
+      setTimeout(() => setRsvpLinkCopied(false), 2500);
+    });
+  };
+
+  const handleEditRsvpText = () => {
+    const currentText = event?.message_settings?.rsvp_custom_text || '';
+    setEditedRsvpText(currentText);
+    setIsEditingRsvpText(true);
+  };
+
+  const handleSaveRsvpText = async () => {
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+    try {
+      const newSettings = { ...(event.message_settings || {}), rsvp_custom_text: editedRsvpText.trim() };
+      const response = await fetch(`${API_URL}/packages/events/${eventId}/message-settings`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newSettings),
+      });
+      if (response.ok) {
+        setEvent({ ...event, message_settings: newSettings });
+        setIsEditingRsvpText(false);
+        showSuccess('טקסט הזמנה עודכן בהצלחה');
+      } else {
+        showInfo('שגיאה בעדכון הטקסט');
+      }
+    } catch {
+      showInfo('שגיאה בתקשורת עם השרת');
+    }
+  };
+
   if (loading) {
     return (
       <div className="event-page">
@@ -725,21 +772,102 @@ export default function EventPage() {
               </div>
             </div>
 
-            {/* עריכת הודעות WhatsApp/SMS */}
-            <div className="event-section message-section">
-              <div className="section-header">
-                <h2>
-                  <i className="fas fa-comment-dots"></i>
-                  עריכת הודעות
-                </h2>
+            {/* חבילת בסיס-ידני: קישור RSVP ציבורי */}
+            {isManualPackage ? (
+              <div className="event-section rsvp-link-section">
+                <div className="section-header">
+                  <h2>
+                    <i className="fas fa-link"></i>
+                    קישור RSVP לשיתוף
+                  </h2>
+                </div>
+
+                <div className="rsvp-link-info">
+                  <i className="fas fa-info-circle"></i>
+                  <span>שלח קישור זה לאורחים - הם יוכלו למלא את פרטיהם ויתווספו אוטומטית לרשימת המוזמנים</span>
+                </div>
+
+                <div className="rsvp-link-box">
+                  <input
+                    type="text"
+                    readOnly
+                    value={rsvpLink}
+                    className="rsvp-link-input"
+                    dir="ltr"
+                    onClick={(e) => e.target.select()}
+                  />
+                  <button
+                    className={`rsvp-copy-btn ${rsvpLinkCopied ? 'copied' : ''}`}
+                    onClick={handleCopyRsvpLink}
+                  >
+                    {rsvpLinkCopied ? (
+                      <><i className="fas fa-check"></i> הועתק!</>
+                    ) : (
+                      <><i className="fas fa-copy"></i> העתק</>
+                    )}
+                  </button>
+                </div>
+
+                {/* עריכת טקסט הזמנה */}
+                <div className="rsvp-text-section">
+                  <div className="rsvp-text-header">
+                    <span className="rsvp-text-label">
+                      <i className="fas fa-align-right"></i>
+                      טקסט הזמנה בקישור
+                    </span>
+                    {!isEditingRsvpText && (
+                      <button className="rsvp-edit-text-btn" onClick={handleEditRsvpText}>
+                        <i className="fas fa-pencil-alt"></i>
+                        ערוך
+                      </button>
+                    )}
+                  </div>
+
+                  {isEditingRsvpText ? (
+                    <div className="rsvp-text-editor">
+                      <textarea
+                        className="rsvp-text-textarea"
+                        rows={4}
+                        value={editedRsvpText}
+                        onChange={(e) => setEditedRsvpText(e.target.value)}
+                        dir="rtl"
+                        autoFocus
+                      />
+                      <div className="rsvp-text-editor-btns">
+                        <button className="rsvp-save-text-btn" onClick={handleSaveRsvpText}>
+                          <i className="fas fa-check"></i> שמור
+                        </button>
+                        <button className="rsvp-cancel-text-btn" onClick={() => setIsEditingRsvpText(false)}>
+                          <i className="fas fa-times"></i> ביטול
+                        </button>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="rsvp-text-preview">
+                      {(event?.message_settings?.rsvp_custom_text || '').split('\n').map((line, i) => (
+                        <p key={i}>{line || '\u00A0'}</p>
+                      ))}
+                    </div>
+                  )}
+                </div>
               </div>
-              <MessageTemplateEditor
-                event={event}
-                onUpdate={fetchEventData}
-                showSuccess={showSuccess}
-                showInfo={showInfo}
-              />
-            </div>
+            ) : (
+              /* עריכת הודעות WhatsApp/SMS - חבילות אוטומטיות */
+              <div className="event-section message-section">
+                <div className="section-header">
+                  <h2>
+                    <i className="fas fa-comment-dots"></i>
+                    עריכת הודעות
+                  </h2>
+                </div>
+                <MessageTemplateEditor
+                  event={event}
+                  onUpdate={fetchEventData}
+                  showSuccess={showSuccess}
+                  showInfo={showInfo}
+                />
+              </div>
+            )}
 
             {/* מוזמנים */}
             <div className="event-section guests-section">

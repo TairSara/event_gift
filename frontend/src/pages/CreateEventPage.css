@@ -641,3 +641,53 @@
     gap: 0.5rem;
   }
 }
+
+
+/* ===== Manual Package - Step 2 ===== */
+.cep-manual-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, #e8f4fd 0%, #d6ecfa 100%);
+  border: 1px solid #b3d9f5;
+  border-radius: 12px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.5rem;
+  font-size: 0.92rem;
+  color: #1a6896;
+  line-height: 1.6;
+}
+
+.cep-manual-info i {
+  color: #2196f3;
+  font-size: 1.1rem;
+  margin-top: 0.1rem;
+  flex-shrink: 0;
+}
+
+.cep-textarea {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border: 1.5px solid #d0c8bc;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: #333;
+  background: #faf8f5;
+  resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+  box-sizing: border-box;
+}
+
+.cep-textarea:focus {
+  outline: none;
+  border-color: var(--brown, #8b6f47);
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.15);
+  background: #fff;
+}
+
+.cep-field-hint-ok {
+  margin: 0.4rem 0 0;
+  font-size: 0.8rem;
+  color: #888;
+}

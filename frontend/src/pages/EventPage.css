@@ -1059,3 +1059,205 @@
     font-size: 0.85rem;
   }
 }
+
+/* ===== RSVP Link Section (Manual Package) ===== */
+.rsvp-link-section {
+  direction: rtl;
+}
+
+.rsvp-link-info {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  background: linear-gradient(135deg, #e8f4fd 0%, #d6ecfa 100%);
+  border: 1px solid #b3d9f5;
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.9rem;
+  color: #1a6896;
+  line-height: 1.6;
+}
+
+.rsvp-link-info i {
+  color: #2196f3;
+  font-size: 1rem;
+  margin-top: 0.1rem;
+  flex-shrink: 0;
+}
+
+.rsvp-link-box {
+  display: flex;
+  gap: 0.6rem;
+  margin-bottom: 1.5rem;
+  align-items: center;
+}
+
+.rsvp-link-input {
+  flex: 1;
+  padding: 0.65rem 0.9rem;
+  border: 1.5px solid #ddd5c8;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  background: #faf8f5;
+  color: #555;
+  cursor: text;
+  font-family: monospace;
+}
+
+.rsvp-link-input:focus {
+  outline: none;
+  border-color: #8b6f47;
+}
+
+.rsvp-copy-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.65rem 1rem;
+  background: linear-gradient(135deg, #5a3e2b 0%, #8b6f47 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  flex-shrink: 0;
+}
+
+.rsvp-copy-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.rsvp-copy-btn.copied {
+  background: linear-gradient(135deg, #2e7d32 0%, #43a047 100%);
+}
+
+/* RSVP Text Editor */
+.rsvp-text-section {
+  border: 1.5px solid #e8e0d8;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.rsvp-text-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem;
+  background: #faf8f5;
+  border-bottom: 1px solid #e8e0d8;
+}
+
+.rsvp-text-label {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #5a3e2b;
+}
+
+.rsvp-text-label i {
+  color: #8b6f47;
+}
+
+.rsvp-edit-text-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.8rem;
+  background: transparent;
+  border: 1px solid #c4a882;
+  border-radius: 6px;
+  color: #8b6f47;
+  font-size: 0.82rem;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.rsvp-edit-text-btn:hover {
+  background: #8b6f47;
+  border-color: #8b6f47;
+  color: white;
+}
+
+.rsvp-text-preview {
+  padding: 1rem;
+  min-height: 80px;
+}
+
+.rsvp-text-preview p {
+  font-size: 0.9rem;
+  color: #4a3728;
+  margin: 0.15rem 0;
+  line-height: 1.6;
+}
+
+.rsvp-text-editor {
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.rsvp-text-textarea {
+  width: 100%;
+  padding: 0.7rem;
+  border: 1.5px solid #d0c8bc;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  font-family: inherit;
+  color: #333;
+  background: #fff;
+  resize: vertical;
+  box-sizing: border-box;
+  transition: border-color 0.2s;
+}
+
+.rsvp-text-textarea:focus {
+  outline: none;
+  border-color: #8b6f47;
+  box-shadow: 0 0 0 3px rgba(139, 111, 71, 0.12);
+}
+
+.rsvp-text-editor-btns {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.rsvp-save-text-btn,
+.rsvp-cancel-text-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 1rem;
+  border-radius: 7px;
+  font-size: 0.88rem;
+  font-family: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: none;
+}
+
+.rsvp-save-text-btn {
+  background: linear-gradient(135deg, #5a3e2b 0%, #8b6f47 100%);
+  color: white;
+}
+
+.rsvp-save-text-btn:hover { opacity: 0.9; }
+
+.rsvp-cancel-text-btn {
+  background: #f0ebe3;
+  color: #8b6f47;
+  border: 1px solid #d0c8bc;
+}
+
+.rsvp-cancel-text-btn:hover { background: #e4dcd2; }

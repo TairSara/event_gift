@@ -31,7 +31,18 @@ export default function CreateEventPage() {
   const [scheduleError, setScheduleError] = useState("");
   const [loading, setLoading] = useState(false);
 
+  // שלב 2 - חבילה ידנית
+  const [rsvpCustomText, setRsvpCustomText] = useState("");
+
   const availablePackages = userPackages.filter((pkg) => pkg.status === "active");
+
+  const isManualPackage = selectedPackage
+    ? (() => {
+        const pkg = availablePackages.find((p) => p.id === parseInt(selectedPackage));
+        const name = pkg?.package_name || "";
+        return name.includes("ידני") || name.includes("בסיס");
+      })()
+    : false;
 
   const eventTypes = [
     { value: "wedding", label: "חתונה", icon: "fa-ring" },
@@ -77,6 +88,13 @@ export default function CreateEventPage() {
       return;
     }
     setStep1Error("");
+    // אם חבילה ידנית ועדיין אין טקסט - הגדר ברירת מחדל
+    if (isManualPackage && !rsvpCustomText) {
+      const dateStr = eventDate
+        ? new Date(eventDate).toLocaleDateString("he-IL", { day: "numeric", month: "long", year: "numeric" })
+        : "[תאריך]";
+      setRsvpCustomText(`הנכם מוזמנים ל${eventTitle} בתאריך ${dateStr}.\nנשמח לראותכם!\nלאישור או ביטול הגעה לחצו על הקישור.`);
+    }
     setStep(2);
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
@@ -130,30 +148,39 @@ export default function CreateEventPage() {
       setScheduleError("יש לבחור חבילה");
       return;
     }
-    if (!validateScheduleAgainstDate()) return;
+    if (!isManualPackage && !validateScheduleAgainstDate()) return;
 
     setLoading(true);
     try {
       const API_URL = import.meta.env.VITE_API_URL || "https://event-gift.onrender.com/api";
 
+      const bodyData = {
+        user_id: userId,
+        package_purchase_id: selectedPackage ? parseInt(selectedPackage) : null,
+        event_type: selectedEventType,
+        event_title: eventTitle,
+        event_date: eventDate,
+        status: "pending",
+        message_schedule: isManualPackage
+          ? { schedule_type: "manual", days_before: [] }
+          : {
+              schedule_type: messageScheduleType,
+              days_before:
+                messageScheduleType === "default"
+                  ? [21, 14, 7]
+                  : [customSchedule.message1, customSchedule.message2, customSchedule.message3].sort((a, b) => b - a),
+            },
+      };
+
+      // לחבילה ידנית - שמור את טקסט ה-RSVP ב-message_settings
+      if (isManualPackage && rsvpCustomText.trim()) {
+        bodyData.message_settings = { rsvp_custom_text: rsvpCustomText.trim() };
+      }
+
       const response = await fetch(`${API_URL}/packages/events`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          user_id: userId,
-          package_purchase_id: selectedPackage ? parseInt(selectedPackage) : null,
-          event_type: selectedEventType,
-          event_title: eventTitle,
-          event_date: eventDate,
-          status: "pending",
-          message_schedule: {
-            schedule_type: messageScheduleType,
-            days_before:
-              messageScheduleType === "default"
-                ? [21, 14, 7]
-                : [customSchedule.message1, customSchedule.message2, customSchedule.message3].sort((a, b) => b - a),
-          },
-        }),
+        body: JSON.stringify(bodyData),
       });
 
       const data = await response.json();
@@ -192,7 +219,7 @@ export default function CreateEventPage() {
           <div className={`cep-progress-line ${step >= 2 ? "active" : ""}`} />
           <div className={`cep-progress-step ${step >= 2 ? "active" : ""}`}>
             <div className="cep-step-circle">2</div>
-            <span>תזמון הודעות</span>
+            <span>{isManualPackage ? "הודעת הזמנה" : "תזמון הודעות"}</span>
           </div>
         </div>
 
@@ -339,8 +366,79 @@ export default function CreateEventPage() {
             </>
           )}
 
-          {/* ===== שלב 2 ===== */}
-          {step === 2 && (
+          {/* ===== שלב 2 - חבילה ידנית ===== */}
+          {step === 2 && isManualPackage && (
+            <>
+              <h2 className="cep-title">
+                <i className="fas fa-envelope-open-text" />
+                הודעת הזמנה לשיתוף
+              </h2>
+
+              {/* סיכום שלב 1 */}
+              <div className="cep-summary">
+                <div className="cep-summary-item">
+                  <i className="fas fa-calendar-day" />
+                  <span>{new Date(eventDate).toLocaleDateString("he-IL", { day: "numeric", month: "long", year: "numeric" })}</span>
+                </div>
+                <div className="cep-summary-item">
+                  <i className="fas fa-heading" />
+                  <span>{eventTitle}</span>
+                </div>
+                <div className="cep-summary-item">
+                  <i className={`fas ${eventTypes.find((t) => t.value === selectedEventType)?.icon}`} />
+                  <span>{selectedEventLabel}</span>
+                </div>
+              </div>
+
+              <div className="cep-manual-info">
+                <i className="fas fa-info-circle" />
+                <span>
+                  כחבילת בסיס-ידני, לאחר יצירת האירוע תקבל קישור RSVP ייחודי לשיתוף.
+                  האנשים שיקבלו את הקישור ימלאו את פרטיהם וייכנסו אוטומטית לרשימת המוזמנים.
+                </span>
+              </div>
+
+              <div className="cep-form-group">
+                <label>
+                  <i className="fas fa-edit" />
+                  טקסט הודעת ההזמנה (יוצג בקישור)
+                </label>
+                <textarea
+                  className="cep-textarea"
+                  rows={5}
+                  value={rsvpCustomText}
+                  onChange={(e) => setRsvpCustomText(e.target.value)}
+                  placeholder="הנכם מוזמנים לאירוע..."
+                  dir="rtl"
+                />
+                <p className="cep-field-hint-ok">ניתן לערוך את הטקסט גם לאחר יצירת האירוע מדף ניהול האירוע</p>
+              </div>
+
+              {scheduleError && (
+                <div className="cep-error-box">
+                  <i className="fas fa-times-circle" />
+                  <span>{scheduleError}</span>
+                </div>
+              )}
+
+              <div className="cep-footer">
+                <button className="cep-btn-back" onClick={() => { setStep(1); window.scrollTo({ top: 0, behavior: "smooth" }); }}>
+                  <i className="fas fa-arrow-right" />
+                  הקודם
+                </button>
+                <button className="cep-btn-submit" onClick={handleCreateEvent} disabled={loading}>
+                  {loading ? (
+                    <><i className="fas fa-spinner fa-spin" /> יוצר אירוע...</>
+                  ) : (
+                    <><i className="fas fa-check" /> המשך ליצירת הזמנה</>
+                  )}
+                </button>
+              </div>
+            </>
+          )}
+
+          {/* ===== שלב 2 - תזמון (חבילות אוטומטיות) ===== */}
+          {step === 2 && !isManualPackage && (
             <>
               <h2 className="cep-title">
                 <i className="fas fa-clock" />

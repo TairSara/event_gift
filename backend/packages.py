@@ -30,7 +30,8 @@ class EventCreate(BaseModel):
     event_date: Optional[str] = None
     event_location: Optional[str] = None
     invitation_data: Optional[dict] = None
-    message_schedule: Optional[dict] = None  # {schedule_type: 'default'|'custom', days_before: [21, 14, 7]}
+    message_schedule: Optional[dict] = None  # {schedule_type: 'default'|'custom'|'manual', days_before: [...]}
+    message_settings: Optional[dict] = None  # {rsvp_custom_text: '...'}
 
 class EventUpdate(BaseModel):
     event_title: Optional[str] = None
@@ -278,12 +279,15 @@ def create_event(event: EventCreate):
         }
         message_schedule_json = json.dumps(message_schedule)
 
+        # message_settings (כולל rsvp_custom_text לחבילה ידנית)
+        message_settings_json = json.dumps(event.message_settings) if event.message_settings else None
+
         cur.execute("""
             INSERT INTO events (
                 user_id, package_purchase_id, event_type, event_title, event_name,
-                event_date, event_location, invitation_data, status, message_schedule
+                event_date, event_location, invitation_data, status, message_schedule, message_settings
             )
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'active', %s)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, 'active', %s, %s)
             RETURNING id, created_at;
         """, (
             event.user_id,
@@ -294,7 +298,8 @@ def create_event(event: EventCreate):
             event.event_date,
             event.event_location,
             invitation_json,
-            message_schedule_json
+            message_schedule_json,
+            message_settings_json
         ))
 
         event_id, created_at = cur.fetchone()

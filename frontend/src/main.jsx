@@ -23,6 +23,7 @@ import WhatsAppFloat from './components/WhatsAppFloat.jsx'
 import AdminLogin from './pages/admin/AdminLogin.jsx'
 import AdminPanel from './pages/admin/AdminPanel.jsx'
 import RSVPPage from './pages/RSVPPage.jsx'
+import PublicRSVPPage from './pages/PublicRSVPPage.jsx'
 import PaymentSuccess from './pages/PaymentSuccess.jsx'
 import PaymentFailure from './pages/PaymentFailure.jsx'
 import CreateEventPage from './pages/CreateEventPage.jsx'
@@ -52,6 +53,9 @@ createRoot(document.getElementById('root')).render(
 
           {/* RSVP Page - Public route for guests */}
           <Route path="/rsvp/:guestId" element={<RSVPPage />} />
+
+          {/* Public RSVP Registration - for manual package events */}
+          <Route path="/event-rsvp/:eventId" element={<PublicRSVPPage />} />
 
           {/* Payment Result Pages */}
           <Route path="/payment/success" element={<PaymentSuccess />} />
