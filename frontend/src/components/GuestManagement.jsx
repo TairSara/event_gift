@@ -612,54 +612,6 @@ export default function GuestManagement({ eventId, onUpdate, packageId }) {
                   <td>{getStatusBadge(guest.status || guest.attendance_status)}</td>
                   <td>{guest.table_number || '-'}</td>
                   <td className="actions">
-                    {showWhatsApp && (
-                      <button
-                        className="btn-icon btn-whatsapp"
-                        onClick={() => handleSendWhatsAppInvitation(guest)}
-                        title="שלח הזמנה ב-WhatsApp"
-                        disabled={!guest.phone || loading}
-                        style={{
-                          backgroundColor: '#25D366',
-                          color: 'white',
-                          opacity: !guest.phone ? 0.5 : 1,
-                          cursor: !guest.phone || loading ? 'not-allowed' : 'pointer'
-                        }}
-                      >
-                        <i className="fab fa-whatsapp"></i>
-                      </button>
-                    )}
-                    {showWhatsApp && (
-                      <button
-                        className="btn-icon btn-reminder"
-                        onClick={() => handleSendWhatsAppReminder(guest)}
-                        title="שלח תזכורת ב-WhatsApp"
-                        disabled={!guest.phone || loading}
-                        style={{
-                          backgroundColor: '#FF9800',
-                          color: 'white',
-                          opacity: !guest.phone ? 0.5 : 1,
-                          cursor: !guest.phone || loading ? 'not-allowed' : 'pointer'
-                        }}
-                      >
-                        <i className="fas fa-bell"></i>
-                      </button>
-                    )}
-                    {showSms && (
-                      <button
-                        className="btn-icon btn-sms"
-                        onClick={() => handleSendSMSInvitation(guest)}
-                        title="שלח הזמנה ב-SMS"
-                        disabled={!guest.phone || loading}
-                        style={{
-                          backgroundColor: '#4285F4',
-                          color: 'white',
-                          opacity: !guest.phone ? 0.5 : 1,
-                          cursor: !guest.phone || loading ? 'not-allowed' : 'pointer'
-                        }}
-                      >
-                        <i className="fas fa-sms"></i>
-                      </button>
-                    )}
                     <button
                       className="btn-icon btn-edit"
                       onClick={() => handleEditGuest(guest)}
