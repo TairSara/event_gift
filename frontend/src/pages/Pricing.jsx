@@ -250,7 +250,7 @@ export default function Pricing() {
       ],
       features: [
         { text: "יצירת הזמנה דיגיטלית מותאמת לכל אירוע", included: true },
-        { text: "שליחת הזמנות אוטומטית ב־WhatsApp - 3 סבבים", included: true },
+        { text: "שליחת הזמנות אוטומטיות בוואצאפ ב-3 סבבים!", included: true },
         {
           text: "מוקד אנושי עם שלוש סבבי שיחות טלפוניות",
           included: true,
