@@ -786,64 +786,64 @@
 }
 
 .package-card-purple {
-  border-color: #AB47BC;
-  background: linear-gradient(135deg, #F3E5F5 0%, #E1BEE7 100%);
+  border-color: #43A047;
+  background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 100%);
 }
 
 .package-card-purple:hover {
-  border-color: #8E24AA;
-  box-shadow: 0 15px 50px rgba(147, 51, 234, 0.3);
+  border-color: #2E7D32;
+  box-shadow: 0 15px 50px rgba(56, 142, 60, 0.3);
 }
 
 .package-card-purple .package-icon {
   background: linear-gradient(135deg,
-    #9333ea 0%,
-    #7c3aed 50%,
-    #9333ea 100%
+    #2e7d32 0%,
+    #388e3c 50%,
+    #2e7d32 100%
   );
   box-shadow:
-    0 10px 30px rgba(147, 51, 234, 0.35),
-    0 5px 15px rgba(147, 51, 234, 0.25),
+    0 10px 30px rgba(56, 142, 60, 0.35),
+    0 5px 15px rgba(56, 142, 60, 0.25),
     inset 0 2px 4px rgba(255, 255, 255, 0.3);
 }
 
 .package-card-purple .package-icon::before {
-  background: linear-gradient(135deg, #9333ea, transparent);
+  background: linear-gradient(135deg, #2e7d32, transparent);
 }
 
 .package-card-purple:hover .package-icon {
   box-shadow:
-    0 15px 40px rgba(147, 51, 234, 0.5),
-    0 8px 20px rgba(147, 51, 234, 0.35),
+    0 15px 40px rgba(56, 142, 60, 0.5),
+    0 8px 20px rgba(56, 142, 60, 0.35),
     inset 0 3px 6px rgba(255, 255, 255, 0.4);
 }
 
 .package-card-purple .package-note {
   background: linear-gradient(135deg,
-    #9333ea 0%,
-    #7c3aed 50%,
-    #9333ea 100%
+    #2e7d32 0%,
+    #388e3c 50%,
+    #2e7d32 100%
   );
   background-size: 200% 200%;
   box-shadow:
-    0 8px 20px rgba(147, 51, 234, 0.35),
-    0 4px 10px rgba(147, 51, 234, 0.25);
+    0 8px 20px rgba(56, 142, 60, 0.35),
+    0 4px 10px rgba(56, 142, 60, 0.25);
 }
 
 .package-card-purple:hover .package-note {
   box-shadow:
-    0 12px 30px rgba(147, 51, 234, 0.5),
-    0 6px 15px rgba(147, 51, 234, 0.35);
+    0 12px 30px rgba(56, 142, 60, 0.5),
+    0 6px 15px rgba(56, 142, 60, 0.35);
 }
 
 .package-card-purple .btn-select-package {
-  background: linear-gradient(135deg, #9333ea 0%, #7c3aed 100%);
+  background: linear-gradient(135deg, #2e7d32 0%, #388e3c 100%);
   color: white;
-  box-shadow: 0 8px 25px rgba(147, 51, 234, 0.4);
+  box-shadow: 0 8px 25px rgba(56, 142, 60, 0.4);
 }
 
 .package-card-purple .btn-select-package:hover {
-  box-shadow: 0 15px 40px rgba(147, 51, 234, 0.6);
+  box-shadow: 0 15px 40px rgba(56, 142, 60, 0.6);
   transform: translateY(-6px);
 }
 
