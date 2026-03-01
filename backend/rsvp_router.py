@@ -133,11 +133,12 @@ async def register_public_rsvp(event_id: int, data: PublicRSVPRegister):
             cur.execute("""
                 UPDATE guests
                 SET name = %s, attendance_status = %s,
-                    guests_count = %s, updated_at = NOW()
+                    guests_count = %s, attending_count = %s, updated_at = NOW()
                 WHERE id = %s
             """, (
                 data.full_name.strip(),
                 data.status,
+                data.attending_count if data.status == 'confirmed' else 0,
                 data.attending_count if data.status == 'confirmed' else 0,
                 existing[0]
             ))
@@ -145,14 +146,15 @@ async def register_public_rsvp(event_id: int, data: PublicRSVPRegister):
         else:
             # Insert new guest
             cur.execute("""
-                INSERT INTO guests (event_id, name, phone, attendance_status, guests_count, contact_method)
-                VALUES (%s, %s, %s, %s, %s, 'ידני')
+                INSERT INTO guests (event_id, name, phone, attendance_status, guests_count, attending_count, contact_method)
+                VALUES (%s, %s, %s, %s, %s, %s, 'ידני')
                 RETURNING id
             """, (
                 event_id,
                 data.full_name.strip(),
                 data.phone.strip(),
                 data.status,
+                data.attending_count if data.status == 'confirmed' else 0,
                 data.attending_count if data.status == 'confirmed' else 0
             ))
             guest_id = cur.fetchone()[0]
