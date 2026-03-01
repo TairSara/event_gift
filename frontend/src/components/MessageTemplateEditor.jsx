@@ -17,6 +17,8 @@ const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com
 // SMS Template format:
 // הנכם מוזמנים ל{event_name}, נשמח שתאשרו הגעתכם בלינק הבא: {rsvp_link}
 
+const DEFAULT_DAY_SMS = "אורחים יקרים, מזכירים שעוד רגע אנחנו נפגשים ב{event_name}, מספר השולחן שלכם הינו: {table_number}.";
+
 export default function MessageTemplateEditor({ event, onUpdate, showSuccess, showInfo }) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('whatsapp');
@@ -24,6 +26,9 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
 
   // Editable field - only event name can be edited here
   const [eventName, setEventName] = useState('');
+
+  // Day-of-event SMS template
+  const [dayOfEventSms, setDayOfEventSms] = useState('');
 
   // Read-only fields - displayed but not editable (can be edited elsewhere on the page)
   const [eventDate, setEventDate] = useState('');
@@ -34,6 +39,7 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
   useEffect(() => {
     if (event) {
       setEventName(event.event_title || '');
+      setDayOfEventSms(event.message_settings?.day_of_event_sms_template || DEFAULT_DAY_SMS);
       setEventLocation(event.event_location || '');
 
       // Parse date and time from event_date
@@ -58,28 +64,30 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
   const handleSave = async () => {
     setIsSaving(true);
     try {
-      // Only update event_title (event name)
-      const response = await fetch(`${API_URL}/packages/events/${event.id}`, {
+      // Update event_title
+      const titleResponse = await fetch(`${API_URL}/packages/events/${event.id}`, {
         method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          event_title: eventName
-        })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ event_title: eventName })
       });
 
-      if (response.ok) {
-        showSuccess('שם האירוע נשמר בהצלחה');
+      // Update day-of-event SMS template in message_settings
+      const newSettings = { ...(event.message_settings || {}), day_of_event_sms_template: dayOfEventSms.trim() };
+      const smsResponse = await fetch(`${API_URL}/packages/events/${event.id}/message-settings`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(newSettings)
+      });
+
+      if (titleResponse.ok && smsResponse.ok) {
+        showSuccess('ההגדרות נשמרו בהצלחה');
         if (onUpdate) onUpdate();
       } else {
-        const errorData = await response.json().catch(() => ({}));
-        console.error('Save error:', errorData);
-        showInfo('שגיאה בשמירת שם האירוע');
+        showInfo('שגיאה בשמירת ההגדרות');
       }
     } catch (error) {
-      console.error('Error saving event name:', error);
-      showInfo('שגיאה בשמירת שם האירוע');
+      console.error('Error saving:', error);
+      showInfo('שגיאה בשמירת ההגדרות');
     } finally {
       setIsSaving(false);
     }
@@ -145,6 +153,13 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
                 SMS
               </button>
             )}
+            <button
+              className={`editor-tab ${activeTab === 'day_sms' ? 'active' : ''}`}
+              onClick={() => setActiveTab('day_sms')}
+            >
+              <i className="fas fa-calendar-day"></i>
+              SMS יום האירוע
+            </button>
           </div>
 
           {/* WhatsApp Editor */}
@@ -252,6 +267,51 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
                 <div className="preview-message sms-preview">
                   <div className="preview-bubble">
                     {getSmsPreview()}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Day-of-event SMS Editor */}
+          {activeTab === 'day_sms' && (
+            <div className="template-editor-section">
+              <h4>הודעת SMS ביום האירוע</h4>
+              <p className="template-description">
+                הודעה זו תישלח אוטומטית ביום האירוע לכל אורח שיש לו מספר שולחן מוקצה.
+              </p>
+
+              <div className="template-fields">
+                <div className="field-group">
+                  <label>תבנית ההודעה</label>
+                  <textarea
+                    rows={3}
+                    value={dayOfEventSms}
+                    onChange={(e) => setDayOfEventSms(e.target.value)}
+                    style={{ width: '100%', padding: '0.6rem', borderRadius: '8px', border: '1px solid #ddd', fontFamily: 'inherit', fontSize: '0.9rem', resize: 'vertical' }}
+                    dir="rtl"
+                  />
+                  <span className="field-hint">
+                    השתמש ב-<strong>{'{event_name}'}</strong> לשם האירוע ו-<strong>{'{table_number}'}</strong> למספר השולחן
+                  </span>
+                </div>
+
+                <div className="field-info">
+                  <i className="fas fa-info-circle"></i>
+                  <span>ההודעה תישלח רק לאורחים שהוקצה להם מספר שולחן</span>
+                </div>
+              </div>
+
+              <div className="template-preview">
+                <h5>
+                  <i className="fas fa-eye"></i>
+                  תצוגה מקדימה
+                </h5>
+                <div className="preview-message sms-preview">
+                  <div className="preview-bubble">
+                    {dayOfEventSms
+                      .replace('{event_name}', event?.event_title || '[שם האירוע]')
+                      .replace('{table_number}', '5')}
                   </div>
                 </div>
               </div>

@@ -442,6 +442,148 @@ def send_sms_invitation(guest: dict, event_data: dict) -> dict:
         }
 
 
+DEFAULT_DAY_OF_EVENT_SMS = "אורחים יקרים, מזכירים שעוד רגע אנחנו נפגשים ב{event_name}, מספר השולחן שלכם הינו: {table_number}."
+
+
+def get_events_with_today_as_event_date() -> list:
+    """Get all active events where today is the event date"""
+    conn = None
+    cur = None
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        today = date.today()
+        cur.execute("""
+            SELECT
+                e.id, e.event_title, e.message_settings
+            FROM events e
+            WHERE DATE(e.event_date) = %s
+              AND e.status = 'active'
+        """, (today,))
+        events = []
+        for row in cur.fetchall():
+            events.append({
+                'event_id': row[0],
+                'event_title': row[1],
+                'message_settings': row[2] or {}
+            })
+        return events
+    except Exception as e:
+        print(f"Error getting today events: {e}")
+        return []
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
+
+
+def get_guests_with_table_for_event(event_id: int) -> list:
+    """Get guests that have a table number assigned"""
+    conn = None
+    cur = None
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+        cur.execute("""
+            SELECT id, name, phone, table_number
+            FROM guests
+            WHERE event_id = %s
+              AND phone IS NOT NULL AND phone != ''
+              AND table_number IS NOT NULL
+        """, (event_id,))
+        guests = []
+        for row in cur.fetchall():
+            guests.append({
+                'id': row[0],
+                'name': row[1],
+                'phone': row[2],
+                'table_number': row[3]
+            })
+        return guests
+    except Exception as e:
+        print(f"Error getting guests with table for event {event_id}: {e}")
+        return []
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
+
+
+def send_day_of_event_sms(guest: dict, event_title: str, template: str) -> dict:
+    """Send day-of-event SMS with table number to a guest"""
+    try:
+        message_text = template.format(
+            event_name=event_title,
+            table_number=guest['table_number']
+        )
+        formatted_phone = format_israeli_phone(guest['phone'])
+        result = sms_service.send_template_sms(
+            destination=formatted_phone,
+            message_text=message_text
+        )
+        return {
+            'success': result.get('success', False),
+            'guest_id': guest['id'],
+            'guest_name': guest['name'],
+            'phone': formatted_phone,
+            'error': result.get('error') if not result.get('success') else None
+        }
+    except Exception as e:
+        return {
+            'success': False,
+            'guest_id': guest['id'],
+            'guest_name': guest['name'],
+            'phone': guest['phone'],
+            'error': str(e)
+        }
+
+
+def process_day_of_event_sms() -> dict:
+    """
+    Send day-of-event SMS reminders with table numbers to all guests
+    for events happening today. Called from process_all_scheduled_messages.
+    """
+    events = get_events_with_today_as_event_date()
+    if not events:
+        print("No events today for day-of-event SMS")
+        return {'processed_events': 0, 'total_sent': 0, 'total_failed': 0}
+
+    print(f"\n📅 Day-of-event SMS: found {len(events)} event(s) today")
+
+    total_sent = 0
+    total_failed = 0
+
+    for event in events:
+        event_id = event['event_id']
+        event_title = event['event_title']
+        message_settings = event['message_settings']
+        template = message_settings.get('day_of_event_sms_template', DEFAULT_DAY_OF_EVENT_SMS)
+
+        guests = get_guests_with_table_for_event(event_id)
+        if not guests:
+            print(f"  No guests with table numbers for event {event_id} ({event_title})")
+            continue
+
+        print(f"  Sending day-of-event SMS for '{event_title}' to {len(guests)} guests")
+
+        for guest in guests:
+            result = send_day_of_event_sms(guest, event_title, template)
+            if result['success']:
+                total_sent += 1
+                print(f"    ✓ {guest['name']} (שולחן {guest['table_number']})")
+            else:
+                total_failed += 1
+                print(f"    ✗ {guest['name']}: {result.get('error')}")
+
+    return {
+        'processed_events': len(events),
+        'total_sent': total_sent,
+        'total_failed': total_failed
+    }
+
+
 def process_scheduled_message(scheduled_msg: dict) -> dict:
     """
     Process a single scheduled message - send to all guests.
@@ -591,27 +733,21 @@ def process_all_scheduled_messages() -> dict:
 
     messages = get_messages_to_send_today()
 
-    if not messages:
-        print("No scheduled messages to process today")
-        return {
-            'status': 'success',
-            'processed': 0,
-            'message': 'No scheduled messages to process today'
-        }
-
-    print(f"Found {len(messages)} scheduled messages to process")
-
     results = []
     for msg in messages:
         result = process_scheduled_message(msg)
         results.append(result)
 
-    total_sent = sum(r['sent'] for r in results)
-    total_failed = sum(r['failed'] for r in results)
+    # Process day-of-event SMS (table number reminders) - always runs regardless of scheduled messages
+    day_of_result = process_day_of_event_sms()
+
+    total_sent = sum(r['sent'] for r in results) + day_of_result['total_sent']
+    total_failed = sum(r['failed'] for r in results) + day_of_result['total_failed']
 
     print("\n" + "="*60)
     print("PROCESSING COMPLETE")
-    print(f"Messages processed: {len(results)}")
+    print(f"Scheduled messages processed: {len(results)}")
+    print(f"Day-of-event SMS sent: {day_of_result['total_sent']}")
     print(f"Total guests notified: {total_sent}")
     print(f"Total failures: {total_failed}")
     print("="*60 + "\n")
@@ -619,6 +755,7 @@ def process_all_scheduled_messages() -> dict:
     return {
         'status': 'success',
         'processed': len(results),
+        'day_of_event_sms': day_of_result,
         'total_sent': total_sent,
         'total_failed': total_failed,
         'results': results

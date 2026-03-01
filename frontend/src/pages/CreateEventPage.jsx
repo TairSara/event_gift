@@ -34,6 +34,10 @@ export default function CreateEventPage() {
   // שלב 2 - חבילה ידנית
   const [rsvpCustomText, setRsvpCustomText] = useState("");
 
+  // שלב 2 - הודעת SMS ביום האירוע (לכל החבילות האוטומטיות)
+  const DEFAULT_DAY_SMS = "אורחים יקרים, מזכירים שעוד רגע אנחנו נפגשים ב{event_name}, מספר השולחן שלכם הינו: {table_number}.";
+  const [dayOfEventSmsTemplate, setDayOfEventSmsTemplate] = useState(DEFAULT_DAY_SMS);
+
   const availablePackages = userPackages.filter((pkg) => pkg.status === "active");
 
   const isManualPackage = selectedPackage
@@ -175,6 +179,11 @@ export default function CreateEventPage() {
       // לחבילה ידנית - שמור את טקסט ה-RSVP ב-message_settings
       if (isManualPackage && rsvpCustomText.trim()) {
         bodyData.message_settings = { rsvp_custom_text: rsvpCustomText.trim() };
+      }
+
+      // לחבילות אוטומטיות - שמור תבנית SMS יום האירוע
+      if (!isManualPackage) {
+        bodyData.message_settings = { day_of_event_sms_template: dayOfEventSmsTemplate.trim() };
       }
 
       const response = await fetch(`${API_URL}/packages/events`, {
@@ -598,6 +607,25 @@ export default function CreateEventPage() {
                   </div>
                 </div>
               )}
+
+              {/* הודעת SMS ביום האירוע */}
+              <div className="cep-form-group" style={{ marginTop: '1.5rem' }}>
+                <label>
+                  <i className="fas fa-sms" />
+                  הודעת SMS ביום האירוע (עם מספר שולחן)
+                </label>
+                <p className="cep-field-hint-ok" style={{ marginBottom: '0.5rem' }}>
+                  ההודעה תישלח אוטומטית ביום האירוע לכל אורח שיש לו מספר שולחן.
+                  השתמש ב-<strong>{'{event_name}'}</strong> לשם האירוע ו-<strong>{'{table_number}'}</strong> למספר השולחן.
+                </p>
+                <textarea
+                  className="cep-textarea"
+                  rows={3}
+                  value={dayOfEventSmsTemplate}
+                  onChange={(e) => setDayOfEventSmsTemplate(e.target.value)}
+                  dir="rtl"
+                />
+              </div>
 
               <div className="cep-footer">
                 <button className="cep-btn-back" onClick={() => { setStep(1); window.scrollTo({ top: 0, behavior: "smooth" }); }}>

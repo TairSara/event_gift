@@ -54,6 +54,10 @@ class MessageSettingsUpdate(BaseModel):
     # SMS fields
     sms_event_name: Optional[str] = None
     sms_custom_message: Optional[str] = None
+    # Day-of-event SMS
+    day_of_event_sms_template: Optional[str] = None
+    # Manual package RSVP
+    rsvp_custom_text: Optional[str] = None
 
 class GuestCreate(BaseModel):
     event_id: int
