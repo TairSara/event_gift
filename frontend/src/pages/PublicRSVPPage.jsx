@@ -311,9 +311,7 @@ export default function PublicRSVPPage() {
                   onClick={() => setAttendingCount(Math.max(1, attendingCount - 1))}
                   disabled={attendingCount <= 1}
                 >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <line x1="5" y1="12" x2="19" y2="12"/>
-                  </svg>
+                  <span className="pub-counter-sign">−</span>
                 </button>
                 <div className="pub-counter-display">
                   <span>{attendingCount}</span>
@@ -322,10 +320,7 @@ export default function PublicRSVPPage() {
                   className="pub-counter-btn"
                   onClick={() => setAttendingCount(attendingCount + 1)}
                 >
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <line x1="12" y1="5" x2="12" y2="19"/>
-                    <line x1="5" y1="12" x2="19" y2="12"/>
-                  </svg>
+                  <span className="pub-counter-sign">+</span>
                 </button>
               </div>
             </div>

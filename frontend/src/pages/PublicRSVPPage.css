@@ -402,8 +402,8 @@
 }
 
 .pub-counter-btn {
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 2px solid #8b6f47;
   background: white;
@@ -416,8 +416,8 @@
 }
 
 .pub-counter-btn:disabled {
-  border-color: #ddd;
-  opacity: 0.4;
+  border-color: #ccc;
+  opacity: 0.35;
   cursor: not-allowed;
 }
 
@@ -425,15 +425,17 @@
   background: #8b6f47;
 }
 
-.pub-counter-btn:not(:disabled):hover svg {
-  stroke: white;
+.pub-counter-btn:not(:disabled):hover .pub-counter-sign {
+  color: white;
 }
 
-.pub-counter-btn svg {
-  width: 18px;
-  height: 18px;
-  stroke: #8b6f47;
-  transition: stroke 0.2s;
+.pub-counter-sign {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #8b6f47;
+  line-height: 1;
+  user-select: none;
+  transition: color 0.2s;
 }
 
 .pub-counter-display {
