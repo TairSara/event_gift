@@ -667,31 +667,19 @@ export default function GuestManagement({ eventId, onUpdate, packageId }) {
                   autoFocus
                 />
               </div>
-              <div className="form-row">
-                <div className="form-group">
-                  <label>מספר טלפון</label>
-                  <input
-                    type="tel"
-                    value={formData.phone}
-                    onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                    placeholder="+972501234567"
-                    pattern="^\+?[0-9]{10,15}$"
-                    title="נא להזין מספר טלפון עם קידומת מדינה (לדוגמה: +972501234567)"
-                  />
-                  <small style={{ color: '#666', fontSize: '0.85em' }}>
-                    יש להזין עם קידומת מדינה (לדוגמה: +972501234567)
-                  </small>
-                </div>
-                <div className="form-group">
-                  <label>כמות</label>
-                  <input
-                    type="number"
-                    min="1"
-                    value={formData.quantity}
-                    onChange={(e) => setFormData({ ...formData, quantity: parseInt(e.target.value) || 1 })}
-                    onWheel={(e) => e.target.blur()}
-                  />
-                </div>
+              <div className="form-group">
+                <label>מספר טלפון</label>
+                <input
+                  type="tel"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  placeholder="+972501234567"
+                  pattern="^\+?[0-9]{10,15}$"
+                  title="נא להזין מספר טלפון עם קידומת מדינה (לדוגמה: +972501234567)"
+                />
+                <small style={{ color: '#666', fontSize: '0.85em' }}>
+                  יש להזין עם קידומת מדינה (לדוגמה: +972501234567)
+                </small>
               </div>
               {/* אימייל וסטטוס רק בעריכת מוזמן קיים */}
               {editingGuest && (
