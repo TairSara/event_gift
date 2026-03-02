@@ -1232,16 +1232,19 @@ async def upload_guests_excel(event_id: int, file: UploadFile = File(...)):
                         guest_data['table_number'] = None
 
                 # הכנסה לדאטאבייס
+                clean_name = str(guest_data['name']).strip()
+                cur.execute("SAVEPOINT row_insert;")
                 cur.execute("""
                     INSERT INTO guests (
-                        event_id, name, phone, email, guests_count,
+                        event_id, full_name, name, phone, email, guests_count,
                         contact_method, attendance_status, table_number
                     )
-                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
                     RETURNING id, created_at;
                 """, (
                     event_id,
-                    str(guest_data['name']).strip(),
+                    clean_name,
+                    clean_name,
                     str(guest_data['phone']).strip() if guest_data['phone'] else None,
                     str(guest_data['email']).strip() if guest_data['email'] else None,
                     guest_data['quantity'],
@@ -1251,6 +1254,7 @@ async def upload_guests_excel(event_id: int, file: UploadFile = File(...)):
                 ))
 
                 guest_id, created_at = cur.fetchone()
+                cur.execute("RELEASE SAVEPOINT row_insert;")
                 added_guests.append({
                     "id": guest_id,
                     "name": guest_data['name'],
@@ -1258,6 +1262,7 @@ async def upload_guests_excel(event_id: int, file: UploadFile = File(...)):
                 })
 
             except Exception as e:
+                cur.execute("ROLLBACK TO SAVEPOINT row_insert;")
                 errors.append({
                     "row": row_idx,
                     "error": str(e)
