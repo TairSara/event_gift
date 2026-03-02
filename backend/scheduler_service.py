@@ -44,7 +44,6 @@ def get_israeli_holidays(year: int) -> set:
         ])
     elif year == 2026:
         holidays.update([
-            date(2026, 3, 3),    # פורים
             date(2026, 4, 2), date(2026, 4, 3),    # פסח
             date(2026, 4, 8), date(2026, 4, 9),    # פסח - שביעי + אחרון
             date(2026, 5, 22),   # שבועות
