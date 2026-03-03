@@ -364,7 +364,7 @@ export default function App() {
               <div className="step-number">2</div>
               <div className="step-content">
                 <h3>עצב את ההזמנה</h3>
-                <p>בחר עיצוב מתוך עשרות תבניות מעוצבות, הוסף צבעים, מוזיקה ותמונות אישיות</p>
+                <p>בחר עיצוב מתוך עשרות תבניות מעוצבות, הוסף צבעים ותמונות אישיות</p>
               </div>
             </div>
             <div className="step">
