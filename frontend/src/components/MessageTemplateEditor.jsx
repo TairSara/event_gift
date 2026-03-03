@@ -215,7 +215,7 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
 
                 <div className="field-info">
                   <i className="fas fa-info-circle"></i>
-                  <span>תאריך, שעה ומיקום ניתנים לעריכה בפרטי האירוע למעלה</span>
+                  <span>שם ומיקום ניתנים לעריכה בפרטי האירוע למעלה</span>
                 </div>
               </div>
 
