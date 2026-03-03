@@ -145,6 +145,18 @@ async def send_address_request(request: SendAddressRequestRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+def optimize_cloudinary_url(url: str) -> str:
+    """
+    Add Cloudinary transformation params for WhatsApp delivery.
+    Reduces file size without visible quality loss on mobile screens.
+    Original image in DB is untouched.
+    """
+    if not url or 'cloudinary.com' not in url:
+        return url
+    # Insert transformation after /upload/
+    return url.replace('/upload/', '/upload/q_auto:best,f_jpg,w_1200/', 1)
+
+
 def format_israeli_phone(phone: str) -> str:
     """
     Format Israeli phone number to international format for Gupshup.
@@ -237,6 +249,10 @@ async def send_template_invitation(guest_id: int):
             print(f"⚠️ No custom image found, using default: {image_url}")
             print(f"💡 TIP: To use event-specific images, save 'generated_image_url' in invitation_data")
 
+        # Optimize image URL for WhatsApp delivery
+        image_url = optimize_cloudinary_url(image_url)
+        print(f"🖼️ Optimized image URL: {image_url}")
+
         # Prepare final location (fallback to default if empty)
         final_location = event_location or "יודיע בהמשך"
 
@@ -327,6 +343,10 @@ async def send_template_reminder(guest_id: int):
         if not image_url:
             image_url = DEFAULT_INVITATION_IMAGE
             print(f"⚠️ No custom image found, using default: {image_url}")
+
+        # Optimize image URL for WhatsApp delivery
+        image_url = optimize_cloudinary_url(image_url)
+        print(f"🖼️ Optimized image URL: {image_url}")
 
         # Send reminder template message
         print(f"📱 Sending WhatsApp reminder to: {formatted_phone}")
