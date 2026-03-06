@@ -490,6 +490,7 @@ def get_guests_with_table_for_event(event_id: int) -> list:
             WHERE event_id = %s
               AND phone IS NOT NULL AND phone != ''
               AND table_number IS NOT NULL
+              AND (attendance_status = 'confirmed' OR status = 'confirmed')
         """, (event_id,))
         guests = []
         for row in cur.fetchall():
