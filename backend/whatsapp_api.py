@@ -558,9 +558,37 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                 # Clean phone number for matching
                 clean_phone = sender_phone.replace('+', '')
 
+                # Find the guest record that received the most recent invitation
+                cur.execute("""
+                    SELECT id FROM guests
+                    WHERE (phone LIKE %s OR phone LIKE %s OR phone LIKE %s)
+                      AND invitation_sent IS NOT NULL
+                    ORDER BY invitation_sent DESC
+                    LIMIT 1
+                """, (f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
+
+                row = cur.fetchone()
+                if not row:
+                    # Fallback: most recently created guest with this phone
+                    cur.execute("""
+                        SELECT id FROM guests
+                        WHERE phone LIKE %s OR phone LIKE %s OR phone LIKE %s
+                        ORDER BY created_at DESC
+                        LIMIT 1
+                    """, (f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
+                    row = cur.fetchone()
+
+                if not row:
+                    print(f"⚠️ No guest found for phone: {sender_phone}")
+                    cur.close()
+                    conn.close()
+                    return {"status": "ignored", "reason": "Guest not found"}
+
+                target_guest_id = row[0]
+                print(f"🎯 Targeting guest_id={target_guest_id} for phone {sender_phone}")
+
                 if new_status == 'confirmed':
                     # Don't update status yet - wait for guest count
-                    # Send text message asking for guest count
                     text_message = """נהדר! 🎉 שמחים שתגיעו!
 
 כמה אנשים בסך הכל יגיעו? (כולל אתכם)
@@ -577,23 +605,19 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                     else:
                         print(f"❌ Failed to send guest count question: {result.get('error')}")
                 else:
-                    # For 'maybe' or 'declined', update status directly
+                    # For 'maybe' or 'declined', update only the targeted guest
                     cur.execute("""
                         UPDATE guests
                         SET status = %s, attendance_status = %s, updated_at = NOW()
-                        WHERE phone LIKE %s OR phone LIKE %s OR phone LIKE %s
+                        WHERE id = %s
                         RETURNING id, name, phone, status
-                    """, (new_status, new_status, f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
+                    """, (new_status, new_status, target_guest_id))
 
                     updated_guests = cur.fetchall()
                     conn.commit()
 
                     if updated_guests:
-                        print(f"✅ Updated {len(updated_guests)} guests:")
-                        for guest in updated_guests:
-                            print(f"   ID: {guest[0]}, Name: {guest[1]}, Phone: {guest[2]}, Status: {guest[3]}")
-
-                        # Send confirmation message based on status
+                        print(f"✅ Updated guest: {updated_guests[0]}")
                         if new_status == 'declined':
                             whatsapp_service.send_text_message(
                                 destination=sender_phone,
@@ -605,9 +629,9 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                                 text="תודה על עדכון! אשמח אם תעדכן כשתדע בוודאות 💙"
                             )
                     else:
-                        print(f"⚠️ No guests updated for phone: {sender_phone}")
+                        print(f"⚠️ No guest updated for id: {target_guest_id}")
 
-                    print(f"✅ Updated guest status: {sender_phone} -> {new_status}")
+                    print(f"✅ Updated guest status: guest_id={target_guest_id} -> {new_status}")
 
             cur.close()
             conn.close()
@@ -625,23 +649,42 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                         cur = conn.cursor()
                         clean_phone = sender_phone.replace('+', '')
 
-                        # Debug: Check which guests match
+                        # Find the most recently invited guest with this phone
                         print(f"🔍 Looking for guest with phone: {sender_phone} (cleaned: {clean_phone})")
                         cur.execute("""
-                            SELECT id, name, phone FROM guests
-                            WHERE phone LIKE %s OR phone LIKE %s OR phone LIKE %s
+                            SELECT id FROM guests
+                            WHERE (phone LIKE %s OR phone LIKE %s OR phone LIKE %s)
+                              AND invitation_sent IS NOT NULL
+                            ORDER BY invitation_sent DESC
+                            LIMIT 1
                         """, (f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
 
-                        matching_guests = cur.fetchall()
-                        print(f"🔍 Found {len(matching_guests)} matching guests: {matching_guests}")
+                        row = cur.fetchone()
+                        if not row:
+                            cur.execute("""
+                                SELECT id FROM guests
+                                WHERE phone LIKE %s OR phone LIKE %s OR phone LIKE %s
+                                ORDER BY created_at DESC
+                                LIMIT 1
+                            """, (f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
+                            row = cur.fetchone()
 
-                        # Update all matching guests
+                        if not row:
+                            print(f"⚠️ No guest found for phone: {sender_phone}")
+                            cur.close()
+                            conn.close()
+                            return {"status": "ignored", "reason": "Guest not found"}
+
+                        target_guest_id = row[0]
+                        print(f"🎯 Targeting guest_id={target_guest_id} for count update")
+
+                        # Update only the targeted guest
                         cur.execute("""
                             UPDATE guests
                             SET attending_count = %s, guests_count = %s, status = 'confirmed', attendance_status = 'confirmed', updated_at = NOW()
-                            WHERE phone LIKE %s OR phone LIKE %s OR phone LIKE %s
+                            WHERE id = %s
                             RETURNING id, name, phone, attending_count, status
-                        """, (guest_count, guest_count, f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
+                        """, (guest_count, guest_count, target_guest_id))
 
                         updated_guests = cur.fetchall()
                         print(f"✅ Updated {len(updated_guests)} guests:")
