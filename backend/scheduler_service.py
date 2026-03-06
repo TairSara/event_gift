@@ -72,8 +72,8 @@ def is_shabbat_or_holiday(check_date: date) -> bool:
     Check if a date falls on Shabbat (Saturday) or Israeli holiday.
     Friday is also avoided since Shabbat starts Friday evening.
     """
-    # Friday (4) or Saturday (5) - Shabbat
-    if check_date.weekday() in (4, 5):
+    # Saturday (5) - Shabbat only (Friday is allowed)
+    if check_date.weekday() == 5:
         return True
 
     # Check Israeli holidays
