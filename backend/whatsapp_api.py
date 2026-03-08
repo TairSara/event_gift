@@ -198,7 +198,7 @@ async def send_template_invitation(guest_id: int):
 
         # Get guest and event details, including invitation_data which may contain image URL
         cur.execute("""
-            SELECT g.name, g.phone, e.event_name, e.event_date, e.event_time, e.event_location, e.invitation_data
+            SELECT g.name, g.phone, e.event_name, e.event_date, e.event_time, e.event_location, e.invitation_data, e.id
             FROM guests g
             JOIN events e ON g.event_id = e.id
             WHERE g.id = %s
@@ -208,7 +208,7 @@ async def send_template_invitation(guest_id: int):
         if not guest_data:
             raise HTTPException(status_code=404, detail="Guest not found")
 
-        guest_name, phone, event_name, event_date, event_time, event_location, invitation_data = guest_data
+        guest_name, phone, event_name, event_date, event_time, event_location, invitation_data, event_id = guest_data
 
         if not phone:
             raise HTTPException(status_code=400, detail="Guest has no phone number")
@@ -276,6 +276,19 @@ async def send_template_invitation(guest_id: int):
         )
 
         print(f"✉️ Gupshup Response: {result}")
+
+        if result['success']:
+            # Save WhatsApp session: phone -> guest_id + event_id
+            try:
+                cur.execute("""
+                    INSERT INTO whatsapp_sessions (phone, event_id, guest_id, updated_at)
+                    VALUES (%s, %s, %s, NOW())
+                    ON CONFLICT (phone) DO UPDATE SET event_id = EXCLUDED.event_id, guest_id = EXCLUDED.guest_id, updated_at = NOW()
+                """, (formatted_phone, event_id, guest_id))
+                conn.commit()
+                print(f"💾 Saved WhatsApp session: phone={formatted_phone} -> event_id={event_id}, guest_id={guest_id}")
+            except Exception as se:
+                print(f"⚠️ Failed to save WhatsApp session: {se}")
 
         cur.close()
         conn.close()
@@ -558,18 +571,30 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                 # Clean phone number for matching
                 clean_phone = sender_phone.replace('+', '')
 
-                # Find the guest record that received the most recent invitation
+                # First: try to find guest via WhatsApp session (event-specific)
                 cur.execute("""
-                    SELECT id FROM guests
-                    WHERE (phone LIKE %s OR phone LIKE %s OR phone LIKE %s)
-                      AND invitation_sent IS NOT NULL
-                    ORDER BY invitation_sent DESC
+                    SELECT ws.guest_id FROM whatsapp_sessions ws
+                    WHERE ws.phone = %s OR ws.phone = %s OR ws.phone LIKE %s
                     LIMIT 1
-                """, (f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
+                """, (clean_phone, f'+{clean_phone}', f'%{clean_phone[-9:]}'))
+                session_row = cur.fetchone()
 
-                row = cur.fetchone()
+                if session_row:
+                    row = session_row
+                    print(f"✅ Found guest via WhatsApp session: guest_id={session_row[0]}")
+                else:
+                    # Fallback: most recently invited guest with this phone
+                    cur.execute("""
+                        SELECT id FROM guests
+                        WHERE (phone LIKE %s OR phone LIKE %s OR phone LIKE %s)
+                          AND invitation_sent IS NOT NULL
+                        ORDER BY invitation_sent DESC
+                        LIMIT 1
+                    """, (f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
+                    row = cur.fetchone()
+
                 if not row:
-                    # Fallback: most recently created guest with this phone
+                    # Last resort fallback
                     cur.execute("""
                         SELECT id FROM guests
                         WHERE phone LIKE %s OR phone LIKE %s OR phone LIKE %s
@@ -649,17 +674,28 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                         cur = conn.cursor()
                         clean_phone = sender_phone.replace('+', '')
 
-                        # Find the most recently invited guest with this phone
+                        # Find guest via WhatsApp session first (event-specific)
                         print(f"🔍 Looking for guest with phone: {sender_phone} (cleaned: {clean_phone})")
                         cur.execute("""
-                            SELECT id FROM guests
-                            WHERE (phone LIKE %s OR phone LIKE %s OR phone LIKE %s)
-                              AND invitation_sent IS NOT NULL
-                            ORDER BY invitation_sent DESC
+                            SELECT ws.guest_id FROM whatsapp_sessions ws
+                            WHERE ws.phone = %s OR ws.phone = %s OR ws.phone LIKE %s
                             LIMIT 1
-                        """, (f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
+                        """, (clean_phone, f'+{clean_phone}', f'%{clean_phone[-9:]}'))
+                        session_row = cur.fetchone()
 
-                        row = cur.fetchone()
+                        if session_row:
+                            row = session_row
+                            print(f"✅ Found guest via WhatsApp session: guest_id={session_row[0]}")
+                        else:
+                            cur.execute("""
+                                SELECT id FROM guests
+                                WHERE (phone LIKE %s OR phone LIKE %s OR phone LIKE %s)
+                                  AND invitation_sent IS NOT NULL
+                                ORDER BY invitation_sent DESC
+                                LIMIT 1
+                            """, (f'%{clean_phone}', f'+{clean_phone}', f'%{clean_phone[-9:]}'))
+                            row = cur.fetchone()
+
                         if not row:
                             cur.execute("""
                                 SELECT id FROM guests

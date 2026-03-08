@@ -349,6 +349,23 @@ def send_whatsapp_invitation(guest: dict, event_data: dict) -> dict:
             image_url=image_url
         )
 
+        if result.get('success'):
+            # Save WhatsApp session: phone -> guest_id + event_id
+            try:
+                conn = get_db_connection()
+                cur = conn.cursor()
+                cur.execute("""
+                    INSERT INTO whatsapp_sessions (phone, event_id, guest_id, updated_at)
+                    VALUES (%s, %s, %s, NOW())
+                    ON CONFLICT (phone) DO UPDATE SET event_id = EXCLUDED.event_id, guest_id = EXCLUDED.guest_id, updated_at = NOW()
+                """, (formatted_phone, event_data['event_id'], guest['id']))
+                conn.commit()
+                cur.close()
+                conn.close()
+                print(f"💾 Saved WhatsApp session: phone={formatted_phone} -> event_id={event_data['event_id']}, guest_id={guest['id']}")
+            except Exception as se:
+                print(f"⚠️ Failed to save WhatsApp session: {se}")
+
         return {
             'success': result.get('success', False),
             'guest_id': guest['id'],
