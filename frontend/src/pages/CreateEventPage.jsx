@@ -201,6 +201,20 @@ export default function CreateEventPage() {
             headers: { "Content-Type": "application/json" },
           });
         }
+
+        // יצירת תזמון הודעות (לחבילות אוטומטיות בלבד)
+        if (!isManualPackage && eventDate) {
+          const scheduleBody = {
+            event_date: eventDate,
+            message_schedule: bodyData.message_schedule,
+          };
+          await fetch(`${API_URL}/scheduler/create-schedules/${data.id}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(scheduleBody),
+          });
+        }
+
         navigate(`/create-invitation/${selectedEventType}?event_id=${data.id}`);
       } else {
         setScheduleError(data.detail || "שגיאה ביצירת האירוע");
