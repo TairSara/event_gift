@@ -458,7 +458,7 @@ def send_sms_invitation(guest: dict, event_data: dict) -> dict:
         }
 
 
-DEFAULT_DAY_OF_EVENT_SMS = "אורחים יקרים, מזכירים שעוד רגע אנחנו נפגשים ב{event_name}, מספר השולחן שלכם הינו: {table_number}."
+DEFAULT_DAY_OF_EVENT_SMS = "אורחים יקרים,\n\nנרגשים להזכיר כי היום נחגוג יחד את החתונה של X!\n\nלנוחיותכם,\nמספר השולחן שלכם הוא: {table_number}\n\nקישור וויז להגעה לאירוע: {waze_link}\n\nנשמח לראותכם ולחגוג יחד. 🎉"
 
 
 def get_events_with_today_as_event_date() -> list:
@@ -471,7 +471,7 @@ def get_events_with_today_as_event_date() -> list:
         today = date.today()
         cur.execute("""
             SELECT
-                e.id, e.event_title, e.message_settings
+                e.id, e.event_title, e.message_settings, e.bit_payment_link
             FROM events e
             WHERE DATE(e.event_date) = %s
               AND e.status = 'active'
@@ -481,7 +481,8 @@ def get_events_with_today_as_event_date() -> list:
             events.append({
                 'event_id': row[0],
                 'event_title': row[1],
-                'message_settings': row[2] or {}
+                'message_settings': row[2] or {},
+                'waze_link': row[3] or ''
             })
         return events
     except Exception as e:
@@ -528,13 +529,10 @@ def get_guests_with_table_for_event(event_id: int) -> list:
             conn.close()
 
 
-def send_day_of_event_sms(guest: dict, event_title: str, template: str) -> dict:
+def send_day_of_event_sms(guest: dict, event_title: str, template: str, waze_link: str = '') -> dict:
     """Send day-of-event SMS with table number to a guest"""
     try:
-        message_text = template.format(
-            event_name=event_title,
-            table_number=guest['table_number']
-        )
+        message_text = template.replace('{table_number}', str(guest['table_number'])).replace('{waze_link}', waze_link)
         formatted_phone = format_israeli_phone(guest['phone'])
         result = sms_service.send_template_sms(
             destination=formatted_phone,
@@ -576,6 +574,7 @@ def process_day_of_event_sms() -> dict:
         event_id = event['event_id']
         event_title = event['event_title']
         message_settings = event['message_settings']
+        waze_link = event.get('waze_link', '')
         template = message_settings.get('day_of_event_sms_template', DEFAULT_DAY_OF_EVENT_SMS)
 
         guests = get_guests_with_table_for_event(event_id)
@@ -586,7 +585,7 @@ def process_day_of_event_sms() -> dict:
         print(f"  Sending day-of-event SMS for '{event_title}' to {len(guests)} guests")
 
         for guest in guests:
-            result = send_day_of_event_sms(guest, event_title, template)
+            result = send_day_of_event_sms(guest, event_title, template, waze_link)
             if result['success']:
                 total_sent += 1
                 print(f"    ✓ {guest['name']} (שולחן {guest['table_number']})")

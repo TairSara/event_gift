@@ -35,7 +35,7 @@ export default function CreateEventPage() {
   const [rsvpCustomText, setRsvpCustomText] = useState("");
 
   // שלב 2 - הודעת SMS ביום האירוע (לכל החבילות האוטומטיות)
-  const DEFAULT_DAY_SMS = "אורחים יקרים, מזכירים שעוד רגע אנחנו נפגשים ב{event_name}, מספר השולחן שלכם הינו: {table_number}.";
+  const DEFAULT_DAY_SMS = `אורחים יקרים,\n\nנרגשים להזכיר כי היום נחגוג יחד את החתונה של X!\n\nלנוחיותכם,\nמספר השולחן שלכם הוא: {table_number}\n\nקישור וויז להגעה לאירוע: {waze_link}\n\nנשמח לראותכם ולחגוג יחד. 🎉`;
   const [dayOfEventSmsTemplate, setDayOfEventSmsTemplate] = useState(DEFAULT_DAY_SMS);
 
   const availablePackages = userPackages.filter((pkg) => pkg.status === "active");
@@ -630,7 +630,7 @@ export default function CreateEventPage() {
                 </label>
                 <p className="cep-field-hint-ok" style={{ marginBottom: '0.5rem' }}>
                   ההודעה תישלח אוטומטית ביום האירוע לכל אורח שיש לו מספר שולחן.
-                  השתמש ב-<strong>{'{event_name}'}</strong> לשם האירוע ו-<strong>{'{table_number}'}</strong> למספר השולחן.
+                  <strong>{'{table_number}'}</strong> ו-<strong>{'{waze_link}'}</strong> יוחלפו אוטומטית — אין לשנות אותם.
                 </p>
                 <textarea
                   className="cep-textarea"

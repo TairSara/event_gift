@@ -403,7 +403,7 @@ export default function EventPage() {
       if (response.ok) {
         setEvent({ ...event, bit_payment_link: editedBitLink.trim() });
         setIsEditingBitLink(false);
-        showSuccess('קישור BIT עודכן בהצלחה');
+        showSuccess('קישור Waze עודכן בהצלחה');
 
         // Create notification
         await fetch(`${API_URL}/notifications/create`, {
@@ -415,16 +415,16 @@ export default function EventPage() {
             user_id: user.id,
             event_id: parseInt(eventId),
             notification_type: 'event_updated',
-            title: 'עדכון קישור BIT',
-            message: editedBitLink.trim() ? 'קישור BIT נוסף לאירוע' : 'קישור BIT הוסר מהאירוע'
+            title: 'עדכון קישור Waze',
+            message: editedBitLink.trim() ? 'קישור Waze נוסף לאירוע' : 'קישור Waze הוסר מהאירוע'
           })
         });
       } else {
-        showInfo('שגיאה בעדכון קישור BIT');
+        showInfo('שגיאה בעדכון קישור Waze');
       }
     } catch (error) {
-      console.error('Error updating BIT link:', error);
-      showInfo('שגיאה בעדכון קישור BIT');
+      console.error('Error updating Waze link:', error);
+      showInfo('שגיאה בעדכון קישור Waze');
     }
   };
 
@@ -722,9 +722,9 @@ export default function EventPage() {
                 </div>
 
                 <div className="detail-item bit-link-item">
-                  <i className="fas fa-credit-card"></i>
+                  <i className="fas fa-route"></i>
                   <div className="detail-content">
-                    <span className="detail-label">קישור BIT למתנות</span>
+                    <span className="detail-label">קישור Waze לאירוע</span>
                     {isEditingBitLink ? (
                       <div className="edit-detail-container">
                         <input
@@ -736,7 +736,7 @@ export default function EventPage() {
                             if (e.key === 'Enter') handleSaveBitLink();
                             if (e.key === 'Escape') handleCancelBitLinkEdit();
                           }}
-                          placeholder="הדבק כאן את הקישור ל-BIT"
+                          placeholder="הדבק כאן את קישור Waze"
                           dir="ltr"
                         />
                         <div className="edit-detail-buttons">
@@ -764,7 +764,7 @@ export default function EventPage() {
                         ) : (
                           <span className="detail-value no-link">לא הוגדר קישור</span>
                         )}
-                        <button className="edit-detail-icon-btn" onClick={handleEditBitLink} title="ערוך קישור BIT">
+                        <button className="edit-detail-icon-btn" onClick={handleEditBitLink} title="ערוך קישור Waze">
                           <i className="fas fa-pencil-alt"></i>
                         </button>
                       </div>

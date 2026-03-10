@@ -17,7 +17,16 @@ const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com
 // SMS Template format:
 // הנכם מוזמנים ל{event_name}, נשמח שתאשרו הגעתכם בלינק הבא: {rsvp_link}
 
-const DEFAULT_DAY_SMS = "אורחים יקרים, מזכירים שעוד רגע אנחנו נפגשים ב{event_name}, מספר השולחן שלכם הינו: {table_number}.";
+const DEFAULT_DAY_SMS = `אורחים יקרים,
+
+נרגשים להזכיר כי היום נחגוג יחד את החתונה של X!
+
+לנוחיותכם,
+מספר השולחן שלכם הוא: {table_number}
+
+קישור וויז להגעה לאירוע: {waze_link}
+
+נשמח לראותכם ולחגוג יחד. 🎉`;
 
 export default function MessageTemplateEditor({ event, onUpdate, showSuccess, showInfo }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -285,14 +294,14 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
                 <div className="field-group">
                   <label>תבנית ההודעה</label>
                   <textarea
-                    rows={3}
+                    rows={8}
                     value={dayOfEventSms}
                     onChange={(e) => setDayOfEventSms(e.target.value)}
                     style={{ width: '100%', padding: '0.6rem', borderRadius: '8px', border: '1px solid #ddd', fontFamily: 'inherit', fontSize: '0.9rem', resize: 'vertical' }}
                     dir="rtl"
                   />
                   <span className="field-hint">
-                    השתמש ב-<strong>{'{event_name}'}</strong> לשם האירוע ו-<strong>{'{table_number}'}</strong> למספר השולחן
+                    <strong>{'{table_number}'}</strong> ו-<strong>{'{waze_link}'}</strong> יוחלפו אוטומטית — אין לשנות אותם
                   </span>
                 </div>
 
@@ -308,10 +317,10 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
                   תצוגה מקדימה
                 </h5>
                 <div className="preview-message sms-preview">
-                  <div className="preview-bubble">
+                  <div className="preview-bubble" style={{ whiteSpace: 'pre-line' }}>
                     {dayOfEventSms
-                      .replace('{event_name}', event?.event_title || '[שם האירוע]')
-                      .replace('{table_number}', '5')}
+                      .replace('{table_number}', '5')
+                      .replace('{waze_link}', event?.bit_payment_link || '[קישור וויז]')}
                   </div>
                 </div>
               </div>
