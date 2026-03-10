@@ -303,9 +303,13 @@ async def submit_rsvp(guest_id: int, token: str, response: RSVPResponse):
         # Update guest status and attending count
         cur.execute("""
             UPDATE guests
-            SET status = %s, attending_count = %s, updated_at = NOW()
+            SET status = %s, attendance_status = %s,
+                attending_count = %s, guests_count = %s,
+                updated_at = NOW()
             WHERE id = %s
-        """, (response.status, response.attending_count, guest_id))
+        """, (response.status, response.status,
+              response.attending_count, response.attending_count,
+              guest_id))
 
         conn.commit()
         cur.close()
