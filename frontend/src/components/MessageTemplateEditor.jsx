@@ -48,7 +48,12 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
   useEffect(() => {
     if (event) {
       setEventName(event.event_title || '');
-      setDayOfEventSms(event.message_settings?.day_of_event_sms_template || DEFAULT_DAY_SMS);
+      const savedTemplate = event.message_settings?.day_of_event_sms_template;
+      // If saved template is the old format (contains {event_name}), use the new default
+      const template = (savedTemplate && !savedTemplate.includes('{event_name}'))
+        ? savedTemplate
+        : DEFAULT_DAY_SMS;
+      setDayOfEventSms(template);
       setEventLocation(event.event_location || '');
 
       // Parse date and time from event_date
@@ -296,12 +301,19 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
                   <textarea
                     rows={8}
                     value={dayOfEventSms}
-                    onChange={(e) => setDayOfEventSms(e.target.value)}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      // Prevent removing the required placeholders
+                      if (!val.includes('{table_number}') || !val.includes('{waze_link}')) {
+                        return;
+                      }
+                      setDayOfEventSms(val);
+                    }}
                     style={{ width: '100%', padding: '0.6rem', borderRadius: '8px', border: '1px solid #ddd', fontFamily: 'inherit', fontSize: '0.9rem', resize: 'vertical' }}
                     dir="rtl"
                   />
                   <span className="field-hint">
-                    <strong>{'{table_number}'}</strong> ו-<strong>{'{waze_link}'}</strong> יוחלפו אוטומטית — אין לשנות אותם
+                    <strong>{'{table_number}'}</strong> ו-<strong>{'{waze_link}'}</strong> חייבים להישאר בהודעה — לא ניתן למחוק אותם
                   </span>
                 </div>
 
