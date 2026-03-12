@@ -64,6 +64,12 @@ async def startup_migrations():
     except Exception as e:
         print(f"⚠️ Migration warning (whatsapp_sessions): {str(e)}")
 
+    try:
+        from add_whatsapp_message_events_table import create_whatsapp_message_events_table
+        create_whatsapp_message_events_table()
+    except Exception as e:
+        print(f"⚠️ Migration warning (whatsapp_message_events): {str(e)}")
+
 # CORS Configuration - נאפשר לפרונט לגשת ל-API
 origins = [
     "http://localhost:5173",

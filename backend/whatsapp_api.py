@@ -278,13 +278,20 @@ async def send_template_invitation(guest_id: int):
         print(f"✉️ Gupshup Response: {result}")
 
         if result['success']:
-            # Save WhatsApp session: phone -> guest_id + event_id
+            gs_id = result.get('data', {}).get('messageId')
             try:
                 cur.execute("""
                     INSERT INTO whatsapp_sessions (phone, event_id, guest_id, updated_at)
                     VALUES (%s, %s, %s, NOW())
                     ON CONFLICT (phone) DO UPDATE SET event_id = EXCLUDED.event_id, guest_id = EXCLUDED.guest_id, updated_at = NOW()
                 """, (formatted_phone, event_id, guest_id))
+                if gs_id:
+                    cur.execute("""
+                        INSERT INTO whatsapp_message_events (gs_id, event_id, guest_id)
+                        VALUES (%s, %s, %s)
+                        ON CONFLICT (gs_id) DO NOTHING
+                    """, (gs_id, event_id, guest_id))
+                    print(f"💾 Saved message event: gs_id={gs_id} -> event_id={event_id}, guest_id={guest_id}")
                 conn.commit()
                 print(f"💾 Saved WhatsApp session: phone={formatted_phone} -> event_id={event_id}, guest_id={guest_id}")
             except Exception as se:
@@ -571,15 +578,42 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                 # Clean phone number for matching
                 clean_phone = sender_phone.replace('+', '')
 
-                # First: try to find guest via WhatsApp session (event-specific)
-                cur.execute("""
-                    SELECT ws.guest_id FROM whatsapp_sessions ws
-                    WHERE ws.phone = %s OR ws.phone = %s OR ws.phone LIKE %s
-                    LIMIT 1
-                """, (clean_phone, f'+{clean_phone}', f'%{clean_phone[-9:]}'))
-                session_row = cur.fetchone()
+                # First: try to find guest via context.gsId (most accurate - per-message)
+                context_gs_id = message_payload.get('context', {}).get('gsId')
+                if context_gs_id:
+                    cur.execute("""
+                        SELECT wme.guest_id, wme.event_id FROM whatsapp_message_events wme
+                        WHERE wme.gs_id = %s
+                    """, (context_gs_id,))
+                    msg_event_row = cur.fetchone()
+                    if msg_event_row:
+                        row = (msg_event_row[0],)
+                        # Update session to reflect the correct event for follow-up text ("כמה מגיעים?")
+                        cur.execute("""
+                            INSERT INTO whatsapp_sessions (phone, event_id, guest_id, updated_at)
+                            VALUES (%s, %s, %s, NOW())
+                            ON CONFLICT (phone) DO UPDATE SET event_id = EXCLUDED.event_id, guest_id = EXCLUDED.guest_id, updated_at = NOW()
+                        """, (clean_phone, msg_event_row[1], msg_event_row[0]))
+                        conn.commit()
+                        print(f"✅ Found guest via context.gsId={context_gs_id}: guest_id={msg_event_row[0]}, event_id={msg_event_row[1]}")
+                    else:
+                        print(f"⚠️ context.gsId={context_gs_id} not found in whatsapp_message_events, falling back to session")
+                        row = None
+                else:
+                    row = None
 
-                if session_row:
+                if not row:
+                    # Fallback: try to find guest via WhatsApp session
+                    cur.execute("""
+                        SELECT ws.guest_id FROM whatsapp_sessions ws
+                        WHERE ws.phone = %s OR ws.phone = %s OR ws.phone LIKE %s
+                        LIMIT 1
+                    """, (clean_phone, f'+{clean_phone}', f'%{clean_phone[-9:]}'))
+                    session_row = cur.fetchone()
+
+                if row:
+                    print(f"✅ Found guest via WhatsApp session: guest_id={row[0]}")
+                elif session_row:
                     row = session_row
                     print(f"✅ Found guest via WhatsApp session: guest_id={session_row[0]}")
                 else:

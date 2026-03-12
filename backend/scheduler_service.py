@@ -350,7 +350,7 @@ def send_whatsapp_invitation(guest: dict, event_data: dict) -> dict:
         )
 
         if result.get('success'):
-            # Save WhatsApp session: phone -> guest_id + event_id
+            gs_id = result.get('data', {}).get('messageId')
             try:
                 conn = get_db_connection()
                 cur = conn.cursor()
@@ -359,6 +359,13 @@ def send_whatsapp_invitation(guest: dict, event_data: dict) -> dict:
                     VALUES (%s, %s, %s, NOW())
                     ON CONFLICT (phone) DO UPDATE SET event_id = EXCLUDED.event_id, guest_id = EXCLUDED.guest_id, updated_at = NOW()
                 """, (formatted_phone, event_data['event_id'], guest['id']))
+                if gs_id:
+                    cur.execute("""
+                        INSERT INTO whatsapp_message_events (gs_id, event_id, guest_id)
+                        VALUES (%s, %s, %s)
+                        ON CONFLICT (gs_id) DO NOTHING
+                    """, (gs_id, event_data['event_id'], guest['id']))
+                    print(f"💾 Saved message event: gs_id={gs_id} -> event_id={event_data['event_id']}, guest_id={guest['id']}")
                 conn.commit()
                 cur.close()
                 conn.close()
@@ -406,6 +413,24 @@ def send_whatsapp_reminder(guest: dict, event_data: dict) -> dict:
             event_name=event_data['event_title'],
             image_url=image_url
         )
+
+        if result.get('success'):
+            gs_id = result.get('data', {}).get('messageId')
+            if gs_id:
+                try:
+                    conn = get_db_connection()
+                    cur = conn.cursor()
+                    cur.execute("""
+                        INSERT INTO whatsapp_message_events (gs_id, event_id, guest_id)
+                        VALUES (%s, %s, %s)
+                        ON CONFLICT (gs_id) DO NOTHING
+                    """, (gs_id, event_data['event_id'], guest['id']))
+                    conn.commit()
+                    cur.close()
+                    conn.close()
+                    print(f"💾 Saved reminder message event: gs_id={gs_id} -> event_id={event_data['event_id']}, guest_id={guest['id']}")
+                except Exception as se:
+                    print(f"⚠️ Failed to save reminder message event: {se}")
 
         return {
             'success': result.get('success', False),
