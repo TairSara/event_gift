@@ -218,7 +218,6 @@ export default function Pricing() {
         { text: "יצירת הזמנה דיגיטלית מותאמת לכל אירוע", included: true },
         { text: "שליחת הזמנות אוטומטיות בוואצאפ ב-3 סבבים!", included: true },
         { text: "תזכורת ביום האירוע (SMS)", included: true },
-        { text: "הודעת תודה אחרי האירוע (אופציונלי)", included: true },
         { text: "ניהול מוזמנים + דוחות", included: true },
         { text: "עיצובים לבחירה", included: true },
       ],
@@ -396,46 +395,6 @@ export default function Pricing() {
                 </div>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="addons-section">
-        <div className="addons-container">
-          <div className="section-title">
-            <h2>תוספות לבחירה</h2>
-            <p className="section-subtitle">
-              שדרגו את החבילה שלכם עם התוספות הבאות
-            </p>
-          </div>
-          <div className="addons-grid">
-            <div className="addon-card addon-card-seating">
-              <div className="addon-icon addon-icon-seating">
-                <i className="fas fa-chair"></i>
-              </div>
-              <h3>הושבה דיגיטלית</h3>
-              <p>
-                מערכת הושבה חכמה לאירוע שלכם - שלחו לכל אורח את מספר השולחן שלו
-                אוטומטית
-              </p>
-            </div>
-            <div className="addon-card addon-card-gift">
-              <div className="addon-icon addon-icon-gift">
-                <i className="fas fa-envelope-open-text"></i>
-              </div>
-              <h3>הודעות תודה אוטומטיות</h3>
-              <p>
-                שליחת הודעות תודה אישיות לכל האורחים אחרי האירוע - מגע חם
-                ואוטומטי
-              </p>
-            </div>
-            <div className="addon-card addon-card-design">
-              <div className="addon-icon addon-icon-design">
-                <i className="fas fa-magic"></i>
-              </div>
-              <h3>עיצוב הזמנה בהתאמה אישית</h3>
-              <p>הזמנה ייחודית שמעוצבת במיוחד עבורכם על ידי המעצבים שלנו</p>
-            </div>
           </div>
         </div>
       </section>

@@ -214,7 +214,7 @@ export default function App() {
             <div className="feature-card feature-card-turquoise">
               <div className="feature-icon"><i className="fas fa-chart-line"></i></div>
               <h3> לוח ניהול חכם</h3>
-              <p>כל המידע במקום אחד - עקוב אחר אישורי הגעה, מתנות והודעות מהאורחים</p>
+              <p>כל המידע במקום אחד - עקוב אחר אישורי הגעה והודעות מהאורחים</p>
             </div>
             <div className="feature-card feature-card-turquoise">
               <div className="feature-icon"><i className="fas fa-wand-magic-sparkles"></i></div>
@@ -392,7 +392,7 @@ export default function App() {
               <div className="step-number">6</div>
               <div className="step-content">
                 <h3>עקוב ותהנה</h3>
-                <p>עקוב אחר אישורי ההגעה והמתנות בזמן אמת מהדשבורד האישי שלך</p>
+                <p>עקוב אחר אישורי ההגעה בזמן אמת מהדשבורד האישי שלך</p>
               </div>
             </div>
           </div>
