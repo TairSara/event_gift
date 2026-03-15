@@ -20,6 +20,7 @@ import ScrollToTop from './components/ScrollToTop.jsx'
 import ProtectedAuthRoute from './components/ProtectedAuthRoute.jsx'
 import ProtectedAdminRoute from './components/ProtectedAdminRoute.jsx'
 import WhatsAppFloat from './components/WhatsAppFloat.jsx'
+import CookieConsent from './components/CookieConsent.jsx'
 import AdminLogin from './pages/admin/AdminLogin.jsx'
 import AdminPanel from './pages/admin/AdminPanel.jsx'
 import RSVPPage from './pages/RSVPPage.jsx'
@@ -34,6 +35,7 @@ createRoot(document.getElementById('root')).render(
       <BrowserRouter>
         <ScrollToTop />
         <WhatsAppFloat />
+        <CookieConsent />
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/pricing" element={<Pricing />} />

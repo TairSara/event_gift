@@ -1,0 +1,118 @@
+.cookie-overlay {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  padding: 1rem;
+  animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.cookie-banner {
+  max-width: 800px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #231F20 0%, #2d2829 100%);
+  border: 1px solid #BE793E;
+  border-radius: 16px;
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+  box-shadow: 0 -4px 30px rgba(190, 121, 62, 0.2), 0 8px 32px rgba(0, 0, 0, 0.4);
+  direction: rtl;
+}
+
+.cookie-icon {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+}
+
+.cookie-content {
+  flex: 1;
+}
+
+.cookie-content h3 {
+  color: #AD974F;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+
+.cookie-content p {
+  color: #EAEAEA;
+  font-size: 0.82rem;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.cookie-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.cookie-btn-accept {
+  background: linear-gradient(135deg, #BE793E, #AD974F);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.55rem 1.4rem;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.cookie-btn-accept:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.cookie-btn-decline {
+  background: transparent;
+  color: #EAEAEA;
+  border: 1px solid #555;
+  border-radius: 8px;
+  padding: 0.5rem 1.4rem;
+  font-size: 0.82rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.cookie-btn-decline:hover {
+  border-color: #BE793E;
+  color: #BE793E;
+}
+
+@media (max-width: 600px) {
+  .cookie-banner {
+    flex-direction: column;
+    text-align: center;
+    padding: 1.2rem;
+  }
+
+  .cookie-actions {
+    flex-direction: row;
+    width: 100%;
+    justify-content: center;
+  }
+
+  .cookie-btn-accept,
+  .cookie-btn-decline {
+    flex: 1;
+  }
+}
