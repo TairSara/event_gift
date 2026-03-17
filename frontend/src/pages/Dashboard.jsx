@@ -174,7 +174,14 @@ export default function Dashboard() {
               <h2>האירועים שלי</h2>
               <button
                 className="btn-primary-small"
-                onClick={() => navigate("/create-event", { state: { userPackages: purchases, userId: user?.id } })}
+                onClick={() => {
+                  const activePackages = purchases.filter(p => p.status === 'active');
+                  if (activePackages.length === 0) {
+                    navigate('/pricing');
+                  } else {
+                    navigate("/create-event", { state: { userPackages: purchases, userId: user?.id } });
+                  }
+                }}
               >
                 צור אירוע חדש
               </button>
@@ -186,7 +193,14 @@ export default function Dashboard() {
                 <p>צור את האירוע הראשון שלך והתחל לשלוח הזמנות</p>
                 <button
                   className="btn-primary"
-                  onClick={() => navigate("/create-event", { state: { userPackages: purchases, userId: user?.id } })}
+                  onClick={() => {
+                    const activePackages = purchases.filter(p => p.status === 'active');
+                    if (activePackages.length === 0) {
+                      navigate('/pricing');
+                    } else {
+                      navigate("/create-event", { state: { userPackages: purchases, userId: user?.id } });
+                    }
+                  }}
                 >
                   צור אירוע
                 </button>

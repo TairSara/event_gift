@@ -9,12 +9,17 @@ export default function CreateEventPage() {
 
   const { userPackages = [], userId } = location.state || {};
 
-  // הגנה - אם הגיעו ישירות ללא state
+  // הגנה - אם הגיעו ישירות ללא state או בלי חבילה פעילה
   useEffect(() => {
     if (!userId) {
       navigate("/dashboard");
+      return;
     }
-  }, [userId, navigate]);
+    const activePackages = userPackages.filter(p => p.status === 'active');
+    if (activePackages.length === 0) {
+      navigate("/pricing");
+    }
+  }, [userId, navigate, userPackages]);
 
   const [step, setStep] = useState(1);
 
