@@ -102,6 +102,8 @@ export default function Registert() {
         }
       } else {
         // Register
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'signup_click' });
         const response = await authAPI.register(formData);
         console.log("Registration successful:", response);
 

@@ -60,6 +60,8 @@ export default function Contact() {
         throw new Error("Failed to submit contact form");
       }
 
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: 'contact_form_submit' });
       setSubmitStatus("success");
       alert("תודה על פנייתך! נחזור אליך בהקדם האפשרי.");
 
@@ -150,7 +152,7 @@ export default function Contact() {
                   <a href="https://www.tiktok.com/@savetheday_events?_r=1&_t=ZS-934AqAceeu2" target="_blank" rel="noopener noreferrer" className="social-icon">
                     <i className="fab fa-tiktok"></i>
                   </a>
-                  <a href="https://wa.me/972539488300" target="_blank" rel="noopener noreferrer" className="social-icon">
+                  <a href="https://wa.me/972539488300" target="_blank" rel="noopener noreferrer" className="social-icon" onClick={() => { window.dataLayer = window.dataLayer || []; window.dataLayer.push({ event: 'whatsapp_click' }); }}>
                     <i className="fab fa-whatsapp"></i>
                   </a>
                 </div>

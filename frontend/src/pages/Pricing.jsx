@@ -27,6 +27,8 @@ export default function Pricing() {
   // No dynamic loading needed here
 
   const handlePackageSelect = async (packageId, packageName, packageData) => {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: 'purchase_click', package_name: packageName });
     if (packageData.subPackages && packageData.subPackages.length > 0) {
       const selectedGuest = selectedGuestCounts[packageId];
       if (!selectedGuest) {
