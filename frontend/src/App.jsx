@@ -150,6 +150,11 @@ export default function App() {
                 <span>לחבילות שלנו</span>
               </button>
             </div>
+
+            <p className="hero-tagline-bottom">
+              Save The Day הופכת כל הזמנה לחוויה יוקרתית,
+              מרגשת ובלתי נשכחת – כמו שהאירוע שלכם ראוי להיות.
+            </p>
           </div>
 
           <div className="hero-carousel">
