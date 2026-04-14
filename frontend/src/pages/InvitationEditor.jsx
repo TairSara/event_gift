@@ -772,6 +772,11 @@ export default function InvitationEditor() {
                     <i className="fas fa-file-pdf"></i>
                     הורד PDF
                   </button>
+                  <button className="btn-download btn-send-auto" onClick={() => navigate('/pricing')}>
+                    <i className="fas fa-paper-plane"></i>
+                    לשליחה אוטומטית למוזמנים
+                  </button>
+                  <p className="send-auto-subtitle">שליחה אוטומטית בוואטסאפ / SMS, ניהול אישורי הגעה ומעקב בזמן אמת!</p>
                 </div>
               </div>
             </div>

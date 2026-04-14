@@ -672,6 +672,25 @@ button:disabled {
   box-shadow: 0 12px 36px rgba(232, 180, 184, 0.4);
 }
 
+.btn-send-auto {
+  background: linear-gradient(135deg, #FF8C42 0%, #E67320 100%);
+  margin-top: 0.5rem;
+}
+
+.btn-send-auto:hover {
+  background: linear-gradient(135deg, #E67320 0%, #CC5F10 100%);
+  transform: translateY(-6px) scale(1.05);
+  box-shadow: 0 12px 36px rgba(255, 140, 66, 0.4);
+}
+
+.send-auto-subtitle {
+  text-align: center;
+  font-size: 0.78rem;
+  color: #888;
+  margin-top: 0.4rem;
+  margin-bottom: 0;
+}
+
 .btn-save-return {
   background: linear-gradient(135deg, #7DA88D 0%, #6B9077 100%);
 }
