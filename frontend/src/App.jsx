@@ -127,9 +127,7 @@ export default function App() {
 <h2 className="hero-tagline">הזמנה אחת. חוויה שלמה.</h2>
 <p className="hero-subtitle">
   הזמנות דיגיטליות מעוצבות, אישורי הגעה בזמן אמת – הכול במקום אחד חכם ונוח.<br />
-  שלחו הזמנה, עקבו אחר התגובות וקבלו שליטה מלאה על האירוע שלכם.<br />
-  Save The Day הופכת כל הזמנה לחוויה יוקרתית,<br />
-  מרגשת ובלתי נשכחת – כמו שהאירוע שלכם ראוי להיות.<br /><br />
+  שלחו הזמנה, עקבו אחר התגובות וקבלו שליטה מלאה על האירוע שלכם.<br /><br />
   <strong>וגם – קבלו הזמנה לאירוע בחינם !</strong>
 </p>
 
@@ -143,13 +141,13 @@ export default function App() {
                   });
                 }}
               >
-                <span>ליצירת הזמנה</span>
+                <span>ליצירת הזמנה בחינם</span>
               </button>
               <button
                 className="btn-secondary btn-large"
                 onClick={() => navigate('/register')}
               >
-                <span>להרשמה לאתר</span>
+                <span>לחבילות שלנו</span>
               </button>
             </div>
           </div>
