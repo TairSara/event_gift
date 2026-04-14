@@ -145,7 +145,7 @@ export default function App() {
               </button>
               <button
                 className="btn-secondary btn-large"
-                onClick={() => navigate('/register')}
+                onClick={() => navigate('/pricing')}
               >
                 <span>לחבילות שלנו</span>
               </button>
