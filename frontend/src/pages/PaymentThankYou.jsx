@@ -1,10 +1,15 @@
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Confetti from '../components/Confetti';
 import './PaymentResult.css';
 
 export default function PaymentThankYou() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
+
+  const packageName = searchParams.get('package');
+  const amount = searchParams.get('amount');
+  const reference = searchParams.get('reference');
 
   return (
     <div className="payment-result-page">
@@ -21,6 +26,29 @@ export default function PaymentThankYou() {
           <p className="result-subtitle">
             תודה שבחרתם ב-Save the Day 🎉
           </p>
+
+          {(packageName || amount || reference) && (
+            <div className="payment-details">
+              {packageName && (
+                <div className="detail-row">
+                  <span className="detail-label">חבילה:</span>
+                  <span className="detail-value">{packageName}</span>
+                </div>
+              )}
+              {amount && (
+                <div className="detail-row">
+                  <span className="detail-label">סכום:</span>
+                  <span className="detail-value">₪{amount}</span>
+                </div>
+              )}
+              {reference && (
+                <div className="detail-row">
+                  <span className="detail-label">אסמכתא:</span>
+                  <span className="detail-value">{reference}</span>
+                </div>
+              )}
+            </div>
+          )}
 
           <div className="next-steps">
             <h3>מה הלאה?</h3>
