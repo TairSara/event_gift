@@ -14,8 +14,7 @@ export default function PaymentThankYou() {
     'basic': 'חבילת בסיס – ידני',
     'sms': 'אוטומטי SMS',
     'whatsapp': 'אוטומטי WhatsApp',
-    'peace-of-mind': 'אוטומטי "ראש שקט"',
-    'peace-of-mind-plus': 'אוטומטי "ראש שקט פלוס"',
+    'all-inclusive': 'אוטומטי הכל כלול',
   };
   const packageName = packageSlug ? (packageNameMap[packageSlug] || packageSlug) : null;
 

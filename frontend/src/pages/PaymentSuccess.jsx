@@ -90,8 +90,7 @@ export default function PaymentSuccess() {
             'חבילת בסיס – ידני': 'basic',
             'אוטומטי SMS': 'sms',
             'אוטומטי WhatsApp': 'whatsapp',
-            'אוטומטי "ראש שקט"': 'peace-of-mind',
-            'אוטומטי "ראש שקט פלוס"': 'peace-of-mind-plus',
+            'אוטומטי הכל כלול': 'all-inclusive',
           };
           const params = new URLSearchParams();
           if (data.package_name) params.set('package', packageSlugMap[data.package_name] || data.package_name);
