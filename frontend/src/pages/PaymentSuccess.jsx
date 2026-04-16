@@ -6,12 +6,9 @@ import './PaymentResult.css';
 export default function PaymentSuccess() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
-  const [paymentDetails, setPaymentDetails] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [pollingStatus, setPollingStatus] = useState('checking'); // 'checking', 'confirmed', 'timeout'
+  const [pollingStatus, setPollingStatus] = useState('checking'); // 'checking', 'timeout'
   const [attempts, setAttempts] = useState(0);
   const intervalRef = useRef(null);
-  const confettiStarted = useRef(false);
   const [isInIframe, setIsInIframe] = useState(false);
 
   const orderId = searchParams.get('order_id');
@@ -26,31 +23,26 @@ export default function PaymentSuccess() {
     setIsInIframe(inIframe);
 
     if (inIframe && orderId) {
-      // שליחת הודעה לחלון האב שהתשלום הצליח
       window.parent.postMessage({
         type: 'PAYMENT_SUCCESS',
         orderId: orderId,
         purchaseId: purchaseId
       }, '*');
 
-      // הפניה לדף ההצלחה בחלון הראשי
       window.top.location.href = `/payment/success?order_id=${orderId}&purchase_id=${purchaseId}`;
     }
   }, [orderId, purchaseId]);
 
   useEffect(() => {
-    // אם אנחנו בתוך iframe, לא צריך להמשיך
     if (isInIframe) return;
 
     if (!orderId) {
-      setLoading(false);
+      navigate('/payment/thank-you');
       return;
     }
 
-    // קודם כל, נאשר את התשלום (במקרה שה-callback לא הגיע, כמו באפל פיי)
     confirmPaymentSuccess();
 
-    // ניקוי ה-interval כשיוצאים מהדף
     return () => {
       if (intervalRef.current) {
         clearInterval(intervalRef.current);
@@ -61,26 +53,19 @@ export default function PaymentSuccess() {
   const confirmPaymentSuccess = async () => {
     try {
       const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
-
-      // קריאה ל-endpoint שמאשר את התשלום (אם עוד לא אושר)
       await fetch(`${API_URL}/payments/confirm-success/${orderId}`, {
         method: 'POST'
       });
-
-      // אחרי האישור, מתחילים polling לקבל את הפרטים
       startPolling();
     } catch (error) {
       console.error('Error confirming payment:', error);
-      // גם אם נכשל, ממשיכים ל-polling
       startPolling();
     }
   };
 
   const startPolling = () => {
-    // ניסיון ראשון מיידי
     checkPaymentStatus();
 
-    // המשך polling כל 2 שניות
     intervalRef.current = setInterval(() => {
       checkPaymentStatus();
     }, POLL_INTERVAL);
@@ -97,35 +82,16 @@ export default function PaymentSuccess() {
 
         setAttempts(prev => prev + 1);
 
-        // בדיקה אם התשלום אושר
         if (data.payment_status === 'completed' || data.status === 'active') {
-          // הצלחה!
-          setPaymentDetails(data);
-          setPollingStatus('confirmed');
-          setLoading(false);
-
-          // עצירת ה-polling
           if (intervalRef.current) {
             clearInterval(intervalRef.current);
           }
-
-          // הפעלת קונפטי (רק פעם אחת)
-          if (!confettiStarted.current) {
-            confettiStarted.current = true;
-            launchConfetti();
-          }
+          navigate('/payment/thank-you');
         } else if (data.payment_status === 'failed') {
-          // כישלון - העברה לדף failure
           navigate(`/payment/failure?order_id=${orderId}&purchase_id=${purchaseId}`);
         } else {
-          // עדיין pending
-          setPaymentDetails(data);
-
-          // בדיקת timeout
           if (attempts >= MAX_ATTEMPTS) {
             setPollingStatus('timeout');
-            setLoading(false);
-
             if (intervalRef.current) {
               clearInterval(intervalRef.current);
             }
@@ -138,47 +104,11 @@ export default function PaymentSuccess() {
 
       if (attempts >= MAX_ATTEMPTS) {
         setPollingStatus('timeout');
-        setLoading(false);
-
         if (intervalRef.current) {
           clearInterval(intervalRef.current);
         }
       }
     }
-  };
-
-  const launchConfetti = () => {
-    const duration = 3 * 1000;
-    const animationEnd = Date.now() + duration;
-    const colors = ['#26ccff', '#a25afd', '#ff5e7e', '#88ff5a', '#fcff42', '#ffa62d'];
-
-    const frame = () => {
-      const timeLeft = animationEnd - Date.now();
-
-      if (timeLeft <= 0) {
-        return;
-      }
-
-      const particleCount = 2;
-      confetti({
-        particleCount,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: colors
-      });
-      confetti({
-        particleCount,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: colors
-      });
-
-      requestAnimationFrame(frame);
-    };
-
-    frame();
   };
 
   return (
@@ -201,75 +131,6 @@ export default function PaymentSuccess() {
                 <p style={{fontSize: '0.9rem', opacity: 0.7, marginTop: '0.5rem'}}>
                   זה יכול לקחת עד 30 שניות
                 </p>
-              </div>
-            </>
-          )}
-
-          {pollingStatus === 'confirmed' && (
-            <>
-              <div className="result-icon">
-                <i className="fas fa-check-circle"></i>
-              </div>
-
-              <h1 className="result-title">התשלום בוצע בהצלחה!</h1>
-              <p className="result-subtitle">
-                תודה שבחרתם ב-Save the Day 🎉
-              </p>
-
-              {paymentDetails && (
-                <div className="payment-details">
-                  <div className="detail-row">
-                    <span className="detail-label">חבילה:</span>
-                    <span className="detail-value">{paymentDetails.package_name}</span>
-                  </div>
-                  <div className="detail-row">
-                    <span className="detail-label">סכום:</span>
-                    <span className="detail-value">₪{paymentDetails.amount}</span>
-                  </div>
-                  <div className="detail-row">
-                    <span className="detail-label">מזהה הזמנה:</span>
-                    <span className="detail-value">{orderId}</span>
-                  </div>
-                  {paymentDetails.reference && (
-                    <div className="detail-row">
-                      <span className="detail-label">אסמכתא:</span>
-                      <span className="detail-value">{paymentDetails.reference}</span>
-                    </div>
-                  )}
-                </div>
-              )}
-
-              <div className="next-steps">
-                <h3>מה הלאה?</h3>
-                <ul>
-                  <li>
-                    <i className="fas fa-check"></i>
-                    החבילה שלך פעילה ומוכנה לשימוש
-                  </li>
-                  <li>
-                    <i className="fas fa-check"></i>
-                    תוכל ליצור הזמנות ולנהל את האירועים שלך
-                  </li>
-                  <li>
-                    <i className="fas fa-check"></i>
-                    קיבלת אישור למייל שהזנת
-                  </li>
-                </ul>
-              </div>
-
-              <div className="action-buttons">
-                <button
-                  className="btn-primary"
-                  onClick={() => navigate('/dashboard')}
-                >
-                  עבור לדשבורד שלי
-                </button>
-                <button
-                  className="btn-secondary"
-                  onClick={() => navigate('/')}
-                >
-                  חזרה לדף הבית
-                </button>
               </div>
             </>
           )}

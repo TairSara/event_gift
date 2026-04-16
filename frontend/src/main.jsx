@@ -27,6 +27,7 @@ import RSVPPage from './pages/RSVPPage.jsx'
 import PublicRSVPPage from './pages/PublicRSVPPage.jsx'
 import PaymentSuccess from './pages/PaymentSuccess.jsx'
 import PaymentFailure from './pages/PaymentFailure.jsx'
+import PaymentThankYou from './pages/PaymentThankYou.jsx'
 import CreateEventPage from './pages/CreateEventPage.jsx'
 
 createRoot(document.getElementById('root')).render(
@@ -61,6 +62,7 @@ createRoot(document.getElementById('root')).render(
 
           {/* Payment Result Pages */}
           <Route path="/payment/success" element={<PaymentSuccess />} />
+          <Route path="/payment/thank-you" element={<PaymentThankYou />} />
           <Route path="/payment/failure" element={<PaymentFailure />} />
 
           {/* Admin Routes */}
