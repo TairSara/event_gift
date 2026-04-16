@@ -9,7 +9,6 @@ export default function PaymentThankYou() {
 
   const packageName = searchParams.get('package');
   const amount = searchParams.get('amount');
-  const reference = searchParams.get('reference');
 
   return (
     <div className="payment-result-page">
@@ -27,7 +26,7 @@ export default function PaymentThankYou() {
             תודה שבחרתם ב-Save the Day 🎉
           </p>
 
-          {(packageName || amount || reference) && (
+          {(packageName || amount) && (
             <div className="payment-details">
               {packageName && (
                 <div className="detail-row">
@@ -39,12 +38,6 @@ export default function PaymentThankYou() {
                 <div className="detail-row">
                   <span className="detail-label">סכום:</span>
                   <span className="detail-value">₪{amount}</span>
-                </div>
-              )}
-              {reference && (
-                <div className="detail-row">
-                  <span className="detail-label">אסמכתא:</span>
-                  <span className="detail-value">{reference}</span>
                 </div>
               )}
             </div>

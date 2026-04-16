@@ -89,7 +89,6 @@ export default function PaymentSuccess() {
           const params = new URLSearchParams();
           if (data.package_name) params.set('package', data.package_name);
           if (data.amount) params.set('amount', data.amount);
-          if (data.reference) params.set('reference', data.reference);
           navigate(`/payment/thank-you?${params.toString()}`);
         } else if (data.payment_status === 'failed') {
           navigate(`/payment/failure?order_id=${orderId}&purchase_id=${purchaseId}`);
