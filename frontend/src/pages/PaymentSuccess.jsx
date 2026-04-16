@@ -86,8 +86,15 @@ export default function PaymentSuccess() {
           if (intervalRef.current) {
             clearInterval(intervalRef.current);
           }
+          const packageSlugMap = {
+            'חבילת בסיס – ידני': 'basic',
+            'אוטומטי SMS': 'sms',
+            'אוטומטי WhatsApp': 'whatsapp',
+            'אוטומטי "ראש שקט"': 'peace-of-mind',
+            'אוטומטי "ראש שקט פלוס"': 'peace-of-mind-plus',
+          };
           const params = new URLSearchParams();
-          if (data.package_name) params.set('package', data.package_name);
+          if (data.package_name) params.set('package', packageSlugMap[data.package_name] || data.package_name);
           if (data.amount) params.set('amount', data.amount);
           navigate(`/payment/thank-you?${params.toString()}`);
         } else if (data.payment_status === 'failed') {

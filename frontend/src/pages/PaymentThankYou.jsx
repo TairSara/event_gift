@@ -7,8 +7,17 @@ export default function PaymentThankYou() {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
 
-  const packageName = searchParams.get('package');
+  const packageSlug = searchParams.get('package');
   const amount = searchParams.get('amount');
+
+  const packageNameMap = {
+    'basic': 'חבילת בסיס – ידני',
+    'sms': 'אוטומטי SMS',
+    'whatsapp': 'אוטומטי WhatsApp',
+    'peace-of-mind': 'אוטומטי "ראש שקט"',
+    'peace-of-mind-plus': 'אוטומטי "ראש שקט פלוס"',
+  };
+  const packageName = packageSlug ? (packageNameMap[packageSlug] || packageSlug) : null;
 
   return (
     <div className="payment-result-page">
