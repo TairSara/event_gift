@@ -1,51 +1,14 @@
-import { useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
+import Confetti from '../components/Confetti';
 import './PaymentResult.css';
 
 export default function PaymentThankYou() {
   const navigate = useNavigate();
-  const confettiStarted = useRef(false);
-
-  useEffect(() => {
-    if (!confettiStarted.current) {
-      confettiStarted.current = true;
-      launchConfetti();
-    }
-  }, []);
-
-  const launchConfetti = () => {
-    const duration = 3 * 1000;
-    const animationEnd = Date.now() + duration;
-    const colors = ['#26ccff', '#a25afd', '#ff5e7e', '#88ff5a', '#fcff42', '#ffa62d'];
-
-    const frame = () => {
-      if (Date.now() >= animationEnd) return;
-
-      const particleCount = 2;
-      confetti({
-        particleCount,
-        angle: 60,
-        spread: 55,
-        origin: { x: 0 },
-        colors: colors
-      });
-      confetti({
-        particleCount,
-        angle: 120,
-        spread: 55,
-        origin: { x: 1 },
-        colors: colors
-      });
-
-      requestAnimationFrame(frame);
-    };
-
-    frame();
-  };
 
   return (
     <div className="payment-result-page">
+      <Confetti />
       <Navbar />
 
       <div className="payment-result-container">
