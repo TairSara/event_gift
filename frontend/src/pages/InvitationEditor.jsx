@@ -23,13 +23,15 @@ export default function InvitationEditor() {
   const { user } = useAuth();
   const templateId = searchParams.get('id');
   const eventId = searchParams.get('event_id');
+  const isCustomUpload = searchParams.get('upload') === 'true';
+  const customUploadImage = isCustomUpload ? sessionStorage.getItem('custom_upload_image') : null;
 
   const [template, setTemplate] = useState(null);
   const [currentSide, setCurrentSide] = useState('front');
   const [frontApproved, setFrontApproved] = useState(false);
   const [backApproved, setBackApproved] = useState(false);
-  const [showCombined, setShowCombined] = useState(false);
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [showCombined, setShowCombined] = useState(isCustomUpload && !!customUploadImage);
+  const [showConfetti, setShowConfetti] = useState(isCustomUpload && !!customUploadImage);
 
   // Check if this is a single-sided invitation (all except wedding are single-sided)
   const singleSidedEvents = ['hina', 'bar-mitzvah', 'bat-mitzvah', 'brit', 'brita', 'knasim', 'birthday', 'other'];
@@ -102,10 +104,10 @@ export default function InvitationEditor() {
       if (isSingleSidedBase || found.singleSided) {
         setBackApproved(true);
       }
-    } else {
+    } else if (!isCustomUpload) {
       navigate('/');
     }
-  }, [eventType, templateId, navigate, isSingleSided]);
+  }, [eventType, templateId, navigate, isSingleSided, isCustomUpload]);
 
   // Scroll to top when component mounts
   useEffect(() => {
@@ -745,7 +747,11 @@ export default function InvitationEditor() {
 
             <div className="combined-content-wrapper">
               <div className="combined-canvas-wrapper">
-                <canvas ref={combinedCanvasRef} className="combined-canvas" />
+                {isCustomUpload && customUploadImage ? (
+                  <img src={customUploadImage} alt="הזמנה מותאמת אישית" className="combined-canvas" style={{ objectFit: 'contain' }} />
+                ) : (
+                  <canvas ref={combinedCanvasRef} className="combined-canvas" />
+                )}
               </div>
 
               <div className="download-actions-panel">
@@ -764,14 +770,18 @@ export default function InvitationEditor() {
                       שמור וחזור לאירוע
                     </button>
                   )}
-                  <button className="btn-download btn-download-png" onClick={handleDownloadPNG}>
-                    <i className="fas fa-download"></i>
-                    הורד PNG
-                  </button>
-                  <button className="btn-download btn-download-pdf" onClick={handleDownloadPDF}>
-                    <i className="fas fa-file-pdf"></i>
-                    הורד PDF
-                  </button>
+                  {!isCustomUpload && (
+                    <>
+                      <button className="btn-download btn-download-png" onClick={handleDownloadPNG}>
+                        <i className="fas fa-download"></i>
+                        הורד PNG
+                      </button>
+                      <button className="btn-download btn-download-pdf" onClick={handleDownloadPDF}>
+                        <i className="fas fa-file-pdf"></i>
+                        הורד PDF
+                      </button>
+                    </>
+                  )}
                   <button className="btn-download btn-send-auto" onClick={() => navigate('/pricing')}>
                     <i className="fas fa-paper-plane"></i>
                     לשליחה אוטומטית למוזמנים
@@ -781,18 +791,20 @@ export default function InvitationEditor() {
               </div>
             </div>
 
-            <button
-              className="btn-back-to-edit"
-              onClick={() => {
-                setShowCombined(false);
-                setFrontApproved(false);
-                setBackApproved(false);
-                setCurrentSide('front');
-              }}
-            >
-              <i className="fas fa-arrow-right"></i>
-              חזור לעריכה
-            </button>
+            {!isCustomUpload && (
+              <button
+                className="btn-back-to-edit"
+                onClick={() => {
+                  setShowCombined(false);
+                  setFrontApproved(false);
+                  setBackApproved(false);
+                  setCurrentSide('front');
+                }}
+              >
+                <i className="fas fa-arrow-right"></i>
+                חזור לעריכה
+              </button>
+            )}
           </div>
         )}
       </div>

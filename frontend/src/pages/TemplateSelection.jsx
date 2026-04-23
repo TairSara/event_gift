@@ -96,6 +96,7 @@ export default function TemplateSelection() {
             alert('שגיאה בשמירת ההזמנה');
           }
         } else {
+          sessionStorage.setItem('custom_upload_image', imageData);
           navigate(`/create-invitation/${eventType}/editor?upload=true`);
         }
         setUploading(false);
