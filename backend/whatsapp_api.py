@@ -9,6 +9,9 @@ import psycopg2
 import os
 from db import get_db_connection
 from whatsapp_interactive import whatsapp_service, DEFAULT_INVITATION_IMAGE
+from sms_service import SMS019Service
+
+sms_service = SMS019Service()
 
 router = APIRouter(prefix="/api/whatsapp", tags=["WhatsApp"])
 
@@ -521,6 +524,62 @@ async def send_bulk_rsvp(event_id: int):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+async def send_sms_fallback(gs_id: str):
+    """Send SMS fallback when WhatsApp fails with error 1002 (number not on WhatsApp)"""
+    conn = None
+    cur = None
+    try:
+        conn = get_db_connection()
+        cur = conn.cursor()
+
+        # Find guest and event via gs_id
+        cur.execute("""
+            SELECT wme.guest_id, wme.event_id,
+                   g.name, g.phone,
+                   e.event_title, e.message_settings
+            FROM whatsapp_message_events wme
+            JOIN guests g ON g.id = wme.guest_id
+            JOIN events e ON e.id = wme.event_id
+            WHERE wme.gs_id = %s
+        """, (gs_id,))
+
+        row = cur.fetchone()
+        if not row:
+            print(f"⚠️ SMS fallback: no guest found for gs_id={gs_id}")
+            return
+
+        guest_id, event_id, guest_name, phone, event_title, message_settings = row
+
+        # Get fallback template from event settings
+        fallback_template = (message_settings or {}).get(
+            'sms_fallback_template',
+            f"הנכם מוזמנים ל{event_title}, נשמח שתאשרו הגעתכם בלינק הבא: {{rsvp_link}}"
+        )
+
+        # Build RSVP link
+        rsvp_link = f"https://www.savedayevents.com/rsvp/{guest_id}"
+        message_text = fallback_template.replace('{rsvp_link}', rsvp_link)
+
+        # Format phone
+        formatted_phone = format_israeli_phone(phone)
+
+        print(f"📱 Sending SMS fallback to {formatted_phone} for guest {guest_name}")
+        result = sms_service.send_simple_sms(destination=formatted_phone, message=message_text)
+
+        if result.get('success'):
+            print(f"✅ SMS fallback sent successfully to {guest_name}")
+        else:
+            print(f"❌ SMS fallback failed: {result.get('error')}")
+
+    except Exception as e:
+        print(f"❌ send_sms_fallback error: {e}")
+    finally:
+        if cur:
+            cur.close()
+        if conn:
+            conn.close()
+
+
 @router.post("/webhook/gupshup")
 async def gupshup_webhook(payload: Dict = Body(...)):
     """
@@ -532,6 +591,22 @@ async def gupshup_webhook(payload: Dict = Body(...)):
 
         message_type = payload.get('type')
         print(f"🔍 [WEBHOOK DEBUG] type='{message_type}' full_payload={payload}")
+
+        # Handle message status events (delivered, read, failed, etc.)
+        if message_type == 'message-event':
+            event_payload = payload.get('payload', {})
+            event_type = event_payload.get('type')
+            gs_id = event_payload.get('id')
+            error_code = event_payload.get('payload', {}).get('code')
+
+            print(f"📊 Message event: type={event_type}, gs_id={gs_id}, error_code={error_code}")
+
+            if event_type == 'failed' and error_code == 1002 and gs_id:
+                print(f"⚠️ Number not on WhatsApp (1002), attempting SMS fallback for gs_id={gs_id}")
+                await send_sms_fallback(gs_id)
+
+            return {"status": "ok", "reason": f"message-event:{event_type}"}
+
         if message_type != 'message':
             return {"status": "ignored", "reason": "Not a message event"}
 
