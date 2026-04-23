@@ -18,6 +18,7 @@ export default function TemplateSelection() {
   const [searchParams] = useSearchParams();
   const eventId = searchParams.get('event_id');
   const [templates, setTemplates] = useState([]);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [uploading, setUploading] = useState(false);
   const fileInputRef = useRef(null);
 
@@ -56,6 +57,12 @@ export default function TemplateSelection() {
   const handleFileChange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
+
+    if (!eventId) {
+      setShowUpgradeModal(true);
+      e.target.value = '';
+      return;
+    }
 
     setUploading(true);
     const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
@@ -112,6 +119,30 @@ export default function TemplateSelection() {
   return (
     <div className="template-selection">
       <Navbar />
+
+      {showUpgradeModal && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: '#fff', borderRadius: '16px', padding: '2rem', maxWidth: '400px', width: '90%', textAlign: 'center', direction: 'rtl' }}>
+            <i className="fas fa-lock" style={{ fontSize: '2.5rem', color: '#e74c3c', marginBottom: '1rem' }}></i>
+            <h3 style={{ marginBottom: '0.75rem' }}>פיצ'ר זה דורש חבילה</h3>
+            <p style={{ color: '#666', marginBottom: '1.5rem' }}>העלאת הזמנה אישית זמינה למשתמשים עם אירוע פעיל. רכוש חבילה כדי להשתמש בפיצ'ר זה.</p>
+            <div style={{ display: 'flex', gap: '0.75rem', justifyContent: 'center' }}>
+              <button
+                onClick={() => navigate('/pricing')}
+                style={{ background: '#4ECDC4', color: '#fff', border: 'none', borderRadius: '8px', padding: '0.7rem 1.5rem', cursor: 'pointer', fontWeight: 600, fontSize: '1rem' }}
+              >
+                לחבילות שלנו
+              </button>
+              <button
+                onClick={() => setShowUpgradeModal(false)}
+                style={{ background: '#f0f0f0', color: '#333', border: 'none', borderRadius: '8px', padding: '0.7rem 1.5rem', cursor: 'pointer', fontSize: '1rem' }}
+              >
+                סגור
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <div className="template-selection-container">
         <header className="template-selection-header">
