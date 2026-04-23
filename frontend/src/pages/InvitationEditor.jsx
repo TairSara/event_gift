@@ -371,8 +371,8 @@ export default function InvitationEditor() {
     );
   }
 
-  const currentFields = currentSide === 'front' ? template.frontFields : (template.backFields || []);
-  const currentSlots = currentSide === 'front' ? template.frontSlots : (template.backSlots || []);
+  const currentFields = template ? (currentSide === 'front' ? template.frontFields : (template.backFields || [])) : [];
+  const currentSlots = template ? (currentSide === 'front' ? template.frontSlots : (template.backSlots || [])) : [];
 
   return (
     <div className="invitation-editor" data-event-type={eventType} data-single-sided={isSingleSided ? 'true' : 'false'} data-template-id={templateId}>
