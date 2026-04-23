@@ -39,6 +39,9 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
   // Day-of-event SMS template
   const [dayOfEventSms, setDayOfEventSms] = useState('');
 
+  // SMS fallback template (for WhatsApp packages - sent when number has no WhatsApp)
+  const [smsFallback, setSmsFallback] = useState('');
+
   // Read-only fields - displayed but not editable (can be edited elsewhere on the page)
   const [eventDate, setEventDate] = useState('');
   const [eventTime, setEventTime] = useState('');
@@ -48,6 +51,8 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
   useEffect(() => {
     if (event) {
       setEventName(event.event_title || '');
+      setSmsFallback(event.message_settings?.sms_fallback_template ||
+        `הנכם מוזמנים ל${event.event_title || '[שם האירוע]'}, נשמח שתאשרו הגעתכם בלינק הבא: {rsvp_link}`);
       const savedTemplate = event.message_settings?.day_of_event_sms_template;
       // If saved template is the old format (contains {event_name}), use the new default
       const template = (savedTemplate && !savedTemplate.includes('{event_name}'))
@@ -86,7 +91,7 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
       });
 
       // Update day-of-event SMS template in message_settings
-      const newSettings = { ...(event.message_settings || {}), day_of_event_sms_template: dayOfEventSms.trim() };
+      const newSettings = { ...(event.message_settings || {}), day_of_event_sms_template: dayOfEventSms.trim(), sms_fallback_template: smsFallback.trim() };
       const smsResponse = await fetch(`${API_URL}/packages/events/${event.id}/message-settings`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -126,7 +131,7 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
   const getAvailableChannels = () => {
     const packageId = event?.package_id;
     if (packageId === 2) return ['sms'];
-    if (packageId === 3 || packageId === 4) return ['whatsapp'];
+    if (packageId === 3 || packageId === 4) return ['whatsapp', 'sms_fallback'];
     return ['whatsapp', 'sms'];
   };
 
@@ -165,6 +170,15 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
               >
                 <i className="fas fa-sms"></i>
                 SMS
+              </button>
+            )}
+            {availableChannels.includes('sms_fallback') && (
+              <button
+                className={`editor-tab ${activeTab === 'sms_fallback' ? 'active' : ''}`}
+                onClick={() => setActiveTab('sms_fallback')}
+              >
+                <i className="fas fa-sms"></i>
+                SMS - ללא WhatsApp
               </button>
             )}
             <button
@@ -281,6 +295,54 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
                 <div className="preview-message sms-preview">
                   <div className="preview-bubble">
                     {getSmsPreview()}
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* SMS Fallback Editor - for WhatsApp packages when number has no WhatsApp */}
+          {activeTab === 'sms_fallback' && availableChannels.includes('sms_fallback') && (
+            <div className="template-editor-section">
+              <h4>עריכת הודעת SMS – למי שאין WhatsApp</h4>
+              <p className="template-description">
+                הודעה זו תישלח כ-SMS לאורחים שמספרם אינו רשום ב-WhatsApp.
+                הקישור לאישור הגעה יתווסף אוטומטית לכל אורח.
+              </p>
+
+              <div className="template-fields">
+                <div className="field-group">
+                  <label>תבנית ההודעה</label>
+                  <textarea
+                    rows={4}
+                    value={smsFallback}
+                    onChange={(e) => {
+                      const val = e.target.value;
+                      if (!val.includes('{rsvp_link}')) return;
+                      setSmsFallback(val);
+                    }}
+                    style={{ width: '100%', padding: '0.6rem', borderRadius: '8px', border: '1px solid #ddd', fontFamily: 'inherit', fontSize: '0.9rem', resize: 'vertical' }}
+                    dir="rtl"
+                  />
+                  <span className="field-hint">
+                    <strong>{'{rsvp_link}'}</strong> חייב להישאר בהודעה — לא ניתן למחוק אותו
+                  </span>
+                </div>
+
+                <div className="field-info">
+                  <i className="fas fa-info-circle"></i>
+                  <span>הודעה זו תישלח רק לאורחים שאין להם WhatsApp</span>
+                </div>
+              </div>
+
+              <div className="template-preview">
+                <h5>
+                  <i className="fas fa-eye"></i>
+                  תצוגה מקדימה
+                </h5>
+                <div className="preview-message sms-preview">
+                  <div className="preview-bubble">
+                    {smsFallback.replace('{rsvp_link}', '[קישור לאישור הגעה]')}
                   </div>
                 </div>
               </div>
