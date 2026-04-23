@@ -531,6 +531,7 @@ async def gupshup_webhook(payload: Dict = Body(...)):
         print(f"📨 Received webhook: {payload}")
 
         message_type = payload.get('type')
+        print(f"🔍 [WEBHOOK DEBUG] type='{message_type}' full_payload={payload}")
         if message_type != 'message':
             return {"status": "ignored", "reason": "Not a message event"}
 
