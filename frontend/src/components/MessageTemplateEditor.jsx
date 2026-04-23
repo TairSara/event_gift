@@ -115,7 +115,7 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
   // Generate WhatsApp preview matching the actual Gupshup template
   const getWhatsAppPreview = () => {
     return `שלום [שם האורח] 💙
-אנחנו שמחים להזמינכם ${eventName || '[שם האירוע]'}!
+אנחנו שמחים להזמינכם ל${eventName || '[שם האירוע]'}!
 תאריך: ${eventDate || '[תאריך]'}
 שעה: ${eventTime || '[שעה]'}
 מיקום: ${eventLocation || '[מיקום]'}
