@@ -1547,10 +1547,11 @@ async def get_recent_activity(limit: int = Query(20, ge=1, le=100)):
         """)
         activities.extend(cursor.fetchall())
 
-        # Recent packages
+        # Recent packages - only completed payments
         cursor.execute("""
             SELECT 'package_purchased' as type, package_name as details, purchased_at as timestamp
             FROM package_purchases
+            WHERE payment_status = 'completed'
             ORDER BY purchased_at DESC
             LIMIT 5
         """)
