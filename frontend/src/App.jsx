@@ -124,10 +124,9 @@ export default function App() {
         <div className="hero-container">
           <div className="hero-content">
            <h1 className="hero-title">Save The Day</h1>
-<h2 className="hero-tagline">הזמנה אחת. חוויה שלמה.</h2>
+<h2 className="hero-tagline">על אישורי הגעה, לא מתפשרים.</h2>
 <p className="hero-subtitle">
-  הזמנות דיגיטליות מעוצבות, אישורי הגעה בזמן אמת – הכול במקום אחד חכם ונוח.<br />
-  שלחו הזמנה, עקבו אחר התגובות וקבלו שליטה מלאה על האירוע שלכם.<br /><br />
+  אישורי הגעה בזמן אמת עם ממשק מתקדם לניהול אירוע מושלם שיעשה לכם סדר ושליטה מלאה על האירוע שלכם.<br /><br />
   <strong>וגם – קבלו הזמנה לאירוע בחינם !</strong>
 </p>
 

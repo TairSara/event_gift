@@ -36,7 +36,7 @@
         },
         {
           "key": "groomNameDetails",
-          "label": "שם החתן (באנגלית)",
+          "label": "שם החתן",
           "x": 220,
           "y": 620,
           "align": "center",
@@ -58,7 +58,7 @@
         },
         {
           "key": "brideNameDetails",
-          "label": "שם הכלה (באנגלית)",
+          "label": "שם הכלה",
           "x": 364,
           "y": 620,
           "align": "center",
@@ -290,7 +290,7 @@
         },
         {
           "key": "groomNameDetails1",
-          "label": "שם החתן לעטיפה (באנגלית)",
+          "label": "שם החתן לעטיפה",
           "x": 520,
           "y": 1310,
           "align": "center",
@@ -312,7 +312,7 @@
         },
         {
           "key": "brideNameDetails1",
-          "label": "שם הכלה לעטיפה (באנגלית)",
+          "label": "שם הכלה לעטיפה",
           "x": 642,
           "y": 1310,
           "align": "center",
@@ -334,7 +334,7 @@
         },
         {
           "key": "groomNameDetails",
-          "label": "שם החתן (באנגלית)",
+          "label": "שם החתן",
           "x": 680,
           "y": 715,
           "align": "center",
@@ -356,7 +356,7 @@
         },
         {
           "key": "brideNameDetails",
-          "label": "שם הכלה (באנגלית)",
+          "label": "שם הכלה",
           "x": 820,
           "y": 715,
           "align": "center",
@@ -562,7 +562,7 @@
         },
         {
           "key": "groomNameDetails1",
-          "label": "שם החתן לעטיפה (באנגלית)",
+          "label": "שם החתן לעטיפה",
           "x": 670,
           "y": 850,
           "align": "center",
@@ -584,7 +584,7 @@
         },
         {
           "key": "brideNameDetails1",
-          "label": "שם הכלה לעטיפה (באנגלית)",
+          "label": "שם הכלה לעטיפה",
           "x": 800,
           "y": 850,
           "align": "center",
@@ -606,7 +606,7 @@
         },
         {
           "key": "groomNameDetails",
-          "label": "שם החתן (באנגלית)",
+          "label": "שם החתן",
           "x": 240,
           "y": 500,
           "align": "center",
@@ -628,7 +628,7 @@
         },
         {
           "key": "brideNameDetails",
-          "label": "שם הכלה (באנגלית)",
+          "label": "שם הכלה",
           "x": 365,
           "y": 500,
           "align": "center",
@@ -1091,7 +1091,7 @@
         },
         {
           "key": "brideName",
-          "label": "שם הכלה (באנגלית)",
+          "label": "שם הכלה",
           "x": 540,
           "y": 400,
           "align": "center",
@@ -1113,7 +1113,7 @@
         },
         {
           "key": "groomName",
-          "label": "שם החתן (באנגלית)",
+          "label": "שם החתן",
           "x": 540,
           "y": 600,
           "align": "center",
@@ -1258,7 +1258,7 @@
         },
         {
           "key": "brideName",
-          "label": "שם הכלה (באנגלית)",
+          "label": "שם הכלה",
           "x": 540,
           "y": 400,
           "align": "center",
@@ -1280,7 +1280,7 @@
         },
         {
           "key": "groomName",
-          "label": "שם החתן (באנגלית)",
+          "label": "שם החתן",
           "x": 540,
           "y": 600,
           "align": "center",
