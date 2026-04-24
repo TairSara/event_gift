@@ -596,7 +596,7 @@ async def gupshup_webhook(payload: Dict = Body(...)):
         if message_type == 'message-event':
             event_payload = payload.get('payload', {})
             event_type = event_payload.get('type')
-            gs_id = event_payload.get('id')
+            gs_id = event_payload.get('gsId') or event_payload.get('id')
             error_code = event_payload.get('payload', {}).get('code')
 
             print(f"📊 Message event: type={event_type}, gs_id={gs_id}, error_code={error_code}")
