@@ -601,8 +601,8 @@ async def gupshup_webhook(payload: Dict = Body(...)):
 
             print(f"📊 Message event: type={event_type}, gs_id={gs_id}, error_code={error_code}")
 
-            if event_type == 'failed' and error_code == 1002 and gs_id:
-                print(f"⚠️ Number not on WhatsApp (1002), attempting SMS fallback for gs_id={gs_id}")
+            if event_type == 'failed' and error_code in {1002, 131026} and gs_id:
+                print(f"⚠️ WhatsApp failed (code={error_code}), attempting SMS fallback for gs_id={gs_id}")
                 await send_sms_fallback(gs_id)
 
             return {"status": "ok", "reason": f"message-event:{event_type}"}
