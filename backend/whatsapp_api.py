@@ -536,7 +536,7 @@ async def send_sms_fallback(gs_id: str):
         cur.execute("""
             SELECT wme.guest_id, wme.event_id,
                    g.name, g.phone,
-                   e.event_title, e.message_settings
+                   e.event_title, e.event_name, e.message_settings
             FROM whatsapp_message_events wme
             JOIN guests g ON g.id = wme.guest_id
             JOIN events e ON e.id = wme.event_id
@@ -548,16 +548,18 @@ async def send_sms_fallback(gs_id: str):
             print(f"⚠️ SMS fallback: no guest found for gs_id={gs_id}")
             return
 
-        guest_id, event_id, guest_name, phone, event_title, message_settings = row
+        guest_id, event_id, guest_name, phone, event_title, event_name, message_settings = row
 
         # Get fallback template from event settings
         fallback_template = (message_settings or {}).get(
             'sms_fallback_template',
-            f"הנכם מוזמנים ל{event_title}, נשמח שתאשרו הגעתכם בלינק הבא: {{rsvp_link}}"
+            f"הנכם מוזמנים ל{event_title or event_name}, נשמח שתאשרו הגעתכם בלינק הבא: {{rsvp_link}}"
         )
 
-        # Build RSVP link
-        rsvp_link = f"https://www.savedayevents.com/rsvp/{guest_id}"
+        # Build RSVP link with token (same formula as sms_router and rsvp_router)
+        import hashlib
+        token = hashlib.sha256(f"{guest_id}-{phone}-{event_name}".encode()).hexdigest()[:16]
+        rsvp_link = f"https://savedayevents.com/rsvp/{guest_id}?token={token}"
         message_text = fallback_template.replace('{rsvp_link}', rsvp_link)
 
         # Format phone
