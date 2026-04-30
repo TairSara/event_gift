@@ -684,9 +684,7 @@ export default function EventPage() {
                         return new Date(event.event_date).toLocaleDateString('he-IL', {
                           year: 'numeric',
                           month: 'long',
-                          day: 'numeric',
-                          hour: '2-digit',
-                          minute: '2-digit'
+                          day: 'numeric'
                         });
                       })()}
                     </span>
