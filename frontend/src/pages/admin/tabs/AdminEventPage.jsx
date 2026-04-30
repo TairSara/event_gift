@@ -38,10 +38,16 @@ export default function AdminEventPage() {
   const [isEditingStatus, setIsEditingStatus] = useState(false);
   const [editedStatus, setEditedStatus] = useState('');
 
+  const [scheduledMessages, setScheduledMessages] = useState([]);
+  const [editingMsgId, setEditingMsgId] = useState(null);
+  const [editingMsgDate, setEditingMsgDate] = useState('');
+  const [editingMsgStatus, setEditingMsgStatus] = useState('');
+
   const adminToken = localStorage.getItem('adminToken');
 
   useEffect(() => {
     fetchEventData();
+    fetchScheduledMessages();
   }, [eventId]);
 
   useEffect(() => {
@@ -89,6 +95,40 @@ export default function AdminEventPage() {
       showInfo('שגיאה בטעינת האירוע');
     } finally {
       setLoading(false);
+    }
+  };
+
+  const fetchScheduledMessages = async () => {
+    try {
+      const res = await fetch(`${API_URL}/admin/scheduled-messages/event/${eventId}`, {
+        headers: { Authorization: `Bearer ${adminToken}` }
+      });
+      if (res.ok) {
+        const data = await res.json();
+        setScheduledMessages(data.messages || []);
+      }
+    } catch { /* silent */ }
+  };
+
+  const handleSaveMsg = async (msgId) => {
+    const body = {};
+    if (editingMsgDate) body.scheduled_date = editingMsgDate;
+    if (editingMsgStatus) body.status = editingMsgStatus;
+    try {
+      const res = await fetch(`${API_URL}/admin/scheduled-messages/${msgId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${adminToken}` },
+        body: JSON.stringify(body)
+      });
+      if (res.ok) {
+        showSuccess('ההודעה המתוזמנת עודכנה');
+        setEditingMsgId(null);
+        fetchScheduledMessages();
+      } else {
+        showInfo('שגיאה בעדכון ההודעה');
+      }
+    } catch {
+      showInfo('שגיאה בתקשורת עם השרת');
     }
   };
 
@@ -394,6 +434,98 @@ export default function AdminEventPage() {
               showSuccess={showSuccess}
               showInfo={showInfo}
             />
+          </div>
+        </div>
+
+        {/* הודעות מתוזמנות */}
+        <div className="admin-card" style={{ gridColumn: '1 / -1' }}>
+          <div className="admin-card-header"><h2>הודעות מתוזמנות</h2></div>
+          <div style={{ padding: '1rem' }}>
+            {scheduledMessages.length === 0 ? (
+              <p style={{ color: 'var(--admin-text-muted)', fontSize: '0.9rem' }}>אין הודעות מתוזמנות לאירוע זה</p>
+            ) : (
+              <div className="admin-table-wrapper">
+                <table className="admin-table">
+                  <thead>
+                    <tr>
+                      <th>הודעה #</th>
+                      <th>תאריך שליחה</th>
+                      <th>סטטוס</th>
+                      <th>נשלח</th>
+                      <th>נכשל</th>
+                      <th>פעולות</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {scheduledMessages.map(msg => (
+                      <tr key={msg.id}>
+                        <td><strong>הודעה {msg.message_number}</strong></td>
+                        <td>
+                          {editingMsgId === msg.id ? (
+                            <input
+                              type="date"
+                              value={editingMsgDate}
+                              onChange={e => setEditingMsgDate(e.target.value)}
+                              style={{ padding: '0.25rem 0.4rem', borderRadius: '6px', border: '1px solid var(--admin-primary)', fontSize: '0.85rem' }}
+                            />
+                          ) : (
+                            msg.scheduled_date
+                              ? new Date(msg.scheduled_date).toLocaleDateString('he-IL')
+                              : '-'
+                          )}
+                        </td>
+                        <td>
+                          {editingMsgId === msg.id ? (
+                            <select
+                              value={editingMsgStatus}
+                              onChange={e => setEditingMsgStatus(e.target.value)}
+                              style={{ padding: '0.25rem 0.4rem', borderRadius: '6px', border: '1px solid #ddd', fontSize: '0.85rem' }}
+                            >
+                              <option value="pending">ממתין</option>
+                              <option value="completed">נשלח</option>
+                              <option value="partial">חלקי</option>
+                              <option value="failed">נכשל</option>
+                            </select>
+                          ) : (
+                            <span className={`status-badge ${msg.status}`}>
+                              {{ pending: 'ממתין', completed: 'נשלח', partial: 'חלקי', failed: 'נכשל' }[msg.status] || msg.status}
+                            </span>
+                          )}
+                        </td>
+                        <td style={{ color: 'var(--admin-success, #22c55e)' }}>{msg.guests_sent_count}</td>
+                        <td style={{ color: msg.guests_failed_count > 0 ? '#ef4444' : undefined }}>{msg.guests_failed_count}</td>
+                        <td>
+                          {editingMsgId === msg.id ? (
+                            <div style={{ display: 'flex', gap: '0.3rem' }}>
+                              <button
+                                className="pagination-btn"
+                                onClick={() => handleSaveMsg(msg.id)}
+                                style={{ background: 'var(--admin-success, #22c55e)', color: '#fff', border: 'none', fontSize: '0.8rem' }}
+                              >✓ שמור</button>
+                              <button
+                                className="pagination-btn"
+                                onClick={() => setEditingMsgId(null)}
+                                style={{ background: '#ef4444', color: '#fff', border: 'none', fontSize: '0.8rem' }}
+                              >✗ ביטול</button>
+                            </div>
+                          ) : (
+                            <button
+                              className="pagination-btn"
+                              style={{ fontSize: '0.8rem' }}
+                              onClick={() => {
+                                setEditingMsgId(msg.id);
+                                setEditingMsgDate(msg.scheduled_date || '');
+                                setEditingMsgStatus(msg.status || 'pending');
+                              }}
+                            >✏️ ערוך</button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
           </div>
         </div>
 

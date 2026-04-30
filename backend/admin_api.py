@@ -1503,6 +1503,70 @@ async def get_event_scheduled_messages(event_id: int):
 
 
 # ============================================================================
+# SCHEDULED MESSAGE UPDATE (ADMIN)
+# ============================================================================
+
+@router.put("/api/admin/scheduled-messages/{msg_id}")
+async def update_scheduled_message_admin(msg_id: int, body: dict):
+    """
+    עדכון תאריך / סטטוס של הודעה מתוזמנת על ידי אדמין
+    """
+    conn = None
+    try:
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        updates = []
+        params = []
+
+        if "scheduled_date" in body:
+            updates.append("scheduled_date = %s")
+            params.append(body["scheduled_date"])
+
+        if "status" in body:
+            allowed = {"pending", "completed", "partial", "failed"}
+            if body["status"] not in allowed:
+                raise HTTPException(status_code=400, detail="סטטוס לא חוקי")
+            updates.append("status = %s")
+            params.append(body["status"])
+
+        if not updates:
+            raise HTTPException(status_code=400, detail="אין שדות לעדכון")
+
+        updates.append("updated_at = NOW()")
+        params.append(msg_id)
+
+        cursor.execute(f"""
+            UPDATE scheduled_messages
+            SET {', '.join(updates)}
+            WHERE id = %s
+            RETURNING id, message_number, scheduled_date, status
+        """, params)
+
+        row = cursor.fetchone()
+        if not row:
+            raise HTTPException(status_code=404, detail="הודעה לא נמצאה")
+
+        conn.commit()
+        return {
+            "id": row[0],
+            "message_number": row[1],
+            "scheduled_date": row[2].isoformat() if row[2] else None,
+            "status": row[3]
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if conn:
+            conn.close()
+
+
+# ============================================================================
 # CONTACT MESSAGE UPDATE
 # ============================================================================
 
