@@ -34,6 +34,8 @@ export default function EventPage() {
   const [editedLocation, setEditedLocation] = useState('');
   const [isEditingBitLink, setIsEditingBitLink] = useState(false);
   const [editedBitLink, setEditedBitLink] = useState('');
+  const [isEditingTime, setIsEditingTime] = useState(false);
+  const [editedTime, setEditedTime] = useState('');
   const invitationCanvasRef = useRef(null);
 
   // RSVP קישור - עבור חבילת בסיס-ידני
@@ -378,6 +380,40 @@ export default function EventPage() {
     setEditedLocation('');
   };
 
+  const handleEditTime = () => {
+    setEditedTime(event.event_time ? event.event_time.slice(0, 5) : '');
+    setIsEditingTime(true);
+  };
+
+  const handleSaveTime = async () => {
+    const API_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
+    if (!editedTime.trim()) {
+      showInfo('נא להזין שעה');
+      return;
+    }
+    try {
+      const response = await fetch(`${API_URL}/packages/events/${eventId}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ event_time: editedTime })
+      });
+      if (response.ok) {
+        setEvent(prev => ({ ...prev, event_time: editedTime }));
+        setIsEditingTime(false);
+        showSuccess('שעת האירוע עודכנה בהצלחה');
+      } else {
+        showInfo('שגיאה בעדכון שעת האירוע');
+      }
+    } catch (error) {
+      showInfo('שגיאה בעדכון שעת האירוע');
+    }
+  };
+
+  const handleCancelTimeEdit = () => {
+    setIsEditingTime(false);
+    setEditedTime('');
+  };
+
   const handleEditBitLink = () => {
     setEditedBitLink(event.bit_payment_link || '');
     setIsEditingBitLink(true);
@@ -654,6 +690,44 @@ export default function EventPage() {
                         });
                       })()}
                     </span>
+                  </div>
+                </div>
+
+                <div className="detail-item">
+                  <i className="fas fa-clock"></i>
+                  <div className="detail-content">
+                    <span className="detail-label">שעה</span>
+                    {isEditingTime ? (
+                      <div className="edit-detail-container">
+                        <input
+                          type="time"
+                          className="edit-detail-input"
+                          value={editedTime}
+                          onChange={(e) => setEditedTime(e.target.value)}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') handleSaveTime();
+                            if (e.key === 'Escape') handleCancelTimeEdit();
+                          }}
+                        />
+                        <div className="edit-detail-buttons">
+                          <button className="save-detail-btn" onClick={handleSaveTime}>
+                            <i className="fas fa-check"></i>
+                          </button>
+                          <button className="cancel-detail-btn" onClick={handleCancelTimeEdit}>
+                            <i className="fas fa-times"></i>
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="detail-value-container">
+                        <span className="detail-value">
+                          {event.event_time ? event.event_time.slice(0, 5) : 'לא הוגדר'}
+                        </span>
+                        <button className="edit-detail-icon-btn" onClick={handleEditTime} title="ערוך שעה">
+                          <i className="fas fa-pencil-alt"></i>
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
 

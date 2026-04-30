@@ -36,6 +36,7 @@ class EventCreate(BaseModel):
 class EventUpdate(BaseModel):
     event_title: Optional[str] = None
     event_date: Optional[str] = None
+    event_time: Optional[str] = None
     event_location: Optional[str] = None
     invitation_data: Optional[dict] = None
     status: Optional[str] = None
@@ -451,7 +452,7 @@ def get_event(event_id: int):
         cur.execute("""
             SELECT
                 e.id, e.user_id, e.package_purchase_id, e.event_type, e.event_title,
-                e.event_date, e.event_location, e.invitation_data, e.status, e.created_at,
+                e.event_date, e.event_time, e.event_location, e.invitation_data, e.status, e.created_at,
                 e.bit_payment_link, pp.package_name, pp.package_id, e.message_settings
             FROM events e
             LEFT JOIN package_purchases pp ON e.package_purchase_id = pp.id
@@ -472,14 +473,15 @@ def get_event(event_id: int):
             "event_type": row[3],
             "event_title": row[4],
             "event_date": row[5].isoformat() if row[5] else None,
-            "event_location": row[6],
-            "invitation_data": row[7],
-            "status": row[8],
-            "created_at": row[9].isoformat() if row[9] else None,
-            "bit_payment_link": row[10],
-            "package_name": row[11],
-            "package_id": row[12],
-            "message_settings": row[13] if row[13] else {}
+            "event_time": str(row[6]) if row[6] else None,
+            "event_location": row[7],
+            "invitation_data": row[8],
+            "status": row[9],
+            "created_at": row[10].isoformat() if row[10] else None,
+            "bit_payment_link": row[11],
+            "package_name": row[12],
+            "package_id": row[13],
+            "message_settings": row[14] if row[14] else {}
         }
 
     except HTTPException:
@@ -523,6 +525,10 @@ def update_event(event_id: int, event: EventUpdate):
         if event.event_date is not None:
             updates.append("event_date = %s")
             params.append(event.event_date)
+
+        if event.event_time is not None:
+            updates.append("event_time = %s")
+            params.append(event.event_time)
 
         if event.event_location is not None:
             updates.append("event_location = %s")
