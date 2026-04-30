@@ -499,7 +499,7 @@ def get_events_with_today_as_event_date() -> list:
                 e.id, e.event_title, e.message_settings, e.bit_payment_link
             FROM events e
             WHERE DATE(e.event_date) = %s
-              AND e.status = 'active'
+              AND e.status IN ('active', 'completed')
         """, (today,))
         events = []
         for row in cur.fetchall():
