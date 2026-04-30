@@ -304,7 +304,7 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
           {/* SMS Fallback Editor - for WhatsApp packages when number has no WhatsApp */}
           {activeTab === 'sms_fallback' && availableChannels.includes('sms_fallback') && (
             <div className="template-editor-section">
-              <h4>עריכת הודעת SMS – למי שאין WhatsApp</h4>
+              <h4>לאורחים ללא וואטסאפ: עריכת SMS</h4>
               <p className="template-description">
                 הודעה זו תישלח כ-SMS לאורחים שמספרם אינו רשום ב-WhatsApp.
                 הקישור לאישור הגעה יתווסף אוטומטית לכל אורח.
