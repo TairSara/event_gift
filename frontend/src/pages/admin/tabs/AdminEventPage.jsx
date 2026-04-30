@@ -43,6 +43,9 @@ export default function AdminEventPage() {
   const [editingMsgDate, setEditingMsgDate] = useState('');
   const [editingMsgStatus, setEditingMsgStatus] = useState('');
 
+  const [confirmModal, setConfirmModal] = useState(null); // { type: 'invitation'|'day_sms', label: string }
+  const [isSending, setIsSending] = useState(false);
+
   const adminToken = localStorage.getItem('adminToken');
 
   useEffect(() => {
@@ -129,6 +132,35 @@ export default function AdminEventPage() {
       }
     } catch {
       showInfo('שגיאה בתקשורת עם השרת');
+    }
+  };
+
+  const handleConfirmSend = async () => {
+    if (!confirmModal) return;
+    setIsSending(true);
+    try {
+      const endpoint = confirmModal.type === 'invitation'
+        ? `${API_URL}/admin/events/${eventId}/send-invitation`
+        : `${API_URL}/admin/events/${eventId}/send-day-sms`;
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${adminToken}` }
+      });
+      const data = await res.json();
+      if (res.ok) {
+        if (data.message) {
+          showInfo(data.message);
+        } else {
+          showSuccess(`נשלח ל-${data.sent} אורחים${data.failed > 0 ? `, נכשל: ${data.failed}` : ''}`);
+        }
+      } else {
+        showInfo(data.detail || 'שגיאה בשליחה');
+      }
+    } catch {
+      showInfo('שגיאה בתקשורת עם השרת');
+    } finally {
+      setIsSending(false);
+      setConfirmModal(null);
     }
   };
 
@@ -234,6 +266,60 @@ export default function AdminEventPage() {
           <p style={{ margin: 0, color: 'var(--admin-text-muted)', fontSize: '0.85rem' }}>
             ניהול אירוע #{event.id} | {event.user_name || event.user_email}
           </p>
+        </div>
+      </div>
+
+      {/* Confirm Modal */}
+      {confirmModal && (
+        <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.5)', zIndex: 1000, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <div style={{ background: '#fff', borderRadius: '12px', padding: '2rem', maxWidth: '400px', width: '90%', textAlign: 'center' }}>
+            <div style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>⚠️</div>
+            <h3 style={{ margin: '0 0 0.5rem' }}>אישור שליחה</h3>
+            <p style={{ color: '#555', marginBottom: '1.5rem' }}>
+              האם לשלוח <strong>{confirmModal.label}</strong> לכל האורחים הרלוונטיים?<br />
+              פעולה זו לא ניתנת לביטול.
+            </p>
+            <div style={{ display: 'flex', gap: '0.8rem', justifyContent: 'center' }}>
+              <button
+                onClick={handleConfirmSend}
+                disabled={isSending}
+                style={{ background: 'var(--admin-primary, #6366f1)', color: '#fff', border: 'none', borderRadius: '8px', padding: '0.6rem 1.5rem', cursor: 'pointer', fontWeight: 600 }}
+              >
+                {isSending ? 'שולח...' : 'כן, שלח'}
+              </button>
+              <button
+                onClick={() => setConfirmModal(null)}
+                disabled={isSending}
+                style={{ background: '#f1f1f1', border: 'none', borderRadius: '8px', padding: '0.6rem 1.5rem', cursor: 'pointer' }}
+              >
+                ביטול
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Send Actions */}
+      <div className="admin-card" style={{ marginBottom: '1rem' }}>
+        <div className="admin-card-header"><h2>שליחה ידנית</h2></div>
+        <div style={{ padding: '1rem', display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
+          <button
+            className="pagination-btn"
+            style={{ fontSize: '0.9rem', padding: '0.5rem 1.2rem' }}
+            onClick={() => setConfirmModal({ type: 'invitation', label: 'הזמנה לאירוע' })}
+          >
+            📨 שלח הזמנה לאירוע
+          </button>
+          <button
+            className="pagination-btn"
+            style={{ fontSize: '0.9rem', padding: '0.5rem 1.2rem' }}
+            onClick={() => setConfirmModal({ type: 'day_sms', label: 'הודעת תזכורת SMS ביום האירוע' })}
+          >
+            📅 שלח הודעת תזכורת SMS ביום האירוע
+          </button>
+          <span style={{ fontSize: '0.8rem', color: 'var(--admin-text-muted)' }}>
+            הזמנה: נשלחת לאורחים שלא אישרו/דחו | תזכורת: נשלחת לאורחים עם מספר שולחן
+          </span>
         </div>
       </div>
 

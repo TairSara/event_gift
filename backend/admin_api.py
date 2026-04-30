@@ -1567,6 +1567,132 @@ async def update_scheduled_message_admin(msg_id: int, body: dict):
 
 
 # ============================================================================
+# MANUAL SEND - ADMIN TRIGGERED
+# ============================================================================
+
+@router.post("/api/admin/events/{event_id}/send-invitation")
+async def admin_send_invitation(event_id: int):
+    """
+    שליחה ידנית של הזמנה לכל האורחים שלא אישרו/דחו.
+    שולח וואצאפ לחבילות 3/4, סמס לחבילה 2.
+    משתמש באותה לוגיקה כמו ההודעות המתוזמנות.
+    """
+    conn = None
+    try:
+        from scheduler_service import (
+            get_guests_for_event, send_whatsapp_invitation,
+            send_sms_invitation, format_israeli_phone
+        )
+        from datetime import date as date_type
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT e.id, e.event_title, e.event_date, e.event_time, e.event_location,
+                   e.invitation_data, pp.package_id
+            FROM events e
+            LEFT JOIN package_purchases pp ON e.package_purchase_id = pp.id
+            WHERE e.id = %s
+        """, (event_id,))
+        row = cursor.fetchone()
+        if not row:
+            raise HTTPException(status_code=404, detail="אירוע לא נמצא")
+
+        event_data = {
+            'event_id': row[0],
+            'event_title': row[1],
+            'event_date': row[2],
+            'event_time': row[3],
+            'event_location': row[4],
+            'invitation_data': row[5],
+            'package_id': row[6]
+        }
+        package_id = row[6]
+        use_sms = package_id == 2
+
+        # שולח רק למי שלא אישר/דחה
+        guests = get_guests_for_event(event_id, exclude_responded=True)
+        if not guests:
+            return {'sent': 0, 'failed': 0, 'message': 'אין אורחים לשליחה (כולם כבר הגיבו)'}
+
+        sent, failed = 0, 0
+        for guest in guests:
+            if use_sms:
+                result = send_sms_invitation(guest, event_data)
+            else:
+                result = send_whatsapp_invitation(guest, event_data)
+            if result['success']:
+                sent += 1
+            else:
+                failed += 1
+
+        return {'sent': sent, 'failed': failed, 'total_guests': len(guests)}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if conn:
+            conn.close()
+
+
+@router.post("/api/admin/events/{event_id}/send-day-sms")
+async def admin_send_day_sms(event_id: int):
+    """
+    שליחה ידנית של SMS יום האירוע עם מספר שולחן.
+    שולח לכל מי שאישר הגעה ויש לו מספר שולחן.
+    משתמש באותה לוגיקה כמו ה-cron.
+    """
+    conn = None
+    try:
+        from scheduler_service import (
+            get_guests_with_table_for_event, send_day_of_event_sms,
+            DEFAULT_DAY_OF_EVENT_SMS
+        )
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT e.event_title, e.message_settings, e.bit_payment_link
+            FROM events e
+            WHERE e.id = %s
+        """, (event_id,))
+        row = cursor.fetchone()
+        if not row:
+            raise HTTPException(status_code=404, detail="אירוע לא נמצא")
+
+        event_title = row[0]
+        message_settings = row[1] or {}
+        waze_link = row[2] or ''
+        template = message_settings.get('day_of_event_sms_template', DEFAULT_DAY_OF_EVENT_SMS)
+
+        guests = get_guests_with_table_for_event(event_id)
+        if not guests:
+            return {'sent': 0, 'failed': 0, 'message': 'אין אורחים עם מספר שולחן מוקצה'}
+
+        sent, failed = 0, 0
+        for guest in guests:
+            result = send_day_of_event_sms(guest, event_title, template, waze_link)
+            if result['success']:
+                sent += 1
+            else:
+                failed += 1
+
+        return {'sent': sent, 'failed': failed, 'total_guests': len(guests)}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if conn:
+            conn.close()
+
+
+# ============================================================================
 # CONTACT MESSAGE UPDATE
 # ============================================================================
 
