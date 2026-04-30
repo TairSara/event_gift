@@ -444,6 +444,21 @@ export default function AdminEventPage() {
             {scheduledMessages.length === 0 ? (
               <p style={{ color: 'var(--admin-text-muted)', fontSize: '0.9rem' }}>אין הודעות מתוזמנות לאירוע זה</p>
             ) : (
+              <>
+                <div style={{ marginBottom: '1rem', display: 'flex', flexDirection: 'column', gap: '0.3rem' }}>
+                  {scheduledMessages.map(msg => (
+                    <p key={msg.id} style={{ margin: 0, fontSize: '0.9rem', color: msg.status === 'completed' ? 'var(--admin-text-muted)' : 'inherit' }}>
+                      {msg.status === 'completed' ? '✅' : '📅'}{' '}
+                      ההודעה המתוזמנת ה{['ראשונה','שנייה','שלישית','רביעית','חמישית'][msg.message_number - 1] || `מספר ${msg.message_number}`}{' '}
+                      {msg.status === 'completed'
+                        ? `נשלחה בתאריך ${new Date(msg.sent_at || msg.scheduled_date).toLocaleDateString('he-IL')}`
+                        : `תשלח בתאריך ${new Date(msg.scheduled_date).toLocaleDateString('he-IL')}`}
+                    </p>
+                  ))}
+                </div>
+              </>
+            )}
+            {scheduledMessages.length > 0 && (
               <div className="admin-table-wrapper">
                 <table className="admin-table">
                   <thead>
