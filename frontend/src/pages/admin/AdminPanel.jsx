@@ -12,6 +12,7 @@ import PackagesTab from './tabs/PackagesTab';
 import GuestsTab from './tabs/GuestsTab';
 import ScheduledMessagesTab from './tabs/ScheduledMessagesTab';
 import CreateEventTab from './tabs/CreateEventTab';
+import AdminEventPage from './tabs/AdminEventPage';
 
 export default function AdminPanel() {
   const navigate = useNavigate();
@@ -219,6 +220,7 @@ export default function AdminPanel() {
           <Route path="guests" element={<GuestsTab />} />
           <Route path="scheduled" element={<ScheduledMessagesTab />} />
           <Route path="create-event" element={<CreateEventTab />} />
+          <Route path="event/:eventId" element={<AdminEventPage />} />
           <Route path="*" element={<DashboardTab />} />
         </Routes>
       </main>

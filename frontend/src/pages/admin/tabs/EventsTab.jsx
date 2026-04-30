@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://event-gift.onrender.com/api';
 
 export default function EventsTab() {
+  const navigate = useNavigate();
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState('');
@@ -196,6 +198,7 @@ export default function EventsTab() {
                     <th>אורחים</th>
                     <th>סטטוס</th>
                     <th>נוצר</th>
+                    <th>פעולות</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -222,6 +225,15 @@ export default function EventsTab() {
                         </span>
                       </td>
                       <td style={{ color: 'var(--admin-text-muted)' }}>{formatDate(event.created_at)}</td>
+                      <td>
+                        <button
+                          className="pagination-btn"
+                          onClick={() => navigate(`/admin/event/${event.id}`)}
+                          style={{ whiteSpace: 'nowrap', fontSize: '0.8rem' }}
+                        >
+                          ✏️ עריכת אירוע
+                        </button>
+                      </td>
                     </tr>
                   ))}
                 </tbody>
