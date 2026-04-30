@@ -476,7 +476,9 @@ export default function EventPage() {
       const eventDate = new Date(event.event_date);
       const now = new Date();
 
-      if (eventDate < now && event.status !== 'completed') {
+      const tomorrow = new Date(now);
+      tomorrow.setDate(tomorrow.getDate() - 1);
+      if (eventDate < tomorrow && event.status !== 'completed') {
         // Auto-update status to completed
         fetch(`${API_URL}/packages/events/${eventId}`, {
           method: 'PUT',
