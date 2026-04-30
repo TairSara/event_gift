@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 import Confetti from '../components/Confetti';
@@ -9,6 +10,25 @@ export default function PaymentThankYou() {
 
   const packageSlug = searchParams.get('package');
   const amount = searchParams.get('amount');
+
+  useEffect(() => {
+    if (window.dataLayer) {
+      window.dataLayer.push({
+        event: 'purchase',
+        ecommerce: {
+          transaction_id: `${packageSlug}-${Date.now()}`,
+          value: parseFloat(amount) || 0,
+          currency: 'ILS',
+          items: [{
+            item_id: packageSlug,
+            item_name: packageSlug,
+            price: parseFloat(amount) || 0,
+            quantity: 1
+          }]
+        }
+      });
+    }
+  }, []);
 
   const packageNameMap = {
     'basic': 'חבילת בסיס – ידני',
