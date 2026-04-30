@@ -1175,6 +1175,51 @@ async def update_guest_status_admin(guest_id: int, body: dict):
             conn.close()
 
 
+@router.put("/api/admin/guests/{guest_id}/count")
+async def update_guest_count_admin(guest_id: int, body: dict):
+    """עדכון מספר אורחים על ידי מנהל"""
+    conn = None
+    try:
+        guests_count = body.get("guests_count")
+        if not isinstance(guests_count, int) or guests_count < 1:
+            raise HTTPException(status_code=400, detail="guests_count חייב להיות מספר שלם חיובי")
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            UPDATE guests
+            SET guests_count = %s, updated_at = NOW()
+            WHERE id = %s
+            RETURNING id, full_name, guests_count
+        """, (guests_count, guest_id))
+
+        result = cursor.fetchone()
+        if not result:
+            raise HTTPException(status_code=404, detail="Guest not found")
+
+        conn.commit()
+        cursor.close()
+
+        return {
+            "message": "מספר האורחים עודכן בהצלחה",
+            "guest_id": result[0],
+            "full_name": result[1],
+            "guests_count": result[2]
+        }
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        if conn:
+            conn.rollback()
+        print(f"Error updating guest count: {e}")
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if conn:
+            conn.close()
+
+
 # ============================================================================
 # GIFTS MANAGEMENT
 # ============================================================================

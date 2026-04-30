@@ -15,6 +15,8 @@ export default function GuestsTab() {
   const [guestsLoading, setGuestsLoading] = useState(false);
   const [guestsSearch, setGuestsSearch] = useState('');
   const [updatingGuestId, setUpdatingGuestId] = useState(null);
+  const [editingCountGuestId, setEditingCountGuestId] = useState(null);
+  const [editingCountValue, setEditingCountValue] = useState('');
 
   useEffect(() => {
     fetchEvents();
@@ -109,6 +111,27 @@ export default function GuestsTab() {
       console.error('Failed to update guest status:', err);
     } finally {
       setUpdatingGuestId(null);
+    }
+  };
+
+  const handleSaveCount = async (guestId) => {
+    const count = parseInt(editingCountValue);
+    if (isNaN(count) || count < 1) return;
+    try {
+      const token = localStorage.getItem('adminToken');
+      const response = await fetch(`${API_BASE_URL}/admin/guests/${guestId}/count`, {
+        method: 'PUT',
+        headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ guests_count: count })
+      });
+      if (response.ok) {
+        setGuests(prev => prev.map(g => g.id === guestId ? { ...g, guests_count: count } : g));
+      }
+    } catch (err) {
+      console.error('Failed to update guest count:', err);
+    } finally {
+      setEditingCountGuestId(null);
+      setEditingCountValue('');
     }
   };
 
@@ -257,7 +280,34 @@ export default function GuestsTab() {
                       <td><strong>{guest.full_name}</strong></td>
                       <td style={{ direction: 'ltr', textAlign: 'right' }}>{guest.phone || '-'}</td>
                       <td style={{ direction: 'ltr', textAlign: 'right', fontSize: '0.85rem' }}>{guest.email || '-'}</td>
-                      <td>{guest.guests_count || 1}</td>
+                      <td>
+                        {editingCountGuestId === guest.id ? (
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
+                            <input
+                              type="number"
+                              min="1"
+                              value={editingCountValue}
+                              onChange={(e) => setEditingCountValue(e.target.value)}
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleSaveCount(guest.id);
+                                if (e.key === 'Escape') { setEditingCountGuestId(null); setEditingCountValue(''); }
+                              }}
+                              style={{ width: '55px', padding: '2px 4px', borderRadius: '4px', border: '1px solid #ccc', textAlign: 'center' }}
+                              autoFocus
+                            />
+                            <button onClick={() => handleSaveCount(guest.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'green', fontSize: '1rem' }}>✓</button>
+                            <button onClick={() => { setEditingCountGuestId(null); setEditingCountValue(''); }} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'red', fontSize: '1rem' }}>✗</button>
+                          </div>
+                        ) : (
+                          <span
+                            onClick={() => { setEditingCountGuestId(guest.id); setEditingCountValue(String(guest.guests_count || 1)); }}
+                            style={{ cursor: 'pointer', borderBottom: '1px dashed #aaa' }}
+                            title="לחץ לעריכה"
+                          >
+                            {guest.guests_count || 1}
+                          </span>
+                        )}
+                      </td>
                       <td>
                         <span className={`status-badge ${guest.invitation_sent ? 'active' : 'pending'}`}>
                           {guest.invitation_sent ? 'נשלחה' : 'לא נשלחה'}
