@@ -61,7 +61,7 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
       setDayOfEventSms(template);
       setEventLocation(event.event_location || '');
 
-      // Parse date and time from event_date
+      // Parse date from event_date, time from event_time
       if (event.event_date) {
         const dateObj = new Date(event.event_date);
         setEventDate(dateObj.toLocaleDateString('he-IL', {
@@ -69,14 +69,10 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
           month: '2-digit',
           year: 'numeric'
         }));
-        setEventTime(dateObj.toLocaleTimeString('he-IL', {
-          hour: '2-digit',
-          minute: '2-digit'
-        }));
       } else {
         setEventDate('');
-        setEventTime('');
       }
+      setEventTime(event.event_time ? event.event_time.slice(0, 5) : '');
     }
   }, [event]);
 
