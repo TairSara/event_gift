@@ -8,7 +8,7 @@ Endpoints:
 4. GET /api/scheduler/pending - Get all pending scheduled messages
 """
 
-from fastapi import APIRouter, HTTPException, Header
+from fastapi import APIRouter, HTTPException, Header, BackgroundTasks
 from pydantic import BaseModel
 from typing import Optional, List
 from datetime import date, datetime
@@ -36,26 +36,18 @@ class CreateScheduleRequest(BaseModel):
 
 @router.post("/process")
 async def process_scheduled_messages(
+    background_tasks: BackgroundTasks,
     x_cron_secret: Optional[str] = Header(None, alias="X-Cron-Secret")
 ):
     """
     Process all pending scheduled messages for today.
-
-    This endpoint should be called by an external cron service (like cron-job.org)
-    once per day (recommended: early morning, e.g., 08:00 Israel time).
-
-    Requires X-Cron-Secret header for authentication.
+    Runs in background so the server stays responsive to webhooks during sending.
     """
-    # Verify cron secret
     if x_cron_secret != CRON_SECRET:
         raise HTTPException(status_code=401, detail="Invalid cron secret")
 
-    try:
-        result = process_all_scheduled_messages()
-        return result
-    except Exception as e:
-        print(f"Error processing scheduled messages: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
+    background_tasks.add_task(process_all_scheduled_messages)
+    return {"status": "started", "message": "עיבוד הודעות מתוזמנות התחיל ברקע"}
 
 
 @router.post("/process-test")

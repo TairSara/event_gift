@@ -1,7 +1,7 @@
 """
 WhatsApp Interactive Messages API Endpoints
 """
-from fastapi import APIRouter, HTTPException, Depends, Body
+from fastapi import APIRouter, HTTPException, Depends, Body, BackgroundTasks
 from pydantic import BaseModel
 from typing import List, Optional, Dict, Any
 from datetime import datetime
@@ -482,21 +482,33 @@ async def send_event_rsvp(request: SendEventRSVPRequest):
         raise HTTPException(status_code=500, detail=str(e))
 
 
+def _bg_send_bulk_rsvp(guests: list):
+    """Background task: שולח RSVP buttons לכל האורחים."""
+    for guest_id, guest_name, phone, event_name, event_date, event_location in guests:
+        formatted_phone = format_israeli_phone(phone)
+        whatsapp_service.send_event_rsvp_buttons(
+            destination=formatted_phone,
+            guest_name=guest_name,
+            event_name=event_name,
+            event_date=event_date.strftime('%d/%m/%Y') if isinstance(event_date, datetime) else str(event_date),
+            event_location=event_location or "יודיע בהמשך"
+        )
+        time.sleep(0.1)
+
+
 @router.post("/send-bulk-rsvp/{event_id}")
-async def send_bulk_rsvp(event_id: int):
-    """Send RSVP buttons to all guests of an event"""
+async def send_bulk_rsvp(event_id: int, background_tasks: BackgroundTasks):
+    """Send RSVP buttons to all guests of an event - runs in background"""
     try:
         conn = get_db_connection()
         cur = conn.cursor()
 
-        # Get all guests with phone numbers for this event
         cur.execute("""
             SELECT g.id, g.name, g.phone, e.event_name, e.event_date, e.event_location
             FROM guests g
             JOIN events e ON g.event_id = e.id
             WHERE e.id = %s AND g.phone IS NOT NULL AND g.phone != ''
         """, (event_id,))
-
         guests = cur.fetchall()
         cur.close()
         conn.close()
@@ -504,37 +516,10 @@ async def send_bulk_rsvp(event_id: int):
         if not guests:
             raise HTTPException(status_code=404, detail="No guests with phone numbers found for this event")
 
-        results = []
-        for guest_id, guest_name, phone, event_name, event_date, event_location in guests:
-            # Format phone number for Israeli numbers (050... -> 97250...)
-            formatted_phone = format_israeli_phone(phone)
-
-            # Send RSVP message
-            result = whatsapp_service.send_event_rsvp_buttons(
-                destination=formatted_phone,
-                guest_name=guest_name,
-                event_name=event_name,
-                event_date=event_date.strftime('%d/%m/%Y') if isinstance(event_date, datetime) else str(event_date),
-                event_location=event_location or "יודיע בהמשך"
-            )
-
-            results.append({
-                'guest_id': guest_id,
-                'guest_name': guest_name,
-                'phone': formatted_phone,
-                'success': result['success'],
-                'data': result.get('data') if result['success'] else result.get('error')
-            })
-            time.sleep(0.1)  # 100ms between sends to avoid overloading the server
-
-        successful = sum(1 for r in results if r['success'])
-        failed = len(results) - successful
-
+        background_tasks.add_task(_bg_send_bulk_rsvp, guests)
         return {
-            'total': len(results),
-            'successful': successful,
-            'failed': failed,
-            'results': results
+            'total': len(guests),
+            'message': f'השליחה התחילה ברקע ל-{len(guests)} אורחים'
         }
 
     except HTTPException:

@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, Query
+from fastapi import APIRouter, HTTPException, Query, BackgroundTasks
 from pydantic import BaseModel
 from typing import Optional, List
 import psycopg2
@@ -1570,21 +1570,39 @@ async def update_scheduled_message_admin(msg_id: int, body: dict):
 # MANUAL SEND - ADMIN TRIGGERED
 # ============================================================================
 
+def _bg_send_invitation(event_id: int, event_data: dict, use_sms: bool):
+    """Background task: שולח הזמנות לכל האורחים שלא הגיבו."""
+    from scheduler_service import get_guests_for_event, send_whatsapp_invitation, send_sms_invitation
+    import time
+    guests = get_guests_for_event(event_id, exclude_responded=True)
+    print(f"[BG] send-invitation event={event_id}, guests={len(guests)}, sms={use_sms}")
+    for guest in guests:
+        result = send_sms_invitation(guest, event_data) if use_sms else send_whatsapp_invitation(guest, event_data)
+        print(f"[BG] {'✓' if result['success'] else '✗'} {guest['name']}")
+        time.sleep(0.1)
+
+
+def _bg_send_day_sms(event_id: int, event_title: str, template: str, waze_link: str):
+    """Background task: שולח SMS יום האירוע לכל האורחים עם שולחן."""
+    from scheduler_service import get_guests_with_table_for_event, send_day_of_event_sms
+    import time
+    guests = get_guests_with_table_for_event(event_id)
+    print(f"[BG] send-day-sms event={event_id}, guests={len(guests)}")
+    for guest in guests:
+        result = send_day_of_event_sms(guest, event_title, template, waze_link)
+        print(f"[BG] {'✓' if result['success'] else '✗'} {guest['name']}")
+        time.sleep(0.1)
+
+
 @router.post("/api/admin/events/{event_id}/send-invitation")
-async def admin_send_invitation(event_id: int):
+async def admin_send_invitation(event_id: int, background_tasks: BackgroundTasks):
     """
     שליחה ידנית של הזמנה לכל האורחים שלא אישרו/דחו.
-    שולח וואצאפ לחבילות 3/4, סמס לחבילה 2.
-    משתמש באותה לוגיקה כמו ההודעות המתוזמנות.
+    רצה ברקע כדי לא לחסום את השרת.
     """
     conn = None
     try:
-        from scheduler_service import (
-            get_guests_for_event, send_whatsapp_invitation,
-            send_sms_invitation, format_israeli_phone
-        )
-        from datetime import date as date_type
-
+        from scheduler_service import get_guests_for_event
         conn = get_db_connection()
         cursor = conn.cursor()
 
@@ -1600,34 +1618,18 @@ async def admin_send_invitation(event_id: int):
             raise HTTPException(status_code=404, detail="אירוע לא נמצא")
 
         event_data = {
-            'event_id': row[0],
-            'event_title': row[1],
-            'event_date': row[2],
-            'event_time': row[3],
-            'event_location': row[4],
-            'invitation_data': row[5],
-            'package_id': row[6]
+            'event_id': row[0], 'event_title': row[1], 'event_date': row[2],
+            'event_time': row[3], 'event_location': row[4],
+            'invitation_data': row[5], 'package_id': row[6]
         }
-        package_id = row[6]
-        use_sms = package_id == 2
+        use_sms = row[6] == 2
 
-        # שולח רק למי שלא אישר/דחה
         guests = get_guests_for_event(event_id, exclude_responded=True)
         if not guests:
-            return {'sent': 0, 'failed': 0, 'message': 'אין אורחים לשליחה (כולם כבר הגיבו)'}
+            return {'message': 'אין אורחים לשליחה (כולם כבר הגיבו)', 'total_guests': 0}
 
-        sent, failed = 0, 0
-        for guest in guests:
-            if use_sms:
-                result = send_sms_invitation(guest, event_data)
-            else:
-                result = send_whatsapp_invitation(guest, event_data)
-            if result['success']:
-                sent += 1
-            else:
-                failed += 1
-
-        return {'sent': sent, 'failed': failed, 'total_guests': len(guests)}
+        background_tasks.add_task(_bg_send_invitation, event_id, event_data, use_sms)
+        return {'message': f'השליחה התחילה ברקע ל-{len(guests)} אורחים', 'total_guests': len(guests)}
 
     except HTTPException:
         raise
@@ -1639,26 +1641,20 @@ async def admin_send_invitation(event_id: int):
 
 
 @router.post("/api/admin/events/{event_id}/send-day-sms")
-async def admin_send_day_sms(event_id: int):
+async def admin_send_day_sms(event_id: int, background_tasks: BackgroundTasks):
     """
     שליחה ידנית של SMS יום האירוע עם מספר שולחן.
-    שולח לכל מי שאישר הגעה ויש לו מספר שולחן.
-    משתמש באותה לוגיקה כמו ה-cron.
+    רצה ברקע כדי לא לחסום את השרת.
     """
     conn = None
     try:
-        from scheduler_service import (
-            get_guests_with_table_for_event, send_day_of_event_sms,
-            DEFAULT_DAY_OF_EVENT_SMS
-        )
-
+        from scheduler_service import get_guests_with_table_for_event, DEFAULT_DAY_OF_EVENT_SMS
         conn = get_db_connection()
         cursor = conn.cursor()
 
         cursor.execute("""
             SELECT e.event_title, e.message_settings, e.bit_payment_link
-            FROM events e
-            WHERE e.id = %s
+            FROM events e WHERE e.id = %s
         """, (event_id,))
         row = cursor.fetchone()
         if not row:
@@ -1671,17 +1667,10 @@ async def admin_send_day_sms(event_id: int):
 
         guests = get_guests_with_table_for_event(event_id)
         if not guests:
-            return {'sent': 0, 'failed': 0, 'message': 'אין אורחים עם מספר שולחן מוקצה'}
+            return {'message': 'אין אורחים עם מספר שולחן מוקצה', 'total_guests': 0}
 
-        sent, failed = 0, 0
-        for guest in guests:
-            result = send_day_of_event_sms(guest, event_title, template, waze_link)
-            if result['success']:
-                sent += 1
-            else:
-                failed += 1
-
-        return {'sent': sent, 'failed': failed, 'total_guests': len(guests)}
+        background_tasks.add_task(_bg_send_day_sms, event_id, event_title, template, waze_link)
+        return {'message': f'השליחה התחילה ברקע ל-{len(guests)} אורחים', 'total_guests': len(guests)}
 
     except HTTPException:
         raise
