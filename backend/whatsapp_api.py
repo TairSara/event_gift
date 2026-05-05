@@ -7,11 +7,29 @@ from typing import List, Optional, Dict, Any
 from datetime import datetime
 import psycopg2
 import os
+import time
+from collections import OrderedDict
 from db import get_db_connection
 from whatsapp_interactive import whatsapp_service, DEFAULT_INVITATION_IMAGE
 from sms_service import SMS019Service
 
 sms_service = SMS019Service()
+
+# In-memory deduplication cache for webhook message IDs
+# Keeps last 2000 processed message IDs to prevent double-processing on Gupshup retries
+_processed_message_ids: OrderedDict = OrderedDict()
+_MAX_CACHE_SIZE = 2000
+
+def _is_duplicate_webhook(message_id: str) -> bool:
+    """Returns True if this message_id was already processed (dedup)."""
+    if not message_id:
+        return False
+    if message_id in _processed_message_ids:
+        return True
+    _processed_message_ids[message_id] = True
+    if len(_processed_message_ids) > _MAX_CACHE_SIZE:
+        _processed_message_ids.popitem(last=False)
+    return False
 
 router = APIRouter(prefix="/api/whatsapp", tags=["WhatsApp"])
 
@@ -507,6 +525,7 @@ async def send_bulk_rsvp(event_id: int):
                 'success': result['success'],
                 'data': result.get('data') if result['success'] else result.get('error')
             })
+            time.sleep(0.1)  # 100ms between sends to avoid overloading the server
 
         successful = sum(1 for r in results if r['success'])
         failed = len(results) - successful
@@ -616,6 +635,12 @@ async def gupshup_webhook(payload: Dict = Body(...)):
         msg_type = message_payload.get('type')
         sender_phone = message_payload.get('sender', {}).get('phone')
 
+        # Deduplication: ignore retries from Gupshup for already-processed messages
+        incoming_msg_id = message_payload.get('id') or message_payload.get('gsId')
+        if incoming_msg_id and _is_duplicate_webhook(incoming_msg_id):
+            print(f"⚡ Duplicate webhook ignored: message_id={incoming_msg_id}")
+            return {"status": "ignored", "reason": "duplicate"}
+
         # Handle quick_reply (buttons from templates) OR button_reply (interactive buttons)
         if msg_type in ['button_reply', 'quick_reply']:
             # For quick_reply, button text is in payload.postbackText or payload.text
@@ -723,6 +748,16 @@ async def gupshup_webhook(payload: Dict = Body(...)):
 
                 target_guest_id = row[0]
                 print(f"🎯 Targeting guest_id={target_guest_id} for phone {sender_phone}")
+
+                # Check if guest already has a final status (dedup for DB level)
+                cur.execute("SELECT status FROM guests WHERE id = %s", (target_guest_id,))
+                current_status_row = cur.fetchone()
+                current_status = current_status_row[0] if current_status_row else None
+                if current_status in ('confirmed', 'declined'):
+                    print(f"⚡ Guest {target_guest_id} already has status '{current_status}', ignoring duplicate webhook")
+                    cur.close()
+                    conn.close()
+                    return {"status": "ignored", "reason": "already_processed"}
 
                 if new_status == 'confirmed':
                     # Don't update status yet - wait for guest count

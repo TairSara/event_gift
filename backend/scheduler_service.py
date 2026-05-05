@@ -10,6 +10,7 @@ This service handles:
 from datetime import datetime, date, timedelta
 from typing import Optional, List, Dict, Any
 import json
+import time
 import psycopg2
 from db import get_db_connection
 from whatsapp_interactive import whatsapp_service, DEFAULT_INVITATION_IMAGE
@@ -691,6 +692,8 @@ def process_scheduled_message(scheduled_msg: dict) -> dict:
             failed_count += 1
             errors.append(f"{guest['name']}: {result.get('error', 'Unknown error')}")
             print(f"  ✗ Failed for {guest['name']}: {result.get('error')}")
+
+        time.sleep(0.1)  # 100ms between sends to avoid overloading the server
 
     # Update status
     error_message = "; ".join(errors) if errors else None
