@@ -57,6 +57,9 @@ class MessageSettingsUpdate(BaseModel):
     sms_custom_message: Optional[str] = None
     # Day-of-event SMS
     day_of_event_sms_template: Optional[str] = None
+    day_of_event_sms_no_table_template: Optional[str] = None
+    # SMS fallback (for WhatsApp packages when number has no WhatsApp)
+    sms_fallback_template: Optional[str] = None
     # Manual package RSVP
     rsvp_custom_text: Optional[str] = None
 
