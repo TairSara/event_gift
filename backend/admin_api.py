@@ -1582,14 +1582,14 @@ def _bg_send_invitation(event_id: int, event_data: dict, use_sms: bool):
         time.sleep(0.1)
 
 
-def _bg_send_day_sms(event_id: int, event_title: str, template: str, waze_link: str):
-    """Background task: שולח SMS יום האירוע לכל האורחים עם שולחן."""
+def _bg_send_day_sms(event_id: int, event_title: str, template: str, waze_link: str, no_table_template: str = None):
+    """Background task: שולח SMS יום האירוע לכל האורחים המאושרים."""
     from scheduler_service import get_guests_with_table_for_event, send_day_of_event_sms
     import time
     guests = get_guests_with_table_for_event(event_id)
     print(f"[BG] send-day-sms event={event_id}, guests={len(guests)}")
     for guest in guests:
-        result = send_day_of_event_sms(guest, event_title, template, waze_link)
+        result = send_day_of_event_sms(guest, event_title, template, waze_link, no_table_template)
         print(f"[BG] {'✓' if result['success'] else '✗'} {guest['name']}")
         time.sleep(0.1)
 
@@ -1648,7 +1648,7 @@ async def admin_send_day_sms(event_id: int, background_tasks: BackgroundTasks):
     """
     conn = None
     try:
-        from scheduler_service import get_guests_with_table_for_event, DEFAULT_DAY_OF_EVENT_SMS
+        from scheduler_service import get_guests_with_table_for_event, DEFAULT_DAY_OF_EVENT_SMS, DEFAULT_DAY_OF_EVENT_SMS_NO_TABLE
         conn = get_db_connection()
         cursor = conn.cursor()
 
@@ -1664,12 +1664,13 @@ async def admin_send_day_sms(event_id: int, background_tasks: BackgroundTasks):
         message_settings = row[1] or {}
         waze_link = row[2] or ''
         template = message_settings.get('day_of_event_sms_template', DEFAULT_DAY_OF_EVENT_SMS)
+        no_table_template = message_settings.get('day_of_event_sms_no_table_template', DEFAULT_DAY_OF_EVENT_SMS_NO_TABLE)
 
         guests = get_guests_with_table_for_event(event_id)
         if not guests:
-            return {'message': 'אין אורחים עם מספר שולחן מוקצה', 'total_guests': 0}
+            return {'message': 'אין אורחים מאושרים לשליחה', 'total_guests': 0}
 
-        background_tasks.add_task(_bg_send_day_sms, event_id, event_title, template, waze_link)
+        background_tasks.add_task(_bg_send_day_sms, event_id, event_title, template, waze_link, no_table_template)
         return {'message': f'השליחה התחילה ברקע ל-{len(guests)} אורחים', 'total_guests': len(guests)}
 
     except HTTPException:

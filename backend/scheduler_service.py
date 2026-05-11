@@ -486,6 +486,8 @@ def send_sms_invitation(guest: dict, event_data: dict) -> dict:
 
 DEFAULT_DAY_OF_EVENT_SMS = "אורחים יקרים,\n\nנרגשים להזכיר כי היום נחגוג יחד את החתונה של X!\n\nלנוחיותכם,\nמספר השולחן שלכם הוא: {table_number}\n\nקישור וויז להגעה לאירוע: {waze_link}\n\nנשמח לראותכם ולחגוג יחד. 🎉"
 
+DEFAULT_DAY_OF_EVENT_SMS_NO_TABLE = "אורחים יקרים,\n\nנרגשים להזכיר כי היום נחגוג יחד את החתונה של X!\n\nקישור וויז להגעה לאירוע: {waze_link}\n\nנשמח לראותכם ולחגוג יחד. 🎉"
+
 
 def get_events_with_today_as_event_date() -> list:
     """Get all active events where today is the event date"""
@@ -522,7 +524,7 @@ def get_events_with_today_as_event_date() -> list:
 
 
 def get_guests_with_table_for_event(event_id: int) -> list:
-    """Get guests that have a table number assigned"""
+    """Get confirmed guests - with or without table number"""
     conn = None
     cur = None
     try:
@@ -533,7 +535,6 @@ def get_guests_with_table_for_event(event_id: int) -> list:
             FROM guests
             WHERE event_id = %s
               AND phone IS NOT NULL AND phone != ''
-              AND table_number IS NOT NULL
               AND (attendance_status = 'confirmed' OR status = 'confirmed')
         """, (event_id,))
         guests = []
@@ -546,7 +547,7 @@ def get_guests_with_table_for_event(event_id: int) -> list:
             })
         return guests
     except Exception as e:
-        print(f"Error getting guests with table for event {event_id}: {e}")
+        print(f"Error getting confirmed guests for event {event_id}: {e}")
         return []
     finally:
         if cur:
@@ -555,10 +556,16 @@ def get_guests_with_table_for_event(event_id: int) -> list:
             conn.close()
 
 
-def send_day_of_event_sms(guest: dict, event_title: str, template: str, waze_link: str = '') -> dict:
-    """Send day-of-event SMS with table number to a guest"""
+def send_day_of_event_sms(guest: dict, event_title: str, template: str, waze_link: str = '', no_table_template: str = None) -> dict:
+    """Send day-of-event SMS to a guest, using the appropriate template based on table assignment"""
     try:
-        message_text = template.replace('{table_number}', str(guest['table_number'])).replace('{waze_link}', waze_link)
+        table_number = guest.get('table_number')
+        if table_number is not None:
+            message_text = template.replace('{table_number}', str(table_number)).replace('{waze_link}', waze_link)
+        else:
+            # Use dedicated no-table template if provided, otherwise fall back to default
+            tmpl = no_table_template if no_table_template else DEFAULT_DAY_OF_EVENT_SMS_NO_TABLE
+            message_text = tmpl.replace('{waze_link}', waze_link)
         formatted_phone = format_israeli_phone(guest['phone'])
         result = sms_service.send_template_sms(
             destination=formatted_phone,
@@ -602,19 +609,21 @@ def process_day_of_event_sms() -> dict:
         message_settings = event['message_settings']
         waze_link = event.get('waze_link', '')
         template = message_settings.get('day_of_event_sms_template', DEFAULT_DAY_OF_EVENT_SMS)
+        no_table_template = message_settings.get('day_of_event_sms_no_table_template', DEFAULT_DAY_OF_EVENT_SMS_NO_TABLE)
 
         guests = get_guests_with_table_for_event(event_id)
         if not guests:
-            print(f"  No guests with table numbers for event {event_id} ({event_title})")
+            print(f"  No confirmed guests for event {event_id} ({event_title})")
             continue
 
-        print(f"  Sending day-of-event SMS for '{event_title}' to {len(guests)} guests")
+        print(f"  Sending day-of-event SMS for '{event_title}' to {len(guests)} confirmed guests")
 
         for guest in guests:
-            result = send_day_of_event_sms(guest, event_title, template, waze_link)
+            result = send_day_of_event_sms(guest, event_title, template, waze_link, no_table_template)
             if result['success']:
                 total_sent += 1
-                print(f"    ✓ {guest['name']} (שולחן {guest['table_number']})")
+                table_info = f"שולחן {guest['table_number']}" if guest.get('table_number') else "ללא שולחן"
+                print(f"    ✓ {guest['name']} ({table_info})")
             else:
                 total_failed += 1
                 print(f"    ✗ {guest['name']}: {result.get('error')}")

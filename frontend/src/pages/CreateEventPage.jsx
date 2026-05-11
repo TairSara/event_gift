@@ -41,7 +41,10 @@ export default function CreateEventPage() {
 
   // שלב 2 - הודעת SMS ביום האירוע (לכל החבילות האוטומטיות)
   const DEFAULT_DAY_SMS = `אורחים יקרים,\n\nנרגשים להזכיר כי היום נחגוג יחד את החתונה של X!\n\nלנוחיותכם,\nמספר השולחן שלכם הוא: {table_number}\n\nקישור וויז להגעה לאירוע: {waze_link}\n\nנשמח לראותכם ולחגוג יחד. 🎉`;
+  const DEFAULT_DAY_SMS_NO_TABLE = `אורחים יקרים,\n\nנרגשים להזכיר כי היום נחגוג יחד את החתונה של X!\n\nקישור וויז להגעה לאירוע: {waze_link}\n\nנשמח לראותכם ולחגוג יחד. 🎉`;
   const [dayOfEventSmsTemplate, setDayOfEventSmsTemplate] = useState(DEFAULT_DAY_SMS);
+  const [dayOfEventSmsNoTableTemplate, setDayOfEventSmsNoTableTemplate] = useState(DEFAULT_DAY_SMS_NO_TABLE);
+  const [daySmsSubTab, setDaySmsSubTab] = useState('with_table');
 
   const availablePackages = userPackages.filter((pkg) => pkg.status === "active");
 
@@ -186,9 +189,12 @@ export default function CreateEventPage() {
         bodyData.message_settings = { rsvp_custom_text: rsvpCustomText.trim() };
       }
 
-      // לחבילות אוטומטיות - שמור תבנית SMS יום האירוע
+      // לחבילות אוטומטיות - שמור תבניות SMS יום האירוע
       if (!isManualPackage) {
-        bodyData.message_settings = { day_of_event_sms_template: dayOfEventSmsTemplate.trim() };
+        bodyData.message_settings = {
+          day_of_event_sms_template: dayOfEventSmsTemplate.trim(),
+          day_of_event_sms_no_table_template: dayOfEventSmsNoTableTemplate.trim()
+        };
       }
 
       const response = await fetch(`${API_URL}/packages/events`, {
@@ -631,19 +637,67 @@ export default function CreateEventPage() {
               <div className="cep-form-group" style={{ marginTop: '1.5rem' }}>
                 <label>
                   <i className="fas fa-sms" />
-                  הודעת SMS ביום האירוע (עם מספר שולחן)
+                  הודעת SMS ביום האירוע
                 </label>
-                <p className="cep-field-hint-ok" style={{ marginBottom: '0.5rem' }}>
-                  ההודעה תישלח אוטומטית ביום האירוע לכל אורח שיש לו מספר שולחן.
-                  <strong>{'{table_number}'}</strong> ו-<strong>{'{waze_link}'}</strong> יוחלפו אוטומטית — אין לשנות אותם.
+                <p className="cep-field-hint-ok" style={{ marginBottom: '0.75rem' }}>
+                  ההודעה תישלח אוטומטית ביום האירוע לכל אורח מאושר. אורחים עם מספר שולחן יקבלו הודעה אחת, אורחים ללא שולחן — הודעה אחרת.
                 </p>
-                <textarea
-                  className="cep-textarea"
-                  rows={3}
-                  value={dayOfEventSmsTemplate}
-                  onChange={(e) => setDayOfEventSmsTemplate(e.target.value)}
-                  dir="rtl"
-                />
+
+                {/* Sub-tab switcher */}
+                <div style={{ display: 'flex', gap: '0.5rem', marginBottom: '0.75rem' }}>
+                  <button
+                    type="button"
+                    onClick={() => setDaySmsSubTab('with_table')}
+                    style={{
+                      padding: '0.4rem 1rem', borderRadius: '20px', border: '1px solid #ddd', cursor: 'pointer', fontSize: '0.85rem',
+                      background: daySmsSubTab === 'with_table' ? 'var(--primary, #7c3aed)' : '#fff',
+                      color: daySmsSubTab === 'with_table' ? '#fff' : '#333',
+                    }}
+                  >
+                    עם מספר שולחן
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setDaySmsSubTab('no_table')}
+                    style={{
+                      padding: '0.4rem 1rem', borderRadius: '20px', border: '1px solid #ddd', cursor: 'pointer', fontSize: '0.85rem',
+                      background: daySmsSubTab === 'no_table' ? 'var(--primary, #7c3aed)' : '#fff',
+                      color: daySmsSubTab === 'no_table' ? '#fff' : '#333',
+                    }}
+                  >
+                    ללא מספר שולחן
+                  </button>
+                </div>
+
+                {daySmsSubTab === 'with_table' && (
+                  <>
+                    <p className="cep-field-hint-ok" style={{ marginBottom: '0.4rem' }}>
+                      <strong>{'{table_number}'}</strong> ו-<strong>{'{waze_link}'}</strong> יוחלפו אוטומטית — אין לשנות אותם.
+                    </p>
+                    <textarea
+                      className="cep-textarea"
+                      rows={6}
+                      value={dayOfEventSmsTemplate}
+                      onChange={(e) => setDayOfEventSmsTemplate(e.target.value)}
+                      dir="rtl"
+                    />
+                  </>
+                )}
+
+                {daySmsSubTab === 'no_table' && (
+                  <>
+                    <p className="cep-field-hint-ok" style={{ marginBottom: '0.4rem' }}>
+                      <strong>{'{waze_link}'}</strong> יוחלף אוטומטית — אין לשנות אותו.
+                    </p>
+                    <textarea
+                      className="cep-textarea"
+                      rows={6}
+                      value={dayOfEventSmsNoTableTemplate}
+                      onChange={(e) => setDayOfEventSmsNoTableTemplate(e.target.value)}
+                      dir="rtl"
+                    />
+                  </>
+                )}
               </div>
 
               <div className="cep-footer">

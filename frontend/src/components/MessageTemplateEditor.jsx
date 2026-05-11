@@ -28,6 +28,14 @@ const DEFAULT_DAY_SMS = `אורחים יקרים,
 
 נשמח לראותכם ולחגוג יחד. 🎉`;
 
+const DEFAULT_DAY_SMS_NO_TABLE = `אורחים יקרים,
+
+נרגשים להזכיר כי היום נחגוג יחד את החתונה של X!
+
+קישור וויז להגעה לאירוע: {waze_link}
+
+נשמח לראותכם ולחגוג יחד. 🎉`;
+
 export default function MessageTemplateEditor({ event, onUpdate, showSuccess, showInfo }) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState('whatsapp');
@@ -36,8 +44,10 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
   // Editable field - only event name can be edited here
   const [eventName, setEventName] = useState('');
 
-  // Day-of-event SMS template
+  // Day-of-event SMS templates
   const [dayOfEventSms, setDayOfEventSms] = useState('');
+  const [dayOfEventSmsNoTable, setDayOfEventSmsNoTable] = useState('');
+  const [daySmsSubTab, setDaySmsSubTab] = useState('with_table');
 
   // SMS fallback template (for WhatsApp packages - sent when number has no WhatsApp)
   const [smsFallback, setSmsFallback] = useState('');
@@ -54,11 +64,13 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
       setSmsFallback(event.message_settings?.sms_fallback_template ||
         `הנכם מוזמנים ל${event.event_title || '[שם האירוע]'}, נשמח שתאשרו הגעתכם בלינק הבא: {rsvp_link}`);
       const savedTemplate = event.message_settings?.day_of_event_sms_template;
-      // If saved template is the old format (contains {event_name}), use the new default
       const template = (savedTemplate && !savedTemplate.includes('{event_name}'))
         ? savedTemplate
         : DEFAULT_DAY_SMS;
       setDayOfEventSms(template);
+
+      const savedNoTableTemplate = event.message_settings?.day_of_event_sms_no_table_template;
+      setDayOfEventSmsNoTable(savedNoTableTemplate || DEFAULT_DAY_SMS_NO_TABLE);
       setEventLocation(event.event_location || '');
 
       // Parse date from event_date, time from event_time
@@ -87,7 +99,7 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
       });
 
       // Update day-of-event SMS template in message_settings
-      const newSettings = { ...(event.message_settings || {}), day_of_event_sms_template: dayOfEventSms.trim(), sms_fallback_template: smsFallback.trim() };
+      const newSettings = { ...(event.message_settings || {}), day_of_event_sms_template: dayOfEventSms.trim(), day_of_event_sms_no_table_template: dayOfEventSmsNoTable.trim(), sms_fallback_template: smsFallback.trim() };
       const smsResponse = await fetch(`${API_URL}/packages/events/${event.id}/message-settings`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
@@ -350,50 +362,91 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
             <div className="template-editor-section">
               <h4>הודעת SMS ביום האירוע</h4>
               <p className="template-description">
-                הודעה זו תישלח אוטומטית ביום האירוע לכל אורח שיש לו מספר שולחן מוקצה.
+                ההודעה תישלח אוטומטית ביום האירוע לכל אורח מאושר. אורחים עם מספר שולחן יקבלו הודעה אחת, אורחים ללא שולחן יקבלו הודעה אחרת.
               </p>
 
-              <div className="template-fields">
-                <div className="field-group">
-                  <label>תבנית ההודעה</label>
-                  <textarea
-                    rows={8}
-                    value={dayOfEventSms}
-                    onChange={(e) => {
-                      const val = e.target.value;
-                      // Prevent removing the required placeholders
-                      if (!val.includes('{table_number}') || !val.includes('{waze_link}')) {
-                        return;
-                      }
-                      setDayOfEventSms(val);
-                    }}
-                    style={{ width: '100%', padding: '0.6rem', borderRadius: '8px', border: '1px solid #ddd', fontFamily: 'inherit', fontSize: '0.9rem', resize: 'vertical' }}
-                    dir="rtl"
-                  />
-                  <span className="field-hint">
-                    <strong>{'{table_number}'}</strong> ו-<strong>{'{waze_link}'}</strong> חייבים להישאר בהודעה — לא ניתן למחוק אותם
-                  </span>
-                </div>
-
-                <div className="field-info">
-                  <i className="fas fa-info-circle"></i>
-                  <span>ההודעה תישלח רק לאורחים שהוקצה להם מספר שולחן</span>
-                </div>
+              {/* Sub-tab switcher */}
+              <div className="editor-tabs" style={{ marginBottom: '1rem' }}>
+                <button
+                  className={`editor-tab ${daySmsSubTab === 'with_table' ? 'active' : ''}`}
+                  onClick={() => setDaySmsSubTab('with_table')}
+                >
+                  <i className="fas fa-chair"></i>
+                  עם מספר שולחן
+                </button>
+                <button
+                  className={`editor-tab ${daySmsSubTab === 'no_table' ? 'active' : ''}`}
+                  onClick={() => setDaySmsSubTab('no_table')}
+                >
+                  <i className="fas fa-user"></i>
+                  ללא מספר שולחן
+                </button>
               </div>
 
-              <div className="template-preview">
-                <h5>
-                  <i className="fas fa-eye"></i>
-                  תצוגה מקדימה
-                </h5>
-                <div className="preview-message sms-preview">
-                  <div className="preview-bubble" style={{ whiteSpace: 'pre-line' }}>
-                    {dayOfEventSms
-                      .replace('{table_number}', '5')
-                      .replace('{waze_link}', event?.bit_payment_link || '[קישור וויז]')}
+              {/* With table template */}
+              {daySmsSubTab === 'with_table' && (
+                <div className="template-fields">
+                  <div className="field-group">
+                    <label>תבנית ההודעה — לאורחים עם מספר שולחן</label>
+                    <textarea
+                      rows={8}
+                      value={dayOfEventSms}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (!val.includes('{table_number}') || !val.includes('{waze_link}')) return;
+                        setDayOfEventSms(val);
+                      }}
+                      style={{ width: '100%', padding: '0.6rem', borderRadius: '8px', border: '1px solid #ddd', fontFamily: 'inherit', fontSize: '0.9rem', resize: 'vertical' }}
+                      dir="rtl"
+                    />
+                    <span className="field-hint">
+                      <strong>{'{table_number}'}</strong> ו-<strong>{'{waze_link}'}</strong> חייבים להישאר בהודעה
+                    </span>
+                  </div>
+                  <div className="template-preview">
+                    <h5><i className="fas fa-eye"></i> תצוגה מקדימה</h5>
+                    <div className="preview-message sms-preview">
+                      <div className="preview-bubble" style={{ whiteSpace: 'pre-line' }}>
+                        {dayOfEventSms
+                          .replace('{table_number}', '5')
+                          .replace('{waze_link}', event?.bit_payment_link || '[קישור וויז]')}
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
+
+              {/* No table template */}
+              {daySmsSubTab === 'no_table' && (
+                <div className="template-fields">
+                  <div className="field-group">
+                    <label>תבנית ההודעה — לאורחים ללא מספר שולחן</label>
+                    <textarea
+                      rows={8}
+                      value={dayOfEventSmsNoTable}
+                      onChange={(e) => {
+                        const val = e.target.value;
+                        if (!val.includes('{waze_link}')) return;
+                        setDayOfEventSmsNoTable(val);
+                      }}
+                      style={{ width: '100%', padding: '0.6rem', borderRadius: '8px', border: '1px solid #ddd', fontFamily: 'inherit', fontSize: '0.9rem', resize: 'vertical' }}
+                      dir="rtl"
+                    />
+                    <span className="field-hint">
+                      <strong>{'{waze_link}'}</strong> חייב להישאר בהודעה
+                    </span>
+                  </div>
+                  <div className="template-preview">
+                    <h5><i className="fas fa-eye"></i> תצוגה מקדימה</h5>
+                    <div className="preview-message sms-preview">
+                      <div className="preview-bubble" style={{ whiteSpace: 'pre-line' }}>
+                        {dayOfEventSmsNoTable
+                          .replace('{waze_link}', event?.bit_payment_link || '[קישור וויז]')}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
           )}
 
