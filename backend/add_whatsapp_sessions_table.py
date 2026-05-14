@@ -22,6 +22,13 @@ def create_whatsapp_sessions_table():
         """)
         if cur.fetchone()[0]:
             print("whatsapp_sessions table already exists.")
+            # Add count_question_sent_at column if missing
+            cur.execute("""
+                ALTER TABLE whatsapp_sessions
+                ADD COLUMN IF NOT EXISTS count_question_sent_at TIMESTAMP DEFAULT NULL;
+            """)
+            conn.commit()
+            print("Ensured count_question_sent_at column exists.")
             return
 
         print("Creating whatsapp_sessions table...")
@@ -30,7 +37,8 @@ def create_whatsapp_sessions_table():
                 phone VARCHAR(20) PRIMARY KEY,
                 event_id INTEGER NOT NULL REFERENCES events(id) ON DELETE CASCADE,
                 guest_id INTEGER NOT NULL REFERENCES guests(id) ON DELETE CASCADE,
-                updated_at TIMESTAMP DEFAULT NOW()
+                updated_at TIMESTAMP DEFAULT NOW(),
+                count_question_sent_at TIMESTAMP DEFAULT NULL
             );
         """)
         conn.commit()

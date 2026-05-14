@@ -738,13 +738,26 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                 cur.execute("SELECT status FROM guests WHERE id = %s", (target_guest_id,))
                 current_status_row = cur.fetchone()
                 current_status = current_status_row[0] if current_status_row else None
-                if current_status in ('confirmed', 'declined'):
-                    print(f"⚡ Guest {target_guest_id} already has status '{current_status}', ignoring duplicate webhook")
+                if current_status == 'declined':
+                    print(f"⚡ Guest {target_guest_id} already declined, ignoring duplicate webhook")
                     cur.close()
                     conn.close()
-                    return {"status": "ignored", "reason": "already_processed"}
+                    return {"status": "ignored", "reason": "already_declined"}
 
                 if new_status == 'confirmed':
+                    # Check if we already sent the count question in the last 24h (dedup)
+                    cur.execute("""
+                        SELECT count_question_sent_at FROM whatsapp_sessions
+                        WHERE phone = %s AND count_question_sent_at > NOW() - INTERVAL '24 hours'
+                    """, (clean_phone,))
+                    already_asked = cur.fetchone()
+
+                    if already_asked:
+                        print(f"⚡ Already sent count question to {sender_phone} within 24h, skipping")
+                        cur.close()
+                        conn.close()
+                        return {"status": "ignored", "reason": "count_question_already_sent"}
+
                     # Don't update status yet - wait for guest count
                     text_message = """נהדר! 🎉 שמחים שתגיעו!
 
@@ -759,6 +772,12 @@ async def gupshup_webhook(payload: Dict = Body(...)):
 
                     if result['success']:
                         print(f"📩 Sent guest count question to: {sender_phone}")
+                        # Record that we sent the question to prevent duplicates
+                        cur.execute("""
+                            UPDATE whatsapp_sessions SET count_question_sent_at = NOW()
+                            WHERE phone = %s
+                        """, (clean_phone,))
+                        conn.commit()
                     else:
                         print(f"❌ Failed to send guest count question: {result.get('error')}")
                 else:
@@ -858,6 +877,12 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                         print(f"✅ Updated {len(updated_guests)} guests:")
                         for guest in updated_guests:
                             print(f"   ID: {guest[0]}, Name: {guest[1]}, Phone: {guest[2]}, Count: {guest[3]}, Status: {guest[4]}")
+
+                        # Reset count_question_sent_at so future events work normally
+                        cur.execute("""
+                            UPDATE whatsapp_sessions SET count_question_sent_at = NULL
+                            WHERE phone = %s
+                        """, (clean_phone,))
 
                         conn.commit()
                         cur.close()
