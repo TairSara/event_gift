@@ -70,7 +70,10 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
       setDayOfEventSms(template);
 
       const savedNoTableTemplate = event.message_settings?.day_of_event_sms_no_table_template;
-      setDayOfEventSmsNoTable(savedNoTableTemplate || DEFAULT_DAY_SMS_NO_TABLE);
+      const noTableTemplate = (savedNoTableTemplate && savedNoTableTemplate.includes('{waze_link}'))
+        ? savedNoTableTemplate
+        : DEFAULT_DAY_SMS_NO_TABLE;
+      setDayOfEventSmsNoTable(noTableTemplate);
       setEventLocation(event.event_location || '');
 
       // Parse date from event_date, time from event_time
@@ -420,7 +423,16 @@ export default function MessageTemplateEditor({ event, onUpdate, showSuccess, sh
               {daySmsSubTab === 'no_table' && (
                 <div className="template-fields">
                   <div className="field-group">
-                    <label>תבנית ההודעה — לאורחים ללא מספר שולחן</label>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '0.3rem' }}>
+                      <label style={{ margin: 0 }}>תבנית ההודעה — לאורחים ללא מספר שולחן</label>
+                      <button
+                        type="button"
+                        onClick={() => setDayOfEventSmsNoTable(DEFAULT_DAY_SMS_NO_TABLE)}
+                        style={{ fontSize: '0.78rem', padding: '0.2rem 0.6rem', borderRadius: '6px', border: '1px solid #ccc', background: '#f5f5f5', cursor: 'pointer', color: '#555' }}
+                      >
+                        אפס לברירת מחדל
+                      </button>
+                    </div>
                     <textarea
                       rows={8}
                       value={dayOfEventSmsNoTable}
