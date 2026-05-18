@@ -276,7 +276,6 @@ def get_guests_for_event(event_id: int, exclude_responded: bool = False) -> List
                   AND phone IS NOT NULL
                   AND phone != ''
                   AND (status IS NULL OR status NOT IN ('confirmed', 'declined'))
-                  AND (attendance_status IS NULL OR attendance_status NOT IN ('confirmed', 'declined'))
             """, (event_id,))
         else:
             cur.execute("""
