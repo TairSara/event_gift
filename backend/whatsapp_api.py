@@ -758,14 +758,14 @@ async def gupshup_webhook(payload: Dict = Body(...)):
                         conn.close()
                         return {"status": "ignored", "reason": "count_question_already_sent"}
 
-                    # Mark attendance_status = 'confirmed' immediately so scheduler won't re-send to this guest
+                    # Mark both fields = 'confirmed' immediately so scheduler won't re-send to this guest
                     # even if they never reply with a count number
                     cur.execute("""
-                        UPDATE guests SET attendance_status = 'confirmed', updated_at = NOW()
+                        UPDATE guests SET status = 'confirmed', attendance_status = 'confirmed', updated_at = NOW()
                         WHERE id = %s
                     """, (target_guest_id,))
                     conn.commit()
-                    print(f"✅ Marked attendance_status=confirmed for guest_id={target_guest_id} (awaiting count)")
+                    print(f"✅ Marked status+attendance_status=confirmed for guest_id={target_guest_id} (awaiting count)")
 
                     # Don't update status yet - wait for guest count
                     text_message = """נהדר! 🎉 שמחים שתגיעו!
