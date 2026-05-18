@@ -1189,10 +1189,10 @@ async def update_guest_count_admin(guest_id: int, body: dict):
 
         cursor.execute("""
             UPDATE guests
-            SET guests_count = %s, updated_at = NOW()
+            SET guests_count = %s, attending_count = %s, updated_at = NOW()
             WHERE id = %s
             RETURNING id, full_name, guests_count
-        """, (guests_count, guest_id))
+        """, (guests_count, guests_count, guest_id))
 
         result = cursor.fetchone()
         if not result:
