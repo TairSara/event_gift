@@ -1682,6 +1682,112 @@ async def admin_send_day_sms(event_id: int, background_tasks: BackgroundTasks):
             conn.close()
 
 
+@router.post("/api/admin/scheduled-messages/{msg_id}/send-now")
+async def admin_send_scheduled_message_now(msg_id: int, background_tasks: BackgroundTasks):
+    """
+    שליחה ידנית של הודעה מתוזמנת ספציפית.
+    הודעה 1 = הזמנה, הודעות 2+ = תזכורת.
+    מעדכן סטטוס ל-completed כדי שלא תישלח שוב אוטומטית.
+    """
+    conn = None
+    try:
+        from scheduler_service import get_guests_for_event, send_whatsapp_invitation, send_whatsapp_reminder, send_sms_invitation
+        conn = get_db_connection()
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            SELECT sm.id, sm.event_id, sm.message_number, sm.status,
+                   e.event_title, e.event_date, e.event_time, e.event_location,
+                   e.invitation_data, pp.package_id
+            FROM scheduled_messages sm
+            JOIN events e ON sm.event_id = e.id
+            LEFT JOIN package_purchases pp ON e.package_purchase_id = pp.id
+            WHERE sm.id = %s
+        """, (msg_id,))
+        row = cursor.fetchone()
+        if not row:
+            raise HTTPException(status_code=404, detail="הודעה מתוזמנת לא נמצאה")
+
+        scheduled_msg = {
+            'scheduled_message_id': row[0],
+            'event_id': row[1],
+            'message_number': row[2],
+            'event_title': row[4],
+            'event_date': row[5],
+            'event_time': row[6],
+            'event_location': row[7],
+            'invitation_data': row[8],
+            'package_id': row[9]
+        }
+
+        is_reminder = row[2] >= 2
+        use_sms = row[9] == 2
+
+        guests = get_guests_for_event(row[1], exclude_responded=is_reminder)
+        if not guests:
+            msg = 'אין אורחים לשליחה (כולם כבר הגיבו)' if is_reminder else 'אין אורחים לשליחה'
+            # Mark as completed even if no guests
+            cursor.execute("""
+                UPDATE scheduled_messages
+                SET status = 'completed', sent_at = NOW(), guests_sent_count = 0
+                WHERE id = %s
+            """, (msg_id,))
+            conn.commit()
+            return {'message': msg, 'total_guests': 0}
+
+        # Mark as completed immediately so scheduler won't re-send
+        cursor.execute("""
+            UPDATE scheduled_messages
+            SET status = 'completed', sent_at = NOW()
+            WHERE id = %s
+        """, (msg_id,))
+        conn.commit()
+
+        def _bg_send(scheduled_msg, guests, use_sms, is_reminder, msg_id):
+            import time
+            from db import get_db_connection as _get_db
+            sent = 0
+            failed = 0
+            for guest in guests:
+                if use_sms:
+                    result = send_sms_invitation(guest, scheduled_msg)
+                elif is_reminder:
+                    result = send_whatsapp_reminder(guest, scheduled_msg)
+                else:
+                    result = send_whatsapp_invitation(guest, scheduled_msg)
+                if result['success']:
+                    sent += 1
+                else:
+                    failed += 1
+                time.sleep(0.1)
+            # Update counts
+            try:
+                _conn = _get_db()
+                _cur = _conn.cursor()
+                _cur.execute("""
+                    UPDATE scheduled_messages
+                    SET guests_sent_count = %s, guests_failed_count = %s
+                    WHERE id = %s
+                """, (sent, failed, msg_id))
+                _conn.commit()
+                _cur.close()
+                _conn.close()
+            except Exception as e:
+                print(f"⚠️ Failed to update sent counts: {e}")
+
+        background_tasks.add_task(_bg_send, scheduled_msg, guests, use_sms, is_reminder, msg_id)
+        msg_type = 'תזכורת' if is_reminder else 'הזמנה'
+        return {'message': f'שליחת {msg_type} התחילה ברקע ל-{len(guests)} אורחים', 'total_guests': len(guests)}
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+    finally:
+        if conn:
+            conn.close()
+
+
 # ============================================================================
 # CONTACT MESSAGE UPDATE
 # ============================================================================

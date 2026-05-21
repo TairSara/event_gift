@@ -43,8 +43,9 @@ export default function AdminEventPage() {
   const [editingMsgDate, setEditingMsgDate] = useState('');
   const [editingMsgStatus, setEditingMsgStatus] = useState('');
 
-  const [confirmModal, setConfirmModal] = useState(null); // { type: 'invitation'|'day_sms', label: string }
+  const [confirmModal, setConfirmModal] = useState(null); // { type: 'invitation'|'day_sms'|'scheduled_msg', label: string, msgId?: number }
   const [isSending, setIsSending] = useState(false);
+  const [sendingMsgId, setSendingMsgId] = useState(null);
 
   const adminToken = localStorage.getItem('adminToken');
 
@@ -139,20 +140,22 @@ export default function AdminEventPage() {
     if (!confirmModal) return;
     setIsSending(true);
     try {
-      const endpoint = confirmModal.type === 'invitation'
-        ? `${API_URL}/admin/events/${eventId}/send-invitation`
-        : `${API_URL}/admin/events/${eventId}/send-day-sms`;
+      let endpoint;
+      if (confirmModal.type === 'invitation') {
+        endpoint = `${API_URL}/admin/events/${eventId}/send-invitation`;
+      } else if (confirmModal.type === 'day_sms') {
+        endpoint = `${API_URL}/admin/events/${eventId}/send-day-sms`;
+      } else if (confirmModal.type === 'scheduled_msg') {
+        endpoint = `${API_URL}/admin/scheduled-messages/${confirmModal.msgId}/send-now`;
+      }
       const res = await fetch(endpoint, {
         method: 'POST',
         headers: { Authorization: `Bearer ${adminToken}` }
       });
       const data = await res.json();
       if (res.ok) {
-        if (data.message) {
-          showInfo(data.message);
-        } else {
-          showSuccess(`נשלח ל-${data.sent} אורחים${data.failed > 0 ? `, נכשל: ${data.failed}` : ''}`);
-        }
+        showSuccess(data.message || `השליחה התחילה`);
+        if (confirmModal.type === 'scheduled_msg') fetchScheduledMessages();
       } else {
         showInfo(data.detail || 'שגיאה בשליחה');
       }
@@ -161,6 +164,7 @@ export default function AdminEventPage() {
     } finally {
       setIsSending(false);
       setConfirmModal(null);
+      setSendingMsgId(null);
     }
   };
 
@@ -610,15 +614,26 @@ export default function AdminEventPage() {
                               >✗ ביטול</button>
                             </div>
                           ) : (
-                            <button
-                              className="pagination-btn"
-                              style={{ fontSize: '0.8rem' }}
-                              onClick={() => {
-                                setEditingMsgId(msg.id);
-                                setEditingMsgDate(msg.scheduled_date || '');
-                                setEditingMsgStatus(msg.status || 'pending');
-                              }}
-                            >✏️ ערוך</button>
+                            <div style={{ display: 'flex', gap: '0.3rem' }}>
+                              <button
+                                className="pagination-btn"
+                                style={{ fontSize: '0.8rem' }}
+                                onClick={() => {
+                                  setEditingMsgId(msg.id);
+                                  setEditingMsgDate(msg.scheduled_date || '');
+                                  setEditingMsgStatus(msg.status || 'pending');
+                                }}
+                              >✏️ ערוך</button>
+                              <button
+                                className="pagination-btn"
+                                style={{ fontSize: '0.8rem', background: 'var(--admin-primary, #6366f1)', color: '#fff', border: 'none' }}
+                                onClick={() => setConfirmModal({
+                                  type: 'scheduled_msg',
+                                  msgId: msg.id,
+                                  label: `הודעה ${msg.message_number} (${msg.message_number === 1 ? 'הזמנה' : 'תזכורת'})`
+                                })}
+                              >📤 שלח ידנית</button>
+                            </div>
                           )}
                         </td>
                       </tr>
